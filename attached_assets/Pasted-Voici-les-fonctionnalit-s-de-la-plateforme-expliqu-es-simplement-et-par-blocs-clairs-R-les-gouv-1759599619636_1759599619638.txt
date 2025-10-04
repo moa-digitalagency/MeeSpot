@@ -1,0 +1,28 @@
+Voici les fonctionnalités de la plateforme, expliquées simplement et par blocs clairs.
+
+Rôles & gouvernance
+La plateforme distingue trois rôles. 1) Administrateur général : il est le seul à créer et gérer les packs/abonnements, assure la modération globale, le reporting, le support et tous les réglages système. 2) Établissements (lieux partenaires) : ils ne créent pas de packs, ils choisissent un forfait (One-shot, Silver, Gold) et animent leurs espaces. 3) Utilisateurs : ils rejoignent des rooms selon des critères et participent à des rencontres réelles.
+
+Rooms (salons) des établissements
+Chaque room possède (optionnellement) une photo, un nom, et une description qui fait office de message de bienvenue. L’établissement définit des règles d’accès (genre, orientation, tranche d’âge, etc.). Ces règles sont bloquantes : si un profil ne correspond pas, l’accès est refusé automatiquement. Les établissements en forfait Gold peuvent créer plusieurs rooms par jour (plafond de 3 par jour, tous les jours), pour varier leurs thématiques et formats (afterwork, jam session, speed-meeting, etc.).
+
+Accès et identité utilisateur
+Avant d’entrer dans une room, les membres Premium/Platinum disposent d’un mode identité alternative : possibilité de désactiver temporairement leurs photos et de changer de pseudo pour plus de confidentialité en phase d’exploration. Ce mode n’est pas accessible aux autres niveaux. Les critères d’accès (genre, orientation, âge) s’appliquent toujours, même en identité alternative.
+
+Expérience centrée sur la rencontre réelle
+La logique du produit favorise la rencontre in-real-life plutôt que le scroll infini : rooms liées à des lieux et des créneaux, messages d’accueil contextualisés, et dynamique d’animation par les établissements. L’interface met en avant les événements/slots plutôt que des catalogues sans fin, pour inciter à se voir rapidement et éviter la fatigue des applis classiques.
+
+Modération & sécurité
+L’administrateur général gère la modération centralisée (signalements, sanctions, exclusions), les règles communautaires, et la conformité. Les établissements disposent d’outils de signalement local dans leurs rooms (mute, kick, blocage contextuel) qui remontent au back-office central pour suivi et statistiques.
+
+Messagerie & interactions
+Au sein d’une room, les membres peuvent échanger (chat contextuel, annonces de l’établissement, infos pratiques). Les interactions restent orientées événement (horaire, lieu, règles) pour accélérer le passage au réel, tout en gardant un cadre respectueux et filtré par critères.
+
+Back-office établissements
+Chaque lieu accède à un tableau de bord pour créer/éditer ses rooms, consulter l’affluence, suivre les inscriptions, recevoir des retours et optimiser ses créneaux. Les limites de création quotidiennes sont automatiquement appliquées selon le forfait actif.
+
+Abonnements & tarification
+Les packs/abonnements sont créés et gérés uniquement par l’administrateur général. Les établissements choisissent ensuite un forfait : One-shot à 9 $, Silver à 49 $, Gold à 99 $. Le Gold ouvre notamment la création jusqu’à 3 rooms par jour. La facturation est simple, transparente, et liée aux capacités d’animation.
+
+Reporting & support
+La plateforme fournit des rapports (adhérence par room, respect des règles, retours participants) et un support unifié pour les établissements et les membres. L’administrateur supervise le reporting global pour piloter qualité, sécurité et performance des fonctionnalités.
