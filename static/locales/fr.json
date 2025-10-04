@@ -1,0 +1,164 @@
+{
+  "app_name": "MeetSpot",
+  "tagline": "Rencontrez de vraies personnes dans de vrais lieux",
+  "subtitle": "Rejoignez des événements de rencontres organisés dans vos lieux préférés. Pas de swipe infini, juste des connexions authentiques.",
+  "get_started": "Commencer",
+  "login": "Connexion",
+  "signup": "S'inscrire",
+  "logout": "Déconnexion",
+  "profile": "Profil",
+  
+  "how_it_works": "Comment ça marche",
+  "find_vibe": "Trouvez votre ambiance",
+  "find_vibe_desc": "Parcourez des événements organisés dans des lieux locaux correspondant à vos intérêts",
+  "join_room": "Rejoignez le salon",
+  "join_room_desc": "Réservez votre place dans des événements de rencontre exclusifs avec des membres vérifiés",
+  "meet_person": "Rencontrez en personne",
+  "meet_person_desc": "Connectez-vous face à face dans un environnement sûr et amusant conçu pour de vraies connexions",
+  
+  "membership_plans": "Plans d'adhésion",
+  "free": "Gratuit",
+  "premium": "Premium",
+  "platinum": "Platinum",
+  "per_month": "/mois",
+  "popular": "POPULAIRE",
+  
+  "free_features": {
+    "browse": "Parcourir les événements",
+    "join": "Rejoindre les salons publics",
+    "messaging": "Messagerie de base"
+  },
+  
+  "premium_features": {
+    "all_free": "Toutes les fonctionnalités gratuites",
+    "priority": "Accès prioritaire aux salons",
+    "alternative": "Mode identité alternative",
+    "filters": "Filtres avancés"
+  },
+  
+  "platinum_features": {
+    "all_premium": "Toutes les fonctionnalités Premium",
+    "vip": "Accès VIP aux événements",
+    "unlimited": "Messagerie illimitée",
+    "boost": "Boost de profil"
+  },
+  
+  "auth": {
+    "welcome_back": "Bienvenue",
+    "join_meetspot": "Rejoignez MeetSpot",
+    "email": "Email",
+    "password": "Mot de passe",
+    "full_name": "Nom complet",
+    "gender": "Genre",
+    "age": "Âge",
+    "orientation": "Orientation",
+    "select": "Sélectionnez...",
+    "male": "Homme",
+    "female": "Femme",
+    "non_binary": "Non-binaire",
+    "other": "Autre",
+    "straight": "Hétérosexuel(le)",
+    "gay": "Gay",
+    "lesbian": "Lesbienne",
+    "bisexual": "Bisexuel(le)",
+    "pansexual": "Pansexuel(le)",
+    "asexual": "Asexuel(le)",
+    "no_account": "Vous n'avez pas de compte ?",
+    "have_account": "Vous avez déjà un compte ?",
+    "login_link": "Connexion",
+    "signup_link": "S'inscrire",
+    "create_account": "Créer un compte"
+  },
+  
+  "app": {
+    "discover_events": "Découvrir les événements",
+    "find_connection": "Trouvez votre prochaine connexion réelle",
+    "loading_events": "Chargement des événements...",
+    "no_events": "Aucun événement disponible pour le moment. Revenez bientôt !",
+    "participants": "participants",
+    "your_profile": "Votre profil",
+    "name": "Nom",
+    "bio": "Biographie",
+    "photo_url": "URL de la photo",
+    "subscription": "Abonnement",
+    "alternative_mode": "Activer le mode identité alternative",
+    "alternative_name": "Nom alternatif",
+    "update_profile": "Mettre à jour le profil"
+  },
+  
+  "establishment": {
+    "dashboard": "Tableau de bord de l'établissement",
+    "manage_venue": "Gérez votre lieu et vos événements",
+    "setup_establishment": "Configurer votre établissement",
+    "venue_name": "Nom du lieu",
+    "description": "Description",
+    "address": "Adresse",
+    "create_establishment": "Créer l'établissement",
+    "subscription_plan": "Plan d'abonnement",
+    "rooms_today": "Salons aujourd'hui",
+    "total_members": "Membres totaux",
+    "create_new_event": "Créer un nouvel événement",
+    "event_name": "Nom de l'événement",
+    "max_capacity": "Capacité maximale",
+    "welcome_message": "Message de bienvenue",
+    "event_datetime": "Date et heure de l'événement",
+    "gender_filter": "Filtre de genre",
+    "min_age": "Âge minimum",
+    "max_age": "Âge maximum",
+    "any": "Tous",
+    "create_event": "Créer l'événement",
+    "your_events": "Vos événements",
+    "no_events_created": "Aucun événement créé pour le moment."
+  },
+  
+  "admin": {
+    "dashboard": "Tableau de bord administrateur",
+    "platform_management": "Gestion et modération de la plateforme",
+    "total_users": "Utilisateurs totaux",
+    "active_rooms": "Salons actifs",
+    "establishments": "Établissements",
+    "pending_reports": "Signalements en attente",
+    "users": "Utilisateurs",
+    "reports": "Signalements",
+    "loading_users": "Chargement des utilisateurs...",
+    "loading_reports": "Chargement des signalements...",
+    "no_users": "Aucun utilisateur pour le moment.",
+    "no_reports": "Aucun signalement pour le moment.",
+    "subscription_plans": "Plans d'abonnement",
+    "view_app": "Voir l'application"
+  },
+  
+  "room": {
+    "join_event": "Rejoindre l'événement",
+    "location": "Lieu",
+    "date": "Date",
+    "ongoing": "En cours",
+    "send": "Envoyer",
+    "type_message": "Tapez un message...",
+    "must_join": "Vous devez rejoindre le salon en premier"
+  },
+  
+  "plans": {
+    "one_shot": {
+      "name": "One-Shot",
+      "price": "$9",
+      "rooms": "1 salon par jour",
+      "analytics": "Analyses de base"
+    },
+    "silver": {
+      "name": "Silver",
+      "price": "$49",
+      "rooms": "1 salon par jour",
+      "analytics": "Analyses avancées",
+      "support": "Support prioritaire"
+    },
+    "gold": {
+      "name": "Gold",
+      "price": "$99",
+      "rooms": "3 salons par jour",
+      "analytics": "Analyses premium",
+      "support": "Support VIP",
+      "branding": "Branding personnalisé"
+    }
+  }
+}

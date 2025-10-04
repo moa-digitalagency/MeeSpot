@@ -1,0 +1,164 @@
+{
+  "app_name": "MeetSpot",
+  "tagline": "Meet Real People at Real Places",
+  "subtitle": "Join curated dating events at your favorite venues. No endless swiping, just authentic connections.",
+  "get_started": "Get Started",
+  "login": "Login",
+  "signup": "Sign Up",
+  "logout": "Logout",
+  "profile": "Profile",
+  
+  "how_it_works": "How It Works",
+  "find_vibe": "Find Your Vibe",
+  "find_vibe_desc": "Browse curated events at local venues matching your interests and preferences",
+  "join_room": "Join the Room",
+  "join_room_desc": "Reserve your spot in exclusive dating events with verified members",
+  "meet_person": "Meet in Person",
+  "meet_person_desc": "Connect face-to-face in a safe, fun environment designed for real connections",
+  
+  "membership_plans": "Membership Plans",
+  "free": "Free",
+  "premium": "Premium",
+  "platinum": "Platinum",
+  "per_month": "/month",
+  "popular": "POPULAR",
+  
+  "free_features": {
+    "browse": "Browse events",
+    "join": "Join public rooms",
+    "messaging": "Basic messaging"
+  },
+  
+  "premium_features": {
+    "all_free": "All Free features",
+    "priority": "Priority room access",
+    "alternative": "Alternative identity mode",
+    "filters": "Advanced filters"
+  },
+  
+  "platinum_features": {
+    "all_premium": "All Premium features",
+    "vip": "VIP event access",
+    "unlimited": "Unlimited messaging",
+    "boost": "Profile boost"
+  },
+  
+  "auth": {
+    "welcome_back": "Welcome Back",
+    "join_meetspot": "Join MeetSpot",
+    "email": "Email",
+    "password": "Password",
+    "full_name": "Full Name",
+    "gender": "Gender",
+    "age": "Age",
+    "orientation": "Orientation",
+    "select": "Select...",
+    "male": "Male",
+    "female": "Female",
+    "non_binary": "Non-binary",
+    "other": "Other",
+    "straight": "Straight",
+    "gay": "Gay",
+    "lesbian": "Lesbian",
+    "bisexual": "Bisexual",
+    "pansexual": "Pansexual",
+    "asexual": "Asexual",
+    "no_account": "Don't have an account?",
+    "have_account": "Already have an account?",
+    "login_link": "Login",
+    "signup_link": "Sign up",
+    "create_account": "Create Account"
+  },
+  
+  "app": {
+    "discover_events": "Discover Events",
+    "find_connection": "Find your next real-life connection",
+    "loading_events": "Loading events...",
+    "no_events": "No events available yet. Check back soon!",
+    "participants": "participants",
+    "your_profile": "Your Profile",
+    "name": "Name",
+    "bio": "Bio",
+    "photo_url": "Photo URL",
+    "subscription": "Subscription",
+    "alternative_mode": "Enable Alternative Identity Mode",
+    "alternative_name": "Alternative Name",
+    "update_profile": "Update Profile"
+  },
+  
+  "establishment": {
+    "dashboard": "Establishment Dashboard",
+    "manage_venue": "Manage your venue and events",
+    "setup_establishment": "Setup Your Establishment",
+    "venue_name": "Venue Name",
+    "description": "Description",
+    "address": "Address",
+    "create_establishment": "Create Establishment",
+    "subscription_plan": "Subscription Plan",
+    "rooms_today": "Rooms Today",
+    "total_members": "Total Members",
+    "create_new_event": "Create New Event",
+    "event_name": "Event Name",
+    "max_capacity": "Max Capacity",
+    "welcome_message": "Welcome Message",
+    "event_datetime": "Event Date & Time",
+    "gender_filter": "Gender Filter",
+    "min_age": "Min Age",
+    "max_age": "Max Age",
+    "any": "Any",
+    "create_event": "Create Event",
+    "your_events": "Your Events",
+    "no_events_created": "No events created yet."
+  },
+  
+  "admin": {
+    "dashboard": "Admin Dashboard",
+    "platform_management": "Platform management and moderation",
+    "total_users": "Total Users",
+    "active_rooms": "Active Rooms",
+    "establishments": "Establishments",
+    "pending_reports": "Pending Reports",
+    "users": "Users",
+    "reports": "Reports",
+    "loading_users": "Loading users...",
+    "loading_reports": "Loading reports...",
+    "no_users": "No users yet.",
+    "no_reports": "No reports yet.",
+    "subscription_plans": "Subscription Plans",
+    "view_app": "View App"
+  },
+  
+  "room": {
+    "join_event": "Join Event",
+    "location": "Location",
+    "date": "Date",
+    "ongoing": "Ongoing",
+    "send": "Send",
+    "type_message": "Type a message...",
+    "must_join": "Must join room first"
+  },
+  
+  "plans": {
+    "one_shot": {
+      "name": "One-Shot",
+      "price": "$9",
+      "rooms": "1 room per day",
+      "analytics": "Basic analytics"
+    },
+    "silver": {
+      "name": "Silver",
+      "price": "$49",
+      "rooms": "1 room per day",
+      "analytics": "Advanced analytics",
+      "support": "Priority support"
+    },
+    "gold": {
+      "name": "Gold",
+      "price": "$99",
+      "rooms": "3 rooms per day",
+      "analytics": "Premium analytics",
+      "support": "VIP support",
+      "branding": "Custom branding"
+    }
+  }
+}
