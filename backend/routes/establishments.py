@@ -79,7 +79,7 @@ def get_my_establishment(current_user):
     
     establishment = Establishment.query.filter_by(user_id=current_user.id).first()
     if not establishment:
-        return jsonify({'establishment': None})
+        return jsonify({'id': None})
     
     return jsonify({
         'id': establishment.id,
