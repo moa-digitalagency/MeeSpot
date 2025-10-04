@@ -1,0 +1,196 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>MeetSpot - Admin Dashboard</title>
+    <link rel="manifest" href="/manifest.json">
+    <meta name="theme-color" content="#FF4458">
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=Poppins:wght@600;700&display=swap" rel="stylesheet">
+    <style>
+        body { font-family: 'Inter', sans-serif; }
+        h1, h2, h3, h4, h5, h6 { font-family: 'Poppins', sans-serif; }
+    </style>
+</head>
+<body class="bg-[#FFEAA7]">
+    <nav class="bg-white shadow-lg">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="flex justify-between h-16">
+                <div class="flex items-center">
+                    <h1 class="text-2xl font-bold text-[#FF4458]">MeetSpot Admin</h1>
+                </div>
+                <div class="flex items-center space-x-4">
+                    <button onclick="window.location.href='/app.html'" class="px-4 py-2 text-[#2D3436] hover:text-[#FF4458] transition">View App</button>
+                    <button onclick="logout()" class="px-4 py-2 text-[#2D3436] hover:text-[#FF4458] transition">Logout</button>
+                </div>
+            </div>
+        </div>
+    </nav>
+
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
+        <div class="mb-8">
+            <h2 class="text-3xl font-bold text-[#2D3436] mb-2">Admin Dashboard</h2>
+            <p class="text-[#2D3436] opacity-75">Platform management and moderation</p>
+        </div>
+
+        <div class="grid md:grid-cols-4 gap-6 mb-8">
+            <div class="bg-white rounded-2xl p-6">
+                <h4 class="text-[#2D3436] opacity-75 mb-2">Total Users</h4>
+                <p id="totalUsers" class="text-3xl font-bold text-[#FF4458]">0</p>
+            </div>
+            <div class="bg-white rounded-2xl p-6">
+                <h4 class="text-[#2D3436] opacity-75 mb-2">Active Rooms</h4>
+                <p id="totalRooms" class="text-3xl font-bold text-[#6C5CE7]">0</p>
+            </div>
+            <div class="bg-white rounded-2xl p-6">
+                <h4 class="text-[#2D3436] opacity-75 mb-2">Establishments</h4>
+                <p id="totalEstablishments" class="text-3xl font-bold text-[#00B894]">0</p>
+            </div>
+            <div class="bg-white rounded-2xl p-6">
+                <h4 class="text-[#2D3436] opacity-75 mb-2">Pending Reports</h4>
+                <p id="totalReports" class="text-3xl font-bold text-[#FF4458]">0</p>
+            </div>
+        </div>
+
+        <div class="grid md:grid-cols-2 gap-8">
+            <div class="bg-white rounded-2xl p-8">
+                <h3 class="text-2xl font-bold text-[#2D3436] mb-6">Users</h3>
+                <div id="usersList" class="space-y-4 max-h-96 overflow-y-auto">
+                    <p class="text-[#2D3436] opacity-75">Loading users...</p>
+                </div>
+            </div>
+
+            <div class="bg-white rounded-2xl p-8">
+                <h3 class="text-2xl font-bold text-[#2D3436] mb-6">Reports</h3>
+                <div id="reportsList" class="space-y-4 max-h-96 overflow-y-auto">
+                    <p class="text-[#2D3436] opacity-75">Loading reports...</p>
+                </div>
+            </div>
+        </div>
+
+        <div class="bg-white rounded-2xl p-8 mt-8">
+            <h3 class="text-2xl font-bold text-[#2D3436] mb-6">Subscription Plans</h3>
+            <div class="grid md:grid-cols-3 gap-6">
+                <div class="border-2 border-[#FF4458] rounded-xl p-6">
+                    <h4 class="text-xl font-bold text-[#2D3436] mb-2">One-Shot</h4>
+                    <p class="text-3xl font-bold text-[#FF4458] mb-4">$9</p>
+                    <ul class="text-[#2D3436] space-y-2">
+                        <li>✓ 1 room per day</li>
+                        <li>✓ Basic analytics</li>
+                    </ul>
+                </div>
+                <div class="border-2 border-[#6C5CE7] rounded-xl p-6">
+                    <h4 class="text-xl font-bold text-[#2D3436] mb-2">Silver</h4>
+                    <p class="text-3xl font-bold text-[#6C5CE7] mb-4">$49</p>
+                    <ul class="text-[#2D3436] space-y-2">
+                        <li>✓ 1 room per day</li>
+                        <li>✓ Advanced analytics</li>
+                        <li>✓ Priority support</li>
+                    </ul>
+                </div>
+                <div class="border-2 border-[#00B894] rounded-xl p-6">
+                    <h4 class="text-xl font-bold text-[#2D3436] mb-2">Gold</h4>
+                    <p class="text-3xl font-bold text-[#00B894] mb-4">$99</p>
+                    <ul class="text-[#2D3436] space-y-2">
+                        <li>✓ 3 rooms per day</li>
+                        <li>✓ Premium analytics</li>
+                        <li>✓ VIP support</li>
+                        <li>✓ Custom branding</li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        function checkAuth() {
+            const token = localStorage.getItem('token');
+            const userData = localStorage.getItem('user');
+            if (!token || !userData) {
+                window.location.href = '/';
+                return;
+            }
+            const user = JSON.parse(userData);
+            if (user.role !== 'admin') {
+                window.location.href = '/app.html';
+            }
+        }
+
+        async function loadUsers() {
+            const token = localStorage.getItem('token');
+            
+            try {
+                const response = await fetch('/api/admin/users', {
+                    headers: { 'Authorization': `Bearer ${token}` }
+                });
+                
+                if (response.ok) {
+                    const users = await response.json();
+                    document.getElementById('totalUsers').textContent = users.length;
+                    
+                    const list = document.getElementById('usersList');
+                    if (users.length === 0) {
+                        list.innerHTML = '<p class="text-[#2D3436] opacity-75">No users yet.</p>';
+                    } else {
+                        list.innerHTML = users.map(user => `
+                            <div class="border-l-4 border-[#FF4458] pl-4 py-2">
+                                <div class="font-semibold text-[#2D3436]">${user.name}</div>
+                                <div class="text-sm text-[#2D3436] opacity-75">${user.email} - ${user.role}</div>
+                                <div class="text-xs text-[#6C5CE7] mt-1">${user.subscription_tier} member</div>
+                            </div>
+                        `).join('');
+                    }
+                }
+            } catch (error) {
+                console.error('Error loading users:', error);
+            }
+        }
+
+        async function loadReports() {
+            const token = localStorage.getItem('token');
+            
+            try {
+                const response = await fetch('/api/admin/reports', {
+                    headers: { 'Authorization': `Bearer ${token}` }
+                });
+                
+                if (response.ok) {
+                    const reports = await response.json();
+                    const pending = reports.filter(r => r.status === 'pending');
+                    document.getElementById('totalReports').textContent = pending.length;
+                    
+                    const list = document.getElementById('reportsList');
+                    if (reports.length === 0) {
+                        list.innerHTML = '<p class="text-[#2D3436] opacity-75">No reports yet.</p>';
+                    } else {
+                        list.innerHTML = reports.map(report => `
+                            <div class="border-l-4 border-${report.status === 'pending' ? '[#FF4458]' : '[#00B894]'} pl-4 py-2">
+                                <div class="font-semibold text-[#2D3436]">Report by ${report.reporter_name}</div>
+                                <div class="text-sm text-[#2D3436] opacity-75">${report.reason}</div>
+                                <div class="text-xs text-[#6C5CE7] mt-1">${report.status} - ${new Date(report.created_at).toLocaleDateString()}</div>
+                            </div>
+                        `).join('');
+                    }
+                }
+            } catch (error) {
+                console.error('Error loading reports:', error);
+            }
+        }
+
+        function logout() {
+            localStorage.removeItem('token');
+            localStorage.removeItem('user');
+            window.location.href = '/';
+        }
+
+        checkAuth();
+        loadUsers();
+        loadReports();
+        setInterval(() => {
+            loadUsers();
+            loadReports();
+        }, 30000);
+    </script>
+</body>
+</html>

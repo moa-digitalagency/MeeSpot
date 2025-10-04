@@ -1,0 +1,24 @@
+{
+  "name": "MeetSpot - Modern Dating Platform",
+  "short_name": "MeetSpot",
+  "description": "Join real-life dating events at your favorite venues",
+  "start_url": "/",
+  "display": "standalone",
+  "background_color": "#FFEAA7",
+  "theme_color": "#FF4458",
+  "orientation": "portrait",
+  "icons": [
+    {
+      "src": "/images/icon-192.png",
+      "sizes": "192x192",
+      "type": "image/png",
+      "purpose": "any maskable"
+    },
+    {
+      "src": "/images/icon-512.png",
+      "sizes": "512x512",
+      "type": "image/png",
+      "purpose": "any maskable"
+    }
+  ]
+}
