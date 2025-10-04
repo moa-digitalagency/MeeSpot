@@ -112,15 +112,26 @@ A progressive web application (PWA) dating platform focused on real-life meeting
 - POST `/api/reports`: Submit user/room report
 
 ## Recent Changes
+- 2025-10-04: Complete mobile-first redesign with bottom navigation bars
+  - User dashboard: 2 tabs (Discover, Profile) with bottom sheet modals
+  - Establishment dashboard: 3 tabs (Dashboard, Analytics, Profile) with event creation modal
+  - Admin dashboard: 3 tabs (Dashboard, Users, Reports) with gradient stat cards
+  - All pages limited to 768px width (mobile/tablet only, no desktop version)
+  - Fixed bottom navigation bars with active states and SVG icons
+  - Bottom sheet modals for better mobile UX
 - 2025-10-04: Initial platform build with complete feature set
 - All core features from requirements document implemented
 - PWA manifest and service worker configured
 - Role-based dashboards for admin, establishment, and users
 - Room access control with demographic filtering
 - Subscription plan enforcement for establishments
+- Fixed: Establishment users with existing accounts now go directly to dashboard
 
 ## User Preferences
 - Focus on real-life meetings over endless swiping
 - Clean, modern UI inspired by Bumble/Hinge
-- Mobile-first design with Tailwind CSS
+- Mobile-first design with Tailwind CSS (no desktop version)
+- Max viewport width: 768px (mobile and tablet only)
 - Vibrant coral and purple color scheme
+- Bottom navigation bars for all dashboards
+- Bottom sheet modals for mobile interactions
