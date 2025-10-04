@@ -9,101 +9,85 @@
     <script src="https://cdn.tailwindcss.com"></script>
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=Poppins:wght@600;700&display=swap" rel="stylesheet">
     <style>
-        body { font-family: 'Inter', sans-serif; }
+        body { font-family: 'Inter', sans-serif; padding-bottom: 80px; }
         h1, h2, h3, h4, h5, h6 { font-family: 'Poppins', sans-serif; }
+        .bottom-nav { position: fixed; bottom: 0; left: 0; right: 0; background: white; box-shadow: 0 -2px 10px rgba(0,0,0,0.1); z-index: 50; }
+        .nav-item { transition: all 0.2s; }
+        .nav-item.active { color: #FF4458; }
+        .nav-item svg { width: 24px; height: 24px; }
     </style>
 </head>
 <body class="bg-[#FFEAA7]">
-    <nav class="bg-white shadow-lg">
-        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-            <div class="flex justify-between h-16">
-                <div class="flex items-center">
-                    <h1 class="text-2xl font-bold text-[#FF4458]">MeetSpot Admin</h1>
-                </div>
-                <div class="flex items-center space-x-4">
-                    <button onclick="window.location.href='/app.html'" class="px-4 py-2 text-[#2D3436] hover:text-[#FF4458] transition">View App</button>
-                    <button onclick="logout()" class="px-4 py-2 text-[#2D3436] hover:text-[#FF4458] transition">Logout</button>
-                </div>
-            </div>
-        </div>
-    </nav>
-
-    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
-        <div class="mb-8">
-            <h2 class="text-3xl font-bold text-[#2D3436] mb-2">Admin Dashboard</h2>
-            <p class="text-[#2D3436] opacity-75">Platform management and moderation</p>
+    <div id="page-dashboard" class="page-content">
+        <div class="px-4 pt-4">
+            <h1 class="text-2xl font-bold text-[#2D3436] mb-1">Admin Dashboard</h1>
+            <p class="text-sm text-[#2D3436] opacity-75 mb-4">Gestion de la plateforme</p>
         </div>
 
-        <div class="grid md:grid-cols-4 gap-6 mb-8">
-            <div class="bg-white rounded-2xl p-6">
-                <h4 class="text-[#2D3436] opacity-75 mb-2">Total Users</h4>
-                <p id="totalUsers" class="text-3xl font-bold text-[#FF4458]">0</p>
+        <div class="px-4 space-y-3 mb-4">
+            <div class="bg-gradient-to-br from-[#FF4458] to-[#e03d4c] rounded-2xl p-5 text-white">
+                <div class="text-sm opacity-90 mb-1">Utilisateurs totaux</div>
+                <div id="totalUsers" class="text-3xl font-bold">0</div>
             </div>
-            <div class="bg-white rounded-2xl p-6">
-                <h4 class="text-[#2D3436] opacity-75 mb-2">Active Rooms</h4>
-                <p id="totalRooms" class="text-3xl font-bold text-[#6C5CE7]">0</p>
+            <div class="bg-gradient-to-br from-[#6C5CE7] to-[#5a4dd9] rounded-2xl p-5 text-white">
+                <div class="text-sm opacity-90 mb-1">Rooms actives</div>
+                <div id="totalRooms" class="text-3xl font-bold">0</div>
             </div>
-            <div class="bg-white rounded-2xl p-6">
-                <h4 class="text-[#2D3436] opacity-75 mb-2">Establishments</h4>
-                <p id="totalEstablishments" class="text-3xl font-bold text-[#00B894]">0</p>
+            <div class="bg-gradient-to-br from-[#00B894] to-[#00a183] rounded-2xl p-5 text-white">
+                <div class="text-sm opacity-90 mb-1">Établissements</div>
+                <div id="totalEstablishments" class="text-3xl font-bold">0</div>
             </div>
-            <div class="bg-white rounded-2xl p-6">
-                <h4 class="text-[#2D3436] opacity-75 mb-2">Pending Reports</h4>
-                <p id="totalReports" class="text-3xl font-bold text-[#FF4458]">0</p>
-            </div>
-        </div>
-
-        <div class="grid md:grid-cols-2 gap-8">
-            <div class="bg-white rounded-2xl p-8">
-                <h3 class="text-2xl font-bold text-[#2D3436] mb-6">Users</h3>
-                <div id="usersList" class="space-y-4 max-h-96 overflow-y-auto">
-                    <p class="text-[#2D3436] opacity-75">Loading users...</p>
-                </div>
-            </div>
-
-            <div class="bg-white rounded-2xl p-8">
-                <h3 class="text-2xl font-bold text-[#2D3436] mb-6">Reports</h3>
-                <div id="reportsList" class="space-y-4 max-h-96 overflow-y-auto">
-                    <p class="text-[#2D3436] opacity-75">Loading reports...</p>
-                </div>
-            </div>
-        </div>
-
-        <div class="bg-white rounded-2xl p-8 mt-8">
-            <h3 class="text-2xl font-bold text-[#2D3436] mb-6">Subscription Plans</h3>
-            <div class="grid md:grid-cols-3 gap-6">
-                <div class="border-2 border-[#FF4458] rounded-xl p-6">
-                    <h4 class="text-xl font-bold text-[#2D3436] mb-2">One-Shot</h4>
-                    <p class="text-3xl font-bold text-[#FF4458] mb-4">$9</p>
-                    <ul class="text-[#2D3436] space-y-2">
-                        <li>✓ 1 room per day</li>
-                        <li>✓ Basic analytics</li>
-                    </ul>
-                </div>
-                <div class="border-2 border-[#6C5CE7] rounded-xl p-6">
-                    <h4 class="text-xl font-bold text-[#2D3436] mb-2">Silver</h4>
-                    <p class="text-3xl font-bold text-[#6C5CE7] mb-4">$49</p>
-                    <ul class="text-[#2D3436] space-y-2">
-                        <li>✓ 1 room per day</li>
-                        <li>✓ Advanced analytics</li>
-                        <li>✓ Priority support</li>
-                    </ul>
-                </div>
-                <div class="border-2 border-[#00B894] rounded-xl p-6">
-                    <h4 class="text-xl font-bold text-[#2D3436] mb-2">Gold</h4>
-                    <p class="text-3xl font-bold text-[#00B894] mb-4">$99</p>
-                    <ul class="text-[#2D3436] space-y-2">
-                        <li>✓ 3 rooms per day</li>
-                        <li>✓ Premium analytics</li>
-                        <li>✓ VIP support</li>
-                        <li>✓ Custom branding</li>
-                    </ul>
-                </div>
+            <div class="bg-gradient-to-br from-[#A29BFE] to-[#9189f7] rounded-2xl p-5 text-white">
+                <div class="text-sm opacity-90 mb-1">Signalements en attente</div>
+                <div id="totalReports" class="text-3xl font-bold">0</div>
             </div>
         </div>
     </div>
 
+    <div id="page-users" class="page-content hidden">
+        <div class="px-4 pt-4 pb-4">
+            <h1 class="text-2xl font-bold text-[#2D3436] mb-4">Utilisateurs</h1>
+            <div id="usersList" class="space-y-3">
+                <p class="text-[#2D3436] opacity-75">Chargement...</p>
+            </div>
+        </div>
+    </div>
+
+    <div id="page-reports" class="page-content hidden">
+        <div class="px-4 pt-4 pb-4">
+            <h1 class="text-2xl font-bold text-[#2D3436] mb-4">Signalements</h1>
+            <div id="reportsList" class="space-y-3">
+                <p class="text-[#2D3436] opacity-75">Chargement...</p>
+            </div>
+        </div>
+    </div>
+
+    <div class="bottom-nav">
+        <div class="grid grid-cols-3 h-16">
+            <button onclick="switchPage('dashboard')" id="nav-dashboard" class="nav-item active flex flex-col items-center justify-center">
+                <svg fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 19v-6a2 2 0 00-2-2H5a2 2 0 00-2 2v6a2 2 0 002 2h2a2 2 0 002-2zm0 0V9a2 2 0 012-2h2a2 2 0 012 2v10m-6 0a2 2 0 002 2h2a2 2 0 002-2m0 0V5a2 2 0 012-2h2a2 2 0 012 2v14a2 2 0 01-2 2h-2a2 2 0 01-2-2z"/>
+                </svg>
+                <span class="text-xs mt-1">Dashboard</span>
+            </button>
+            <button onclick="switchPage('users')" id="nav-users" class="nav-item flex flex-col items-center justify-center">
+                <svg fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 4.354a4 4 0 110 5.292M15 21H3v-1a6 6 0 0112 0v1zm0 0h6v-1a6 6 0 00-9-5.197M13 7a4 4 0 11-8 0 4 4 0 018 0z"/>
+                </svg>
+                <span class="text-xs mt-1">Utilisateurs</span>
+            </button>
+            <button onclick="switchPage('reports')" id="nav-reports" class="nav-item flex flex-col items-center justify-center">
+                <svg fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 9v2m0 4h.01m-6.938 4h13.856c1.54 0 2.502-1.667 1.732-3L13.732 4c-.77-1.333-2.694-1.333-3.464 0L3.34 16c-.77 1.333.192 3 1.732 3z"/>
+                </svg>
+                <span class="text-xs mt-1">Signalements</span>
+            </button>
+        </div>
+    </div>
+
     <script>
+        let currentPage = 'dashboard';
+
         function checkAuth() {
             const token = localStorage.getItem('token');
             const userData = localStorage.getItem('user');
@@ -117,6 +101,42 @@
             }
         }
 
+        function switchPage(page) {
+            currentPage = page;
+            
+            document.querySelectorAll('.page-content').forEach(el => el.classList.add('hidden'));
+            document.getElementById(`page-${page}`).classList.remove('hidden');
+            
+            document.querySelectorAll('.nav-item').forEach(el => el.classList.remove('active'));
+            document.getElementById(`nav-${page}`).classList.add('active');
+            
+            if (page === 'users') {
+                loadUsers();
+            } else if (page === 'reports') {
+                loadReports();
+            }
+        }
+
+        async function loadStats() {
+            const token = localStorage.getItem('token');
+            
+            try {
+                const usersResponse = await fetch('/api/admin/users', {
+                    headers: { 'Authorization': `Bearer ${token}` }
+                });
+                
+                if (usersResponse.ok) {
+                    const users = await usersResponse.json();
+                    document.getElementById('totalUsers').textContent = users.length;
+                    
+                    const establishments = users.filter(u => u.role === 'establishment').length;
+                    document.getElementById('totalEstablishments').textContent = establishments;
+                }
+            } catch (error) {
+                console.error('Error loading stats:', error);
+            }
+        }
+
         async function loadUsers() {
             const token = localStorage.getItem('token');
             
@@ -127,23 +147,43 @@
                 
                 if (response.ok) {
                     const users = await response.json();
-                    document.getElementById('totalUsers').textContent = users.length;
-                    
-                    const list = document.getElementById('usersList');
-                    if (users.length === 0) {
-                        list.innerHTML = '<p class="text-[#2D3436] opacity-75">No users yet.</p>';
-                    } else {
-                        list.innerHTML = users.map(user => `
-                            <div class="border-l-4 border-[#FF4458] pl-4 py-2">
-                                <div class="font-semibold text-[#2D3436]">${user.name}</div>
-                                <div class="text-sm text-[#2D3436] opacity-75">${user.email} - ${user.role}</div>
-                                <div class="text-xs text-[#6C5CE7] mt-1">${user.subscription_tier} member</div>
-                            </div>
-                        `).join('');
-                    }
+                    displayUsers(users);
                 }
             } catch (error) {
                 console.error('Error loading users:', error);
+            }
+        }
+
+        function displayUsers(users) {
+            const list = document.getElementById('usersList');
+            
+            if (users.length === 0) {
+                list.innerHTML = '<p class="text-[#2D3436] opacity-75">Aucun utilisateur</p>';
+                return;
+            }
+            
+            list.innerHTML = users.map(user => `
+                <div class="bg-white rounded-2xl p-4">
+                    <div class="flex items-center justify-between mb-2">
+                        <h4 class="font-bold text-[#2D3436]">${user.name}</h4>
+                        <span class="px-2 py-1 rounded-full text-xs font-semibold ${getRoleBadgeClass(user.role)}">
+                            ${user.role}
+                        </span>
+                    </div>
+                    <div class="text-sm text-[#2D3436] opacity-75 space-y-1">
+                        <div>📧 ${user.email}</div>
+                        <div>🎂 ${user.age} ans • ${user.gender}</div>
+                        <div>💎 ${user.subscription_tier}</div>
+                    </div>
+                </div>
+            `).join('');
+        }
+
+        function getRoleBadgeClass(role) {
+            switch(role) {
+                case 'admin': return 'bg-[#FF4458] text-white';
+                case 'establishment': return 'bg-[#6C5CE7] text-white';
+                default: return 'bg-[#00B894] text-white';
             }
         }
 
@@ -157,25 +197,36 @@
                 
                 if (response.ok) {
                     const reports = await response.json();
-                    const pending = reports.filter(r => r.status === 'pending');
-                    document.getElementById('totalReports').textContent = pending.length;
-                    
-                    const list = document.getElementById('reportsList');
-                    if (reports.length === 0) {
-                        list.innerHTML = '<p class="text-[#2D3436] opacity-75">No reports yet.</p>';
-                    } else {
-                        list.innerHTML = reports.map(report => `
-                            <div class="border-l-4 border-${report.status === 'pending' ? '[#FF4458]' : '[#00B894]'} pl-4 py-2">
-                                <div class="font-semibold text-[#2D3436]">Report by ${report.reporter_name}</div>
-                                <div class="text-sm text-[#2D3436] opacity-75">${report.reason}</div>
-                                <div class="text-xs text-[#6C5CE7] mt-1">${report.status} - ${new Date(report.created_at).toLocaleDateString()}</div>
-                            </div>
-                        `).join('');
-                    }
+                    displayReports(reports);
+                    document.getElementById('totalReports').textContent = reports.length;
                 }
             } catch (error) {
                 console.error('Error loading reports:', error);
             }
+        }
+
+        function displayReports(reports) {
+            const list = document.getElementById('reportsList');
+            
+            if (reports.length === 0) {
+                list.innerHTML = '<p class="text-[#2D3436] opacity-75">Aucun signalement</p>';
+                return;
+            }
+            
+            list.innerHTML = reports.map(report => `
+                <div class="bg-white rounded-2xl p-4 border-l-4 border-[#FF4458]">
+                    <div class="flex items-center justify-between mb-2">
+                        <h4 class="font-bold text-[#2D3436] capitalize">${report.report_type}</h4>
+                        <span class="px-2 py-1 rounded-full text-xs font-semibold ${report.status === 'pending' ? 'bg-yellow-500 text-white' : 'bg-gray-300 text-[#2D3436]'}">
+                            ${report.status}
+                        </span>
+                    </div>
+                    <p class="text-sm text-[#2D3436] opacity-75 mb-2">${report.reason}</p>
+                    <div class="text-xs text-[#2D3436] opacity-75">
+                        Par ${report.reporter_name} • ${new Date(report.created_at).toLocaleDateString()}
+                    </div>
+                </div>
+            `).join('');
         }
 
         function logout() {
@@ -185,12 +236,7 @@
         }
 
         checkAuth();
-        loadUsers();
-        loadReports();
-        setInterval(() => {
-            loadUsers();
-            loadReports();
-        }, 30000);
+        loadStats();
     </script>
 </body>
 </html>
