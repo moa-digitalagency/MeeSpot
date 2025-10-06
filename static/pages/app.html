@@ -8,6 +8,7 @@
     <meta name="theme-color" content="#FF4458">
     <script src="https://cdn.tailwindcss.com"></script>
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=Poppins:wght@600;700&display=swap" rel="stylesheet">
+    <script src="https://unpkg.com/html5-qrcode@2.3.8/html5-qrcode.min.js"></script>
     <style>
         body { font-family: 'Inter', sans-serif; padding-bottom: 80px; max-width: 768px; margin: 0 auto; }
         h1, h2, h3, h4, h5, h6 { font-family: 'Poppins', sans-serif; }
@@ -24,18 +25,53 @@
         <div class="px-4 pt-4 pb-2">
             <div class="flex justify-between items-center mb-4">
                 <div>
-                    <h1 class="text-2xl font-bold text-[#2D3436]">Découvrir</h1>
-                    <p class="text-sm text-[#2D3436] opacity-75">Événements près de vous</p>
+                    <h1 class="text-2xl font-bold text-[#2D3436]">Accueil</h1>
+                    <p class="text-sm text-[#2D3436] opacity-75">Rejoignez un événement</p>
                 </div>
                 <div class="w-10 h-10 rounded-full bg-gradient-to-br from-[#FF4458] to-[#A29BFE] flex items-center justify-center text-white font-semibold" id="userAvatar">
                     U
                 </div>
             </div>
-        </div>
 
-        <div id="roomsGrid" class="px-4 space-y-4">
-            <div class="text-center py-12">
-                <p class="text-[#2D3436] text-lg">Chargement des événements...</p>
+            <div class="bg-white rounded-3xl p-6 shadow-lg mb-6">
+                <h3 class="font-bold text-[#2D3436] mb-4 text-center">Entrez le code d'accès</h3>
+                <div class="flex gap-2 mb-3">
+                    <input type="text" id="accessCodeInput" placeholder="Ex: A3B7K9M2" maxlength="8" class="flex-1 px-4 py-3 border-2 border-gray-300 rounded-xl focus:outline-none focus:border-[#FF4458] text-center font-mono text-lg uppercase" oninput="this.value = this.value.toUpperCase()">
+                    <button onclick="showQRScanner()" class="px-4 py-3 bg-[#6C5CE7] text-white rounded-xl hover:bg-[#5f52d6] transition flex items-center justify-center">
+                        <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 4v1m6 11h2m-6 0h-2v4m0-11v3m0 0h.01M12 12h4.01M16 20h4M4 12h4m12 0h.01M5 8h2a1 1 0 001-1V5a1 1 0 00-1-1H5a1 1 0 00-1 1v2a1 1 0 001 1zm12 0h2a1 1 0 001-1V5a1 1 0 00-1-1h-2a1 1 0 00-1 1v2a1 1 0 001 1zM5 20h2a1 1 0 001-1v-2a1 1 0 00-1-1H5a1 1 0 00-1 1v2a1 1 0 001 1z"/>
+                        </svg>
+                    </button>
+                </div>
+                <button onclick="joinWithCode()" class="w-full py-3 bg-[#FF4458] text-white rounded-full hover:bg-[#e03d4c] transition font-semibold">
+                    Rejoindre
+                </button>
+            </div>
+
+            <div class="mb-4">
+                <h3 class="font-bold text-[#2D3436] mb-3">Événements passés</h3>
+                <div id="pastRoomsList" class="space-y-3">
+                    <p class="text-sm text-[#2D3436] opacity-75 text-center py-8">Chargement...</p>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div id="page-chat" class="page-content hidden">
+        <div class="px-4 pt-4 pb-2">
+            <h1 class="text-2xl font-bold text-[#2D3436] mb-4">Messages</h1>
+            
+            <div class="flex gap-2 mb-4">
+                <button id="filter-active" onclick="filterChats('active')" class="flex-1 py-2 px-4 rounded-full bg-[#FF4458] text-white text-sm font-semibold">
+                    Actifs
+                </button>
+                <button id="filter-expired" onclick="filterChats('expired')" class="flex-1 py-2 px-4 rounded-full bg-gray-200 text-[#2D3436] text-sm font-semibold">
+                    Expirés
+                </button>
+            </div>
+
+            <div id="chatsList" class="space-y-3">
+                <p class="text-sm text-[#2D3436] opacity-75 text-center py-8">Chargement...</p>
             </div>
         </div>
     </div>
@@ -91,12 +127,18 @@
     </div>
 
     <div class="bottom-nav">
-        <div class="grid grid-cols-2 h-16">
+        <div class="grid grid-cols-3 h-16">
             <button onclick="switchPage('discover')" id="nav-discover" class="nav-item active flex flex-col items-center justify-center">
                 <svg fill="none" stroke="currentColor" viewBox="0 0 24 24">
                     <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 12l2-2m0 0l7-7 7 7M5 10v10a1 1 0 001 1h3m10-11l2 2m-2-2v10a1 1 0 01-1 1h-3m-6 0a1 1 0 001-1v-4a1 1 0 011-1h2a1 1 0 011 1v4a1 1 0 001 1m-6 0h6"/>
                 </svg>
-                <span class="text-xs mt-1">Découvrir</span>
+                <span class="text-xs mt-1">Accueil</span>
+            </button>
+            <button onclick="switchPage('chat')" id="nav-chat" class="nav-item flex flex-col items-center justify-center">
+                <svg fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 12h.01M12 12h.01M16 12h.01M21 12c0 4.418-4.03 8-9 8a9.863 9.863 0 01-4.255-.949L3 20l1.395-3.72C3.512 15.042 3 13.574 3 12c0-4.418 4.03-8 9-8s9 3.582 9 8z"/>
+                </svg>
+                <span class="text-xs mt-1">Chat</span>
             </button>
             <button onclick="switchPage('profile')" id="nav-profile" class="nav-item flex flex-col items-center justify-center">
                 <svg fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -104,6 +146,16 @@
                 </svg>
                 <span class="text-xs mt-1">Profil</span>
             </button>
+        </div>
+    </div>
+
+    <div id="qrScannerModal" class="hidden fixed inset-0 bg-black bg-opacity-90 flex items-center justify-center z-50">
+        <div class="bg-white rounded-3xl w-full max-w-md p-6 m-4">
+            <div class="flex justify-between items-center mb-4">
+                <h3 class="text-xl font-bold text-[#2D3436]">Scanner le QR Code</h3>
+                <button onclick="closeQRScanner()" class="text-gray-500 hover:text-gray-700 text-2xl">&times;</button>
+            </div>
+            <div id="qrReader" class="rounded-xl overflow-hidden"></div>
         </div>
     </div>
 
@@ -141,17 +193,17 @@
         </div>
     </div>
 
-    <div id="roomModal" class="hidden fixed inset-0 bg-black bg-opacity-50 flex items-end z-50">
+    <div id="chatModal" class="hidden fixed inset-0 bg-black bg-opacity-50 flex items-end z-50">
         <div class="bg-white rounded-t-3xl w-full p-6 max-h-[90vh] overflow-y-auto">
             <div class="flex justify-between items-center mb-4">
-                <h3 id="roomName" class="text-2xl font-bold text-[#2D3436]"></h3>
-                <button onclick="closeRoom()" class="text-gray-500 hover:text-gray-700 text-2xl">&times;</button>
+                <h3 id="chatRoomName" class="text-2xl font-bold text-[#2D3436]"></h3>
+                <button onclick="closeChatModal()" class="text-gray-500 hover:text-gray-700 text-2xl">&times;</button>
             </div>
             
-            <div id="roomDetails" class="mb-6"></div>
+            <div id="chatDetails" class="mb-4"></div>
             
-            <div id="chatContainer" class="hidden mb-4">
-                <div id="messages" class="bg-[#FFEAA7] rounded-xl p-4 h-64 overflow-y-auto mb-4"></div>
+            <div id="chatMessagesContainer">
+                <div id="chatMessages" class="bg-[#FFEAA7] rounded-xl p-4 h-96 overflow-y-auto mb-4"></div>
                 <form onsubmit="sendMessage(event)" class="flex gap-2">
                     <input type="text" id="messageInput" placeholder="Tapez un message..." class="flex-1 px-4 py-2 border border-gray-300 rounded-full focus:outline-none focus:border-[#FF4458]">
                     <button type="submit" class="px-6 py-2 bg-[#FF4458] text-white rounded-full hover:bg-[#e03d4c] transition">
@@ -161,10 +213,6 @@
                     </button>
                 </form>
             </div>
-            
-            <button id="joinButton" onclick="joinRoom()" class="w-full py-3 bg-[#00B894] text-white rounded-full hover:bg-[#00a183] transition font-semibold">
-                Rejoindre l'événement
-            </button>
         </div>
     </div>
 
@@ -172,6 +220,9 @@
         let currentRoomId = null;
         let user = null;
         let currentPage = 'discover';
+        let chatFilter = 'active';
+        let html5QrCode = null;
+        let userRooms = [];
 
         function checkAuth() {
             const token = localStorage.getItem('token');
@@ -196,6 +247,10 @@
             
             if (page === 'profile') {
                 loadProfile();
+            } else if (page === 'discover') {
+                loadPastRooms();
+            } else if (page === 'chat') {
+                loadChats();
             }
         }
 
@@ -218,6 +273,274 @@
                 }
             } catch (error) {
                 console.error('Error loading profile:', error);
+            }
+        }
+
+        async function loadPastRooms() {
+            const token = localStorage.getItem('token');
+            try {
+                const response = await fetch('/api/rooms/my', {
+                    headers: { 'Authorization': `Bearer ${token}` }
+                });
+                
+                if (response.ok) {
+                    const rooms = await response.json();
+                    userRooms = rooms;
+                    displayPastRooms(rooms);
+                }
+            } catch (error) {
+                console.error('Error loading past rooms:', error);
+                document.getElementById('pastRoomsList').innerHTML = '<p class="text-sm text-[#2D3436] opacity-75 text-center py-4">Aucun événement</p>';
+            }
+        }
+
+        function displayPastRooms(rooms) {
+            const list = document.getElementById('pastRoomsList');
+            
+            if (rooms.length === 0) {
+                list.innerHTML = '<p class="text-sm text-[#2D3436] opacity-75 text-center py-4">Vous n\'avez rejoint aucun événement</p>';
+                return;
+            }
+            
+            list.innerHTML = rooms.map(room => `
+                <div onclick="openChatRoom(${room.id})" class="bg-white rounded-2xl p-4 card-hover">
+                    <div class="flex justify-between items-start mb-2">
+                        <h4 class="font-bold text-[#2D3436]">${room.name}</h4>
+                        <span class="px-2 py-1 rounded-full text-xs font-semibold ${room.is_active ? 'bg-[#00B894] text-white' : 'bg-gray-300 text-[#2D3436]'}">
+                            ${room.is_active ? 'Actif' : 'Expiré'}
+                        </span>
+                    </div>
+                    <p class="text-sm text-[#2D3436] opacity-75 mb-2">${room.description || 'Pas de description'}</p>
+                    <div class="flex items-center gap-4 text-xs text-[#2D3436] opacity-75">
+                        <span>👥 ${room.member_count || 0} participants</span>
+                        <span>📅 ${new Date(room.created_at).toLocaleDateString()}</span>
+                    </div>
+                </div>
+            `).join('');
+        }
+
+        async function loadChats() {
+            const token = localStorage.getItem('token');
+            try {
+                const response = await fetch('/api/rooms/my', {
+                    headers: { 'Authorization': `Bearer ${token}` }
+                });
+                
+                if (response.ok) {
+                    const rooms = await response.json();
+                    userRooms = rooms;
+                    filterChats(chatFilter);
+                }
+            } catch (error) {
+                console.error('Error loading chats:', error);
+            }
+        }
+
+        function filterChats(filter) {
+            chatFilter = filter;
+            
+            document.querySelectorAll('[id^="filter-"]').forEach(el => {
+                el.classList.remove('bg-[#FF4458]', 'text-white');
+                el.classList.add('bg-gray-200', 'text-[#2D3436]');
+            });
+            document.getElementById(`filter-${filter}`).classList.remove('bg-gray-200', 'text-[#2D3436]');
+            document.getElementById(`filter-${filter}`).classList.add('bg-[#FF4458]', 'text-white');
+            
+            const filteredRooms = userRooms.filter(room => 
+                filter === 'active' ? room.is_active : !room.is_active
+            );
+            
+            displayChats(filteredRooms);
+        }
+
+        function displayChats(rooms) {
+            const list = document.getElementById('chatsList');
+            
+            if (rooms.length === 0) {
+                list.innerHTML = `<p class="text-sm text-[#2D3436] opacity-75 text-center py-8">Aucun chat ${chatFilter === 'active' ? 'actif' : 'expiré'}</p>`;
+                return;
+            }
+            
+            list.innerHTML = rooms.map(room => `
+                <div onclick="openChatRoom(${room.id})" class="bg-white rounded-2xl p-4 card-hover">
+                    <div class="flex items-center gap-3">
+                        <div class="w-12 h-12 rounded-full bg-gradient-to-br from-[#FF4458] to-[#A29BFE] flex items-center justify-center text-white text-xl">
+                            🎉
+                        </div>
+                        <div class="flex-1">
+                            <h4 class="font-bold text-[#2D3436]">${room.name}</h4>
+                            <p class="text-xs text-[#2D3436] opacity-75">${room.member_count || 0} participants</p>
+                        </div>
+                        <span class="text-xs text-[#2D3436] opacity-50">${new Date(room.created_at).toLocaleDateString()}</span>
+                    </div>
+                </div>
+            `).join('');
+        }
+
+        async function joinWithCode() {
+            const code = document.getElementById('accessCodeInput').value.trim().toUpperCase();
+            
+            if (!code || code.length < 6) {
+                alert('Veuillez entrer un code valide');
+                return;
+            }
+            
+            const token = localStorage.getItem('token');
+            
+            try {
+                const response = await fetch('/api/rooms/join-by-code', {
+                    method: 'POST',
+                    headers: {
+                        'Authorization': `Bearer ${token}`,
+                        'Content-Type': 'application/json'
+                    },
+                    body: JSON.stringify({ access_code: code })
+                });
+                
+                if (response.ok) {
+                    const data = await response.json();
+                    alert('Vous avez rejoint l\'événement !');
+                    document.getElementById('accessCodeInput').value = '';
+                    loadPastRooms();
+                } else {
+                    const error = await response.json();
+                    alert(error.message || 'Code invalide ou événement introuvable');
+                }
+            } catch (error) {
+                alert('Erreur de connexion');
+            }
+        }
+
+        function showQRScanner() {
+            document.getElementById('qrScannerModal').classList.remove('hidden');
+            
+            html5QrCode = new Html5Qrcode("qrReader");
+            html5QrCode.start(
+                { facingMode: "environment" },
+                { fps: 10, qrbox: 250 },
+                (decodedText) => {
+                    document.getElementById('accessCodeInput').value = decodedText.toUpperCase();
+                    closeQRScanner();
+                    joinWithCode();
+                },
+                (error) => {
+                    console.log('QR scan error:', error);
+                }
+            ).catch((err) => {
+                alert('Impossible d\'accéder à la caméra');
+                closeQRScanner();
+            });
+        }
+
+        function closeQRScanner() {
+            if (html5QrCode) {
+                html5QrCode.stop().then(() => {
+                    html5QrCode = null;
+                }).catch(() => {});
+            }
+            document.getElementById('qrScannerModal').classList.add('hidden');
+        }
+
+        async function openChatRoom(roomId) {
+            currentRoomId = roomId;
+            const token = localStorage.getItem('token');
+            
+            try {
+                const response = await fetch(`/api/rooms/${roomId}`, {
+                    headers: { 'Authorization': `Bearer ${token}` }
+                });
+                
+                if (response.ok) {
+                    const room = await response.json();
+                    document.getElementById('chatRoomName').textContent = room.name;
+                    
+                    let details = `
+                        <div class="bg-[#FFEAA7] rounded-xl p-4 mb-4 text-sm">
+                            <p class="text-[#2D3436] mb-2">${room.description || 'Pas de description'}</p>
+                            <div class="flex items-center gap-4 text-[#2D3436] opacity-75">
+                                <span>📍 ${room.establishment_name || 'Établissement'}</span>
+                                <span>👥 ${room.member_count || 0} participants</span>
+                            </div>
+                        </div>
+                    `;
+                    
+                    document.getElementById('chatDetails').innerHTML = details;
+                    document.getElementById('chatModal').classList.remove('hidden');
+                    loadMessages();
+                    setInterval(() => {
+                        if (currentRoomId === roomId) loadMessages();
+                    }, 3000);
+                }
+            } catch (error) {
+                console.error('Error loading room:', error);
+            }
+        }
+
+        function closeChatModal() {
+            document.getElementById('chatModal').classList.add('hidden');
+            currentRoomId = null;
+        }
+
+        async function loadMessages() {
+            if (!currentRoomId) return;
+            
+            const token = localStorage.getItem('token');
+            
+            try {
+                const response = await fetch(`/api/rooms/${currentRoomId}/messages`, {
+                    headers: { 'Authorization': `Bearer ${token}` }
+                });
+                
+                if (response.ok) {
+                    const messages = await response.json();
+                    displayMessages(messages);
+                }
+            } catch (error) {
+                console.error('Error loading messages:', error);
+            }
+        }
+
+        function displayMessages(messages) {
+            const container = document.getElementById('chatMessages');
+            
+            if (messages.length === 0) {
+                container.innerHTML = '<p class="text-sm text-[#2D3436] opacity-75 text-center">Aucun message</p>';
+                return;
+            }
+            
+            container.innerHTML = messages.map(msg => `
+                <div class="mb-3">
+                    <div class="font-semibold text-[#2D3436] text-sm">${msg.user_name}</div>
+                    <div class="text-[#2D3436] text-sm">${msg.content}</div>
+                    <div class="text-xs text-[#2D3436] opacity-50">${new Date(msg.created_at).toLocaleTimeString()}</div>
+                </div>
+            `).join('');
+            container.scrollTop = container.scrollHeight;
+        }
+
+        async function sendMessage(e) {
+            e.preventDefault();
+            const token = localStorage.getItem('token');
+            const content = document.getElementById('messageInput').value;
+            
+            if (!content.trim()) return;
+            
+            try {
+                const response = await fetch(`/api/rooms/${currentRoomId}/messages`, {
+                    method: 'POST',
+                    headers: {
+                        'Authorization': `Bearer ${token}`,
+                        'Content-Type': 'application/json'
+                    },
+                    body: JSON.stringify({ content })
+                });
+                
+                if (response.ok) {
+                    document.getElementById('messageInput').value = '';
+                    loadMessages();
+                }
+            } catch (error) {
+                console.error('Error sending message:', error);
             }
         }
 
@@ -280,172 +603,6 @@
             }
         }
 
-        async function loadRooms() {
-            const token = localStorage.getItem('token');
-            try {
-                const response = await fetch('/api/rooms', {
-                    headers: { 'Authorization': `Bearer ${token}` }
-                });
-                
-                if (response.ok) {
-                    const rooms = await response.json();
-                    displayRooms(rooms);
-                }
-            } catch (error) {
-                console.error('Error loading rooms:', error);
-            }
-        }
-
-        function displayRooms(rooms) {
-            const grid = document.getElementById('roomsGrid');
-            
-            if (rooms.length === 0) {
-                grid.innerHTML = '<div class="text-center py-12"><p class="text-[#2D3436]">Aucun événement disponible</p></div>';
-                return;
-            }
-            
-            grid.innerHTML = rooms.map(room => `
-                <div onclick="openRoom(${room.id})" class="bg-white rounded-2xl overflow-hidden shadow-lg card-hover">
-                    <div class="h-32 bg-gradient-to-br from-[#FF4458] to-[#A29BFE] flex items-center justify-center">
-                        <span class="text-4xl">🎉</span>
-                    </div>
-                    <div class="p-4">
-                        <h3 class="text-lg font-bold text-[#2D3436] mb-2">${room.name}</h3>
-                        <p class="text-sm text-[#2D3436] opacity-75 mb-3 line-clamp-2">${room.description || 'Pas de description'}</p>
-                        <div class="flex items-center justify-between text-sm">
-                            <span class="text-[#6C5CE7] font-semibold">${room.member_count || 0} participants</span>
-                            <span class="px-3 py-1 bg-[#00B894] text-white rounded-full text-xs font-semibold">Actif</span>
-                        </div>
-                    </div>
-                </div>
-            `).join('');
-        }
-
-        async function openRoom(roomId) {
-            currentRoomId = roomId;
-            const token = localStorage.getItem('token');
-            
-            try {
-                const response = await fetch(`/api/rooms/${roomId}`, {
-                    headers: { 'Authorization': `Bearer ${token}` }
-                });
-                
-                if (response.ok) {
-                    const room = await response.json();
-                    document.getElementById('roomName').textContent = room.name;
-                    
-                    let details = `
-                        <div class="space-y-3 text-sm">
-                            <p class="text-[#2D3436]">${room.description || 'Pas de description'}</p>
-                            <div class="flex items-center gap-2">
-                                <span class="text-[#2D3436] opacity-75">📍</span>
-                                <span class="text-[#2D3436]">${room.establishment_name}</span>
-                            </div>
-                            <div class="flex items-center gap-2">
-                                <span class="text-[#2D3436] opacity-75">👥</span>
-                                <span class="text-[#2D3436]">${room.member_count || 0} participants</span>
-                            </div>
-                        </div>
-                    `;
-                    
-                    document.getElementById('roomDetails').innerHTML = details;
-                    
-                    if (room.is_member) {
-                        document.getElementById('joinButton').classList.add('hidden');
-                        document.getElementById('chatContainer').classList.remove('hidden');
-                        loadMessages();
-                    } else {
-                        document.getElementById('joinButton').classList.remove('hidden');
-                        document.getElementById('chatContainer').classList.add('hidden');
-                    }
-                    
-                    document.getElementById('roomModal').classList.remove('hidden');
-                }
-            } catch (error) {
-                console.error('Error loading room:', error);
-            }
-        }
-
-        function closeRoom() {
-            document.getElementById('roomModal').classList.add('hidden');
-            currentRoomId = null;
-        }
-
-        async function joinRoom() {
-            const token = localStorage.getItem('token');
-            
-            try {
-                const response = await fetch(`/api/rooms/${currentRoomId}/join`, {
-                    method: 'POST',
-                    headers: { 'Authorization': `Bearer ${token}` }
-                });
-                
-                if (response.ok) {
-                    alert('Vous avez rejoint l\'événement !');
-                    closeRoom();
-                    loadRooms();
-                } else {
-                    const error = await response.json();
-                    alert(error.message || 'Erreur');
-                }
-            } catch (error) {
-                alert('Erreur de connexion');
-            }
-        }
-
-        async function loadMessages() {
-            const token = localStorage.getItem('token');
-            
-            try {
-                const response = await fetch(`/api/rooms/${currentRoomId}/messages`, {
-                    headers: { 'Authorization': `Bearer ${token}` }
-                });
-                
-                if (response.ok) {
-                    const messages = await response.json();
-                    displayMessages(messages);
-                }
-            } catch (error) {
-                console.error('Error loading messages:', error);
-            }
-        }
-
-        function displayMessages(messages) {
-            const container = document.getElementById('messages');
-            container.innerHTML = messages.map(msg => `
-                <div class="mb-3">
-                    <div class="font-semibold text-[#2D3436] text-sm">${msg.user_name}</div>
-                    <div class="text-[#2D3436] text-sm">${msg.content}</div>
-                    <div class="text-xs text-[#2D3436] opacity-50">${new Date(msg.created_at).toLocaleTimeString()}</div>
-                </div>
-            `).join('');
-            container.scrollTop = container.scrollHeight;
-        }
-
-        async function sendMessage(e) {
-            e.preventDefault();
-            const token = localStorage.getItem('token');
-            const content = document.getElementById('messageInput').value;
-            
-            try {
-                const response = await fetch(`/api/rooms/${currentRoomId}/messages`, {
-                    method: 'POST',
-                    headers: {
-                        'Authorization': `Bearer ${token}`,
-                        'Content-Type': 'application/json'
-                    },
-                    body: JSON.stringify({ content })
-                });
-                
-                if (response.ok) {
-                    document.getElementById('messageInput').value = '';
-                    loadMessages();
-                }
-            } catch (error) {
-                console.error('Error sending message:', error);
-            }
-        }
-
         function logout() {
             localStorage.removeItem('token');
             localStorage.removeItem('user');
@@ -453,8 +610,7 @@
         }
 
         checkAuth();
-        loadRooms();
-        setInterval(loadMessages, 3000);
+        loadPastRooms();
     </script>
 </body>
 </html>

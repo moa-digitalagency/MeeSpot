@@ -83,3 +83,46 @@ def send_message(current_user, room_id):
     db.session.commit()
     
     return jsonify({'message': 'Message sent successfully'})
+
+@bp.route('/join-by-code', methods=['POST'])
+@token_required
+def join_by_code(current_user):
+    data = request.json
+    access_code = data.get('access_code', '').strip().upper()
+    
+    if not access_code:
+        return jsonify({'message': 'Access code required'}), 400
+    
+    room = Room.query.filter_by(access_code=access_code).first()
+    
+    if not room:
+        return jsonify({'message': 'Room not found with this code'}), 404
+    
+    if not check_room_access(room, current_user):
+        return jsonify({'message': 'Access denied to this room'}), 403
+    
+    if RoomMember.query.filter_by(room_id=room.id, user_id=current_user.id).first():
+        return jsonify({'message': 'Already a member', 'room_id': room.id}), 200
+    
+    if room.max_capacity and len(room.members) >= room.max_capacity:
+        return jsonify({'message': 'Room is full'}), 400
+    
+    member = RoomMember(room_id=room.id, user_id=current_user.id)
+    db.session.add(member)
+    db.session.commit()
+    
+    return jsonify({'message': 'Joined room successfully', 'room_id': room.id})
+
+@bp.route('/my', methods=['GET'])
+@token_required
+def get_my_rooms(current_user):
+    memberships = RoomMember.query.filter_by(user_id=current_user.id).all()
+    
+    rooms_data = []
+    for membership in memberships:
+        room = membership.room
+        room_dict = room.to_dict()
+        room_dict['establishment_name'] = room.establishment.name if room.establishment else None
+        rooms_data.append(room_dict)
+    
+    return jsonify(rooms_data)
