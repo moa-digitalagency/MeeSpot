@@ -13,9 +13,10 @@ class ProfileOption(db.Model):
     __tablename__ = 'profile_options'
     
     id = db.Column(db.Integer, primary_key=True)
-    category = db.Column(db.String(50), nullable=False)  # 'gender', 'meeting_type', 'interest'
+    category = db.Column(db.String(50), nullable=False)  # 'gender', 'meeting_type', 'interest', 'religion'
     value = db.Column(db.String(100), nullable=False)
     label = db.Column(db.String(200), nullable=False)
+    emoji = db.Column(db.String(10))  # Emoji pour les types de rencontre
     is_active = db.Column(db.Boolean, default=True)
     created_at = db.Column(db.DateTime, default=datetime.utcnow)
     
@@ -25,5 +26,6 @@ class ProfileOption(db.Model):
             'category': self.category,
             'value': self.value,
             'label': self.label,
+            'emoji': self.emoji,
             'is_active': self.is_active
         }
