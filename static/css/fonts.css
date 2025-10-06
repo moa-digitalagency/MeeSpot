@@ -46,12 +46,12 @@
   font-style: normal;
   font-weight: 600;
   font-display: swap;
-  src: url(/fonts/https://fonts.gstatic.com/s/poppins/v24/pxiByp8kv8JHgFVrLEj6V1s.ttf) format('truetype');
+  src: url(/fonts/pxiByp8kv8JHgFVrLEj6V1s.ttf) format('truetype');
 }
 @font-face {
   font-family: 'Poppins';
   font-style: normal;
   font-weight: 700;
   font-display: swap;
-  src: url(/fonts/https://fonts.gstatic.com/s/poppins/v24/pxiByp8kv8JHgFVrLCz7V1s.ttf) format('truetype');
+  src: url(/fonts/pxiByp8kv8JHgFVrLCz7V1s.ttf) format('truetype');
 }
