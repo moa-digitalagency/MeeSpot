@@ -37,6 +37,8 @@ def register():
         gender=data.get('gender'),
         sexual_orientation=data.get('sexual_orientation'),
         birthdate=datetime.strptime(data['birthdate'], '%Y-%m-%d').date() if data.get('birthdate') else None,
+        religion=data.get('religion'),
+        lgbtq_friendly=data.get('lgbtq_friendly'),
         bio=data.get('bio')
     )
     

@@ -27,6 +27,8 @@ class User(db.Model):
     sexual_orientation = db.Column(db.String(50))
     birthdate = db.Column(db.Date)
     age = db.Column(db.Integer)
+    religion = db.Column(db.String(100))
+    lgbtq_friendly = db.Column(db.Boolean)
     bio = db.Column(EncryptedText(2000))
     photo_url = db.Column(EncryptedString(1000))
     gallery_photos = db.Column(JSON, default=list)
@@ -79,6 +81,8 @@ class User(db.Model):
             'sexual_orientation': self.sexual_orientation,
             'birthdate': self.birthdate.isoformat() if self.birthdate else None,
             'age': self.calculate_age() if self.birthdate else self.age,
+            'religion': self.religion,
+            'lgbtq_friendly': self.lgbtq_friendly,
             'bio': self.bio,
             'photo_url': self.photo_url,
             'gallery_photos': self.gallery_photos or [],
