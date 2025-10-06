@@ -156,6 +156,8 @@ def leave_room(current_user, room_id):
 @token_required
 def get_participants(current_user, room_id):
     from backend.models.profile_option import ProfileOption
+    from backend.models.connection_request import ConnectionRequest
+    from backend.models.private_conversation import PrivateConversation
     
     room = Room.query.get_or_404(room_id)
     
@@ -173,11 +175,36 @@ def get_participants(current_user, room_id):
     participants = []
     for member in active_members:
         user = member.user
+        
+        if user.id == current_user.id:
+            continue
+        
         meeting_type_emojis = []
         if user.meeting_type:
             emoji = meeting_type_options.get(user.meeting_type, '')
             if emoji:
                 meeting_type_emojis.append(emoji)
+        
+        connection_request = ConnectionRequest.query.filter_by(
+            room_id=room_id,
+            requester_id=current_user.id,
+            target_id=user.id
+        ).order_by(ConnectionRequest.created_at.desc()).first()
+        
+        conversation = PrivateConversation.query.filter(
+            db.or_(
+                db.and_(PrivateConversation.user1_id == current_user.id, PrivateConversation.user2_id == user.id),
+                db.and_(PrivateConversation.user1_id == user.id, PrivateConversation.user2_id == current_user.id)
+            ),
+            PrivateConversation.is_active == True
+        ).first()
+        
+        if conversation:
+            continue
+        
+        request_status = None
+        if connection_request:
+            request_status = connection_request.status
         
         participants.append({
             'id': user.id,
@@ -187,7 +214,8 @@ def get_participants(current_user, room_id):
             'bio': user.bio,
             'photo_url': user.photo_url,
             'meeting_type_emojis': meeting_type_emojis,
-            'joined_at': member.joined_at.isoformat()
+            'joined_at': member.joined_at.isoformat(),
+            'request_status': request_status
         })
     
     return jsonify(participants)
