@@ -211,12 +211,80 @@ www.myoneart.com
             </div>
 
             <button onclick="showEditProfile()" class="w-full py-3 bg-[#FF4458] text-white rounded-full hover:bg-[#e03d4c] transition font-semibold mb-2">
-                Modifier le profil
+                ✏️ Modifier le profil
+            </button>
+            
+            <button onclick="switchPage('settings')" class="w-full py-3 bg-[#6C5CE7] text-white rounded-full hover:bg-[#5f51d4] transition font-semibold mb-2">
+                ⚙️ Paramètres du compte
             </button>
             
             <button onclick="logout()" class="w-full py-3 bg-gray-200 text-[#2D3436] rounded-full hover:bg-gray-300 transition font-semibold">
-                Déconnexion
+                🚪 Déconnexion
             </button>
+        </div>
+    </div>
+
+    <div id="page-settings" class="page-content hidden">
+        <div class="px-4 pt-4">
+            <div class="flex items-center mb-6">
+                <button onclick="switchPage('profile')" class="mr-4 text-[#2D3436]">
+                    <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 19l-7-7 7-7"/>
+                    </svg>
+                </button>
+                <h1 class="text-2xl font-bold text-[#2D3436]">Paramètres du compte</h1>
+            </div>
+            
+            <!-- Account Info (Read-only) -->
+            <div class="bg-white rounded-3xl p-6 mb-4 shadow-lg">
+                <h3 class="font-bold text-[#2D3436] mb-4">📋 Informations du compte</h3>
+                <div class="space-y-3">
+                    <div class="flex justify-between py-2 border-b">
+                        <span class="text-[#2D3436] opacity-75">Nom d'utilisateur</span>
+                        <span id="settingsUsername" class="font-semibold text-[#2D3436]">-</span>
+                    </div>
+                    <div class="flex justify-between py-2 border-b">
+                        <span class="text-[#2D3436] opacity-75">Email</span>
+                        <span id="settingsEmail" class="font-semibold text-[#2D3436]">-</span>
+                    </div>
+                    <div class="flex justify-between py-2">
+                        <span class="text-[#2D3436] opacity-75">Âge</span>
+                        <span id="settingsAge" class="font-semibold text-[#2D3436]">-</span>
+                    </div>
+                </div>
+                <p class="text-xs text-gray-500 mt-3">ℹ️ Ces informations ne peuvent pas être modifiées</p>
+            </div>
+
+            <!-- Change Password -->
+            <div class="bg-white rounded-3xl p-6 mb-4 shadow-lg">
+                <h3 class="font-bold text-[#2D3436] mb-4">🔒 Changer le mot de passe</h3>
+                <form onsubmit="changePassword(event)">
+                    <div class="mb-3">
+                        <label class="block text-[#2D3436] mb-2 text-sm">Mot de passe actuel</label>
+                        <input type="password" id="currentPassword" required class="w-full px-4 py-3 border border-gray-300 rounded-xl focus:outline-none focus:border-[#FF4458]">
+                    </div>
+                    <div class="mb-3">
+                        <label class="block text-[#2D3436] mb-2 text-sm">Nouveau mot de passe</label>
+                        <input type="password" id="newPassword" required minlength="6" class="w-full px-4 py-3 border border-gray-300 rounded-xl focus:outline-none focus:border-[#FF4458]">
+                    </div>
+                    <div class="mb-4">
+                        <label class="block text-[#2D3436] mb-2 text-sm">Confirmer le nouveau mot de passe</label>
+                        <input type="password" id="confirmPassword" required minlength="6" class="w-full px-4 py-3 border border-gray-300 rounded-xl focus:outline-none focus:border-[#FF4458]">
+                    </div>
+                    <button type="submit" class="w-full py-3 bg-[#6C5CE7] text-white rounded-full hover:bg-[#5f51d4] transition font-semibold">
+                        Mettre à jour le mot de passe
+                    </button>
+                </form>
+            </div>
+
+            <!-- Deactivate Account -->
+            <div class="bg-white rounded-3xl p-6 mb-4 shadow-lg border-2 border-red-200">
+                <h3 class="font-bold text-red-600 mb-2">⚠️ Zone de danger</h3>
+                <p class="text-sm text-[#2D3436] opacity-75 mb-4">La désactivation de votre compte est permanente et supprimera toutes vos données.</p>
+                <button onclick="confirmDeactivate()" class="w-full py-3 bg-red-500 text-white rounded-full hover:bg-red-600 transition font-semibold">
+                    Désactiver mon compte
+                </button>
+            </div>
         </div>
     </div>
 
@@ -262,32 +330,98 @@ www.myoneart.com
     <div id="editProfileModal" class="hidden fixed inset-0 bg-black bg-opacity-50 flex items-end z-50">
         <div class="bg-white rounded-t-3xl w-full p-6 max-h-[90vh] overflow-y-auto">
             <div class="flex justify-between items-center mb-6">
-                <h3 class="text-2xl font-bold text-[#2D3436]">Modifier le profil</h3>
+                <h3 class="text-2xl font-bold text-[#2D3436]">✏️ Modifier le profil</h3>
                 <button onclick="closeEditProfile()" class="text-gray-500 hover:text-gray-700 text-2xl">&times;</button>
             </div>
             
-            <form onsubmit="updateProfile(event)">
-                <div class="mb-4">
-                    <label class="block text-[#2D3436] mb-2 text-sm font-semibold">Nom</label>
-                    <input type="text" id="profileName" required class="w-full px-4 py-3 border border-gray-300 rounded-xl focus:outline-none focus:border-[#FF4458]">
+            <form onsubmit="updateProfile(event)" id="editProfileForm">
+                <!-- Photo de profil -->
+                <div class="mb-6">
+                    <label class="block text-[#2D3436] mb-2 text-sm font-semibold">📸 Photo de profil</label>
+                    <div class="flex items-center gap-4">
+                        <div id="currentProfilePhoto" class="w-20 h-20 rounded-full bg-gradient-to-br from-[#FF4458] to-[#A29BFE] flex items-center justify-center text-white text-2xl font-bold overflow-hidden">
+                            U
+                        </div>
+                        <div class="flex-1">
+                            <input type="file" id="profilePhotoFile" accept="image/*" class="hidden">
+                            <button type="button" onclick="document.getElementById('profilePhotoFile').click()" class="w-full py-2 bg-[#6C5CE7] text-white rounded-xl hover:bg-[#5f51d4] transition text-sm">
+                                Choisir une photo
+                            </button>
+                        </div>
+                    </div>
                 </div>
-                <div class="mb-4">
-                    <label class="block text-[#2D3436] mb-2 text-sm font-semibold">Bio</label>
-                    <textarea id="profileBio" rows="3" class="w-full px-4 py-3 border border-gray-300 rounded-xl focus:outline-none focus:border-[#FF4458]"></textarea>
+
+                <!-- Galerie photos -->
+                <div class="mb-6">
+                    <label class="block text-[#2D3436] mb-2 text-sm font-semibold">🖼️ Galerie de photos</label>
+                    <div id="editGalleryPhotos" class="grid grid-cols-3 gap-2 mb-2">
+                    </div>
+                    <input type="file" id="galleryPhotoFile" accept="image/*" class="hidden">
+                    <button type="button" onclick="document.getElementById('galleryPhotoFile').click()" class="w-full py-2 bg-[#A29BFE] text-white rounded-xl hover:bg-[#9088ee] transition text-sm">
+                        ➕ Ajouter une photo
+                    </button>
                 </div>
+
+                <!-- Bio -->
                 <div class="mb-4">
-                    <label class="block text-[#2D3436] mb-2 text-sm font-semibold">Photo URL</label>
-                    <input type="url" id="profilePhoto" class="w-full px-4 py-3 border border-gray-300 rounded-xl focus:outline-none focus:border-[#FF4458]">
+                    <label class="block text-[#2D3436] mb-2 text-sm font-semibold">📝 Bio</label>
+                    <textarea id="editProfileBio" rows="3" maxlength="500" class="w-full px-4 py-3 border border-gray-300 rounded-xl focus:outline-none focus:border-[#FF4458]" placeholder="Parlez-nous de vous..."></textarea>
                 </div>
-                <div id="alternativeMode" class="mb-6 hidden">
-                    <label class="flex items-center mb-2">
-                        <input type="checkbox" id="altModeToggle" class="mr-2">
-                        <span class="text-[#2D3436] text-sm font-semibold">Mode Identité Alternative</span>
+
+                <!-- Genre -->
+                <div class="mb-4">
+                    <label class="block text-[#2D3436] mb-2 text-sm font-semibold">👤 Genre</label>
+                    <select id="editProfileGender" class="w-full px-4 py-3 border border-gray-300 rounded-xl focus:outline-none focus:border-[#FF4458]">
+                        <option value="">Sélectionnez...</option>
+                    </select>
+                </div>
+
+                <!-- Orientation sexuelle -->
+                <div class="mb-4">
+                    <label class="block text-[#2D3436] mb-2 text-sm font-semibold">❤️ Orientation sexuelle</label>
+                    <select id="editProfileOrientation" class="w-full px-4 py-3 border border-gray-300 rounded-xl focus:outline-none focus:border-[#FF4458]">
+                        <option value="">Sélectionnez...</option>
+                        <option value="heterosexual">Hétérosexuel(le)</option>
+                        <option value="homosexual">Homosexuel(le)</option>
+                        <option value="bisexual">Bisexuel(le)</option>
+                        <option value="pansexual">Pansexuel(le)</option>
+                        <option value="asexual">Asexuel(le)</option>
+                        <option value="other">Autre</option>
+                    </select>
+                </div>
+
+                <!-- Religion -->
+                <div class="mb-4">
+                    <label class="block text-[#2D3436] mb-2 text-sm font-semibold">🙏 Religion</label>
+                    <select id="editProfileReligion" class="w-full px-4 py-3 border border-gray-300 rounded-xl focus:outline-none focus:border-[#FF4458]">
+                        <option value="">Sélectionnez...</option>
+                    </select>
+                </div>
+
+                <!-- LGBT+ Friendly -->
+                <div class="mb-4">
+                    <label class="flex items-center">
+                        <input type="checkbox" id="editProfileLGBTQ" class="mr-3 w-5 h-5">
+                        <span class="text-[#2D3436] text-sm font-semibold">🏳️‍🌈 Je suis LGBT+ Friendly</span>
                     </label>
-                    <input type="text" id="altName" placeholder="Nom alternatif" class="w-full px-4 py-3 border border-gray-300 rounded-xl focus:outline-none focus:border-[#FF4458]">
                 </div>
+
+                <!-- Je recherche -->
+                <div class="mb-4">
+                    <label class="block text-[#2D3436] mb-2 text-sm font-semibold">💕 Je recherche</label>
+                    <div id="editMeetingTypes" class="space-y-2">
+                    </div>
+                </div>
+
+                <!-- Intérêts -->
+                <div class="mb-6">
+                    <label class="block text-[#2D3436] mb-2 text-sm font-semibold">🎯 Mes intérêts</label>
+                    <div id="editInterests" class="space-y-2">
+                    </div>
+                </div>
+
                 <button type="submit" class="w-full py-3 bg-[#FF4458] text-white rounded-full hover:bg-[#e03d4c] transition font-semibold">
-                    Enregistrer
+                    💾 Enregistrer les modifications
                 </button>
             </form>
         </div>
@@ -363,7 +497,8 @@ www.myoneart.com
             document.getElementById(`page-${page}`).classList.remove('hidden');
             
             document.querySelectorAll('.nav-item').forEach(el => el.classList.remove('active'));
-            document.getElementById(`nav-${page}`).classList.add('active');
+            const navElement = document.getElementById(`nav-${page}`);
+            if (navElement) navElement.classList.add('active');
             
             if (page === 'profile') {
                 loadProfile();
@@ -373,6 +508,8 @@ www.myoneart.com
                 loadRequests();
             } else if (page === 'chat') {
                 loadConversations();
+            } else if (page === 'settings') {
+                loadSettings();
             }
         }
 
@@ -991,25 +1128,171 @@ www.myoneart.com
             }
         }
 
-        function showEditProfile() {
+        let currentProfileData = {};
+        let profileOptions = {};
+
+        async function showEditProfile() {
             const token = localStorage.getItem('token');
-            fetch('/api/profile', {
-                headers: { 'Authorization': `Bearer ${token}` }
-            })
-            .then(res => res.json())
-            .then(data => {
-                document.getElementById('profileName').value = data.name;
-                document.getElementById('profileBio').value = data.bio || '';
-                document.getElementById('profilePhoto').value = data.photo_url || '';
+            
+            try {
+                const [profileRes, optionsRes] = await Promise.all([
+                    fetch('/api/profile', { headers: { 'Authorization': `Bearer ${token}` } }),
+                    fetch('/api/profile-options', { headers: { 'Authorization': `Bearer ${token}` } })
+                ]);
                 
-                if (data.subscription_tier === 'premium' || data.subscription_tier === 'platinum') {
-                    document.getElementById('alternativeMode').classList.remove('hidden');
-                    document.getElementById('altModeToggle').checked = data.alternative_mode;
-                    document.getElementById('altName').value = data.alternative_name || '';
+                currentProfileData = await profileRes.json();
+                profileOptions = await optionsRes.json();
+                
+                // Set bio
+                document.getElementById('editProfileBio').value = currentProfileData.bio || '';
+                
+                // Set photo
+                if (currentProfileData.photo_url) {
+                    document.getElementById('currentProfilePhoto').innerHTML = `<img src="${currentProfileData.photo_url}" class="w-full h-full object-cover">`;
                 }
                 
+                // Set gallery
+                renderEditGallery();
+                
+                // Set gender options
+                const genderSelect = document.getElementById('editProfileGender');
+                genderSelect.innerHTML = '<option value="">Sélectionnez...</option>' + 
+                    profileOptions.gender.map(opt => `<option value="${opt.value}" ${currentProfileData.gender === opt.value ? 'selected' : ''}>${opt.label}</option>`).join('');
+                
+                // Set orientation
+                document.getElementById('editProfileOrientation').value = currentProfileData.sexual_orientation || '';
+                
+                // Set religion options
+                const religionSelect = document.getElementById('editProfileReligion');
+                religionSelect.innerHTML = '<option value="">Sélectionnez...</option>' + 
+                    profileOptions.religion.map(opt => `<option value="${opt.value}" ${currentProfileData.religion === opt.value ? 'selected' : ''}>${opt.label}</option>`).join('');
+                
+                // Set LGBT friendly
+                document.getElementById('editProfileLGBTQ').checked = currentProfileData.lgbtq_friendly || false;
+                
+                // Set meeting types (checkboxes)
+                const meetingTypesHtml = profileOptions.meeting_type.map(opt => {
+                    const checked = (currentProfileData.meeting_types || []).includes(opt.value);
+                    return `
+                        <label class="flex items-center py-2 px-3 border rounded-xl hover:bg-gray-50">
+                            <input type="checkbox" name="meetingType" value="${opt.value}" ${checked ? 'checked' : ''} class="mr-3 w-5 h-5">
+                            <span class="text-[#2D3436]">${opt.emoji || ''} ${opt.label}</span>
+                        </label>
+                    `;
+                }).join('');
+                document.getElementById('editMeetingTypes').innerHTML = meetingTypesHtml;
+                
+                // Set interests (checkboxes)
+                const interestsHtml = profileOptions.interest.map(opt => {
+                    const checked = (currentProfileData.interests || []).includes(opt.value);
+                    return `
+                        <label class="flex items-center py-2 px-3 border rounded-xl hover:bg-gray-50">
+                            <input type="checkbox" name="interest" value="${opt.value}" ${checked ? 'checked' : ''} class="mr-3 w-5 h-5">
+                            <span class="text-[#2D3436]">${opt.label}</span>
+                        </label>
+                    `;
+                }).join('');
+                document.getElementById('editInterests').innerHTML = interestsHtml;
+                
                 document.getElementById('editProfileModal').classList.remove('hidden');
-            });
+            } catch (error) {
+                console.error('Error loading edit profile:', error);
+                alert('Erreur lors du chargement du profil');
+            }
+        }
+
+        function renderEditGallery() {
+            const gallery = currentProfileData.gallery_photos || [];
+            const html = gallery.map((photo, index) => `
+                <div class="relative aspect-square rounded-xl overflow-hidden">
+                    <img src="${photo}" class="w-full h-full object-cover">
+                    <button type="button" onclick="deleteGalleryPhoto(${index})" class="absolute top-1 right-1 bg-red-500 text-white rounded-full w-6 h-6 flex items-center justify-center hover:bg-red-600">
+                        ×
+                    </button>
+                </div>
+            `).join('');
+            document.getElementById('editGalleryPhotos').innerHTML = html;
+        }
+
+        // Profile photo upload
+        document.getElementById('profilePhotoFile').addEventListener('change', async function(e) {
+            const file = e.target.files[0];
+            if (!file) return;
+            
+            const formData = new FormData();
+            formData.append('photo', file);
+            
+            try {
+                const response = await fetch('/api/profile/photo', {
+                    method: 'POST',
+                    headers: { 'Authorization': `Bearer ${localStorage.getItem('token')}` },
+                    body: formData
+                });
+                
+                if (response.ok) {
+                    const data = await response.json();
+                    currentProfileData.photo_url = data.photo_url;
+                    document.getElementById('currentProfilePhoto').innerHTML = `<img src="${data.photo_url}" class="w-full h-full object-cover">`;
+                    alert('Photo de profil mise à jour !');
+                } else {
+                    const error = await response.json();
+                    alert(error.error || 'Erreur lors de l\'upload');
+                }
+            } catch (error) {
+                alert('Erreur de connexion');
+            }
+        });
+
+        // Gallery photo upload
+        document.getElementById('galleryPhotoFile').addEventListener('change', async function(e) {
+            const file = e.target.files[0];
+            if (!file) return;
+            
+            const formData = new FormData();
+            formData.append('photo', file);
+            
+            try {
+                const response = await fetch('/api/profile/gallery', {
+                    method: 'POST',
+                    headers: { 'Authorization': `Bearer ${localStorage.getItem('token')}` },
+                    body: formData
+                });
+                
+                if (response.ok) {
+                    const data = await response.json();
+                    currentProfileData.gallery_photos = data.gallery;
+                    renderEditGallery();
+                    alert('Photo ajoutée à la galerie !');
+                } else {
+                    const error = await response.json();
+                    alert(error.error || 'Erreur lors de l\'upload');
+                }
+            } catch (error) {
+                alert('Erreur de connexion');
+            }
+            
+            e.target.value = '';
+        });
+
+        async function deleteGalleryPhoto(index) {
+            if (!confirm('Supprimer cette photo ?')) return;
+            
+            try {
+                const response = await fetch(`/api/profile/gallery/${index}`, {
+                    method: 'DELETE',
+                    headers: { 'Authorization': `Bearer ${localStorage.getItem('token')}` }
+                });
+                
+                if (response.ok) {
+                    const data = await response.json();
+                    currentProfileData.gallery_photos = data.gallery;
+                    renderEditGallery();
+                } else {
+                    alert('Erreur lors de la suppression');
+                }
+            } catch (error) {
+                alert('Erreur de connexion');
+            }
         }
 
         function closeEditProfile() {
@@ -1020,12 +1303,22 @@ www.myoneart.com
             e.preventDefault();
             const token = localStorage.getItem('token');
             
+            // Collect meeting types
+            const meetingTypes = Array.from(document.querySelectorAll('input[name="meetingType"]:checked'))
+                .map(el => el.value);
+            
+            // Collect interests
+            const interests = Array.from(document.querySelectorAll('input[name="interest"]:checked'))
+                .map(el => el.value);
+            
             const data = {
-                name: document.getElementById('profileName').value,
-                bio: document.getElementById('profileBio').value,
-                photo_url: document.getElementById('profilePhoto').value,
-                alternative_mode: document.getElementById('altModeToggle').checked,
-                alternative_name: document.getElementById('altName').value
+                bio: document.getElementById('editProfileBio').value,
+                gender: document.getElementById('editProfileGender').value,
+                sexual_orientation: document.getElementById('editProfileOrientation').value,
+                religion: document.getElementById('editProfileReligion').value,
+                lgbtq_friendly: document.getElementById('editProfileLGBTQ').checked,
+                meeting_types: meetingTypes,
+                interests: interests
             };
             
             try {
@@ -1039,14 +1332,106 @@ www.myoneart.com
                 });
                 
                 if (response.ok) {
-                    alert('Profil mis à jour !');
+                    alert('✅ Profil mis à jour !');
                     closeEditProfile();
                     loadProfile();
                 } else {
-                    alert('Erreur lors de la mise à jour');
+                    alert('❌ Erreur lors de la mise à jour');
                 }
             } catch (error) {
-                alert('Erreur de connexion');
+                alert('❌ Erreur de connexion');
+            }
+        }
+
+        // Settings page functions
+        async function loadSettings() {
+            const token = localStorage.getItem('token');
+            
+            try {
+                const response = await fetch('/api/profile', {
+                    headers: { 'Authorization': `Bearer ${token}` }
+                });
+                
+                if (response.ok) {
+                    const profile = await response.json();
+                    document.getElementById('settingsUsername').textContent = profile.username || '-';
+                    document.getElementById('settingsEmail').textContent = profile.email || '-';
+                    document.getElementById('settingsAge').textContent = profile.age || '-';
+                }
+            } catch (error) {
+                console.error('Error loading settings:', error);
+            }
+        }
+
+        async function changePassword(e) {
+            e.preventDefault();
+            const token = localStorage.getItem('token');
+            
+            const currentPassword = document.getElementById('currentPassword').value;
+            const newPassword = document.getElementById('newPassword').value;
+            const confirmPassword = document.getElementById('confirmPassword').value;
+            
+            if (newPassword !== confirmPassword) {
+                alert('❌ Les mots de passe ne correspondent pas');
+                return;
+            }
+            
+            try {
+                const response = await fetch('/api/profile/password', {
+                    method: 'PUT',
+                    headers: {
+                        'Authorization': `Bearer ${token}`,
+                        'Content-Type': 'application/json'
+                    },
+                    body: JSON.stringify({
+                        current_password: currentPassword,
+                        new_password: newPassword
+                    })
+                });
+                
+                if (response.ok) {
+                    alert('✅ Mot de passe modifié avec succès !');
+                    document.getElementById('currentPassword').value = '';
+                    document.getElementById('newPassword').value = '';
+                    document.getElementById('confirmPassword').value = '';
+                } else {
+                    const error = await response.json();
+                    alert('❌ ' + (error.error || 'Erreur lors de la modification'));
+                }
+            } catch (error) {
+                alert('❌ Erreur de connexion');
+            }
+        }
+
+        async function confirmDeactivate() {
+            if (!confirm('⚠️ ATTENTION : Cette action est irréversible !\n\nVoulez-vous vraiment désactiver votre compte ?\nToutes vos données seront supprimées définitivement.')) {
+                return;
+            }
+            
+            const password = prompt('Pour confirmer, entrez votre mot de passe :');
+            if (!password) return;
+            
+            const token = localStorage.getItem('token');
+            
+            try {
+                const response = await fetch('/api/profile/deactivate', {
+                    method: 'POST',
+                    headers: {
+                        'Authorization': `Bearer ${token}`,
+                        'Content-Type': 'application/json'
+                    },
+                    body: JSON.stringify({ password })
+                });
+                
+                if (response.ok) {
+                    alert('✅ Votre compte a été désactivé.');
+                    logout();
+                } else {
+                    const error = await response.json();
+                    alert('❌ ' + (error.error || 'Erreur lors de la désactivation'));
+                }
+            } catch (error) {
+                alert('❌ Erreur de connexion');
             }
         }
 

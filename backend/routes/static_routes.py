@@ -26,6 +26,12 @@ def establishment():
 def admin():
     return send_from_directory('../static/pages', 'admin.html')
 
+@bp.route('/uploads/<path:filename>')
+def serve_upload(filename):
+    response = send_from_directory('../uploads', filename)
+    response.headers['Cache-Control'] = 'public, max-age=31536000'
+    return response
+
 @bp.route('/<path:path>')
 def static_files(path):
     if path.endswith('.html'):
