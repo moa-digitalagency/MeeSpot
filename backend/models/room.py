@@ -19,6 +19,7 @@ class Room(db.Model):
     event_datetime = db.Column(db.DateTime)
     max_capacity = db.Column(db.Integer)
     is_active = db.Column(db.Boolean, default=True)
+    access_code = db.Column(db.String(8), unique=True)
     created_at = db.Column(db.DateTime, default=datetime.utcnow)
     
     establishment = db.relationship('Establishment', back_populates='rooms')

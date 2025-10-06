@@ -8,6 +8,7 @@
     <meta name="theme-color" content="#FF4458">
     <script src="https://cdn.tailwindcss.com"></script>
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=Poppins:wght@600;700&display=swap" rel="stylesheet">
+    <script src="https://cdn.jsdelivr.net/npm/qrious@4.0.2/dist/qrious.min.js"></script>
     <style>
         body { font-family: 'Inter', sans-serif; padding-bottom: 80px; max-width: 768px; margin: 0 auto; }
         h1, h2, h3, h4, h5, h6 { font-family: 'Poppins', sans-serif; }
@@ -192,6 +193,49 @@
         </div>
     </div>
 
+    <div id="roomDetailsModal" class="hidden fixed inset-0 bg-black bg-opacity-50 flex items-end z-50">
+        <div class="bg-white rounded-t-3xl w-full p-6 max-h-[90vh] overflow-y-auto">
+            <div class="flex justify-between items-center mb-4">
+                <h3 class="text-xl font-bold text-[#2D3436]">Détails de l'événement</h3>
+                <button onclick="closeRoomDetails()" class="text-gray-500 hover:text-gray-700 text-2xl">&times;</button>
+            </div>
+            
+            <div class="space-y-4">
+                <div class="bg-gradient-to-br from-[#FF4458] to-[#e03d4c] rounded-2xl p-6 text-white text-center">
+                    <div class="text-sm opacity-90 mb-2">Code d'accès</div>
+                    <div id="detailsAccessCode" class="text-4xl font-bold font-mono tracking-widest mb-3">--------</div>
+                    <div class="bg-white p-4 rounded-xl" id="qrCodeContainer">
+                        <canvas id="qrCode"></canvas>
+                    </div>
+                    <p class="text-xs mt-3 opacity-90">Scannez le QR code ou utilisez le code ci-dessus</p>
+                </div>
+
+                <div class="bg-white rounded-2xl border-2 border-gray-200 p-4">
+                    <h4 id="detailsRoomName" class="font-bold text-[#2D3436] text-lg mb-2">-</h4>
+                    <p id="detailsRoomDescription" class="text-sm text-[#2D3436] opacity-75 mb-3">-</p>
+                    
+                    <div class="grid grid-cols-2 gap-3 text-sm">
+                        <div class="bg-[#FFEAA7] rounded-xl p-3">
+                            <div class="text-[#2D3436] opacity-75 text-xs mb-1">Participants</div>
+                            <div id="detailsMemberCount" class="font-bold text-[#2D3436] text-xl">0</div>
+                        </div>
+                        <div class="bg-[#A29BFE] rounded-xl p-3 text-white">
+                            <div class="opacity-90 text-xs mb-1">Capacité max</div>
+                            <div id="detailsMaxCapacity" class="font-bold text-xl">-</div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="bg-white rounded-2xl border-2 border-gray-200 p-4">
+                    <h4 class="font-bold text-[#2D3436] mb-3">Liste des participants</h4>
+                    <div id="membersList" class="space-y-2 max-h-40 overflow-y-auto">
+                        <p class="text-sm text-[#2D3436] opacity-75">Chargement...</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
     <div id="createRoomModal" class="hidden fixed inset-0 bg-black bg-opacity-50 flex items-end z-50">
         <div class="bg-white rounded-t-3xl w-full p-6 max-h-[85vh] overflow-y-auto">
             <div class="flex justify-between items-center mb-4">
@@ -356,7 +400,7 @@
             }
             
             list.innerHTML = rooms.map(room => `
-                <div class="bg-white rounded-2xl p-4 ${room.is_active ? 'border-l-4 border-[#00B894]' : 'opacity-75'}">
+                <div class="bg-white rounded-2xl p-4 ${room.is_active ? 'border-l-4 border-[#00B894]' : 'opacity-75'}" onclick="showRoomDetails(${room.id})">
                     <div class="flex justify-between items-start mb-2">
                         <h4 class="font-bold text-[#2D3436]">${room.name}</h4>
                         <span class="px-2 py-1 rounded-full text-xs font-semibold ${room.is_active ? 'bg-[#00B894] text-white' : 'bg-gray-300 text-[#2D3436]'}">
@@ -364,9 +408,12 @@
                         </span>
                     </div>
                     <p class="text-sm text-[#2D3436] opacity-75 mb-2">${room.description || 'Pas de description'}</p>
-                    <div class="flex items-center gap-4 text-xs text-[#2D3436] opacity-75">
-                        <span>👥 ${room.member_count}${room.max_capacity ? '/' + room.max_capacity : ''}</span>
-                        <span>📅 ${new Date(room.created_at).toLocaleDateString()}</span>
+                    <div class="flex items-center justify-between">
+                        <div class="flex items-center gap-4 text-xs text-[#2D3436] opacity-75">
+                            <span>👥 ${room.member_count}${room.max_capacity ? '/' + room.max_capacity : ''}</span>
+                            <span>📅 ${new Date(room.created_at).toLocaleDateString()}</span>
+                        </div>
+                        <span class="text-xs font-mono bg-[#FF4458] text-white px-2 py-1 rounded">🔑 ${room.access_code}</span>
                     </div>
                 </div>
             `).join('');
@@ -401,6 +448,53 @@
 
         function closeCreateRoom() {
             document.getElementById('createRoomModal').classList.add('hidden');
+        }
+
+        async function showRoomDetails(roomId) {
+            const token = localStorage.getItem('token');
+            
+            document.getElementById('roomDetailsModal').classList.remove('hidden');
+            
+            try {
+                const response = await fetch(`/api/establishments/me/rooms/${roomId}`, {
+                    headers: { 'Authorization': `Bearer ${token}` }
+                });
+                
+                if (response.ok) {
+                    const room = await response.json();
+                    
+                    document.getElementById('detailsAccessCode').textContent = room.access_code;
+                    document.getElementById('detailsRoomName').textContent = room.name;
+                    document.getElementById('detailsRoomDescription').textContent = room.description || 'Pas de description';
+                    document.getElementById('detailsMemberCount').textContent = room.member_count;
+                    document.getElementById('detailsMaxCapacity').textContent = room.max_capacity || '∞';
+                    
+                    const qrCode = new QRious({
+                        element: document.getElementById('qrCode'),
+                        value: room.access_code,
+                        size: 200,
+                        level: 'H'
+                    });
+                    
+                    const membersList = document.getElementById('membersList');
+                    if (room.members && room.members.length > 0) {
+                        membersList.innerHTML = room.members.map(member => `
+                            <div class="flex items-center justify-between py-2 border-b last:border-0">
+                                <span class="font-semibold text-[#2D3436]">${member.name}</span>
+                                <span class="text-xs text-[#2D3436] opacity-75">${new Date(member.joined_at).toLocaleDateString()}</span>
+                            </div>
+                        `).join('');
+                    } else {
+                        membersList.innerHTML = '<p class="text-sm text-[#2D3436] opacity-75">Aucun participant pour le moment</p>';
+                    }
+                }
+            } catch (error) {
+                console.error('Error loading room details:', error);
+            }
+        }
+
+        function closeRoomDetails() {
+            document.getElementById('roomDetailsModal').classList.add('hidden');
         }
 
         async function createEstablishment(e) {

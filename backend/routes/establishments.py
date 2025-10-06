@@ -6,6 +6,8 @@ from backend.models.room_member import RoomMember
 from backend.utils.auth import token_required
 from datetime import datetime
 from sqlalchemy import func
+import secrets
+import string
 
 bp = Blueprint('establishments', __name__, url_prefix='/api/establishments')
 
@@ -52,6 +54,9 @@ def create_room(current_user, est_id):
         return jsonify({'message': f'Daily room limit reached ({max_rooms} rooms)'}), 400
     
     data = request.json
+    
+    access_code = ''.join(secrets.choice(string.ascii_uppercase + string.digits) for _ in range(8))
+    
     room = Room(
         establishment_id=est_id,
         name=data['name'],
@@ -63,13 +68,14 @@ def create_room(current_user, est_id):
         access_age_min=data.get('access_age_min'),
         access_age_max=data.get('access_age_max'),
         event_datetime=datetime.fromisoformat(data['event_datetime']) if data.get('event_datetime') else None,
-        max_capacity=data.get('max_capacity')
+        max_capacity=data.get('max_capacity'),
+        access_code=access_code
     )
     db.session.add(room)
     establishment.rooms_created_today += 1
     db.session.commit()
     
-    return jsonify({'id': room.id, 'message': 'Room created successfully'})
+    return jsonify({'id': room.id, 'access_code': access_code, 'message': 'Room created successfully'})
 
 @bp.route('/me', methods=['GET'])
 @token_required
@@ -165,7 +171,46 @@ def get_my_rooms(current_user):
             'member_count': member_count,
             'access_gender': room.access_gender,
             'access_age_min': room.access_age_min,
-            'access_age_max': room.access_age_max
+            'access_age_max': room.access_age_max,
+            'access_code': room.access_code
         })
     
     return jsonify(rooms_data)
+
+@bp.route('/me/rooms/<int:room_id>', methods=['GET'])
+@token_required
+def get_room_details(current_user, room_id):
+    if current_user.role not in ['establishment', 'admin']:
+        return jsonify({'message': 'Unauthorized'}), 403
+    
+    establishment = Establishment.query.filter_by(user_id=current_user.id).first()
+    if not establishment:
+        return jsonify({'message': 'Establishment not found'}), 404
+    
+    room = Room.query.filter_by(id=room_id, establishment_id=establishment.id).first()
+    if not room:
+        return jsonify({'message': 'Room not found'}), 404
+    
+    members = RoomMember.query.filter_by(room_id=room.id).all()
+    member_count = len(members)
+    
+    return jsonify({
+        'id': room.id,
+        'name': room.name,
+        'description': room.description,
+        'welcome_message': room.welcome_message,
+        'is_active': room.is_active,
+        'created_at': room.created_at.isoformat(),
+        'event_datetime': room.event_datetime.isoformat() if room.event_datetime else None,
+        'max_capacity': room.max_capacity,
+        'member_count': member_count,
+        'access_code': room.access_code,
+        'access_gender': room.access_gender,
+        'access_orientation': room.access_orientation,
+        'access_age_min': room.access_age_min,
+        'access_age_max': room.access_age_max,
+        'members': [{
+            'name': member.user.name,
+            'joined_at': member.joined_at.isoformat()
+        } for member in members]
+    })
