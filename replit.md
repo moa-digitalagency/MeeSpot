@@ -56,7 +56,16 @@ A progressive web application (PWA) dating platform focused on real-life meeting
 - Vanilla JavaScript for interactivity
 
 ### Database Schema
-- Users (with role, subscription, demographics)
+- **Users** (with role, subscription, demographics)
+  - `username`: Auto-generated unique identifier (name_random4digits)
+  - `birthdate`: Date of birth (age calculated dynamically)
+  - `sexual_orientation`: User's sexual orientation
+  - `meeting_types`: JSON array of selected meeting types
+  - `interests`: JSON array of selected interests
+  - `gallery_photos`: JSON array of photo URLs
+- **ProfileOption**: Admin-customizable profile options
+  - Categories: gender, meeting_type, interest
+  - Each option has value (ID), label, and is_active flag
 - Establishments (venues with subscription plans)
 - Rooms (events with access rules + unique access_code + expires_at)
 - RoomMembers (join tracking + active flag + left_at)
@@ -128,7 +137,42 @@ A progressive web application (PWA) dating platform focused on real-life meeting
 ### Reporting
 - POST `/api/reports`: Submit user/room report
 
+### Profile Options (Admin)
+- GET `/api/profile-options`: Get all active profile options (authenticated)
+- POST `/api/profile-options`: Create new profile option (admin only)
+- PUT `/api/profile-options/<id>`: Update profile option (admin only)
+- DELETE `/api/profile-options/<id>`: Deactivate profile option (admin only)
+
 ## Recent Changes
+- 2025-10-06: Enhanced Profile System with Admin-Customizable Options
+  - **User Profiles Enriched**:
+    - Auto-generated unique username (format: `firstname_1234`) with collision detection
+    - Birthdate field replacing static age (age calculated dynamically from birthdate)
+    - Sexual orientation field
+    - Meeting types: Multi-select array (e.g., "Find soulmate", "Make friends", "Casual dating")
+    - Interests: Multi-select array (15+ options: Music, Travel, Sports, Art, Tech, etc.)
+    - Gallery photos: Array of photo URLs for multiple profile pictures
+  - **ProfileOption Model**: Admin-customizable options system
+    - Three categories: `gender`, `meeting_type`, `interest`
+    - Each option has: value (unique ID), label (display name), is_active flag
+    - Default options pre-populated on database initialization
+  - **Enhanced Registration Form**:
+    - Date of birth picker (18+ age requirement)
+    - Multi-select checkboxes for meeting types and interests
+    - Conditional fields: Only shown for "user" role, hidden for "establishment"
+    - Client-side validation for required multi-select fields
+  - **Admin Dashboard Upgrade**:
+    - New "Options" tab (4-tab navigation: Stats, Users, Options, Reports)
+    - Manage profile options with CRUD operations
+    - Toggle active/inactive status for each option
+    - Add new custom options dynamically
+  - **API Endpoints**:
+    - `/api/profile-options`: GET all options, POST new options (admin)
+    - `/api/profile-options/<id>`: PUT update, DELETE deactivate (admin)
+  - **Test Data**: Updated existing test profiles with complete demo data
+    - sophie_paris: Heterosexual, seeking soulmate + drinks, interests in music/travel/food/cinema
+    - thomas_lyon: Heterosexual, seeking friends + networking, interests in sports/tech/gaming/fitness
+    - emma_demo: Bisexual, seeking dating + friends + travel, interests in art/photography/fashion/dancing/music
 - 2025-10-06: PWA Complete Implementation with Auto-Refresh System
   - **PWA Installability**: Full Progressive Web App support
     - Service worker with offline support and intelligent caching
