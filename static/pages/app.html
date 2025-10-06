@@ -178,10 +178,30 @@ www.myoneart.com
                         <span class="text-[#2D3436] opacity-75">Genre</span>
                         <span id="profileGender" class="font-semibold text-[#2D3436] capitalize">-</span>
                     </div>
-                    <div class="flex justify-between py-2">
+                    <div class="flex justify-between py-2 border-b">
                         <span class="text-[#2D3436] opacity-75">Orientation</span>
                         <span id="profileOrientation" class="font-semibold text-[#2D3436] capitalize">-</span>
                     </div>
+                    <div class="flex justify-between py-2 border-b" id="profileReligionRow" style="display:none">
+                        <span class="text-[#2D3436] opacity-75">🙏 Religion</span>
+                        <span id="profileReligion" class="font-semibold text-[#2D3436] capitalize">-</span>
+                    </div>
+                    <div class="flex justify-between py-2" id="profileLGBTQRow" style="display:none">
+                        <span class="text-[#2D3436] opacity-75">🏳️‍🌈 LGBT+ Friendly</span>
+                        <span id="profileLGBTQ" class="font-semibold text-[#2D3436]">-</span>
+                    </div>
+                </div>
+            </div>
+
+            <div class="bg-white rounded-3xl p-6 mb-4 shadow-lg" id="profileMeetingTypesSection" style="display:none">
+                <h3 class="font-bold text-[#2D3436] mb-3">💕 Je recherche</h3>
+                <div id="profileMeetingTypes" class="flex flex-wrap gap-2">
+                </div>
+            </div>
+
+            <div class="bg-white rounded-3xl p-6 mb-4 shadow-lg" id="profileInterestsSection" style="display:none">
+                <h3 class="font-bold text-[#2D3436] mb-3">🎯 Mes intérêts</h3>
+                <div id="profileInterests" class="flex flex-wrap gap-2">
                 </div>
             </div>
 
@@ -360,19 +380,58 @@ www.myoneart.com
             const token = localStorage.getItem('token');
             
             try {
-                const response = await fetch('/api/profile', {
-                    headers: { 'Authorization': `Bearer ${token}` }
-                });
+                const [profileResponse, optionsResponse] = await Promise.all([
+                    fetch('/api/profile', {
+                        headers: { 'Authorization': `Bearer ${token}` }
+                    }),
+                    fetch('/api/profile-options', {
+                        headers: { 'Authorization': `Bearer ${token}` }
+                    })
+                ]);
                 
-                if (response.ok) {
-                    const profile = await response.json();
+                if (profileResponse.ok) {
+                    const profile = await profileResponse.json();
+                    const options = optionsResponse.ok ? await optionsResponse.json() : { meeting_type: [], interest: [], religion: [] };
+                    
                     document.getElementById('profileDisplayName').textContent = profile.name;
                     document.getElementById('profileEmail').textContent = profile.email;
                     document.getElementById('profileSubTier').textContent = profile.subscription_tier || 'free';
                     document.getElementById('profileAge').textContent = profile.age || '-';
                     document.getElementById('profileGender').textContent = profile.gender || '-';
-                    document.getElementById('profileOrientation').textContent = profile.orientation || '-';
+                    document.getElementById('profileOrientation').textContent = profile.sexual_orientation || '-';
                     document.getElementById('profileBioText').textContent = profile.bio || 'Aucune bio';
+                    
+                    if (profile.religion) {
+                        const religionOption = options.religion.find(r => r.value === profile.religion);
+                        document.getElementById('profileReligion').textContent = religionOption ? religionOption.label : profile.religion;
+                        document.getElementById('profileReligionRow').style.display = 'flex';
+                    }
+                    
+                    if (profile.lgbtq_friendly !== null && profile.lgbtq_friendly !== undefined) {
+                        document.getElementById('profileLGBTQ').textContent = profile.lgbtq_friendly ? '✅ Oui' : '❌ Non';
+                        document.getElementById('profileLGBTQRow').style.display = 'flex';
+                    }
+                    
+                    if (profile.meeting_types && profile.meeting_types.length > 0) {
+                        const meetingTypesHtml = profile.meeting_types.map(mt => {
+                            const option = options.meeting_type.find(o => o.value === mt);
+                            const emoji = option?.emoji || '';
+                            const label = option?.label || mt;
+                            return `<span class="px-3 py-1 bg-[#FF4458] text-white rounded-full text-sm">${emoji} ${label}</span>`;
+                        }).join('');
+                        document.getElementById('profileMeetingTypes').innerHTML = meetingTypesHtml;
+                        document.getElementById('profileMeetingTypesSection').style.display = 'block';
+                    }
+                    
+                    if (profile.interests && profile.interests.length > 0) {
+                        const interestsHtml = profile.interests.map(interest => {
+                            const option = options.interest.find(o => o.value === interest);
+                            const label = option?.label || interest;
+                            return `<span class="px-3 py-1 bg-[#A29BFE] text-white rounded-full text-sm">${label}</span>`;
+                        }).join('');
+                        document.getElementById('profileInterests').innerHTML = interestsHtml;
+                        document.getElementById('profileInterestsSection').style.display = 'block';
+                    }
                 }
             } catch (error) {
                 console.error('Error loading profile:', error);
