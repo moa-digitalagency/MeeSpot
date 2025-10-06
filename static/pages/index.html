@@ -193,6 +193,34 @@ www.myoneart.com
     </div>
 
     <script>
+        // Check if user is already logged in
+        function checkExistingSession() {
+            const token = localStorage.getItem('token');
+            const user = localStorage.getItem('user');
+            
+            if (token && user) {
+                try {
+                    const userData = JSON.parse(user);
+                    
+                    // Redirect to appropriate dashboard
+                    if (userData.role === 'admin') {
+                        window.location.href = '/admin.html';
+                    } else if (userData.role === 'establishment') {
+                        window.location.href = '/establishment.html';
+                    } else {
+                        window.location.href = '/app.html';
+                    }
+                } catch (error) {
+                    // Invalid data, clear storage
+                    localStorage.removeItem('token');
+                    localStorage.removeItem('user');
+                }
+            }
+        }
+
+        // Check session on page load
+        checkExistingSession();
+
         function showLogin() {
             document.getElementById('authModal').classList.remove('hidden');
             document.getElementById('loginForm').classList.remove('hidden');
