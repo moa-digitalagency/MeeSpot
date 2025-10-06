@@ -1070,7 +1070,7 @@ www.myoneart.com
             }
             
             list.innerHTML = conversations.map(conv => {
-                const otherUser = conv.user1_id === user.id ? conv.user2_name : conv.user1_name;
+                const otherUser = conv.other_user_name;
                 return `
                     <div onclick="openChat(${conv.id}, '${otherUser}')" class="bg-white rounded-2xl p-4 card-hover">
                         <div class="flex items-center gap-3">
