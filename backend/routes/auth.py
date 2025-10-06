@@ -28,19 +28,11 @@ def register():
     
     password_hash = bcrypt.hashpw(data['password'].encode('utf-8'), bcrypt.gensalt()).decode('utf-8')
     
-    import random
-    import string
-    
-    name_parts = data['name'].lower().split()
-    base_username = ''.join(name_parts)
-    random_suffix = ''.join(random.choices(string.digits, k=4))
-    generated_username = f"{base_username}_{random_suffix}"
-    
     user = User(
         email=data['email'],
         password_hash=password_hash,
         name=data['name'],
-        username=generated_username,
+        username=User.generate_username(data['name']),
         role=data.get('role', 'user'),
         gender=data.get('gender'),
         sexual_orientation=data.get('sexual_orientation'),

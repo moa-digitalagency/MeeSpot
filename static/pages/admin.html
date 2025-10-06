@@ -61,6 +61,45 @@ www.myoneart.com
         </div>
     </div>
 
+    <div id="page-options" class="page-content hidden">
+        <div class="px-4 pt-4 pb-4">
+            <h1 class="text-2xl font-bold text-[#2D3436] mb-1">Options de Profil</h1>
+            <p class="text-sm text-[#2D3436] opacity-75 mb-4">Gérer les options personnalisables</p>
+            
+            <div class="space-y-4">
+                <div class="bg-white rounded-2xl p-4">
+                    <div class="flex items-center justify-between mb-3">
+                        <h3 class="font-bold text-[#2D3436]">Genres</h3>
+                        <button onclick="showAddOptionModal('gender')" class="px-3 py-1 bg-[#FF4458] text-white rounded-full text-sm">+ Ajouter</button>
+                    </div>
+                    <div id="genderOptions" class="space-y-2">
+                        <p class="text-[#2D3436] opacity-75 text-sm">Chargement...</p>
+                    </div>
+                </div>
+                
+                <div class="bg-white rounded-2xl p-4">
+                    <div class="flex items-center justify-between mb-3">
+                        <h3 class="font-bold text-[#2D3436]">Types de Rencontre</h3>
+                        <button onclick="showAddOptionModal('meeting_type')" class="px-3 py-1 bg-[#FF4458] text-white rounded-full text-sm">+ Ajouter</button>
+                    </div>
+                    <div id="meetingTypeOptions" class="space-y-2">
+                        <p class="text-[#2D3436] opacity-75 text-sm">Chargement...</p>
+                    </div>
+                </div>
+                
+                <div class="bg-white rounded-2xl p-4">
+                    <div class="flex items-center justify-between mb-3">
+                        <h3 class="font-bold text-[#2D3436]">Centres d'Intérêt</h3>
+                        <button onclick="showAddOptionModal('interest')" class="px-3 py-1 bg-[#FF4458] text-white rounded-full text-sm">+ Ajouter</button>
+                    </div>
+                    <div id="interestOptions" class="space-y-2">
+                        <p class="text-[#2D3436] opacity-75 text-sm">Chargement...</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
     <div id="page-reports" class="page-content hidden">
         <div class="px-4 pt-4 pb-4">
             <h1 class="text-2xl font-bold text-[#2D3436] mb-4">Signalements</h1>
@@ -70,25 +109,52 @@ www.myoneart.com
         </div>
     </div>
 
+    <div id="addOptionModal" class="hidden fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50">
+        <div class="bg-white rounded-3xl w-full max-w-md m-4 p-6">
+            <h3 class="text-xl font-bold text-[#2D3436] mb-4">Ajouter une Option</h3>
+            <form onsubmit="addOption(event)">
+                <input type="hidden" id="newOptionCategory">
+                <div class="mb-3">
+                    <label class="block text-[#2D3436] mb-2 text-sm font-semibold">Valeur (ID)</label>
+                    <input type="text" id="newOptionValue" required class="w-full px-4 py-3 border border-gray-300 rounded-xl focus:outline-none focus:border-[#FF4458]" placeholder="ex: pansexual">
+                </div>
+                <div class="mb-4">
+                    <label class="block text-[#2D3436] mb-2 text-sm font-semibold">Libellé</label>
+                    <input type="text" id="newOptionLabel" required class="w-full px-4 py-3 border border-gray-300 rounded-xl focus:outline-none focus:border-[#FF4458]" placeholder="ex: Pansexuel(le)">
+                </div>
+                <div class="flex gap-2">
+                    <button type="button" onclick="closeAddOptionModal()" class="flex-1 py-3 bg-gray-200 text-[#2D3436] rounded-full">Annuler</button>
+                    <button type="submit" class="flex-1 py-3 bg-[#FF4458] text-white rounded-full">Ajouter</button>
+                </div>
+            </form>
+        </div>
+    </div>
+
     <div class="bottom-nav">
-        <div class="grid grid-cols-3 h-16">
+        <div class="grid grid-cols-4 h-16">
             <button onclick="switchPage('dashboard')" id="nav-dashboard" class="nav-item active flex flex-col items-center justify-center">
                 <svg fill="none" stroke="currentColor" viewBox="0 0 24 24">
                     <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 19v-6a2 2 0 00-2-2H5a2 2 0 00-2 2v6a2 2 0 002 2h2a2 2 0 002-2zm0 0V9a2 2 0 012-2h2a2 2 0 012 2v10m-6 0a2 2 0 002 2h2a2 2 0 002-2m0 0V5a2 2 0 012-2h2a2 2 0 012 2v14a2 2 0 01-2 2h-2a2 2 0 01-2-2z"/>
                 </svg>
-                <span class="text-xs mt-1">Dashboard</span>
+                <span class="text-xs mt-1">Stats</span>
             </button>
             <button onclick="switchPage('users')" id="nav-users" class="nav-item flex flex-col items-center justify-center">
                 <svg fill="none" stroke="currentColor" viewBox="0 0 24 24">
                     <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 4.354a4 4 0 110 5.292M15 21H3v-1a6 6 0 0112 0v1zm0 0h6v-1a6 6 0 00-9-5.197M13 7a4 4 0 11-8 0 4 4 0 018 0z"/>
                 </svg>
-                <span class="text-xs mt-1">Utilisateurs</span>
+                <span class="text-xs mt-1">Users</span>
+            </button>
+            <button onclick="switchPage('options')" id="nav-options" class="nav-item flex flex-col items-center justify-center">
+                <svg fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10.325 4.317c.426-1.756 2.924-1.756 3.35 0a1.724 1.724 0 002.573 1.066c1.543-.94 3.31.826 2.37 2.37a1.724 1.724 0 001.065 2.572c1.756.426 1.756 2.924 0 3.35a1.724 1.724 0 00-1.066 2.573c.94 1.543-.826 3.31-2.37 2.37a1.724 1.724 0 00-2.572 1.065c-.426 1.756-2.924 1.756-3.35 0a1.724 1.724 0 00-2.573-1.066c-1.543.94-3.31-.826-2.37-2.37a1.724 1.724 0 00-1.065-2.572c-1.756-.426-1.756-2.924 0-3.35a1.724 1.724 0 001.066-2.573c-.94-1.543.826-3.31 2.37-2.37.996.608 2.296.07 2.572-1.065z"/><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 12a3 3 0 11-6 0 3 3 0 016 0z"/>
+                </svg>
+                <span class="text-xs mt-1">Options</span>
             </button>
             <button onclick="switchPage('reports')" id="nav-reports" class="nav-item flex flex-col items-center justify-center">
                 <svg fill="none" stroke="currentColor" viewBox="0 0 24 24">
                     <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 9v2m0 4h.01m-6.938 4h13.856c1.54 0 2.502-1.667 1.732-3L13.732 4c-.77-1.333-2.694-1.333-3.464 0L3.34 16c-.77 1.333.192 3 1.732 3z"/>
                 </svg>
-                <span class="text-xs mt-1">Signalements</span>
+                <span class="text-xs mt-1">Reports</span>
             </button>
         </div>
     </div>
@@ -122,6 +188,8 @@ www.myoneart.com
                 loadUsers();
             } else if (page === 'reports') {
                 loadReports();
+            } else if (page === 'options') {
+                loadProfileOptions();
             }
         }
 
@@ -235,6 +303,118 @@ www.myoneart.com
                     </div>
                 </div>
             `).join('');
+        }
+
+        async function loadProfileOptions() {
+            const token = localStorage.getItem('token');
+            
+            try {
+                const response = await fetch('/api/profile-options', {
+                    headers: { 'Authorization': `Bearer ${token}` }
+                });
+                
+                if (response.ok) {
+                    const options = await response.json();
+                    displayProfileOptions(options);
+                }
+            } catch (error) {
+                console.error('Error loading profile options:', error);
+            }
+        }
+
+        function displayProfileOptions(options) {
+            displayCategoryOptions('gender', options.gender || []);
+            displayCategoryOptions('meeting_type', options.meeting_type || []);
+            displayCategoryOptions('interest', options.interest || []);
+        }
+
+        function displayCategoryOptions(category, opts) {
+            const containerId = category === 'meeting_type' ? 'meetingTypeOptions' : 
+                              category === 'interest' ? 'interestOptions' : 'genderOptions';
+            const container = document.getElementById(containerId);
+            
+            if (opts.length === 0) {
+                container.innerHTML = '<p class="text-[#2D3436] opacity-75 text-sm">Aucune option</p>';
+                return;
+            }
+            
+            container.innerHTML = opts.map(opt => `
+                <div class="flex items-center justify-between py-2 px-3 bg-gray-50 rounded-xl">
+                    <div>
+                        <span class="font-semibold text-[#2D3436]">${opt.label}</span>
+                        <span class="text-xs text-gray-500 ml-2">(${opt.value})</span>
+                    </div>
+                    <button onclick="toggleOption(${opt.id}, ${opt.is_active})" class="px-3 py-1 rounded-full text-xs ${opt.is_active ? 'bg-green-500 text-white' : 'bg-gray-300 text-[#2D3436]'}">
+                        ${opt.is_active ? 'Actif' : 'Désactivé'}
+                    </button>
+                </div>
+            `).join('');
+        }
+
+        function showAddOptionModal(category) {
+            document.getElementById('newOptionCategory').value = category;
+            document.getElementById('addOptionModal').classList.remove('hidden');
+        }
+
+        function closeAddOptionModal() {
+            document.getElementById('addOptionModal').classList.add('hidden');
+            document.getElementById('newOptionValue').value = '';
+            document.getElementById('newOptionLabel').value = '';
+        }
+
+        async function addOption(e) {
+            e.preventDefault();
+            const token = localStorage.getItem('token');
+            
+            const data = {
+                category: document.getElementById('newOptionCategory').value,
+                value: document.getElementById('newOptionValue').value,
+                label: document.getElementById('newOptionLabel').value
+            };
+            
+            try {
+                const response = await fetch('/api/profile-options', {
+                    method: 'POST',
+                    headers: {
+                        'Authorization': `Bearer ${token}`,
+                        'Content-Type': 'application/json'
+                    },
+                    body: JSON.stringify(data)
+                });
+                
+                if (response.ok) {
+                    closeAddOptionModal();
+                    loadProfileOptions();
+                    alert('Option ajoutée avec succès!');
+                } else {
+                    const error = await response.json();
+                    alert(error.message || 'Erreur lors de l\'ajout');
+                }
+            } catch (error) {
+                console.error('Error adding option:', error);
+                alert('Erreur de connexion');
+            }
+        }
+
+        async function toggleOption(optionId, currentStatus) {
+            const token = localStorage.getItem('token');
+            
+            try {
+                const response = await fetch(`/api/profile-options/${optionId}`, {
+                    method: 'PUT',
+                    headers: {
+                        'Authorization': `Bearer ${token}`,
+                        'Content-Type': 'application/json'
+                    },
+                    body: JSON.stringify({ is_active: !currentStatus })
+                });
+                
+                if (response.ok) {
+                    loadProfileOptions();
+                }
+            } catch (error) {
+                console.error('Error toggling option:', error);
+            }
         }
 
         function logout() {
