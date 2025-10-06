@@ -155,6 +155,8 @@ def leave_room(current_user, room_id):
 @bp.route('/<int:room_id>/participants', methods=['GET'])
 @token_required
 def get_participants(current_user, room_id):
+    from backend.models.profile_option import ProfileOption
+    
     room = Room.query.get_or_404(room_id)
     
     membership = RoomMember.query.filter_by(room_id=room_id, user_id=current_user.id, active=True).first()
@@ -166,16 +168,26 @@ def get_participants(current_user, room_id):
     
     active_members = RoomMember.query.filter_by(room_id=room_id, active=True).all()
     
+    meeting_type_options = {opt.value: opt.emoji for opt in ProfileOption.query.filter_by(category='meeting_type', is_active=True).all()}
+    
     participants = []
     for member in active_members:
         user = member.user
+        meeting_type_emojis = []
+        if user.meeting_types:
+            for mt in user.meeting_types:
+                emoji = meeting_type_options.get(mt, '')
+                if emoji:
+                    meeting_type_emojis.append(emoji)
+        
         participants.append({
             'id': user.id,
             'name': user.name,
-            'age': user.age,
+            'age': user.calculate_age() if user.birthdate else user.age,
             'gender': user.gender,
             'bio': user.bio,
             'photo_url': user.photo_url,
+            'meeting_type_emojis': meeting_type_emojis,
             'joined_at': member.joined_at.isoformat()
         })
     

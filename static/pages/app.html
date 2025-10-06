@@ -616,6 +616,7 @@ www.myoneart.com
             
             list.innerHTML = participants.map(p => {
                 const isMe = p.id === user.id;
+                const emojis = p.meeting_type_emojis && p.meeting_type_emojis.length > 0 ? p.meeting_type_emojis.join(' ') : '';
                 return `
                     <div class="bg-gray-50 rounded-xl p-4">
                         <div class="flex items-center gap-3 mb-2">
@@ -623,7 +624,7 @@ www.myoneart.com
                                 ${p.name.charAt(0).toUpperCase()}
                             </div>
                             <div class="flex-1">
-                                <h4 class="font-bold text-[#2D3436]">${p.name} ${isMe ? '(Vous)' : ''}</h4>
+                                <h4 class="font-bold text-[#2D3436]">${p.name} ${emojis} ${isMe ? '(Vous)' : ''}</h4>
                                 <p class="text-xs text-[#2D3436] opacity-75">${p.age || '?'} ans • ${p.gender || '?'}</p>
                             </div>
                         </div>
