@@ -34,8 +34,8 @@ def update_profile(current_user):
         current_user.religion = data['religion']
     if 'lgbtq_friendly' in data:
         current_user.lgbtq_friendly = data['lgbtq_friendly']
-    if 'meeting_types' in data:
-        current_user.meeting_types = data['meeting_types']
+    if 'meeting_type' in data:
+        current_user.meeting_type = data['meeting_type']
     if 'interests' in data:
         current_user.interests = data['interests']
     if 'alternative_mode' in data and current_user.subscription_tier in ['premium', 'platinum']:

@@ -321,7 +321,7 @@ www.myoneart.com
         <div class="bg-white rounded-3xl w-full max-w-md p-6 m-4">
             <div class="flex justify-between items-center mb-4">
                 <h3 class="text-xl font-bold text-[#2D3436]">Scanner le QR Code</h3>
-                <button onclick="closeQRScanner()" class="text-gray-500 hover:text-gray-700 text-2xl">&times;</button>
+                <button onclick="closeQRScanner()" class="w-10 h-10 flex items-center justify-center bg-gray-100 text-gray-600 hover:bg-gray-200 rounded-full text-2xl font-bold transition-colors">×</button>
             </div>
             <div id="qrReader" class="rounded-xl overflow-hidden"></div>
         </div>
@@ -331,7 +331,7 @@ www.myoneart.com
         <div class="bg-white rounded-t-3xl w-full p-6 max-h-[90vh] overflow-y-auto">
             <div class="flex justify-between items-center mb-6">
                 <h3 class="text-2xl font-bold text-[#2D3436]">✏️ Modifier le profil</h3>
-                <button onclick="closeEditProfile()" class="text-gray-500 hover:text-gray-700 text-2xl">&times;</button>
+                <button onclick="closeEditProfile()" class="w-10 h-10 flex items-center justify-center bg-gray-100 text-gray-600 hover:bg-gray-200 rounded-full text-2xl font-bold transition-colors">×</button>
             </div>
             
             <form onsubmit="updateProfile(event)" id="editProfileForm">
@@ -431,7 +431,7 @@ www.myoneart.com
         <div class="bg-white rounded-t-3xl w-full p-6 max-h-[90vh] overflow-y-auto">
             <div class="flex justify-between items-center mb-4">
                 <h3 id="participantsRoomName" class="text-2xl font-bold text-[#2D3436]"></h3>
-                <button onclick="closeParticipantsModal()" class="text-gray-500 hover:text-gray-700 text-2xl">&times;</button>
+                <button onclick="closeParticipantsModal()" class="w-10 h-10 flex items-center justify-center bg-gray-100 text-gray-600 hover:bg-gray-200 rounded-full text-2xl font-bold transition-colors">×</button>
             </div>
             
             <div id="roomDetails" class="mb-4"></div>
@@ -451,7 +451,7 @@ www.myoneart.com
         <div class="bg-white rounded-t-3xl w-full p-6 max-h-[90vh] flex flex-col">
             <div class="flex justify-between items-center mb-4">
                 <h3 id="chatWithName" class="text-xl font-bold text-[#2D3436]"></h3>
-                <button onclick="closeChatModal()" class="text-gray-500 hover:text-gray-700 text-2xl">&times;</button>
+                <button onclick="closeChatModal()" class="w-10 h-10 flex items-center justify-center bg-gray-100 text-gray-600 hover:bg-gray-200 rounded-full text-2xl font-bold transition-colors">×</button>
             </div>
             
             <div id="chatMessages" class="bg-[#FFEAA7] rounded-xl p-4 flex-1 overflow-y-auto mb-4 min-h-[400px]"></div>
@@ -464,6 +464,19 @@ www.myoneart.com
                     </svg>
                 </button>
             </form>
+        </div>
+    </div>
+
+    <div id="userProfileModal" class="hidden fixed inset-0 bg-black bg-opacity-50 flex items-end z-50">
+        <div class="bg-white rounded-t-3xl w-full p-6 max-h-[90vh] overflow-y-auto">
+            <div class="flex justify-between items-center mb-4">
+                <h3 class="text-2xl font-bold text-[#2D3436]">Profil</h3>
+                <button onclick="closeUserProfileModal()" class="w-10 h-10 flex items-center justify-center bg-gray-100 text-gray-600 hover:bg-gray-200 rounded-full text-2xl font-bold transition-colors">×</button>
+            </div>
+            
+            <div id="userProfileContent" class="space-y-4">
+                <p class="text-sm text-[#2D3436] opacity-75 text-center py-4">Chargement...</p>
+            </div>
         </div>
     </div>
 
@@ -549,14 +562,11 @@ www.myoneart.com
                         document.getElementById('profileLGBTQRow').style.display = 'flex';
                     }
                     
-                    if (profile.meeting_types && profile.meeting_types.length > 0) {
-                        const meetingTypesHtml = profile.meeting_types.map(mt => {
-                            const option = options.meeting_type.find(o => o.value === mt);
-                            const emoji = option?.emoji || '';
-                            const label = option?.label || mt;
-                            return `<span class="px-3 py-1 bg-[#FF4458] text-white rounded-full text-sm">${emoji} ${label}</span>`;
-                        }).join('');
-                        document.getElementById('profileMeetingTypes').innerHTML = meetingTypesHtml;
+                    if (profile.meeting_type) {
+                        const option = options.meeting_type.find(o => o.value === profile.meeting_type);
+                        const emoji = option?.emoji || '';
+                        const label = option?.label || profile.meeting_type;
+                        document.getElementById('profileMeetingTypes').innerHTML = `<span class="px-3 py-1 bg-[#FF4458] text-white rounded-full text-sm">${emoji} ${label}</span>`;
                         document.getElementById('profileMeetingTypesSection').style.display = 'block';
                     }
                     
@@ -825,7 +835,16 @@ www.myoneart.com
                             </div>
                         </div>
                         ${p.bio ? `<p class="text-sm text-[#2D3436] opacity-75 mb-2">${p.bio}</p>` : ''}
-                        ${!isMe ? `<button onclick="sendConnectionRequest(${p.id})" class="w-full py-2 bg-[#FF4458] text-white rounded-full text-sm font-semibold hover:bg-[#e03d4c]">Envoyer une demande</button>` : ''}
+                        ${!isMe ? `
+                            <div class="flex gap-2">
+                                <button onclick="viewUserProfile(${p.id})" class="flex-1 py-2 bg-[#6C5CE7] text-white rounded-full text-sm font-semibold hover:bg-[#5b4ed6] transition-colors">
+                                    👤 Voir profil
+                                </button>
+                                <button onclick="sendConnectionRequest(${p.id})" class="flex-1 py-2 bg-[#FF4458] text-white rounded-full text-sm font-semibold hover:bg-[#e03d4c] transition-colors">
+                                    💬 Demande
+                                </button>
+                            </div>
+                        ` : ''}
                     </div>
                 `;
             }).join('');
@@ -1061,6 +1080,117 @@ www.myoneart.com
             currentConversationId = null;
         }
 
+        async function viewUserProfile(userId) {
+            const token = localStorage.getItem('token');
+            
+            try {
+                const [userRes, optionsRes] = await Promise.all([
+                    fetch(`/api/users/${userId}/profile`, {
+                        headers: { 'Authorization': `Bearer ${token}` }
+                    }),
+                    fetch('/api/profile-options', {
+                        headers: { 'Authorization': `Bearer ${token}` }
+                    })
+                ]);
+                
+                if (userRes.ok) {
+                    const profile = await userRes.json();
+                    const options = optionsRes.ok ? await optionsRes.json() : { meeting_type: [], interest: [], religion: [] };
+                    displayUserProfile(profile, options);
+                    document.getElementById('userProfileModal').classList.remove('hidden');
+                }
+            } catch (error) {
+                console.error('Error loading user profile:', error);
+                alert('Erreur lors du chargement du profil');
+            }
+        }
+
+        function displayUserProfile(profile, options) {
+            const meetingTypeOption = profile.meeting_type ? options.meeting_type.find(o => o.value === profile.meeting_type) : null;
+            const meetingTypeHtml = meetingTypeOption ? `
+                <div class="mb-4">
+                    <p class="text-xs text-[#2D3436] opacity-60 mb-1">💕 Recherche</p>
+                    <span class="inline-block px-3 py-1 bg-[#FF4458] text-white rounded-full text-sm">${meetingTypeOption.emoji || ''} ${meetingTypeOption.label}</span>
+                </div>
+            ` : '';
+            
+            const religionOption = profile.religion ? options.religion.find(o => o.value === profile.religion) : null;
+            const religionHtml = religionOption ? `
+                <div class="flex justify-between items-center py-2 border-b">
+                    <span class="text-sm text-[#2D3436] opacity-75">⛪ Religion</span>
+                    <span class="text-sm font-semibold text-[#2D3436]">${religionOption.label}</span>
+                </div>
+            ` : '';
+            
+            const lgbtqHtml = profile.lgbtq_friendly !== null && profile.lgbtq_friendly !== undefined ? `
+                <div class="flex justify-between items-center py-2 border-b">
+                    <span class="text-sm text-[#2D3436] opacity-75">🏳️‍🌈 LGBT+ Friendly</span>
+                    <span class="text-sm font-semibold text-[#2D3436]">${profile.lgbtq_friendly ? '✅ Oui' : '❌ Non'}</span>
+                </div>
+            ` : '';
+            
+            const interestsHtml = profile.interests && profile.interests.length > 0 ? `
+                <div class="mb-4">
+                    <p class="text-xs text-[#2D3436] opacity-60 mb-2">🎯 Centres d'intérêt</p>
+                    <div class="flex flex-wrap gap-2">
+                        ${profile.interests.map(interest => {
+                            const option = options.interest.find(o => o.value === interest);
+                            return `<span class="px-3 py-1 bg-[#A29BFE] text-white rounded-full text-sm">${option ? option.label : interest}</span>`;
+                        }).join('')}
+                    </div>
+                </div>
+            ` : '';
+            
+            const galleryHtml = profile.gallery_photos && profile.gallery_photos.length > 0 ? `
+                <div class="mb-4">
+                    <p class="text-xs text-[#2D3436] opacity-60 mb-2">📸 Galerie</p>
+                    <div class="grid grid-cols-3 gap-2">
+                        ${profile.gallery_photos.map(photo => `
+                            <div class="aspect-square rounded-xl overflow-hidden bg-gray-100">
+                                <img src="${photo}" class="w-full h-full object-cover">
+                            </div>
+                        `).join('')}
+                    </div>
+                </div>
+            ` : '';
+            
+            const html = `
+                <div class="text-center mb-6">
+                    <div class="w-24 h-24 mx-auto mb-3 rounded-full bg-gradient-to-br from-[#FF4458] to-[#6C5CE7] flex items-center justify-center text-white font-bold text-3xl overflow-hidden">
+                        ${profile.photo_url ? `<img src="${profile.photo_url}" class="w-full h-full object-cover">` : profile.name.charAt(0).toUpperCase()}
+                    </div>
+                    <h4 class="text-2xl font-bold text-[#2D3436]">${profile.name}</h4>
+                    <p class="text-sm text-[#2D3436] opacity-75">${profile.age || '?'} ans</p>
+                </div>
+                
+                ${profile.bio ? `<div class="bg-[#FFEAA7] rounded-xl p-4 mb-4"><p class="text-sm text-[#2D3436]">${profile.bio}</p></div>` : ''}
+                
+                ${meetingTypeHtml}
+                
+                <div class="bg-gray-50 rounded-xl p-4 mb-4">
+                    <div class="flex justify-between items-center py-2 border-b">
+                        <span class="text-sm text-[#2D3436] opacity-75">👤 Genre</span>
+                        <span class="text-sm font-semibold text-[#2D3436]">${profile.gender || '-'}</span>
+                    </div>
+                    <div class="flex justify-between items-center py-2 border-b">
+                        <span class="text-sm text-[#2D3436] opacity-75">💕 Orientation</span>
+                        <span class="text-sm font-semibold text-[#2D3436]">${profile.sexual_orientation || '-'}</span>
+                    </div>
+                    ${religionHtml}
+                    ${lgbtqHtml}
+                </div>
+                
+                ${interestsHtml}
+                ${galleryHtml}
+            `;
+            
+            document.getElementById('userProfileContent').innerHTML = html;
+        }
+
+        function closeUserProfileModal() {
+            document.getElementById('userProfileModal').classList.add('hidden');
+        }
+
         async function loadPrivateMessages() {
             if (!currentConversationId) return;
             
@@ -1170,13 +1300,13 @@ www.myoneart.com
                 // Set LGBT friendly
                 document.getElementById('editProfileLGBTQ').checked = currentProfileData.lgbtq_friendly || false;
                 
-                // Set meeting types (checkboxes)
+                // Set meeting type (radio buttons - choix unique)
                 const meetingTypesHtml = profileOptions.meeting_type.map(opt => {
-                    const checked = (currentProfileData.meeting_types || []).includes(opt.value);
+                    const checked = currentProfileData.meeting_type === opt.value;
                     return `
-                        <label class="flex items-center py-2 px-3 border rounded-xl hover:bg-gray-50">
-                            <input type="checkbox" name="meetingType" value="${opt.value}" ${checked ? 'checked' : ''} class="mr-3 w-5 h-5">
-                            <span class="text-[#2D3436]">${opt.emoji || ''} ${opt.label}</span>
+                        <label class="flex items-center py-2 px-3 border rounded-xl hover:bg-gray-50 cursor-pointer transition-all ${checked ? 'border-[#FF4458] bg-[#FF4458] bg-opacity-5' : ''}">
+                            <input type="radio" name="meetingType" value="${opt.value}" ${checked ? 'checked' : ''} class="mr-3 w-5 h-5 text-[#FF4458] focus:ring-[#FF4458]">
+                            <span class="text-[#2D3436] font-medium">${opt.emoji || ''} ${opt.label}</span>
                         </label>
                     `;
                 }).join('');
@@ -1303,9 +1433,9 @@ www.myoneart.com
             e.preventDefault();
             const token = localStorage.getItem('token');
             
-            // Collect meeting types
-            const meetingTypes = Array.from(document.querySelectorAll('input[name="meetingType"]:checked'))
-                .map(el => el.value);
+            // Collect meeting type (choix unique)
+            const meetingTypeRadio = document.querySelector('input[name="meetingType"]:checked');
+            const meetingType = meetingTypeRadio ? meetingTypeRadio.value : null;
             
             // Collect interests
             const interests = Array.from(document.querySelectorAll('input[name="interest"]:checked'))
@@ -1317,7 +1447,7 @@ www.myoneart.com
                 sexual_orientation: document.getElementById('editProfileOrientation').value,
                 religion: document.getElementById('editProfileReligion').value,
                 lgbtq_friendly: document.getElementById('editProfileLGBTQ').checked,
-                meeting_types: meetingTypes,
+                meeting_type: meetingType,
                 interests: interests
             };
             

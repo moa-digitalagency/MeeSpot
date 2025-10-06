@@ -9,14 +9,15 @@
 from flask import Blueprint, request, jsonify
 from backend import db
 from backend.models.user import User
+from backend.utils.auth import token_required
 import bcrypt
 import jwt
 from datetime import datetime, timedelta
 from flask import current_app
 
-bp = Blueprint('auth', __name__, url_prefix='/api/auth')
+bp = Blueprint('auth', __name__, url_prefix='/api')
 
-@bp.route('/register', methods=['POST'])
+@bp.route('/auth/register', methods=['POST'])
 def register():
     data = request.json
     email_to_check = data['email'].lower().strip()
@@ -42,8 +43,8 @@ def register():
         bio=data.get('bio')
     )
     
-    if data.get('meeting_types'):
-        user.meeting_types = data['meeting_types']
+    if data.get('meeting_type'):
+        user.meeting_type = data['meeting_type']
     if data.get('interests'):
         user.interests = data['interests']
     
@@ -60,7 +61,7 @@ def register():
         'user': user.to_dict()
     })
 
-@bp.route('/login', methods=['POST'])
+@bp.route('/auth/login', methods=['POST'])
 def login():
     data = request.json
     email_to_find = data['email'].lower().strip()
@@ -84,3 +85,9 @@ def login():
         'token': token,
         'user': user.to_dict()
     })
+@bp.route("/users/<int:user_id>/profile", methods=["GET"])
+@token_required
+def get_user_profile(current_user, user_id):
+    """Get public profile of a user"""
+    user = User.query.get_or_404(user_id)
+    return jsonify(user.to_dict())

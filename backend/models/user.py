@@ -33,7 +33,7 @@ class User(db.Model):
     photo_url = db.Column(EncryptedString(1000))
     gallery_photos = db.Column(JSON, default=list)
     
-    meeting_types = db.Column(JSON, default=list)
+    meeting_type = db.Column(db.String(100))
     interests = db.Column(JSON, default=list)
     
     subscription_tier = db.Column(db.String(20), default='free')
@@ -86,7 +86,7 @@ class User(db.Model):
             'bio': self.bio,
             'photo_url': self.photo_url,
             'gallery_photos': self.gallery_photos or [],
-            'meeting_types': self.meeting_types or [],
+            'meeting_type': self.meeting_type,
             'interests': self.interests or [],
             'alternative_mode': self.alternative_mode
         }
