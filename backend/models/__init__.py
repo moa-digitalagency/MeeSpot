@@ -1,3 +1,11 @@
+#
+# MeetSpot
+# MOA Digital Agency LLC
+# Par : Aisance KALONJI
+# Mail : moa@myoneart.com
+# www.myoneart.com
+#
+
 from backend.models.user import User
 from backend.models.establishment import Establishment
 from backend.models.room import Room

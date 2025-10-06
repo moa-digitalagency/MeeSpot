@@ -1,3 +1,11 @@
+#
+# MeetSpot
+# MOA Digital Agency LLC
+# Par : Aisance KALONJI
+# Mail : moa@myoneart.com
+# www.myoneart.com
+#
+
 from flask import Blueprint, send_from_directory
 
 bp = Blueprint('static_routes', __name__)

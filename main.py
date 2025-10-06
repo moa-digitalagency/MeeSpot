@@ -1,3 +1,11 @@
+#
+# MeetSpot
+# MOA Digital Agency LLC
+# Par : Aisance KALONJI
+# Mail : moa@myoneart.com
+# www.myoneart.com
+#
+
 from backend import create_app
 
 app = create_app()

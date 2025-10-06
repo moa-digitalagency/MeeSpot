@@ -1,3 +1,11 @@
+#
+# MeetSpot
+# MOA Digital Agency LLC
+# Par : Aisance KALONJI
+# Mail : moa@myoneart.com
+# www.myoneart.com
+#
+
 from sqlalchemy.types import TypeDecorator, String
 from backend.utils.encryption import encrypt_value, decrypt_value
 

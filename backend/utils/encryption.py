@@ -1,3 +1,11 @@
+#
+# MeetSpot
+# MOA Digital Agency LLC
+# Par : Aisance KALONJI
+# Mail : moa@myoneart.com
+# www.myoneart.com
+#
+
 import os
 import base64
 from cryptography.fernet import Fernet

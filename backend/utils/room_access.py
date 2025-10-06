@@ -1,3 +1,11 @@
+#
+# MeetSpot
+# MOA Digital Agency LLC
+# Par : Aisance KALONJI
+# Mail : moa@myoneart.com
+# www.myoneart.com
+#
+
 def check_room_access(room, user):
     """Check if a user meets room access criteria"""
     if room.access_gender and user.gender != room.access_gender:

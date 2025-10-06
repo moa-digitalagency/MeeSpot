@@ -1,3 +1,11 @@
+/*
+ * MeetSpot
+ * MOA Digital Agency LLC
+ * Par : Aisance KALONJI
+ * Mail : moa@myoneart.com
+ * www.myoneart.com
+ */
+
 const CACHE_NAME = 'meetspot-v2.0';
 const RUNTIME_CACHE = 'meetspot-runtime';
 
