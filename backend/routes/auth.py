@@ -85,9 +85,10 @@ def login():
         'token': token,
         'user': user.to_dict()
     })
+
 @bp.route("/users/<int:user_id>/profile", methods=["GET"])
 @token_required
 def get_user_profile(current_user, user_id):
-    """Get public profile of a user"""
+    """Get public profile of a user (sanitized - no sensitive data)"""
     user = User.query.get_or_404(user_id)
-    return jsonify(user.to_dict())
+    return jsonify(user.to_public_dict())

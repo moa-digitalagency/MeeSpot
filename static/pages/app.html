@@ -400,10 +400,13 @@ www.myoneart.com
 
                 <!-- LGBT+ Friendly -->
                 <div class="mb-4">
-                    <label class="flex items-center">
-                        <input type="checkbox" id="editProfileLGBTQ" class="mr-3 w-5 h-5">
-                        <span class="text-[#2D3436] text-sm font-semibold">🏳️‍🌈 Je suis LGBT+ Friendly</span>
-                    </label>
+                    <label class="block text-[#2D3436] mb-2 text-sm font-semibold">🏳️‍🌈 LGBT+ Friendly</label>
+                    <select id="editProfileLGBTQ" class="w-full px-4 py-3 border rounded-xl focus:ring-2 focus:ring-[#FF4458] focus:border-transparent">
+                        <option value="">Sélectionnez...</option>
+                        <option value="yes">Oui</option>
+                        <option value="no">Non</option>
+                        <option value="prefer_not_say">Je préfère ne pas répondre</option>
+                    </select>
                 </div>
 
                 <!-- Je recherche -->
@@ -557,8 +560,13 @@ www.myoneart.com
                         document.getElementById('profileReligionRow').style.display = 'flex';
                     }
                     
-                    if (profile.lgbtq_friendly !== null && profile.lgbtq_friendly !== undefined) {
-                        document.getElementById('profileLGBTQ').textContent = profile.lgbtq_friendly ? '✅ Oui' : '❌ Non';
+                    if (profile.lgbtq_friendly) {
+                        const lgbtqLabels = {
+                            'yes': '✅ Oui',
+                            'no': '❌ Non',
+                            'prefer_not_say': '🤐 Je préfère ne pas répondre'
+                        };
+                        document.getElementById('profileLGBTQ').textContent = lgbtqLabels[profile.lgbtq_friendly] || '-';
                         document.getElementById('profileLGBTQRow').style.display = 'flex';
                     }
                     
@@ -1122,10 +1130,15 @@ www.myoneart.com
                 </div>
             ` : '';
             
-            const lgbtqHtml = profile.lgbtq_friendly !== null && profile.lgbtq_friendly !== undefined ? `
+            const lgbtqLabels = {
+                'yes': '✅ Oui',
+                'no': '❌ Non',
+                'prefer_not_say': '🤐 Je préfère ne pas répondre'
+            };
+            const lgbtqHtml = profile.lgbtq_friendly ? `
                 <div class="flex justify-between items-center py-2 border-b">
                     <span class="text-sm text-[#2D3436] opacity-75">🏳️‍🌈 LGBT+ Friendly</span>
-                    <span class="text-sm font-semibold text-[#2D3436]">${profile.lgbtq_friendly ? '✅ Oui' : '❌ Non'}</span>
+                    <span class="text-sm font-semibold text-[#2D3436]">${lgbtqLabels[profile.lgbtq_friendly] || '-'}</span>
                 </div>
             ` : '';
             
@@ -1298,7 +1311,7 @@ www.myoneart.com
                     profileOptions.religion.map(opt => `<option value="${opt.value}" ${currentProfileData.religion === opt.value ? 'selected' : ''}>${opt.label}</option>`).join('');
                 
                 // Set LGBT friendly
-                document.getElementById('editProfileLGBTQ').checked = currentProfileData.lgbtq_friendly || false;
+                document.getElementById('editProfileLGBTQ').value = currentProfileData.lgbtq_friendly || '';
                 
                 // Set meeting type (radio buttons - choix unique)
                 const meetingTypesHtml = profileOptions.meeting_type.map(opt => {
@@ -1446,7 +1459,7 @@ www.myoneart.com
                 gender: document.getElementById('editProfileGender').value,
                 sexual_orientation: document.getElementById('editProfileOrientation').value,
                 religion: document.getElementById('editProfileReligion').value,
-                lgbtq_friendly: document.getElementById('editProfileLGBTQ').checked,
+                lgbtq_friendly: document.getElementById('editProfileLGBTQ').value,
                 meeting_type: meetingType,
                 interests: interests
             };

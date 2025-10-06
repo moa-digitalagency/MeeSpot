@@ -28,7 +28,7 @@ class User(db.Model):
     birthdate = db.Column(db.Date)
     age = db.Column(db.Integer)
     religion = db.Column(db.String(100))
-    lgbtq_friendly = db.Column(db.Boolean)
+    lgbtq_friendly = db.Column(db.String(50))
     bio = db.Column(EncryptedText(2000))
     photo_url = db.Column(EncryptedString(1000))
     gallery_photos = db.Column(JSON, default=list)
@@ -89,4 +89,21 @@ class User(db.Model):
             'meeting_type': self.meeting_type,
             'interests': self.interests or [],
             'alternative_mode': self.alternative_mode
+        }
+    
+    def to_public_dict(self):
+        """Return only public profile information (no sensitive data)"""
+        return {
+            'id': self.id,
+            'name': self.name,
+            'age': self.calculate_age() if self.birthdate else self.age,
+            'gender': self.gender,
+            'sexual_orientation': self.sexual_orientation,
+            'religion': self.religion,
+            'lgbtq_friendly': self.lgbtq_friendly,
+            'bio': self.bio,
+            'photo_url': self.photo_url,
+            'gallery_photos': self.gallery_photos or [],
+            'meeting_type': self.meeting_type,
+            'interests': self.interests or []
         }
