@@ -19,9 +19,12 @@ bp = Blueprint('auth', __name__, url_prefix='/api/auth')
 @bp.route('/register', methods=['POST'])
 def register():
     data = request.json
+    email_to_check = data['email'].lower().strip()
     
-    if User.query.filter_by(email=data['email']).first():
-        return jsonify({'message': 'Email already exists'}), 400
+    users = User.query.all()
+    for u in users:
+        if u.email and u.email.lower() == email_to_check:
+            return jsonify({'message': 'Email already exists'}), 400
     
     password_hash = bcrypt.hashpw(data['password'].encode('utf-8'), bcrypt.gensalt()).decode('utf-8')
     
@@ -31,7 +34,7 @@ def register():
         name=data['name'],
         role=data.get('role', 'user'),
         gender=data.get('gender'),
-        orientation=data.get('orientation'),
+        sexual_orientation=data.get('orientation'),
         age=data.get('age'),
         bio=data.get('bio')
     )
@@ -52,7 +55,14 @@ def register():
 @bp.route('/login', methods=['POST'])
 def login():
     data = request.json
-    user = User.query.filter_by(email=data['email']).first()
+    email_to_find = data['email'].lower().strip()
+    
+    users = User.query.all()
+    user = None
+    for u in users:
+        if u.email and u.email.lower() == email_to_find:
+            user = u
+            break
     
     if not user or not bcrypt.checkpw(data['password'].encode('utf-8'), user.password_hash.encode('utf-8')):
         return jsonify({'message': 'Invalid credentials'}), 401
