@@ -138,77 +138,100 @@ www.myoneart.com
             <div id="registerForm" class="hidden">
                 <form onsubmit="register(event)">
                     <div class="mb-3">
-                        <label class="block text-[#2D3436] mb-2 text-sm font-semibold">Full Name</label>
+                        <label class="block text-[#2D3436] mb-2 text-sm font-semibold">👤 Nom Complet</label>
                         <input type="text" id="registerName" required class="w-full px-4 py-3 border border-gray-300 rounded-xl focus:outline-none focus:border-[#FF4458]">
                     </div>
                     <div class="mb-3">
-                        <label class="block text-[#2D3436] mb-2 text-sm font-semibold">Email</label>
+                        <label class="block text-[#2D3436] mb-2 text-sm font-semibold">📧 Email</label>
                         <input type="email" id="registerEmail" required class="w-full px-4 py-3 border border-gray-300 rounded-xl focus:outline-none focus:border-[#FF4458]">
                     </div>
                     <div class="mb-3">
-                        <label class="block text-[#2D3436] mb-2 text-sm font-semibold">Password</label>
+                        <label class="block text-[#2D3436] mb-2 text-sm font-semibold">🔒 Mot de passe</label>
                         <input type="password" id="registerPassword" required minlength="6" class="w-full px-4 py-3 border border-gray-300 rounded-xl focus:outline-none focus:border-[#FF4458]">
                     </div>
                     <div class="grid grid-cols-2 gap-3 mb-3">
                         <div>
-                            <label class="block text-[#2D3436] mb-2 text-sm font-semibold">Date of Birth</label>
+                            <label class="block text-[#2D3436] mb-2 text-sm font-semibold">🎂 Date de naissance</label>
                             <input type="date" id="registerBirthdate" required max="2007-01-01" class="w-full px-4 py-3 border border-gray-300 rounded-xl focus:outline-none focus:border-[#FF4458]">
                         </div>
                         <div>
-                            <label class="block text-[#2D3436] mb-2 text-sm font-semibold">Gender</label>
+                            <label class="block text-[#2D3436] mb-2 text-sm font-semibold">⚧️ Genre</label>
                             <select id="registerGender" required class="w-full px-4 py-3 border border-gray-300 rounded-xl focus:outline-none focus:border-[#FF4458]">
-                                <option value="">Select</option>
-                                <option value="male">Homme</option>
-                                <option value="female">Femme</option>
-                                <option value="non_binary">Non-binaire</option>
-                                <option value="other">Autre</option>
+                                <option value="">Sélectionner</option>
+                                <option value="male">👨 Homme</option>
+                                <option value="female">👩 Femme</option>
+                                <option value="non_binary">⚧️ Non-binaire</option>
+                                <option value="other">🌈 Autre</option>
                             </select>
                         </div>
                     </div>
                     <div class="mb-3">
-                        <label class="block text-[#2D3436] mb-2 text-sm font-semibold">Orientation</label>
+                        <label class="block text-[#2D3436] mb-2 text-sm font-semibold">💕 Orientation</label>
                         <select id="registerOrientation" required class="w-full px-4 py-3 border border-gray-300 rounded-xl focus:outline-none focus:border-[#FF4458]">
-                            <option value="">Select</option>
-                            <option value="heterosexual">Hétérosexuel(le)</option>
-                            <option value="gay">Gay</option>
-                            <option value="lesbian">Lesbienne</option>
-                            <option value="bisexual">Bisexuel(le)</option>
-                            <option value="pansexual">Pansexuel(le)</option>
-                            <option value="other">Autre</option>
+                            <option value="">Sélectionner</option>
+                            <option value="heterosexual">💑 Hétérosexuel(le)</option>
+                            <option value="gay">🏳️‍🌈 Gay</option>
+                            <option value="lesbian">🏳️‍🌈 Lesbienne</option>
+                            <option value="bisexual">💜 Bisexuel(le)</option>
+                            <option value="pansexual">💖 Pansexuel(le)</option>
+                            <option value="other">🌈 Autre</option>
+                        </select>
+                    </div>
+                    <div class="mb-3">
+                        <label class="block text-[#2D3436] mb-2 text-sm font-semibold">🙏 Religion</label>
+                        <select id="registerReligion" class="w-full px-4 py-3 border border-gray-300 rounded-xl focus:outline-none focus:border-[#FF4458]">
+                            <option value="">Préférence non spécifiée</option>
+                            <option value="christianity">✝️ Christianisme</option>
+                            <option value="islam">☪️ Islam</option>
+                            <option value="judaism">✡️ Judaïsme</option>
+                            <option value="buddhism">☸️ Bouddhisme</option>
+                            <option value="hinduism">🕉️ Hindouisme</option>
+                            <option value="atheist">🔬 Athée</option>
+                            <option value="agnostic">❓ Agnostique</option>
+                            <option value="spiritual">✨ Spirituel</option>
+                            <option value="other">🌍 Autre</option>
+                        </select>
+                    </div>
+                    <div class="mb-3">
+                        <label class="block text-[#2D3436] mb-2 text-sm font-semibold">🏳️‍🌈 LGBT+ Friendly</label>
+                        <select id="registerLGBTQFriendly" class="w-full px-4 py-3 border border-gray-300 rounded-xl focus:outline-none focus:border-[#FF4458]">
+                            <option value="">Préférence non spécifiée</option>
+                            <option value="true">✅ Oui, absolument!</option>
+                            <option value="false">❌ Non</option>
                         </select>
                     </div>
                     <div class="mb-3" id="userFieldsContainer">
                         <div class="mb-3">
-                            <label class="block text-[#2D3436] mb-2 text-sm font-semibold">What are you looking for? (Select all that apply)</label>
+                            <label class="block text-[#2D3436] mb-2 text-sm font-semibold">💕 Que recherchez-vous ? (Sélectionnez tout ce qui s'applique)</label>
                             <div id="meetingTypesContainer" class="space-y-2 max-h-40 overflow-y-auto bg-gray-50 p-3 rounded-xl">
                                 <label class="flex items-center">
                                     <input type="checkbox" name="meeting_type" value="soulmate" class="mr-2 w-4 h-4 text-[#FF4458] rounded">
-                                    <span class="text-sm">Trouver l'âme sœur</span>
+                                    <span class="text-sm">💑 Trouver l'âme sœur</span>
                                 </label>
                                 <label class="flex items-center">
                                     <input type="checkbox" name="meeting_type" value="friends" class="mr-2 w-4 h-4 text-[#FF4458] rounded">
-                                    <span class="text-sm">Se faire des amis</span>
+                                    <span class="text-sm">👥 Se faire des amis</span>
                                 </label>
                                 <label class="flex items-center">
                                     <input type="checkbox" name="meeting_type" value="drink" class="mr-2 w-4 h-4 text-[#FF4458] rounded">
-                                    <span class="text-sm">Prendre un verre</span>
+                                    <span class="text-sm">🍹 Prendre un verre</span>
                                 </label>
                                 <label class="flex items-center">
                                     <input type="checkbox" name="meeting_type" value="travel" class="mr-2 w-4 h-4 text-[#FF4458] rounded">
-                                    <span class="text-sm">Pote de voyage</span>
+                                    <span class="text-sm">✈️ Pote de voyage</span>
                                 </label>
                                 <label class="flex items-center">
                                     <input type="checkbox" name="meeting_type" value="networking" class="mr-2 w-4 h-4 text-[#FF4458] rounded">
-                                    <span class="text-sm">Networking</span>
+                                    <span class="text-sm">💼 Networking</span>
                                 </label>
                                 <label class="flex items-center">
                                     <input type="checkbox" name="meeting_type" value="dating" class="mr-2 w-4 h-4 text-[#FF4458] rounded">
-                                    <span class="text-sm">Rendez-vous décontracté</span>
+                                    <span class="text-sm">💝 Rendez-vous décontracté</span>
                                 </label>
                             </div>
                         </div>
                         <div class="mb-3">
-                            <label class="block text-[#2D3436] mb-2 text-sm font-semibold">Your Interests (Select all that apply)</label>
+                            <label class="block text-[#2D3436] mb-2 text-sm font-semibold">🎯 Vos centres d'intérêt (Sélectionnez tout ce qui s'applique)</label>
                             <div id="interestsContainer" class="space-y-2 max-h-48 overflow-y-auto bg-gray-50 p-3 rounded-xl">
                                 <div class="grid grid-cols-2 gap-2">
                                     <label class="flex items-center">
@@ -393,6 +416,8 @@ www.myoneart.com
                 birthdate: document.getElementById('registerBirthdate').value,
                 gender: document.getElementById('registerGender').value,
                 sexual_orientation: document.getElementById('registerOrientation').value,
+                religion: document.getElementById('registerReligion').value || null,
+                lgbtq_friendly: document.getElementById('registerLGBTQFriendly').value ? document.getElementById('registerLGBTQFriendly').value === 'true' : null,
                 role: role
             };
 
@@ -401,11 +426,11 @@ www.myoneart.com
                 const interests = Array.from(document.querySelectorAll('input[name="interest"]:checked')).map(cb => cb.value);
                 
                 if (meetingTypes.length === 0) {
-                    alert('Please select at least one meeting type');
+                    alert('Veuillez sélectionner au moins un type de rencontre 💕');
                     return;
                 }
                 if (interests.length === 0) {
-                    alert('Please select at least one interest');
+                    alert('Veuillez sélectionner au moins un centre d\'intérêt 🎯');
                     return;
                 }
                 

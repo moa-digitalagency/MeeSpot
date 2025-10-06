@@ -69,7 +69,7 @@ www.myoneart.com
             <div class="space-y-4">
                 <div class="bg-white rounded-2xl p-4">
                     <div class="flex items-center justify-between mb-3">
-                        <h3 class="font-bold text-[#2D3436]">Genres</h3>
+                        <h3 class="font-bold text-[#2D3436]">⚧️ Genres</h3>
                         <button onclick="showAddOptionModal('gender')" class="px-3 py-1 bg-[#FF4458] text-white rounded-full text-sm">+ Ajouter</button>
                     </div>
                     <div id="genderOptions" class="space-y-2">
@@ -79,7 +79,17 @@ www.myoneart.com
                 
                 <div class="bg-white rounded-2xl p-4">
                     <div class="flex items-center justify-between mb-3">
-                        <h3 class="font-bold text-[#2D3436]">Types de Rencontre</h3>
+                        <h3 class="font-bold text-[#2D3436]">🙏 Religions</h3>
+                        <button onclick="showAddOptionModal('religion')" class="px-3 py-1 bg-[#FF4458] text-white rounded-full text-sm">+ Ajouter</button>
+                    </div>
+                    <div id="religionOptions" class="space-y-2">
+                        <p class="text-[#2D3436] opacity-75 text-sm">Chargement...</p>
+                    </div>
+                </div>
+                
+                <div class="bg-white rounded-2xl p-4">
+                    <div class="flex items-center justify-between mb-3">
+                        <h3 class="font-bold text-[#2D3436]">💕 Types de Rencontre</h3>
                         <button onclick="showAddOptionModal('meeting_type')" class="px-3 py-1 bg-[#FF4458] text-white rounded-full text-sm">+ Ajouter</button>
                     </div>
                     <div id="meetingTypeOptions" class="space-y-2">
@@ -89,7 +99,7 @@ www.myoneart.com
                 
                 <div class="bg-white rounded-2xl p-4">
                     <div class="flex items-center justify-between mb-3">
-                        <h3 class="font-bold text-[#2D3436]">Centres d'Intérêt</h3>
+                        <h3 class="font-bold text-[#2D3436]">🎯 Centres d'Intérêt</h3>
                         <button onclick="showAddOptionModal('interest')" class="px-3 py-1 bg-[#FF4458] text-white rounded-full text-sm">+ Ajouter</button>
                     </div>
                     <div id="interestOptions" class="space-y-2">
@@ -324,13 +334,19 @@ www.myoneart.com
 
         function displayProfileOptions(options) {
             displayCategoryOptions('gender', options.gender || []);
+            displayCategoryOptions('religion', options.religion || []);
             displayCategoryOptions('meeting_type', options.meeting_type || []);
             displayCategoryOptions('interest', options.interest || []);
         }
 
         function displayCategoryOptions(category, opts) {
-            const containerId = category === 'meeting_type' ? 'meetingTypeOptions' : 
-                              category === 'interest' ? 'interestOptions' : 'genderOptions';
+            const containerMap = {
+                'gender': 'genderOptions',
+                'religion': 'religionOptions',
+                'meeting_type': 'meetingTypeOptions',
+                'interest': 'interestOptions'
+            };
+            const containerId = containerMap[category] || 'genderOptions';
             const container = document.getElementById(containerId);
             
             if (opts.length === 0) {
