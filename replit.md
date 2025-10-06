@@ -34,10 +34,15 @@ A progressive web application (PWA) dating platform focused on real-life meeting
 ## Architecture
 
 ### Backend (Flask)
-- `app.py`: Main application with all API endpoints
-- PostgreSQL database with SQLAlchemy ORM
+- Structure modulaire avec package `backend/`
+- `backend/config.py`: Configuration centralisée (dev/prod)
+- `backend/routes/`: Blueprints séparés par ressource (auth, rooms, establishments, admin, profile)
+- `backend/models/`: Modèles SQLAlchemy (User, Room, Message, etc.)
+- `backend/utils/`: Utilitaires (auth, encryption, room_access)
+- PostgreSQL database avec SQLAlchemy ORM
 - JWT authentication
 - bcrypt password hashing
+- **Chiffrement AES-256**: Toutes les données sensibles sont chiffrées au repos
 - Role-based access control
 
 ### Frontend
@@ -82,6 +87,8 @@ A progressive web application (PWA) dating platform focused on real-life meeting
 ### Environment Variables
 - `DATABASE_URL`: PostgreSQL connection (auto-configured)
 - `SECRET_KEY`: JWT signing key (auto-generated for dev)
+- `ENCRYPTION_KEY`: Clé de chiffrement Fernet pour les données sensibles (auto-générée au premier lancement)
+- `FLASK_ENV`: Environment (development/production)
 
 ## API Endpoints
 
@@ -115,6 +122,19 @@ A progressive web application (PWA) dating platform focused on real-life meeting
 - POST `/api/reports`: Submit user/room report
 
 ## Recent Changes
+- 2025-10-06: Security & Architecture improvements
+  - **Chiffrement des données**: Toutes les données sensibles sont maintenant chiffrées au repos
+    - Emails, noms, bios, photos, noms alternatifs des utilisateurs
+    - Contenu des messages de chat
+    - Utilisation de Fernet (AES-256) avec SQLAlchemy TypeDecorators
+  - **Structure du code**: Refactorisation complète en modules
+    - Configuration centralisée dans `backend/config.py`
+    - Routes organisées par ressource dans `backend/routes/`
+    - Utilitaires de chiffrement dans `backend/utils/encryption.py`
+  - **Documentation API**: Documentation complète dans `API_DOCUMENTATION.md`
+    - Tous les endpoints documentés avec exemples
+    - Codes d'erreur et authentification expliqués
+    - Section dédiée à la sécurité et au chiffrement
 - 2025-10-06: Complete user experience redesign
   - **Access code system**: 8-character codes for easy event joining
   - **QR code scanner**: Users can scan QR codes with camera to join events
