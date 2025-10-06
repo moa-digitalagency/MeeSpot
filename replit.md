@@ -129,6 +129,33 @@ A progressive web application (PWA) dating platform focused on real-life meeting
 - POST `/api/reports`: Submit user/room report
 
 ## Recent Changes
+- 2025-10-06: PWA Complete Implementation with Auto-Refresh System
+  - **PWA Installability**: Full Progressive Web App support
+    - Service worker with offline support and intelligent caching
+    - App manifest with icons, shortcuts, and theme colors
+    - Install prompt for iOS and Android with custom UI
+    - Apple Touch Icon support for iOS home screen
+  - **Auto-Refresh System**: Real-time data synchronization
+    - Conversations: Auto-refresh every 5 seconds when chat is open
+    - Conversation list: Refresh every 10 seconds on Chat tab
+    - Connection requests: Refresh every 15 seconds on Requests tab
+    - Events list: Refresh every 30 seconds on Discover/Rooms tabs
+    - Participants list: Refresh every 20 seconds when viewing room details
+  - **Smart Refresh Management**:
+    - Pauses when app loses focus (tab inactive)
+    - Resumes when app regains focus
+    - Automatically refreshes data when coming back online
+    - Context-aware: Only refreshes data relevant to current page
+  - **Service Worker Features**:
+    - Network-first strategy for API calls with cache fallback
+    - Cache-first strategy for static assets
+    - Automatic cache cleanup and version management
+    - Update notification banner when new version available
+  - **User Experience**:
+    - One-click update when new version detected
+    - Smooth install prompt 5 seconds after page load
+    - "Install later" option that respects user choice
+    - Offline indicator and automatic reconnection
 - 2025-10-06: Major architectural overhaul - Connection Request System
   - **NO MORE GROUP CHAT**: Replaced group chat with connection request + private conversation system
   - **24-hour room expiration**: All rooms expire 24 hours after creation

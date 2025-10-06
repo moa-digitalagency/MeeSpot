@@ -7,6 +7,10 @@
     <meta name="description" content="Join real-life dating events at your favorite venues">
     <link rel="manifest" href="/manifest.json">
     <meta name="theme-color" content="#FF4458">
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+    <meta name="apple-mobile-web-app-title" content="MeetSpot">
+    <link rel="apple-touch-icon" href="/images/icon-192.png">
     <script src="https://cdn.tailwindcss.com"></script>
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=Poppins:wght@600;700&display=swap" rel="stylesheet">
     <style>
@@ -264,6 +268,11 @@
             } catch (error) {
                 alert('Connection error');
             }
+        }
+        if ('serviceWorker' in navigator) {
+            navigator.serviceWorker.register('/sw.js')
+                .then(registration => console.log('ServiceWorker registered'))
+                .catch(error => console.log('ServiceWorker registration failed:', error));
         }
     </script>
 </body>
