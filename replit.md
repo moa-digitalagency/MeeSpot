@@ -144,6 +144,31 @@ A progressive web application (PWA) dating platform focused on real-life meeting
 - DELETE `/api/profile-options/<id>`: Deactivate profile option (admin only)
 
 ## Recent Changes
+- 2025-10-06: Système d'emojis pour types de rencontre + QR code amélioré
+  - **Emojis des types de rencontre**: Affichés à côté du nom des utilisateurs
+    - Chaque type de rencontre (💑 soulmate, 👥 friends, 🍹 drink, ✈️ travel, 💼 networking, 💝 dating, 💬 juste discuté, 🎈 rien de sérieux) a son emoji
+    - Les emojis apparaissent automatiquement dans la liste des participants
+    - ProfileOption.emoji: Nouveau champ pour stocker l'emoji de chaque option
+  - **Nouveaux types de rencontre**:
+    - "💬 Juste discuté": Pour ceux qui veulent simplement échanger
+    - "🎈 Rien de sérieux": Pour les rencontres sans engagement
+  - **QR Code amélioré (Établissements)**:
+    - QR code centré dans le bloc blanc
+    - Bouton de téléchargement avec image PNG complète (nom de l'événement + QR + code d'accès)
+    - Fonction downloadQRCode(): Génère une image composite avec Canvas
+  - **Modification du nom de room**:
+    - Bouton "Modifier" à côté du nom de la room
+    - PUT `/api/establishments/rooms/<id>/update-name`: Endpoint pour modifier le nom
+    - Le code d'accès reste inchangé lors de la modification
+  - **Améliorations UI**:
+    - Emojis ajoutés partout (formulaire d'inscription, admin, navigation)
+    - Labels traduits en français avec emojis
+    - Interface plus ludique et visuelle
+  - **API Endpoints**:
+    - GET `/api/rooms/<id>/participants`: Maintenant inclut meeting_type_emojis
+    - PUT `/api/establishments/rooms/<id>/update-name`: Modification du nom de room
+
+## Recent Changes (suite)
 - 2025-10-06: Enhanced Profile System with Admin-Customizable Options
   - **User Profiles Enriched**:
     - Auto-generated unique username (format: `firstname_1234`) with collision detection
