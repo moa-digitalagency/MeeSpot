@@ -27,9 +27,10 @@ www.myoneart.com
         .card-hover { transition: all 0.3s ease; }
         .card-hover:active { transform: scale(0.98); }
         .bottom-nav { position: fixed; bottom: 0; left: 0; right: 0; max-width: 768px; margin: 0 auto; background: white; box-shadow: 0 -2px 10px rgba(0,0,0,0.1); z-index: 50; }
-        .nav-item { transition: all 0.2s; }
+        .nav-item { transition: all 0.2s; position: relative; }
         .nav-item.active { color: #FF4458; }
         .nav-item svg { width: 24px; height: 24px; }
+        .notification-badge { position: absolute; top: 8px; right: 50%; transform: translateX(50%); background: #FF4458; color: white; border-radius: 50%; min-width: 18px; height: 18px; display: flex; align-items: center; justify-content: center; font-size: 10px; font-weight: bold; padding: 0 4px; }
         .update-banner { position: fixed; top: 0; left: 0; right: 0; background: #6C5CE7; color: white; padding: 12px; text-align: center; z-index: 100; transform: translateY(-100%); transition: transform 0.3s; max-width: 768px; margin: 0 auto; }
         .update-banner.show { transform: translateY(0); }
         .install-prompt { position: fixed; bottom: 80px; left: 16px; right: 16px; max-width: 736px; margin: 0 auto; background: white; padding: 16px; border-radius: 12px; box-shadow: 0 4px 12px rgba(0,0,0,0.2); z-index: 60; display: none; }
@@ -68,7 +69,7 @@ www.myoneart.com
             <div class="flex justify-between items-center mb-4">
                 <div>
                     <h1 class="text-2xl font-bold text-[#2D3436]">Accueil</h1>
-                    <p class="text-sm text-[#2D3436] opacity-75">Rejoignez un room</p>
+                    <p class="text-sm text-[#2D3436] opacity-75">Rejoignez une room</p>
                 </div>
                 <div class="w-10 h-10 rounded-full bg-gradient-to-br from-[#FF4458] to-[#A29BFE] flex items-center justify-center text-white font-semibold" id="userAvatar">
                     U
@@ -297,12 +298,14 @@ www.myoneart.com
                 <span class="text-xs mt-1">Accueil</span>
             </button>
             <button onclick="switchPage('chat')" id="nav-chat" class="nav-item flex flex-col items-center justify-center">
+                <span id="chat-badge" class="notification-badge" style="display: none;">0</span>
                 <svg fill="none" stroke="currentColor" viewBox="0 0 24 24">
                     <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 12h.01M12 12h.01M16 12h.01M21 12c0 4.418-4.03 8-9 8a9.863 9.863 0 01-4.255-.949L3 20l1.395-3.72C3.512 15.042 3 13.574 3 12c0-4.418 4.03-8 9-8s9 3.582 9 8z"/>
                 </svg>
                 <span class="text-xs mt-1">Chat</span>
             </button>
             <button onclick="switchPage('requests')" id="nav-requests" class="nav-item flex flex-col items-center justify-center">
+                <span id="requests-badge" class="notification-badge" style="display: none;">0</span>
                 <svg fill="none" stroke="currentColor" viewBox="0 0 24 24">
                     <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 4.354a4 4 0 110 5.292M15 21H3v-1a6 6 0 0112 0v1zm0 0h6v-1a6 6 0 00-9-5.197M13 7a4 4 0 11-8 0 4 4 0 018 0z"/>
                 </svg>
@@ -440,7 +443,7 @@ www.myoneart.com
             <div id="roomDetails" class="mb-4"></div>
             
             <button onclick="leaveRoom()" class="w-full mb-4 py-3 bg-red-500 text-white rounded-full hover:bg-red-600 transition font-semibold">
-                Quitter l'room
+                Quitter la room
             </button>
             
             <h4 class="font-bold text-[#2D3436] mb-3">Personnes</h4>
@@ -614,7 +617,7 @@ www.myoneart.com
             const list = document.getElementById('pastRoomsList');
             
             if (rooms.length === 0) {
-                list.innerHTML = '<p class="text-sm text-[#2D3436] opacity-75 text-center py-8">Aucun room rejoint</p>';
+                list.innerHTML = '<p class="text-sm text-[#2D3436] opacity-75 text-center py-8">Aucune room rejoint</p>';
                 return;
             }
             
@@ -694,7 +697,7 @@ www.myoneart.com
             const list = document.getElementById('roomsList');
             
             if (rooms.length === 0) {
-                list.innerHTML = `<p class="text-sm text-[#2D3436] opacity-75 text-center py-8">Aucun room ${roomFilter === 'active' ? 'actif' : 'expiré'}</p>`;
+                list.innerHTML = `<p class="text-sm text-[#2D3436] opacity-75 text-center py-8">Aucune room ${roomFilter === 'active' ? 'actif' : 'expiré'}</p>`;
                 return;
             }
             
@@ -878,7 +881,7 @@ www.myoneart.com
         }
 
         async function leaveRoom() {
-            if (!currentRoomId || !confirm('Voulez-vous vraiment quitter cet room ?')) return;
+            if (!currentRoomId || !confirm('Voulez-vous vraiment quitter cette room ?')) return;
             
             const token = localStorage.getItem('token');
             
@@ -1607,8 +1610,36 @@ www.myoneart.com
             window.location.href = '/';
         }
 
+        async function updateNotificationBadges() {
+            const token = localStorage.getItem('token');
+            if (!token) return;
+            
+            try {
+                const response = await fetch('/api/requests?type=received', {
+                    headers: { 'Authorization': `Bearer ${token}` }
+                });
+                
+                if (response.ok) {
+                    const requests = await response.json();
+                    const pendingCount = requests.filter(r => r.status === 'pending').length;
+                    
+                    const badge = document.getElementById('requests-badge');
+                    if (pendingCount > 0) {
+                        badge.textContent = pendingCount > 9 ? '9+' : pendingCount;
+                        badge.style.display = 'flex';
+                    } else {
+                        badge.style.display = 'none';
+                    }
+                }
+            } catch (error) {
+                console.error('Error updating notification badges:', error);
+            }
+        }
+
         checkAuth();
         loadPastRooms();
+        updateNotificationBadges();
+        setInterval(updateNotificationBadges, 15000);
 
         let deferredPrompt;
         let swRegistration = null;
