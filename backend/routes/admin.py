@@ -212,77 +212,14 @@ def restore_backup(current_user):
             'message': str(e)
         }), 500
 
-@bp.route('/update/check', methods=['GET'])
+@bp.route('/update', methods=['POST'])
 @token_required
 @admin_required
-def check_updates(current_user):
-    """Vérifie si des mises à jour sont disponibles depuis GitHub"""
+def update_from_github(current_user):
+    """Mise à jour automatique depuis GitHub en un seul clic"""
     try:
-        # Fetch depuis GitHub
         result = subprocess.run(
-            ['git', 'fetch', 'origin'],
-            capture_output=True,
-            text=True,
-            timeout=30
-        )
-        
-        if result.returncode != 0:
-            return jsonify({
-                'success': False,
-                'message': 'Erreur lors de la vérification',
-                'error': result.stderr
-            }), 500
-        
-        # Vérifier le nombre de commits en retard
-        result = subprocess.run(
-            ['git', 'rev-list', 'HEAD...origin/main', '--count'],
-            capture_output=True,
-            text=True
-        )
-        
-        if result.returncode == 0:
-            commits_behind = int(result.stdout.strip())
-            
-            # Récupérer les derniers commits
-            log_result = subprocess.run(
-                ['git', 'log', 'HEAD..origin/main', '--oneline', '-n', '10'],
-                capture_output=True,
-                text=True
-            )
-            
-            return jsonify({
-                'success': True,
-                'updates_available': commits_behind > 0,
-                'commits_behind': commits_behind,
-                'recent_commits': log_result.stdout.strip().split('\n') if log_result.stdout else []
-            })
-        else:
-            return jsonify({
-                'success': False,
-                'message': 'Erreur lors de la vérification',
-                'error': result.stderr
-            }), 500
-    except Exception as e:
-        return jsonify({
-            'success': False,
-            'message': str(e)
-        }), 500
-
-@bp.route('/update/apply', methods=['POST'])
-@token_required
-@admin_required
-def apply_updates(current_user):
-    """Applique les mises à jour depuis GitHub"""
-    data = request.json
-    skip_backup = data.get('skip_backup', False)
-    
-    try:
-        cmd = [sys.executable, 'scripts/update_from_github.py']
-        if skip_backup:
-            cmd.append('--skip-backup')
-        
-        result = subprocess.run(
-            cmd,
+            [sys.executable, 'scripts/update_from_github.py'],
             capture_output=True,
             text=True,
             timeout=600  # 10 minutes max
@@ -291,7 +228,7 @@ def apply_updates(current_user):
         if result.returncode == 0:
             return jsonify({
                 'success': True,
-                'message': 'Mise à jour appliquée avec succès',
+                'message': 'Mise à jour terminée avec succès',
                 'output': result.stdout
             })
         else:
@@ -304,7 +241,7 @@ def apply_updates(current_user):
     except subprocess.TimeoutExpired:
         return jsonify({
             'success': False,
-            'message': 'Timeout lors de la mise à jour'
+            'message': 'Délai dépassé - la mise à jour prend trop de temps'
         }), 500
     except Exception as e:
         return jsonify({
