@@ -97,6 +97,8 @@ A progressive web application (PWA) dating platform focused on real-life meeting
 - GET `/api/rooms`: List accessible rooms
 - GET `/api/rooms/<id>`: Get room details
 - POST `/api/rooms/<id>/join`: Join a room
+- POST `/api/rooms/join-by-code`: Join room via access code
+- GET `/api/rooms/my`: Get user's joined rooms
 - GET `/api/rooms/<id>/messages`: Get room messages
 - POST `/api/rooms/<id>/messages`: Send message
 
@@ -113,16 +115,20 @@ A progressive web application (PWA) dating platform focused on real-life meeting
 - POST `/api/reports`: Submit user/room report
 
 ## Recent Changes
-- 2025-10-06: Room access code system implemented
-  - 8-character alphanumeric access codes auto-generated for each event
-  - QR code generation using QRious library (v4.0.2)
-  - Establishment room details modal with:
-    - Access code display
-    - QR code for easy sharing
-    - Member count and capacity stats
-    - Full participant list with join dates
-  - Access codes visible on room cards in establishment dashboard
-  - New API endpoint: GET `/api/establishments/me/rooms/<id>` for room details
+- 2025-10-06: Complete user experience redesign
+  - **Access code system**: 8-character codes for easy event joining
+  - **QR code scanner**: Users can scan QR codes with camera to join events
+  - **New home screen**: Code entry field + QR scan button + past events list
+  - **Chat tab**: Separate tab for active/expired chats with filtering
+  - **3-tab navigation**: Home, Chat, Profile (was 2 tabs before)
+  - **Establishment features**:
+    - Access codes visible on room cards
+    - QR code generation using QRious library (v4.0.2)
+    - Room details modal with stats and member list
+  - **New API endpoints**:
+    - POST `/api/rooms/join-by-code`: Join room via access code
+    - GET `/api/rooms/my`: Get user's joined rooms
+    - GET `/api/establishments/me/rooms/<id>`: Room details for establishments
 - 2025-10-04: Complete mobile-first redesign with bottom navigation bars
   - User dashboard: 2 tabs (Discover, Profile) with bottom sheet modals
   - Establishment dashboard: 3 tabs (Dashboard, Analytics, Profile) with event creation modal
