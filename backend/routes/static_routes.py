@@ -6,6 +6,18 @@ bp = Blueprint('static_routes', __name__)
 def index():
     return send_from_directory('../static/pages', 'index.html')
 
+@bp.route('/app')
+def app():
+    return send_from_directory('../static/pages', 'app.html')
+
+@bp.route('/establishment')
+def establishment():
+    return send_from_directory('../static/pages', 'establishment.html')
+
+@bp.route('/admin')
+def admin():
+    return send_from_directory('../static/pages', 'admin.html')
+
 @bp.route('/<path:path>')
 def static_files(path):
     if path.endswith('.html'):
