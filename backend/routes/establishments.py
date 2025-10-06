@@ -228,3 +228,29 @@ def get_room_details(current_user, room_id):
             'joined_at': member.joined_at.isoformat()
         } for member in members]
     })
+
+@bp.route('/rooms/<int:room_id>/update-name', methods=['PUT'])
+@token_required
+def update_room_name(current_user, room_id):
+    if current_user.role not in ['establishment', 'admin']:
+        return jsonify({'message': 'Unauthorized'}), 403
+    
+    establishment = Establishment.query.filter_by(user_id=current_user.id).first()
+    if not establishment and current_user.role != 'admin':
+        return jsonify({'message': 'Establishment not found'}), 404
+    
+    room = Room.query.get_or_404(room_id)
+    
+    if establishment and room.establishment_id != establishment.id:
+        return jsonify({'message': 'Unauthorized'}), 403
+    
+    data = request.json
+    new_name = data.get('name', '').strip()
+    
+    if not new_name:
+        return jsonify({'message': 'Name cannot be empty'}), 400
+    
+    room.name = new_name
+    db.session.commit()
+    
+    return jsonify({'message': 'Room name updated successfully', 'name': room.name})

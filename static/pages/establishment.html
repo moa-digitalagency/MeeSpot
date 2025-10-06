@@ -211,15 +211,24 @@ www.myoneart.com
             <div class="space-y-4">
                 <div class="bg-gradient-to-br from-[#FF4458] to-[#e03d4c] rounded-2xl p-6 text-white text-center">
                     <div class="text-sm opacity-90 mb-2">Code d'accès</div>
-                    <div id="detailsAccessCode" class="text-4xl font-bold font-mono tracking-widest mb-3">--------</div>
-                    <div class="bg-white p-4 rounded-xl" id="qrCodeContainer">
+                    <div id="detailsAccessCode" class="text-4xl font-bold font-mono tracking-widest mb-4">--------</div>
+                    <div class="bg-white p-4 rounded-xl flex justify-center items-center" id="qrCodeContainer">
                         <canvas id="qrCode"></canvas>
                     </div>
+                    <button onclick="downloadQRCode()" class="mt-4 px-6 py-3 bg-white text-[#FF4458] rounded-full font-semibold hover:bg-opacity-90 flex items-center justify-center mx-auto">
+                        <svg class="w-5 h-5 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 16v1a3 3 0 003 3h10a3 3 0 003-3v-1m-4-4l-4 4m0 0l-4-4m4 4V4"/>
+                        </svg>
+                        Télécharger QR Code
+                    </button>
                     <p class="text-xs mt-3 opacity-90">Scannez le QR code ou utilisez le code ci-dessus</p>
                 </div>
 
                 <div class="bg-white rounded-2xl border-2 border-gray-200 p-4">
-                    <h4 id="detailsRoomName" class="font-bold text-[#2D3436] text-lg mb-2">-</h4>
+                    <div class="flex items-center justify-between mb-2">
+                        <h4 id="detailsRoomName" class="font-bold text-[#2D3436] text-lg">-</h4>
+                        <button onclick="editRoomName()" class="text-[#FF4458] text-sm font-semibold hover:underline">Modifier</button>
+                    </div>
                     <p id="detailsRoomDescription" class="text-sm text-[#2D3436] opacity-75 mb-3">-</p>
                     
                     <div class="grid grid-cols-2 gap-3 text-sm">
@@ -461,6 +470,7 @@ www.myoneart.com
         async function showRoomDetails(roomId) {
             const token = localStorage.getItem('token');
             
+            currentEditingRoomId = roomId;
             document.getElementById('roomDetailsModal').classList.remove('hidden');
             
             try {
@@ -517,6 +527,92 @@ www.myoneart.com
 
         function closeRoomDetails() {
             document.getElementById('roomDetailsModal').classList.add('hidden');
+        }
+
+        let currentEditingRoomId = null;
+
+        function downloadQRCode() {
+            const canvas = document.getElementById('qrCode');
+            const accessCode = document.getElementById('detailsAccessCode').textContent;
+            const roomName = document.getElementById('detailsRoomName').textContent;
+            
+            const tempCanvas = document.createElement('canvas');
+            const ctx = tempCanvas.getContext('2d');
+            
+            tempCanvas.width = 400;
+            tempCanvas.height = 500;
+            
+            ctx.fillStyle = '#FFFFFF';
+            ctx.fillRect(0, 0, tempCanvas.width, tempCanvas.height);
+            
+            ctx.font = 'bold 24px Inter, sans-serif';
+            ctx.fillStyle = '#2D3436';
+            ctx.textAlign = 'center';
+            ctx.fillText(roomName, 200, 40);
+            
+            ctx.font = '16px Inter, sans-serif';
+            ctx.fillStyle = '#666';
+            ctx.fillText('Événement MeetSpot', 200, 70);
+            
+            const qrX = (tempCanvas.width - 200) / 2;
+            ctx.drawImage(canvas, qrX, 100, 200, 200);
+            
+            ctx.font = 'bold 32px monospace';
+            ctx.fillStyle = '#FF4458';
+            ctx.fillText(accessCode, 200, 350);
+            
+            ctx.font = '14px Inter, sans-serif';
+            ctx.fillStyle = '#666';
+            ctx.fillText('Scannez le QR code ou utilisez le code ci-dessus', 200, 390);
+            ctx.fillText('pour rejoindre cet événement', 200, 410);
+            
+            tempCanvas.toBlob((blob) => {
+                const url = URL.createObjectURL(blob);
+                const a = document.createElement('a');
+                a.href = url;
+                a.download = `QRCode-${accessCode}.png`;
+                document.body.appendChild(a);
+                a.click();
+                document.body.removeChild(a);
+                URL.revokeObjectURL(url);
+            });
+        }
+
+        function editRoomName() {
+            const nameElement = document.getElementById('detailsRoomName');
+            const currentName = nameElement.textContent;
+            const newName = prompt('Nouveau nom de l\'événement:', currentName);
+            
+            if (newName && newName.trim() !== '' && newName !== currentName) {
+                updateRoomName(currentEditingRoomId, newName.trim());
+            }
+        }
+
+        async function updateRoomName(roomId, newName) {
+            const token = localStorage.getItem('token');
+            
+            try {
+                const response = await fetch(`/api/establishments/rooms/${roomId}/update-name`, {
+                    method: 'PUT',
+                    headers: {
+                        'Authorization': `Bearer ${token}`,
+                        'Content-Type': 'application/json'
+                    },
+                    body: JSON.stringify({ name: newName })
+                });
+                
+                if (response.ok) {
+                    document.getElementById('detailsRoomName').textContent = newName;
+                    alert('✅ Nom modifié avec succès !');
+                    loadRooms();
+                } else {
+                    const error = await response.json();
+                    alert('Erreur: ' + (error.message || 'Impossible de modifier le nom'));
+                }
+            } catch (error) {
+                console.error('Error updating room name:', error);
+                alert('Erreur de connexion');
+            }
         }
 
         async function createEstablishment(e) {
