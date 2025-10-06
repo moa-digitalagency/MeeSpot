@@ -706,7 +706,7 @@ www.myoneart.com
                         </div>
                         <div class="flex-1">
                             <h4 class="font-bold text-[#2D3436]">${room.name}</h4>
-                            <p class="text-xs text-[#2D3436] opacity-75">${room.member_count || 0} participants</p>
+                            <p class="text-xs text-[#2D3436] opacity-75">${room.member_count || 0} personnes</p>
                             ${room.is_active ? `<p class="text-xs text-[#FF4458] font-semibold mt-1">${getTimeRemaining(room.created_at)}</p>` : ''}
                         </div>
                         <span class="text-xs text-[#2D3436] opacity-50">${new Date(room.created_at).toLocaleDateString()}</span>
@@ -797,7 +797,7 @@ www.myoneart.com
                             <p class="text-[#2D3436] mb-2">${room.description || 'Pas de description'}</p>
                             <div class="flex items-center gap-4 text-[#2D3436] opacity-75">
                                 <span>📍 ${room.establishment_name || 'Établissement'}</span>
-                                <span>👥 ${room.member_count || 0} participants</span>
+                                <span>👥 ${room.member_count || 0} personnes</span>
                             </div>
                         </div>
                     `;
@@ -824,7 +824,7 @@ www.myoneart.com
             const list = document.getElementById('participantsList');
             
             if (participants.length === 0) {
-                list.innerHTML = '<p class="text-sm text-[#2D3436] opacity-75 text-center py-4">Aucun participant</p>';
+                list.innerHTML = '<p class="text-sm text-[#2D3436] opacity-75 text-center py-4">Aucune personne</p>';
                 return;
             }
             
