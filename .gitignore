@@ -8,6 +8,11 @@ __pycache__/
 venv/
 env/
 ENV/
+*.pyc
+
+# Dependencies
+uv.lock
+pyproject.toml
 
 # Flask
 instance/
@@ -33,6 +38,14 @@ instance/
 .DS_Store
 Thumbs.db
 
-# Logs
+# Application data
 *.log
+logs/
 uploads/
+backups/
+attached_assets/
+
+# Temporary files
+*.tmp
+*.temp
+*.bak
