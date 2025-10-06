@@ -11,8 +11,10 @@ A progressive web application (PWA) dating platform focused on real-life meeting
 - **User**: Members who join rooms and attend events
 
 ### Core Features
-- **Rooms System**: Event-based meeting spaces at physical venues
+- **Rooms System**: Event-based meeting spaces at physical venues with 24-hour expiration
 - **Access Control**: Gender, orientation, and age-based filtering
+- **Connection Requests**: Users send connection requests to other participants (no group chat)
+- **Private Conversations**: 1-to-1 encrypted messaging after connection acceptance
 - **Subscription Tiers**:
   - Free: Browse events, join public rooms
   - Premium ($19/mo): Priority access, alternative identity mode
@@ -22,7 +24,6 @@ A progressive web application (PWA) dating platform focused on real-life meeting
   - Silver ($49): 1 room per day + advanced analytics
   - Gold ($99): 3 rooms per day + premium features
 - **Alternative Identity Mode**: Premium/Platinum users can hide photos and change pseudonyms
-- **Messaging**: Room-based chat for event coordination
 - **Reporting & Moderation**: User reports with admin oversight
 
 ### PWA Features
@@ -36,14 +37,15 @@ A progressive web application (PWA) dating platform focused on real-life meeting
 ### Backend (Flask)
 - Structure modulaire avec package `backend/`
 - `backend/config.py`: Configuration centralisée (dev/prod)
-- `backend/routes/`: Blueprints séparés par ressource (auth, rooms, establishments, admin, profile)
-- `backend/models/`: Modèles SQLAlchemy (User, Room, Message, etc.)
+- `backend/routes/`: Blueprints séparés par ressource (auth, rooms, establishments, admin, profile, connection_requests, conversations)
+- `backend/models/`: Modèles SQLAlchemy (User, Room, ConnectionRequest, PrivateConversation, PrivateMessage, etc.)
 - `backend/utils/`: Utilitaires (auth, encryption, room_access)
 - PostgreSQL database avec SQLAlchemy ORM
 - JWT authentication
 - bcrypt password hashing
 - **Chiffrement AES-256**: Toutes les données sensibles sont chiffrées au repos
 - Role-based access control
+- Automatic room expiration (24 hours from creation)
 
 ### Frontend
 - `index.html`: Landing page with auth modals
@@ -56,9 +58,11 @@ A progressive web application (PWA) dating platform focused on real-life meeting
 ### Database Schema
 - Users (with role, subscription, demographics)
 - Establishments (venues with subscription plans)
-- Rooms (events with access rules + unique access_code)
-- RoomMembers (join tracking)
-- Messages (room-based chat)
+- Rooms (events with access rules + unique access_code + expires_at)
+- RoomMembers (join tracking + active flag + left_at)
+- ConnectionRequest (pending/accepted/rejected connection requests between users)
+- PrivateConversation (1-to-1 conversations after connection acceptance)
+- PrivateMessage (encrypted messages in private conversations)
 - Reports (moderation system)
 - SubscriptionPlans (pricing tiers)
 
@@ -122,10 +126,33 @@ A progressive web application (PWA) dating platform focused on real-life meeting
 - POST `/api/reports`: Submit user/room report
 
 ## Recent Changes
+- 2025-10-06: Major architectural overhaul - Connection Request System
+  - **NO MORE GROUP CHAT**: Replaced group chat with connection request + private conversation system
+  - **24-hour room expiration**: All rooms expire 24 hours after creation
+    - RoomMember.active flag to track active memberships
+    - left_at timestamp for tracking when users leave
+    - Automatic expiration check via Room.check_and_expire() method
+  - **Connection Request Flow**:
+    - Users see participant lists in rooms
+    - Send connection requests to specific users (pending/accepted/rejected states)
+    - Private 1-to-1 conversations created after acceptance
+    - ConnectionRequest model tracks all requests and their states
+  - **Private Conversations**:
+    - PrivateConversation model links two users
+    - PrivateMessage model for encrypted 1-to-1 messages
+    - Conversations remain active even after room expires
+  - **New API Endpoints**:
+    - GET/POST `/api/requests` - List and create connection requests
+    - POST `/api/requests/<id>/accept` - Accept request and create private conversation
+    - POST `/api/requests/<id>/reject` - Reject connection request
+    - GET `/api/conversations` - List user's private conversations
+    - GET/POST `/api/conversations/<id>/messages` - Get and send private messages
+    - POST `/api/rooms/<id>/leave` - Leave a room
+    - GET `/api/rooms/<id>/participants` - View room participants
 - 2025-10-06: Security & Architecture improvements
   - **Chiffrement des données**: Toutes les données sensibles sont maintenant chiffrées au repos
     - Emails, noms, bios, photos, noms alternatifs des utilisateurs
-    - Contenu des messages de chat
+    - Contenu des messages de chat et des messages privés
     - Utilisation de Fernet (AES-256) avec SQLAlchemy TypeDecorators
   - **Structure du code**: Refactorisation complète en modules
     - Configuration centralisée dans `backend/config.py`
