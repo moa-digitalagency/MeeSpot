@@ -116,13 +116,59 @@ def join_by_code(current_user):
 @bp.route('/my', methods=['GET'])
 @token_required
 def get_my_rooms(current_user):
-    memberships = RoomMember.query.filter_by(user_id=current_user.id).all()
+    memberships = RoomMember.query.filter_by(user_id=current_user.id, active=True).all()
     
     rooms_data = []
     for membership in memberships:
         room = membership.room
+        room.check_and_expire()
         room_dict = room.to_dict()
         room_dict['establishment_name'] = room.establishment.name if room.establishment else None
         rooms_data.append(room_dict)
     
+    db.session.commit()
     return jsonify(rooms_data)
+
+@bp.route('/<int:room_id>/leave', methods=['POST'])
+@token_required
+def leave_room(current_user, room_id):
+    membership = RoomMember.query.filter_by(room_id=room_id, user_id=current_user.id, active=True).first()
+    
+    if not membership:
+        return jsonify({'message': 'You are not a member of this room'}), 404
+    
+    from datetime import datetime
+    membership.active = False
+    membership.left_at = datetime.utcnow()
+    db.session.commit()
+    
+    return jsonify({'message': 'Left room successfully'})
+
+@bp.route('/<int:room_id>/participants', methods=['GET'])
+@token_required
+def get_participants(current_user, room_id):
+    room = Room.query.get_or_404(room_id)
+    
+    membership = RoomMember.query.filter_by(room_id=room_id, user_id=current_user.id, active=True).first()
+    if not membership:
+        return jsonify({'message': 'You must be a member to view participants'}), 403
+    
+    room.check_and_expire()
+    db.session.commit()
+    
+    active_members = RoomMember.query.filter_by(room_id=room_id, active=True).all()
+    
+    participants = []
+    for member in active_members:
+        user = member.user
+        participants.append({
+            'id': user.id,
+            'name': user.name,
+            'age': user.age,
+            'gender': user.gender,
+            'bio': user.bio,
+            'photo_url': user.photo_url,
+            'joined_at': member.joined_at.isoformat()
+        })
+    
+    return jsonify(participants)

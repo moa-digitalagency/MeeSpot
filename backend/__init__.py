@@ -28,13 +28,15 @@ def create_app():
     db.init_app(app)
     
     with app.app_context():
-        from backend.routes import auth, rooms, admin, establishments, profile
+        from backend.routes import auth, rooms, admin, establishments, profile, connection_requests, conversations
         
         app.register_blueprint(auth.bp)
         app.register_blueprint(rooms.bp)
         app.register_blueprint(admin.bp)
         app.register_blueprint(establishments.bp)
         app.register_blueprint(profile.bp)
+        app.register_blueprint(connection_requests.bp)
+        app.register_blueprint(conversations.bp)
         
         from backend.routes import static_routes
         app.register_blueprint(static_routes.bp)

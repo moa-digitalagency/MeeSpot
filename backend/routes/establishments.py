@@ -57,6 +57,10 @@ def create_room(current_user, est_id):
     
     access_code = ''.join(secrets.choice(string.ascii_uppercase + string.digits) for _ in range(8))
     
+    from datetime import timedelta
+    created_time = datetime.utcnow()
+    expires_time = created_time + timedelta(hours=24)
+    
     room = Room(
         establishment_id=est_id,
         name=data['name'],
@@ -69,7 +73,9 @@ def create_room(current_user, est_id):
         access_age_max=data.get('access_age_max'),
         event_datetime=datetime.fromisoformat(data['event_datetime']) if data.get('event_datetime') else None,
         max_capacity=data.get('max_capacity'),
-        access_code=access_code
+        access_code=access_code,
+        created_at=created_time,
+        expires_at=expires_time
     )
     db.session.add(room)
     establishment.rooms_created_today += 1
