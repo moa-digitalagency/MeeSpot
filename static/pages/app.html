@@ -458,6 +458,24 @@ www.myoneart.com
             displayRoomsList(filteredRooms);
         }
 
+        function getTimeRemaining(createdAt) {
+            const created = new Date(createdAt);
+            const expires = new Date(created.getTime() + (24 * 60 * 60 * 1000)); // +24h
+            const now = new Date();
+            const remaining = expires - now;
+            
+            if (remaining <= 0) return 'Expiré';
+            
+            const hours = Math.floor(remaining / (1000 * 60 * 60));
+            const minutes = Math.floor((remaining % (1000 * 60 * 60)) / (1000 * 60));
+            
+            if (hours > 0) {
+                return `⏱️ ${hours}h ${minutes}min restant${hours > 1 || minutes > 1 ? 's' : ''}`;
+            } else {
+                return `⏱️ ${minutes}min restant${minutes > 1 ? 's' : ''}`;
+            }
+        }
+
         function displayRoomsList(rooms) {
             const list = document.getElementById('roomsList');
             
@@ -475,6 +493,7 @@ www.myoneart.com
                         <div class="flex-1">
                             <h4 class="font-bold text-[#2D3436]">${room.name}</h4>
                             <p class="text-xs text-[#2D3436] opacity-75">${room.member_count || 0} participants</p>
+                            ${room.is_active ? `<p class="text-xs text-[#FF4458] font-semibold mt-1">${getTimeRemaining(room.created_at)}</p>` : ''}
                         </div>
                         <span class="text-xs text-[#2D3436] opacity-50">${new Date(room.created_at).toLocaleDateString()}</span>
                     </div>

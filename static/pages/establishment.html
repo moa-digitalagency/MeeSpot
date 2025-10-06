@@ -486,12 +486,26 @@ www.myoneart.com
                     
                     const membersList = document.getElementById('membersList');
                     if (room.members && room.members.length > 0) {
-                        membersList.innerHTML = room.members.map(member => `
-                            <div class="flex items-center justify-between py-2 border-b last:border-0">
-                                <span class="font-semibold text-[#2D3436]">${member.name}</span>
-                                <span class="text-xs text-[#2D3436] opacity-75">${new Date(member.joined_at).toLocaleDateString()}</span>
+                        const genderCounts = room.members.reduce((acc, m) => {
+                            acc[m.gender] = (acc[m.gender] || 0) + 1;
+                            return acc;
+                        }, {});
+                        
+                        membersList.innerHTML = `
+                            <div class="space-y-3">
+                                <div class="flex items-center justify-between py-2 px-3 bg-[#FFEAA7] rounded-lg">
+                                    <span class="font-semibold text-[#2D3436]">👥 Total</span>
+                                    <span class="text-xl font-bold text-[#FF4458]">${room.members.length}</span>
+                                </div>
+                                ${Object.entries(genderCounts).map(([gender, count]) => `
+                                    <div class="flex items-center justify-between py-2 px-3 border-b">
+                                        <span class="text-[#2D3436]">${gender === 'male' ? '👨 Hommes' : gender === 'female' ? '👩 Femmes' : '🧑 Autres'}</span>
+                                        <span class="font-bold text-[#6C5CE7]">${count}</span>
+                                    </div>
+                                `).join('')}
+                                <p class="text-xs text-[#2D3436] opacity-50 mt-2 italic">🔒 Les noms des participants sont privés pour protéger leur confidentialité</p>
                             </div>
-                        `).join('');
+                        `;
                     } else {
                         membersList.innerHTML = '<p class="text-sm text-[#2D3436] opacity-75">Aucun participant pour le moment</p>';
                     }
