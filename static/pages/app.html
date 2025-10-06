@@ -831,6 +831,22 @@ www.myoneart.com
             list.innerHTML = participants.map(p => {
                 const isMe = p.id === user.id;
                 const emojis = p.meeting_type_emojis && p.meeting_type_emojis.length > 0 ? p.meeting_type_emojis.join(' ') : '';
+                
+                let requestButton = '';
+                if (p.request_status === 'pending') {
+                    requestButton = `<button class="flex-1 py-2 bg-[#A29BFE] text-white rounded-full text-sm font-semibold cursor-default">
+                        ⏳ Envoyé
+                    </button>`;
+                } else if (p.request_status === 'rejected') {
+                    requestButton = `<button class="flex-1 py-2 bg-gray-300 text-gray-500 rounded-full text-sm font-semibold cursor-not-allowed" disabled>
+                        ❌ Rejeté
+                    </button>`;
+                } else {
+                    requestButton = `<button onclick="sendConnectionRequest(${p.id})" class="flex-1 py-2 bg-[#FF4458] text-white rounded-full text-sm font-semibold hover:bg-[#e03d4c] transition-colors">
+                        💬 Demande
+                    </button>`;
+                }
+                
                 return `
                     <div class="bg-gray-50 rounded-xl p-4">
                         <div class="flex items-center gap-3 mb-2">
@@ -848,9 +864,7 @@ www.myoneart.com
                                 <button onclick="viewUserProfile(${p.id})" class="flex-1 py-2 bg-[#6C5CE7] text-white rounded-full text-sm font-semibold hover:bg-[#5b4ed6] transition-colors">
                                     👤 Voir profil
                                 </button>
-                                <button onclick="sendConnectionRequest(${p.id})" class="flex-1 py-2 bg-[#FF4458] text-white rounded-full text-sm font-semibold hover:bg-[#e03d4c] transition-colors">
-                                    💬 Demande
-                                </button>
+                                ${requestButton}
                             </div>
                         ` : ''}
                     </div>
@@ -905,6 +919,15 @@ www.myoneart.com
                 
                 if (response.ok) {
                     alert('Demande envoyée !');
+                    
+                    const participantsResponse = await fetch(`/api/rooms/${currentRoomId}/participants`, {
+                        headers: { 'Authorization': `Bearer ${token}` }
+                    });
+                    
+                    if (participantsResponse.ok) {
+                        const participants = await participantsResponse.json();
+                        displayParticipants(participants);
+                    }
                 } else {
                     const error = await response.json();
                     alert(error.message || 'Erreur lors de l\'envoi');
