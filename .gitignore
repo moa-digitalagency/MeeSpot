@@ -20,6 +20,7 @@ instance/
 # Environment
 .env
 .replit
+.encryption_key
 
 # IDE
 .vscode/

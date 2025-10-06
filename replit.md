@@ -91,7 +91,10 @@ A progressive web application (PWA) dating platform focused on real-life meeting
 ### Environment Variables
 - `DATABASE_URL`: PostgreSQL connection (auto-configured)
 - `SECRET_KEY`: JWT signing key (auto-generated for dev)
-- `ENCRYPTION_KEY`: Clé de chiffrement Fernet pour les données sensibles (auto-générée au premier lancement)
+- `ENCRYPTION_KEY`: **IMPORTANT** Encryption key for sensitive data
+  - **Development**: Auto-generated and saved to `.encryption_key` file
+  - **Production**: **MUST** be set as environment variable for multi-process deployments
+  - Losing this key means all encrypted data becomes unrecoverable
 - `FLASK_ENV`: Environment (development/production)
 
 ## API Endpoints

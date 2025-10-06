@@ -48,7 +48,7 @@ def create_request(current_user):
         status='pending'
     ).first()
     
-    if not existing:
+    if existing:
         return jsonify({'message': 'Request already sent'}), 400
     
     conn_request = ConnectionRequest(
