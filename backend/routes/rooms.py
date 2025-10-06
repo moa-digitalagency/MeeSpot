@@ -174,11 +174,10 @@ def get_participants(current_user, room_id):
     for member in active_members:
         user = member.user
         meeting_type_emojis = []
-        if user.meeting_types:
-            for mt in user.meeting_types:
-                emoji = meeting_type_options.get(mt, '')
-                if emoji:
-                    meeting_type_emojis.append(emoji)
+        if user.meeting_type:
+            emoji = meeting_type_options.get(user.meeting_type, '')
+            if emoji:
+                meeting_type_emojis.append(emoji)
         
         participants.append({
             'id': user.id,

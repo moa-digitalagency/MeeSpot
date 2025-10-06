@@ -68,7 +68,7 @@ www.myoneart.com
             <div class="flex justify-between items-center mb-4">
                 <div>
                     <h1 class="text-2xl font-bold text-[#2D3436]">Accueil</h1>
-                    <p class="text-sm text-[#2D3436] opacity-75">Rejoignez un événement</p>
+                    <p class="text-sm text-[#2D3436] opacity-75">Rejoignez un room</p>
                 </div>
                 <div class="w-10 h-10 rounded-full bg-gradient-to-br from-[#FF4458] to-[#A29BFE] flex items-center justify-center text-white font-semibold" id="userAvatar">
                     U
@@ -92,7 +92,7 @@ www.myoneart.com
 
             <div class="mb-4">
                 <div class="flex justify-between items-center mb-3">
-                    <h3 class="font-bold text-[#2D3436]">Mes événements</h3>
+                    <h3 class="font-bold text-[#2D3436]">Mes rooms</h3>
                     <button onclick="switchPage('rooms')" class="text-sm text-[#FF4458] font-semibold">Voir tous →</button>
                 </div>
                 <div id="pastRoomsList" class="space-y-3">
@@ -114,7 +114,7 @@ www.myoneart.com
 
     <div id="page-rooms" class="page-content hidden">
         <div class="px-4 pt-4 pb-2">
-            <h1 class="text-2xl font-bold text-[#2D3436] mb-4">Tous mes événements</h1>
+            <h1 class="text-2xl font-bold text-[#2D3436] mb-4">Tous mes rooms</h1>
             
             <div class="flex gap-2 mb-4">
                 <button id="filter-active" onclick="filterRooms('active')" class="flex-1 py-2 px-4 rounded-full bg-[#FF4458] text-white text-sm font-semibold">
@@ -440,10 +440,10 @@ www.myoneart.com
             <div id="roomDetails" class="mb-4"></div>
             
             <button onclick="leaveRoom()" class="w-full mb-4 py-3 bg-red-500 text-white rounded-full hover:bg-red-600 transition font-semibold">
-                Quitter l'événement
+                Quitter l'room
             </button>
             
-            <h4 class="font-bold text-[#2D3436] mb-3">Participants</h4>
+            <h4 class="font-bold text-[#2D3436] mb-3">Personnes</h4>
             <div id="participantsList" class="space-y-3">
                 <p class="text-sm text-[#2D3436] opacity-75 text-center py-4">Chargement...</p>
             </div>
@@ -614,7 +614,7 @@ www.myoneart.com
             const list = document.getElementById('pastRoomsList');
             
             if (rooms.length === 0) {
-                list.innerHTML = '<p class="text-sm text-[#2D3436] opacity-75 text-center py-8">Aucun événement rejoint</p>';
+                list.innerHTML = '<p class="text-sm text-[#2D3436] opacity-75 text-center py-8">Aucun room rejoint</p>';
                 return;
             }
             
@@ -694,7 +694,7 @@ www.myoneart.com
             const list = document.getElementById('roomsList');
             
             if (rooms.length === 0) {
-                list.innerHTML = `<p class="text-sm text-[#2D3436] opacity-75 text-center py-8">Aucun événement ${roomFilter === 'active' ? 'actif' : 'expiré'}</p>`;
+                list.innerHTML = `<p class="text-sm text-[#2D3436] opacity-75 text-center py-8">Aucun room ${roomFilter === 'active' ? 'actif' : 'expiré'}</p>`;
                 return;
             }
             
@@ -737,12 +737,12 @@ www.myoneart.com
                 
                 if (response.ok) {
                     const data = await response.json();
-                    alert('Vous avez rejoint l\'événement !');
+                    alert('Vous avez rejoint l\'room !');
                     document.getElementById('accessCodeInput').value = '';
                     loadPastRooms();
                 } else {
                     const error = await response.json();
-                    alert(error.message || 'Code invalide ou événement introuvable');
+                    alert(error.message || 'Code invalide ou room introuvable');
                 }
             } catch (error) {
                 alert('Erreur de connexion');
@@ -864,7 +864,7 @@ www.myoneart.com
         }
 
         async function leaveRoom() {
-            if (!currentRoomId || !confirm('Voulez-vous vraiment quitter cet événement ?')) return;
+            if (!currentRoomId || !confirm('Voulez-vous vraiment quitter cet room ?')) return;
             
             const token = localStorage.getItem('token');
             
@@ -875,7 +875,7 @@ www.myoneart.com
                 });
                 
                 if (response.ok) {
-                    alert('Vous avez quitté l\'événement');
+                    alert('Vous avez quitté l\'room');
                     closeParticipantsModal();
                     loadPastRooms();
                     loadUserRooms();
