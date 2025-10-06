@@ -49,7 +49,10 @@
             </div>
 
             <div class="mb-4">
-                <h3 class="font-bold text-[#2D3436] mb-3">Mes événements</h3>
+                <div class="flex justify-between items-center mb-3">
+                    <h3 class="font-bold text-[#2D3436]">Mes événements</h3>
+                    <button onclick="switchPage('rooms')" class="text-sm text-[#FF4458] font-semibold">Voir tous →</button>
+                </div>
                 <div id="pastRoomsList" class="space-y-3">
                     <p class="text-sm text-[#2D3436] opacity-75 text-center py-8">Chargement...</p>
                 </div>
@@ -57,9 +60,19 @@
         </div>
     </div>
 
+    <div id="page-chat" class="page-content hidden">
+        <div class="px-4 pt-4 pb-2">
+            <h1 class="text-2xl font-bold text-[#2D3436] mb-4">Messages</h1>
+            
+            <div id="conversationsList" class="space-y-3">
+                <p class="text-sm text-[#2D3436] opacity-75 text-center py-8">Chargement...</p>
+            </div>
+        </div>
+    </div>
+
     <div id="page-rooms" class="page-content hidden">
         <div class="px-4 pt-4 pb-2">
-            <h1 class="text-2xl font-bold text-[#2D3436] mb-4">Événements</h1>
+            <h1 class="text-2xl font-bold text-[#2D3436] mb-4">Tous mes événements</h1>
             
             <div class="flex gap-2 mb-4">
                 <button id="filter-active" onclick="filterRooms('active')" class="flex-1 py-2 px-4 rounded-full bg-[#FF4458] text-white text-sm font-semibold">
@@ -135,10 +148,6 @@
                 <p id="profileBioText" class="text-[#2D3436] opacity-75">Aucune bio</p>
             </div>
 
-            <button onclick="showConversations()" class="w-full py-3 bg-[#6C5CE7] text-white rounded-full hover:bg-[#5f52d6] transition font-semibold mb-2">
-                💬 Mes Conversations
-            </button>
-
             <button onclick="showEditProfile()" class="w-full py-3 bg-[#FF4458] text-white rounded-full hover:bg-[#e03d4c] transition font-semibold mb-2">
                 Modifier le profil
             </button>
@@ -157,11 +166,11 @@
                 </svg>
                 <span class="text-xs mt-1">Accueil</span>
             </button>
-            <button onclick="switchPage('rooms')" id="nav-rooms" class="nav-item flex flex-col items-center justify-center">
+            <button onclick="switchPage('chat')" id="nav-chat" class="nav-item flex flex-col items-center justify-center">
                 <svg fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 20h5v-2a3 3 0 00-5.356-1.857M17 20H7m10 0v-2c0-.656-.126-1.283-.356-1.857M7 20H2v-2a3 3 0 015.356-1.857M7 20v-2c0-.656.126-1.283.356-1.857m0 0a5.002 5.002 0 019.288 0M15 7a3 3 0 11-6 0 3 3 0 016 0zm6 3a2 2 0 11-4 0 2 2 0 014 0zM7 10a2 2 0 11-4 0 2 2 0 014 0z"/>
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 12h.01M12 12h.01M16 12h.01M21 12c0 4.418-4.03 8-9 8a9.863 9.863 0 01-4.255-.949L3 20l1.395-3.72C3.512 15.042 3 13.574 3 12c0-4.418 4.03-8 9-8s9 3.582 9 8z"/>
                 </svg>
-                <span class="text-xs mt-1">Événements</span>
+                <span class="text-xs mt-1">Chat</span>
             </button>
             <button onclick="switchPage('requests')" id="nav-requests" class="nav-item flex flex-col items-center justify-center">
                 <svg fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -242,19 +251,6 @@
         </div>
     </div>
 
-    <div id="conversationsModal" class="hidden fixed inset-0 bg-black bg-opacity-50 flex items-end z-50">
-        <div class="bg-white rounded-t-3xl w-full p-6 max-h-[90vh] overflow-y-auto">
-            <div class="flex justify-between items-center mb-4">
-                <h3 class="text-2xl font-bold text-[#2D3436]">Conversations</h3>
-                <button onclick="closeConversations()" class="text-gray-500 hover:text-gray-700 text-2xl">&times;</button>
-            </div>
-            
-            <div id="conversationsList" class="space-y-3">
-                <p class="text-sm text-[#2D3436] opacity-75 text-center py-8">Chargement...</p>
-            </div>
-        </div>
-    </div>
-
     <div id="chatModal" class="hidden fixed inset-0 bg-black bg-opacity-50 flex items-end z-50">
         <div class="bg-white rounded-t-3xl w-full p-6 max-h-[90vh] flex flex-col">
             <div class="flex justify-between items-center mb-4">
@@ -313,6 +309,8 @@
                 loadUserRooms();
             } else if (page === 'requests') {
                 loadRequests();
+            } else if (page === 'chat') {
+                loadConversations();
             }
         }
 
@@ -738,7 +736,7 @@
             }
         }
 
-        async function showConversations() {
+        async function loadConversations() {
             const token = localStorage.getItem('token');
             
             try {
@@ -749,7 +747,6 @@
                 if (response.ok) {
                     const conversations = await response.json();
                     displayConversations(conversations);
-                    document.getElementById('conversationsModal').classList.remove('hidden');
                 }
             } catch (error) {
                 console.error('Error loading conversations:', error);
@@ -782,15 +779,10 @@
             }).join('');
         }
 
-        function closeConversations() {
-            document.getElementById('conversationsModal').classList.add('hidden');
-        }
-
         async function openChat(conversationId, otherUserName) {
             currentConversationId = conversationId;
             document.getElementById('chatWithName').textContent = `💬 ${otherUserName}`;
             document.getElementById('chatModal').classList.remove('hidden');
-            closeConversations();
             
             await loadPrivateMessages();
             
