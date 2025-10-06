@@ -51,7 +51,7 @@ A progressive web application (PWA) dating platform focused on real-life meeting
 ### Database Schema
 - Users (with role, subscription, demographics)
 - Establishments (venues with subscription plans)
-- Rooms (events with access rules)
+- Rooms (events with access rules + unique access_code)
 - RoomMembers (join tracking)
 - Messages (room-based chat)
 - Reports (moderation system)
@@ -102,7 +102,8 @@ A progressive web application (PWA) dating platform focused on real-life meeting
 
 ### Establishments
 - POST `/api/establishments`: Create venue (establishment role)
-- POST `/api/establishments/<id>/rooms`: Create event (respects daily limits)
+- POST `/api/establishments/<id>/rooms`: Create event (respects daily limits, auto-generates access code)
+- GET `/api/establishments/me/rooms/<id>`: Get detailed room stats, members, and access code
 
 ### Admin
 - GET `/api/admin/users`: List all users
@@ -112,6 +113,16 @@ A progressive web application (PWA) dating platform focused on real-life meeting
 - POST `/api/reports`: Submit user/room report
 
 ## Recent Changes
+- 2025-10-06: Room access code system implemented
+  - 8-character alphanumeric access codes auto-generated for each event
+  - QR code generation using QRious library (v4.0.2)
+  - Establishment room details modal with:
+    - Access code display
+    - QR code for easy sharing
+    - Member count and capacity stats
+    - Full participant list with join dates
+  - Access codes visible on room cards in establishment dashboard
+  - New API endpoint: GET `/api/establishments/me/rooms/<id>` for room details
 - 2025-10-04: Complete mobile-first redesign with bottom navigation bars
   - User dashboard: 2 tabs (Discover, Profile) with bottom sheet modals
   - Establishment dashboard: 3 tabs (Dashboard, Analytics, Profile) with event creation modal
