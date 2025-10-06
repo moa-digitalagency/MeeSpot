@@ -50,6 +50,10 @@ def save_upload_file(file: FileStorage, subfolder='photos'):
     # Return relative path for storage in database
     return f"/{file_path}"
 
+def save_chat_photo(file: FileStorage):
+    """Save chat photo and return its path"""
+    return save_upload_file(file, subfolder='chat_photos')
+
 def delete_upload_file(file_path):
     """Delete uploaded file"""
     if file_path and os.path.exists(file_path.lstrip('/')):

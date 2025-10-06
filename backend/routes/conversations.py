@@ -11,6 +11,8 @@ from backend import db
 from backend.models.private_conversation import PrivateConversation
 from backend.models.private_message import PrivateMessage
 from backend.utils.auth import token_required
+from backend.utils.file_upload import save_chat_photo
+from werkzeug.utils import secure_filename
 
 bp = Blueprint('conversations', __name__, url_prefix='/api/conversations')
 
@@ -79,3 +81,37 @@ def send_message(current_user, conversation_id):
     db.session.commit()
     
     return jsonify({'message': 'Message sent successfully', 'id': message.id})
+
+@bp.route('/<int:conversation_id>/send-photo', methods=['POST'])
+@token_required
+def send_photo(current_user, conversation_id):
+    conversation = PrivateConversation.query.get_or_404(conversation_id)
+    
+    if conversation.user1_id != current_user.id and conversation.user2_id != current_user.id:
+        return jsonify({'message': 'Unauthorized'}), 403
+    
+    if not conversation.is_active:
+        return jsonify({'message': 'Conversation is closed'}), 400
+    
+    if 'photo' not in request.files:
+        return jsonify({'message': 'No photo provided'}), 400
+    
+    file = request.files['photo']
+    if file.filename == '':
+        return jsonify({'message': 'No photo selected'}), 400
+    
+    try:
+        photo_url = save_chat_photo(file)
+        
+        message = PrivateMessage(
+            conversation_id=conversation_id,
+            sender_id=current_user.id,
+            content='[PHOTO]',
+            photo_url=photo_url
+        )
+        db.session.add(message)
+        db.session.commit()
+        
+        return jsonify({'message': 'Photo sent successfully', 'id': message.id, 'photo_url': photo_url})
+    except Exception as e:
+        return jsonify({'message': str(e)}), 400

@@ -462,7 +462,35 @@ www.myoneart.com
             
             <div id="chatMessages" class="bg-[#FFEAA7] rounded-xl p-4 flex-1 overflow-y-auto mb-4 min-h-[400px]"></div>
             
+            <div id="emojiPicker" class="hidden mb-2 bg-white border-2 border-gray-200 rounded-xl p-3 max-h-48 overflow-y-auto">
+                <div class="grid grid-cols-8 gap-2">
+                    <button type="button" onclick="insertEmoji('😊')" class="text-2xl hover:bg-gray-100 rounded p-1">😊</button>
+                    <button type="button" onclick="insertEmoji('😂')" class="text-2xl hover:bg-gray-100 rounded p-1">😂</button>
+                    <button type="button" onclick="insertEmoji('❤️')" class="text-2xl hover:bg-gray-100 rounded p-1">❤️</button>
+                    <button type="button" onclick="insertEmoji('😍')" class="text-2xl hover:bg-gray-100 rounded p-1">😍</button>
+                    <button type="button" onclick="insertEmoji('🔥')" class="text-2xl hover:bg-gray-100 rounded p-1">🔥</button>
+                    <button type="button" onclick="insertEmoji('👍')" class="text-2xl hover:bg-gray-100 rounded p-1">👍</button>
+                    <button type="button" onclick="insertEmoji('😭')" class="text-2xl hover:bg-gray-100 rounded p-1">😭</button>
+                    <button type="button" onclick="insertEmoji('🎉')" class="text-2xl hover:bg-gray-100 rounded p-1">🎉</button>
+                    <button type="button" onclick="insertEmoji('😘')" class="text-2xl hover:bg-gray-100 rounded p-1">😘</button>
+                    <button type="button" onclick="insertEmoji('💕')" class="text-2xl hover:bg-gray-100 rounded p-1">💕</button>
+                    <button type="button" onclick="insertEmoji('😎')" class="text-2xl hover:bg-gray-100 rounded p-1">😎</button>
+                    <button type="button" onclick="insertEmoji('✨')" class="text-2xl hover:bg-gray-100 rounded p-1">✨</button>
+                    <button type="button" onclick="insertEmoji('💪')" class="text-2xl hover:bg-gray-100 rounded p-1">💪</button>
+                    <button type="button" onclick="insertEmoji('🙏')" class="text-2xl hover:bg-gray-100 rounded p-1">🙏</button>
+                    <button type="button" onclick="insertEmoji('😢')" class="text-2xl hover:bg-gray-100 rounded p-1">😢</button>
+                    <button type="button" onclick="insertEmoji('🌹')" class="text-2xl hover:bg-gray-100 rounded p-1">🌹</button>
+                </div>
+            </div>
+            
             <form onsubmit="sendPrivateMessage(event)" class="flex gap-2">
+                <button type="button" onclick="toggleEmojiPicker()" class="px-3 py-2 bg-gray-100 text-gray-600 rounded-full hover:bg-gray-200 transition">
+                    😊
+                </button>
+                <button type="button" onclick="document.getElementById('chatPhotoInput').click()" class="px-3 py-2 bg-gray-100 text-gray-600 rounded-full hover:bg-gray-200 transition">
+                    📷
+                </button>
+                <input type="file" id="chatPhotoInput" accept="image/*" class="hidden" onchange="handleChatPhoto(event)">
                 <input type="text" id="privateMessageInput" placeholder="Tapez un message..." class="flex-1 px-4 py-2 border border-gray-300 rounded-full focus:outline-none focus:border-[#FF4458]">
                 <button type="submit" class="px-6 py-2 bg-[#FF4458] text-white rounded-full hover:bg-[#e03d4c] transition">
                     <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -1259,16 +1287,73 @@ www.myoneart.com
             
             container.innerHTML = messages.map(msg => {
                 const isMe = msg.sender_id === user.id;
+                let messageContent = '';
+                
+                if (msg.photo_url) {
+                    messageContent = `<img src="${msg.photo_url}" alt="Photo" class="max-w-full rounded-xl mb-1" style="max-height: 300px;">`;
+                    if (msg.content && msg.content !== '[PHOTO]') {
+                        messageContent += `<div class="text-sm mt-2">${msg.content}</div>`;
+                    }
+                } else {
+                    messageContent = `<div class="text-sm">${msg.content}</div>`;
+                }
+                
                 return `
                     <div class="mb-3 ${isMe ? 'text-right' : 'text-left'}">
                         <div class="inline-block max-w-[70%] ${isMe ? 'bg-[#FF4458] text-white' : 'bg-white text-[#2D3436]'} rounded-2xl px-4 py-2">
-                            <div class="text-sm">${msg.content}</div>
+                            ${messageContent}
                             <div class="text-xs opacity-75 mt-1">${new Date(msg.created_at).toLocaleTimeString()}</div>
                         </div>
                     </div>
                 `;
             }).join('');
             container.scrollTop = container.scrollHeight;
+        }
+
+        function toggleEmojiPicker() {
+            const picker = document.getElementById('emojiPicker');
+            picker.classList.toggle('hidden');
+        }
+
+        function insertEmoji(emoji) {
+            const input = document.getElementById('privateMessageInput');
+            input.value += emoji;
+            input.focus();
+            document.getElementById('emojiPicker').classList.add('hidden');
+        }
+
+        async function handleChatPhoto(event) {
+            const file = event.target.files[0];
+            if (!file) return;
+            
+            if (!confirm('⚠️ CONSENTEMENT REQUIS ⚠️\n\nEn cliquant sur "OK", vous consentez à :\n• Partager cette photo avec votre interlocuteur\n• Le fait que cette action est irréversible\n• Le fait que cette photo sera stockée sur nos serveurs\n\nÊtes-vous sûr de vouloir envoyer cette photo ?')) {
+                event.target.value = '';
+                return;
+            }
+            
+            const token = localStorage.getItem('token');
+            const formData = new FormData();
+            formData.append('photo', file);
+            
+            try {
+                const response = await fetch(`/api/conversations/${currentConversationId}/send-photo`, {
+                    method: 'POST',
+                    headers: {
+                        'Authorization': `Bearer ${token}`
+                    },
+                    body: formData
+                });
+                
+                if (response.ok) {
+                    loadPrivateMessages();
+                    event.target.value = '';
+                } else {
+                    alert('❌ Erreur lors de l\'envoi de la photo');
+                }
+            } catch (error) {
+                console.error('Error sending photo:', error);
+                alert('❌ Erreur de connexion');
+            }
         }
 
         async function sendPrivateMessage(e) {
