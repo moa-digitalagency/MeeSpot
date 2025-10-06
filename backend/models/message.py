@@ -1,4 +1,5 @@
 from backend import db
+from backend.utils.encrypted_types import EncryptedText
 from datetime import datetime
 
 class Message(db.Model):
@@ -7,7 +8,7 @@ class Message(db.Model):
     id = db.Column(db.Integer, primary_key=True)
     room_id = db.Column(db.Integer, db.ForeignKey('rooms.id'), nullable=False)
     user_id = db.Column(db.Integer, db.ForeignKey('users.id'), nullable=False)
-    content = db.Column(db.Text, nullable=False)
+    content = db.Column(EncryptedText(5000), nullable=False)
     is_announcement = db.Column(db.Boolean, default=False)
     created_at = db.Column(db.DateTime, default=datetime.utcnow)
     
