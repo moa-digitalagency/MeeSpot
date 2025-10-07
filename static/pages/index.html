@@ -61,31 +61,30 @@ www.myoneart.com
 
     <!-- Hero Slider with Background Images -->
     <section class="relative overflow-hidden" style="height: 500px;">
-        <!-- Slider Backgrounds -->
+        <!-- Gradient Background -->
+        <div class="absolute inset-0 bg-gradient-to-r from-[#FF4458] to-[#6C5CE7]"></div>
+        
+        <!-- Slider Background Images (low opacity) -->
         <div id="heroSlider" class="absolute inset-0">
             <!-- Slide 1 -->
             <div class="hero-slide active absolute inset-0 transition-opacity duration-1000">
-                <img src="/images/gallery/young_people_meeting_4cd6d14e.jpg" alt="Hero" class="w-full h-full object-cover">
-                <div class="absolute inset-0 bg-gradient-to-r from-[#FF4458]/80 to-[#6C5CE7]/80"></div>
+                <img src="/images/gallery/young_people_meeting_4cd6d14e.jpg" alt="Hero" class="w-full h-full object-cover opacity-30">
             </div>
             <!-- Slide 2 -->
             <div class="hero-slide absolute inset-0 transition-opacity duration-1000 opacity-0">
-                <img src="/images/gallery/happy_diverse_couple_47c786aa.jpg" alt="Hero" class="w-full h-full object-cover">
-                <div class="absolute inset-0 bg-gradient-to-r from-[#FF4458]/80 to-[#6C5CE7]/80"></div>
+                <img src="/images/gallery/happy_diverse_couple_47c786aa.jpg" alt="Hero" class="w-full h-full object-cover opacity-30">
             </div>
             <!-- Slide 3 -->
             <div class="hero-slide absolute inset-0 transition-opacity duration-1000 opacity-0">
-                <img src="/images/gallery/young_people_meeting_7a1c716c.jpg" alt="Hero" class="w-full h-full object-cover">
-                <div class="absolute inset-0 bg-gradient-to-r from-[#FF4458]/80 to-[#6C5CE7]/80"></div>
+                <img src="/images/gallery/young_people_meeting_7a1c716c.jpg" alt="Hero" class="w-full h-full object-cover opacity-30">
             </div>
             <!-- Slide 4 -->
             <div class="hero-slide absolute inset-0 transition-opacity duration-1000 opacity-0">
-                <img src="/images/gallery/young_people_meeting_54f627b7.jpg" alt="Hero" class="w-full h-full object-cover">
-                <div class="absolute inset-0 bg-gradient-to-r from-[#FF4458]/80 to-[#6C5CE7]/80"></div>
+                <img src="/images/gallery/young_people_meeting_54f627b7.jpg" alt="Hero" class="w-full h-full object-cover opacity-30">
             </div>
         </div>
         
-        <!-- Overlay Content -->
+        <!-- Text Content -->
         <div class="relative z-10 h-full flex items-center justify-center text-center text-white px-4">
             <div>
                 <div class="text-6xl mb-4">💝✨</div>
@@ -123,89 +122,6 @@ www.myoneart.com
                 <h4 class="text-xl font-semibold mb-2 text-white">Meet in Person</h4>
                 <p class="text-white">Connect face-to-face in a safe, fun environment designed for real connections</p>
             </div>
-        </div>
-    </section>
-
-    <!-- Real Connections Gallery Slider -->
-    <section class="py-12 bg-[#F5F5F5] px-4 relative">
-        <h3 class="text-2xl font-bold text-center text-[#2D3436] mb-2">💫 Real Connections, Real Moments</h3>
-        <p class="text-center text-[#2D3436] opacity-75 mb-8">See what makes MeetSpot special</p>
-        
-        <!-- Slider Container -->
-        <div class="relative rounded-3xl overflow-hidden shadow-2xl" style="height: 400px;">
-            <!-- Slides -->
-            <div id="gallerySlider" class="relative w-full h-full">
-                <!-- Slide 1 -->
-                <div class="gallery-slide active absolute inset-0 transition-opacity duration-500">
-                    <img src="/images/gallery/young_people_meeting_4cd6d14e.jpg" alt="People meeting at venue" class="w-full h-full object-cover">
-                    <div class="absolute inset-0 bg-gradient-to-t from-black/60 to-transparent flex items-end">
-                        <div class="p-6 text-white">
-                            <h4 class="text-xl font-bold mb-2">Real Venues, Real People</h4>
-                            <p class="text-sm opacity-90">Meet in person at curated events</p>
-                        </div>
-                    </div>
-                </div>
-                
-                <!-- Slide 2 -->
-                <div class="gallery-slide absolute inset-0 transition-opacity duration-500 opacity-0">
-                    <img src="/images/gallery/happy_diverse_couple_47c786aa.jpg" alt="Happy couple" class="w-full h-full object-cover">
-                    <div class="absolute inset-0 bg-gradient-to-t from-black/60 to-transparent flex items-end">
-                        <div class="p-6 text-white">
-                            <h4 class="text-xl font-bold mb-2">Authentic Connections</h4>
-                            <p class="text-sm opacity-90">Build meaningful relationships</p>
-                        </div>
-                    </div>
-                </div>
-                
-                <!-- Slide 3 -->
-                <div class="gallery-slide absolute inset-0 transition-opacity duration-500 opacity-0">
-                    <img src="/images/gallery/young_people_meeting_7a1c716c.jpg" alt="Social event" class="w-full h-full object-cover">
-                    <div class="absolute inset-0 bg-gradient-to-t from-black/60 to-transparent flex items-end">
-                        <div class="p-6 text-white">
-                            <h4 class="text-xl font-bold mb-2">Fun Social Events</h4>
-                            <p class="text-sm opacity-90">Enjoy curated dating experiences</p>
-                        </div>
-                    </div>
-                </div>
-                
-                <!-- Slide 4 -->
-                <div class="gallery-slide absolute inset-0 transition-opacity duration-500 opacity-0">
-                    <img src="/images/gallery/young_people_meeting_54f627b7.jpg" alt="Dating event atmosphere" class="w-full h-full object-cover">
-                    <div class="absolute inset-0 bg-gradient-to-t from-black/60 to-transparent flex items-end">
-                        <div class="p-6 text-white">
-                            <h4 class="text-xl font-bold mb-2">Safe & Verified</h4>
-                            <p class="text-sm opacity-90">All members are verified for your safety</p>
-                        </div>
-                    </div>
-                </div>
-            </div>
-            
-            <!-- Navigation Arrows -->
-            <button onclick="prevSlide()" class="absolute left-4 top-1/2 -translate-y-1/2 bg-white/20 backdrop-blur-sm hover:bg-white/40 text-white rounded-full p-3 transition z-10">
-                <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 19l-7-7 7-7"/>
-                </svg>
-            </button>
-            <button onclick="nextSlide()" class="absolute right-4 top-1/2 -translate-y-1/2 bg-white/20 backdrop-blur-sm hover:bg-white/40 text-white rounded-full p-3 transition z-10">
-                <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7"/>
-                </svg>
-            </button>
-            
-            <!-- Dots Indicator -->
-            <div class="absolute bottom-4 left-1/2 -translate-x-1/2 flex gap-2 z-10">
-                <button onclick="goToSlide(0)" class="slider-dot w-2 h-2 rounded-full bg-white transition"></button>
-                <button onclick="goToSlide(1)" class="slider-dot w-2 h-2 rounded-full bg-white/50 transition"></button>
-                <button onclick="goToSlide(2)" class="slider-dot w-2 h-2 rounded-full bg-white/50 transition"></button>
-                <button onclick="goToSlide(3)" class="slider-dot w-2 h-2 rounded-full bg-white/50 transition"></button>
-            </div>
-        </div>
-        
-        <!-- CTA -->
-        <div class="text-center mt-8">
-            <button onclick="showRegister()" class="px-8 py-4 bg-gradient-to-r from-[#FF4458] to-[#6C5CE7] text-white rounded-full text-lg font-bold hover:shadow-2xl transition-all transform hover:scale-105">
-                Join the Community 🎉
-            </button>
         </div>
     </section>
 
@@ -788,6 +704,36 @@ www.myoneart.com
                 alert('Connection error');
             }
         }
+        
+        // Hero Slider
+        let currentHeroSlide = 0;
+        const heroSlides = document.querySelectorAll('.hero-slide');
+        const heroDots = document.querySelectorAll('.hero-dot');
+        
+        function showHeroSlide(index) {
+            heroSlides.forEach((slide, i) => {
+                slide.classList.toggle('opacity-0', i !== index);
+                slide.classList.toggle('active', i === index);
+            });
+            heroDots.forEach((dot, i) => {
+                dot.classList.toggle('bg-white', i === index);
+                dot.classList.toggle('bg-white/50', i !== index);
+            });
+        }
+        
+        function goToHeroSlide(index) {
+            currentHeroSlide = index;
+            showHeroSlide(index);
+        }
+        
+        function nextHeroSlide() {
+            currentHeroSlide = (currentHeroSlide + 1) % heroSlides.length;
+            showHeroSlide(currentHeroSlide);
+        }
+        
+        // Auto-advance hero slider every 5 seconds
+        setInterval(nextHeroSlide, 5000);
+        
         if ('serviceWorker' in navigator) {
             navigator.serviceWorker.register('/sw.js')
                 .then(registration => console.log('ServiceWorker registered'))
