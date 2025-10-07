@@ -28,13 +28,15 @@ MeetSpot is built as a PWA with a Python Flask backend and a Tailwind CSS fronte
 - **User Roles & Access Control**: Admin, Establishment, and User roles with role-based access control. Room access can be filtered by gender, orientation, and age.
 - **Rooms System**: Event-based meeting spaces at physical venues with 24-hour expiration. Rooms are joined via unique 8-character access codes or QR code scanning.
 - **Connection & Communication**: Replaces group chat with a system of connection requests between users. Upon acceptance, private 1-to-1 encrypted conversations are established. Private messages support text, emojis (16-emoji picker), and photo uploads with explicit consent confirmation.
+- **Conversation Expiration System**: Conversations automatically expire based on subscription tier (Free: 24h, Premium: 7 days, Platinum: 30 days). Expiration calculated from best tier between both users. UI displays real-time countdown (days/hours/minutes). Server-side enforcement on all conversation endpoints (send_message, get_messages, get_conversation, send_photo) prevents messaging in expired threads. Conversations are unique per (room_id, user1, user2), allowing same users to have multiple conversations in different rooms. Active/expired filter in messages UI.
+- **User Blocking System**: Users can block others via UserBlock model with unique constraint. Blocked users are completely invisible across all rooms in get_participants(). Bidirectional filtering ensures both blocker and blocked users never see each other.
 - **Subscription Tiers**: Multiple tiers for Users (Free, Premium, Platinum) offering features like priority access, alternative identity mode (hiding photos/pseudonyms), and unlimited messaging. Establishments also have subscription plans for creating rooms and accessing analytics.
 - **Profile Management**: Enriched user profiles include auto-generated usernames, birthdate (for dynamic age calculation), sexual orientation, multi-select meeting types, interests, and photo galleries. Admin-customizable profile options (gender, meeting type, interest) are managed via a dedicated dashboard.
 - **Reporting & Moderation**: A system for users to report inappropriate content or behavior, with admin oversight.
 - **Backup & Deployment System**: Comprehensive admin-managed system for automated backups (database, uploaded files, configuration), secure restoration with path validation, database migrations with auto-detection of schema changes, and GitHub-based updates with pre-update backups. Backups use PostgreSQL custom format and are compressed to .tar.gz with automatic rotation (keeps last 10).
 
 ### System Design Choices
-The backend organizes routes by resource (auth, rooms, establishments, admin, profile, connection_requests, conversations) and uses a centralized configuration. Database schema includes Users (with detailed demographics and subscription info), Establishments, Rooms (with access rules and expiration), RoomMembers, ConnectionRequest, PrivateConversation, PrivateMessage (with photo_url support), Reports, and SubscriptionPlans. A `ProfileOption` model allows admins to define and manage selectable options for user profiles dynamically.
+The backend organizes routes by resource (auth, rooms, establishments, admin, profile, connection_requests, conversations) and uses a centralized configuration. Database schema includes Users (with detailed demographics and subscription info), Establishments, Rooms (with access rules and expiration), RoomMembers, ConnectionRequest, PrivateConversation (with expires_at, started_at, room_id NOT NULL, unique constraint on room_id+user1_id+user2_id), PrivateMessage (with photo_url support), UserBlock (with unique constraint on blocker_id+blocked_id), Reports, and SubscriptionPlans. A `ProfileOption` model allows admins to define and manage selectable options for user profiles dynamically.
 
 **Deployment & Backup Infrastructure**:
 - `scripts/backup.py`: Creates comprehensive backups (PostgreSQL dump in custom format, uploads folder, .env, requirements.txt, .encryption_key)
@@ -62,6 +64,18 @@ The backend organizes routes by resource (auth, rooms, establishments, admin, pr
 - **wsgi.py**: Standard WSGI entry point for production deployments
 
 ## Recent Changes (October 2025)
+- **Conversation Expiration & Countdown System** (October 7):
+  - Added `expires_at` and `started_at` fields to PrivateConversation model
+  - Implemented tier-based expiration: Free=24h, Premium=7d, Platinum=30d
+  - Added `check_and_expire()` method enforced on all conversation endpoints
+  - Built UI countdown timer showing days/hours/minutes remaining
+  - Added active/expired filter in messages interface with query param support
+  - Unique constraint on (room_id, user1_id, user2_id) for room-specific conversations
+  - Server-side validation prevents messaging/reading in expired conversations (400 error)
+- **User Blocking System** (October 7):
+  - Created UserBlock model with unique(blocker_id, blocked_id) constraint
+  - Integrated bidirectional filtering in get_participants() endpoint
+  - Blocked users completely invisible across all rooms
 - Fixed deployment login issues by correcting CORS configuration (supports_credentials=False with wildcard origins)
 - Added request validation in auth endpoints to prevent None errors
 - Created comprehensive deployment documentation for PythonAnywhere and Railway
