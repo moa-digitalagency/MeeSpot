@@ -463,7 +463,12 @@ www.myoneart.com
                         `}
                         <div class="flex-1">
                             <div class="flex items-center justify-between mb-2">
-                                <h4 class="font-bold text-[#2D3436]">${user.name}${user.is_verified ? ' <span class="text-blue-500" title="Vérifié">✓</span>' : ''}</h4>
+                                <h4 class="font-bold text-[#2D3436]">
+                                    ${user.name}
+                                    ${user.verification_status === 'verified' ? ' <span class="text-blue-500" title="Vérifié">✓</span>' : ''}
+                                    ${user.verification_status === 'pending' ? ' <span class="text-orange-500" title="En attente de vérification">⏳</span>' : ''}
+                                    ${user.verification_status === 'none' ? ' <span class="text-gray-400 opacity-50" title="Non vérifié">✓</span>' : ''}
+                                </h4>
                                 <span class="px-2 py-1 rounded-full text-xs font-semibold ${getRoleBadgeClass(user.role)}">
                                     ${user.role}
                                 </span>
@@ -574,8 +579,8 @@ www.myoneart.com
                             <p class="text-xs text-[#2D3436] opacity-75">${v.user_email}</p>
                             ${v.user_gender ? `<p class="text-xs text-[#2D3436] opacity-75">${v.user_gender}${v.user_age ? `, ${v.user_age} ans` : ''}</p>` : ''}
                         </div>
-                        <span class="px-2 py-1 rounded-full text-xs font-semibold bg-yellow-500 text-white">
-                            En attente
+                        <span class="px-3 py-1 rounded-full text-xs font-semibold bg-orange-500 text-white flex items-center gap-1">
+                            <span>⏳</span> En attente
                         </span>
                     </div>
                     <div class="mb-3 cursor-pointer" onclick="showImageFullscreen('${v.photo_url}')">
@@ -693,7 +698,12 @@ www.myoneart.com
                                     ${fullUser.name ? fullUser.name.charAt(0).toUpperCase() : '?'}
                                 </div>
                             `}
-                            <h3 class="text-xl font-bold text-[#2D3436]">${fullUser.name}${fullUser.is_verified ? ' <span class="text-blue-500">✓</span>' : ''}</h3>
+                            <h3 class="text-xl font-bold text-[#2D3436]">
+                                ${fullUser.name}
+                                ${fullUser.verification_status === 'verified' ? ' <span class="text-blue-500" title="Vérifié">✓</span>' : ''}
+                                ${fullUser.verification_status === 'pending' ? ' <span class="text-orange-500" title="En attente de vérification">⏳</span>' : ''}
+                                ${fullUser.verification_status === 'none' ? ' <span class="text-gray-400 opacity-50" title="Non vérifié">✓</span>' : ''}
+                            </h3>
                             <p class="text-sm text-[#2D3436] opacity-75">${fullUser.email}</p>
                         </div>
                         
@@ -937,7 +947,12 @@ www.myoneart.com
             content.innerHTML = `
                 <div class="bg-white rounded-2xl p-4 border border-gray-200">
                     ${user.photo_url ? `<img src="${user.photo_url}" class="w-32 h-32 rounded-full mx-auto mb-4 object-cover cursor-pointer" onclick="showImageFullscreen('${user.photo_url}')">` : '<div class="w-32 h-32 rounded-full mx-auto mb-4 bg-gray-200 flex items-center justify-center text-4xl">👤</div>'}
-                    <h3 class="text-xl font-bold text-center text-[#2D3436] mb-4">${user.name}${user.is_verified ? ' <span class="text-blue-500">✓</span>' : ''}</h3>
+                    <h3 class="text-xl font-bold text-center text-[#2D3436] mb-4">
+                        ${user.name}
+                        ${user.verification_status === 'verified' ? ' <span class="text-blue-500" title="Vérifié">✓</span>' : ''}
+                        ${user.verification_status === 'pending' ? ' <span class="text-orange-500" title="En attente de vérification">⏳</span>' : ''}
+                        ${user.verification_status === 'none' ? ' <span class="text-gray-400 opacity-50" title="Non vérifié">✓</span>' : ''}
+                    </h3>
                     
                     <div class="space-y-3 text-[#2D3436]">
                         <div class="flex justify-between py-2 border-b">

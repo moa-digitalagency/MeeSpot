@@ -75,6 +75,19 @@ class User(db.Model):
         return self.age
     
     def to_dict(self):
+        from backend.models.verification_request import VerificationRequest
+        
+        verification_status = 'none'
+        if self.is_verified:
+            verification_status = 'verified'
+        else:
+            pending_request = VerificationRequest.query.filter_by(
+                user_id=self.id, 
+                status='pending'
+            ).first()
+            if pending_request:
+                verification_status = 'pending'
+        
         return {
             'id': self.id,
             'name': self.name,
@@ -96,6 +109,7 @@ class User(db.Model):
             'alternative_mode': self.alternative_mode,
             'photo_consent_enabled': self.photo_consent_enabled,
             'is_verified': self.is_verified or False,
+            'verification_status': verification_status,
             'language': self.language or 'fr',
             'theme': self.theme or 'light'
         }
