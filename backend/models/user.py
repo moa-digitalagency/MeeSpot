@@ -40,6 +40,7 @@ class User(db.Model):
     alternative_mode = db.Column(db.Boolean, default=False)
     alternative_name = db.Column(EncryptedString(500))
     photo_consent_enabled = db.Column(db.Boolean, default=True)
+    is_verified = db.Column(db.Boolean, default=False)
     
     language = db.Column(db.String(5), default='fr')
     theme = db.Column(db.String(10), default='light')
@@ -94,6 +95,7 @@ class User(db.Model):
             'interests': self.interests or [],
             'alternative_mode': self.alternative_mode,
             'photo_consent_enabled': self.photo_consent_enabled,
+            'is_verified': self.is_verified or False,
             'language': self.language or 'fr',
             'theme': self.theme or 'light'
         }
@@ -112,5 +114,6 @@ class User(db.Model):
             'photo_url': self.photo_url,
             'gallery_photos': self.gallery_photos or [],
             'meeting_type': self.meeting_type,
-            'interests': self.interests or []
+            'interests': self.interests or [],
+            'is_verified': self.is_verified or False
         }
