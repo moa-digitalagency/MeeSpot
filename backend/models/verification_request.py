@@ -26,11 +26,20 @@ class VerificationRequest(db.Model):
     reviewer = db.relationship('User', foreign_keys=[reviewed_by])
     
     def to_dict(self):
+        user_age = None
+        if self.user and self.user.birthdate:
+            from datetime import date
+            today = date.today()
+            user_age = today.year - self.user.birthdate.year - ((today.month, today.day) < (self.user.birthdate.month, self.user.birthdate.day))
+        
         return {
             'id': self.id,
             'user_id': self.user_id,
             'user_name': self.user.name if self.user else None,
             'user_email': self.user.email if self.user else None,
+            'user_gender': self.user.gender if self.user else None,
+            'user_age': user_age,
+            'user_photo_url': self.user.photo_url if self.user else None,
             'photo_url': self.photo_url,
             'status': self.status,
             'admin_notes': self.admin_notes,

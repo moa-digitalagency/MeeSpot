@@ -170,17 +170,10 @@ www.myoneart.com
             </div>
 
             <div class="space-y-4">
-                <div class="bg-white rounded-2xl p-4">
-                    <h3 class="font-bold text-[#2D3436] mb-3">💾 Backup & Restauration</h3>
-                    <div class="space-y-2">
-                        <button onclick="createBackup()" class="w-full py-3 bg-[#00B894] text-white rounded-xl font-semibold hover:bg-[#00a183] transition">
-                            📦 Créer un Backup
-                        </button>
-                        <button onclick="viewBackups()" class="w-full py-3 bg-[#6C5CE7] text-white rounded-xl font-semibold hover:bg-[#5f52d6] transition">
-                            📂 Voir les Backups
-                        </button>
-                    </div>
-                </div>
+                <button onclick="switchPage('backups')" class="w-full bg-white rounded-2xl p-4 text-left hover:shadow-lg transition">
+                    <h3 class="font-bold text-[#2D3436] mb-1">💾 Backup & Restauration</h3>
+                    <p class="text-sm text-[#2D3436] opacity-75">Gérer les sauvegardes et restaurations</p>
+                </button>
 
                 <div class="bg-white rounded-2xl p-4">
                     <h3 class="font-bold text-[#2D3436] mb-3">🔄 Mise à Jour</h3>
@@ -196,21 +189,78 @@ www.myoneart.com
                     </button>
                 </div>
 
-                <div class="bg-white rounded-2xl p-4">
-                    <h3 class="font-bold text-[#2D3436] mb-3">🔑 Clés API</h3>
-                    <div class="space-y-2">
-                        <button onclick="viewApiKeys()" class="w-full py-3 bg-[#6C5CE7] text-white rounded-xl font-semibold hover:bg-[#5f52d6] transition">
-                            📋 Gérer les Clés API
-                        </button>
-                    </div>
-                </div>
+                <button onclick="switchPage('apikeys')" class="w-full bg-white rounded-2xl p-4 text-left hover:shadow-lg transition">
+                    <h3 class="font-bold text-[#2D3436] mb-1">🔑 Clés API</h3>
+                    <p class="text-sm text-[#2D3436] opacity-75">Générer et gérer les clés API</p>
+                </button>
 
-                <div class="bg-white rounded-2xl p-4">
-                    <h3 class="font-bold text-[#2D3436] mb-3">📝 Logs</h3>
-                    <button onclick="viewLogs()" class="w-full py-3 bg-[#636E72] text-white rounded-xl font-semibold hover:bg-[#545d61] transition">
-                        📄 Voir les Logs
+                <button onclick="switchPage('logs')" class="w-full bg-white rounded-2xl p-4 text-left hover:shadow-lg transition">
+                    <h3 class="font-bold text-[#2D3436] mb-1">📝 Logs Système</h3>
+                    <p class="text-sm text-[#2D3436] opacity-75">Visualiser les logs de l'application</p>
+                </button>
+            </div>
+        </div>
+    </div>
+
+    <div id="page-backups" class="page-content hidden">
+        <div class="px-4 pt-4 pb-4">
+            <div class="flex items-center justify-between mb-4">
+                <div class="flex items-center gap-3">
+                    <button onclick="switchPage('system')" class="w-10 h-10 flex items-center justify-center bg-gray-100 text-gray-600 hover:bg-gray-200 rounded-full transition">
+                        <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 19l-7-7 7-7"/></svg>
                     </button>
+                    <h1 class="text-2xl font-bold text-[#2D3436]">💾 Backups</h1>
                 </div>
+            </div>
+
+            <button onclick="createBackup()" class="w-full mb-4 py-3 bg-[#00B894] text-white rounded-xl font-semibold hover:bg-[#00a183] transition">
+                📦 Créer un Nouveau Backup
+            </button>
+
+            <div id="backupsList" class="space-y-3">
+                <p class="text-[#2D3436] opacity-75">Chargement...</p>
+            </div>
+        </div>
+    </div>
+
+    <div id="page-apikeys" class="page-content hidden">
+        <div class="px-4 pt-4 pb-4">
+            <div class="flex items-center justify-between mb-4">
+                <div class="flex items-center gap-3">
+                    <button onclick="switchPage('system')" class="w-10 h-10 flex items-center justify-center bg-gray-100 text-gray-600 hover:bg-gray-200 rounded-full transition">
+                        <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 19l-7-7 7-7"/></svg>
+                    </button>
+                    <h1 class="text-2xl font-bold text-[#2D3436]">🔑 Clés API</h1>
+                </div>
+            </div>
+
+            <button onclick="generateApiKey()" class="w-full mb-4 py-3 bg-[#6C5CE7] text-white rounded-xl font-semibold hover:bg-[#5a4dd9] transition">
+                ➕ Générer une Nouvelle Clé
+            </button>
+
+            <div id="apiKeysList" class="space-y-3">
+                <p class="text-[#2D3436] opacity-75">Chargement...</p>
+            </div>
+        </div>
+    </div>
+
+    <div id="page-logs" class="page-content hidden">
+        <div class="px-4 pt-4 pb-4">
+            <div class="flex items-center justify-between mb-4">
+                <div class="flex items-center gap-3">
+                    <button onclick="switchPage('system')" class="w-10 h-10 flex items-center justify-center bg-gray-100 text-gray-600 hover:bg-gray-200 rounded-full transition">
+                        <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 19l-7-7 7-7"/></svg>
+                    </button>
+                    <h1 class="text-2xl font-bold text-[#2D3436]">📝 Logs Système</h1>
+                </div>
+            </div>
+
+            <button onclick="refreshLogs()" class="w-full mb-4 py-3 bg-[#636E72] text-white rounded-xl font-semibold hover:bg-[#545d61] transition">
+                🔄 Rafraîchir les Logs
+            </button>
+
+            <div id="logsList" class="space-y-3">
+                <p class="text-[#2D3436] opacity-75">Chargement...</p>
             </div>
         </div>
     </div>
@@ -322,6 +372,12 @@ www.myoneart.com
                 loadProfileOptions();
             } else if (page === 'verifications') {
                 loadVerifications();
+            } else if (page === 'backups') {
+                loadBackups();
+            } else if (page === 'apikeys') {
+                loadApiKeys();
+            } else if (page === 'logs') {
+                loadSystemLogs();
             }
         }
 
@@ -936,6 +992,252 @@ www.myoneart.com
                 }
             } catch (error) {
                 alert('Erreur lors du chargement des logs');
+            }
+        }
+
+        // BACKUPS MANAGEMENT
+        async function loadBackups() {
+            const token = localStorage.getItem('token');
+            const list = document.getElementById('backupsList');
+            
+            try {
+                const response = await fetch('/api/admin/backup/list', {
+                    headers: { 'Authorization': `Bearer ${token}` }
+                });
+                
+                const data = await response.json();
+                if (data.success && data.backups) {
+                    if (data.backups.length === 0) {
+                        list.innerHTML = '<p class="text-[#2D3436] opacity-75">Aucun backup disponible</p>';
+                        return;
+                    }
+                    
+                    list.innerHTML = data.backups.map(b => `
+                        <div class="bg-white rounded-2xl p-4 border-l-4 border-[#00B894]">
+                            <div class="flex items-center justify-between mb-2">
+                                <h4 class="font-bold text-[#2D3436]">${b.name}</h4>
+                                <span class="text-xs bg-green-100 text-green-700 px-2 py-1 rounded-full">${(b.size / 1024 / 1024).toFixed(2)} MB</span>
+                            </div>
+                            <p class="text-xs text-[#2D3436] opacity-75 mb-3">${new Date(b.created).toLocaleString()}</p>
+                            <div class="flex gap-2">
+                                <button onclick="restoreBackup('${b.name}')" class="flex-1 py-2 bg-[#6C5CE7] text-white rounded-full text-sm font-semibold hover:bg-[#5a4dd9] transition">
+                                    🔄 Restaurer
+                                </button>
+                                <button onclick="deleteBackup('${b.name}')" class="flex-1 py-2 bg-red-500 text-white rounded-full text-sm font-semibold hover:bg-red-600 transition">
+                                    🗑️ Supprimer
+                                </button>
+                            </div>
+                        </div>
+                    `).join('');
+                } else {
+                    list.innerHTML = '<p class="text-[#2D3436] opacity-75">Erreur lors du chargement</p>';
+                }
+            } catch (error) {
+                list.innerHTML = '<p class="text-red-500">Erreur lors du chargement des backups</p>';
+            }
+        }
+
+        async function restoreBackup(filename) {
+            if (!confirm(`⚠️ Attention! La restauration va écraser toutes les données actuelles. Continuer?`)) return;
+            
+            const token = localStorage.getItem('token');
+            try {
+                const response = await fetch('/api/admin/backup/restore', {
+                    method: 'POST',
+                    headers: {
+                        'Authorization': `Bearer ${token}`,
+                        'Content-Type': 'application/json'
+                    },
+                    body: JSON.stringify({ filename })
+                });
+                
+                const data = await response.json();
+                alert(data.success ? '✓ Backup restauré avec succès!' : `Erreur: ${data.message}`);
+                if (data.success) loadBackups();
+            } catch (error) {
+                alert('Erreur lors de la restauration');
+            }
+        }
+
+        async function deleteBackup(filename) {
+            if (!confirm(`Supprimer le backup ${filename}?`)) return;
+            
+            const token = localStorage.getItem('token');
+            try {
+                const response = await fetch(`/api/admin/backup/delete/${filename}`, {
+                    method: 'DELETE',
+                    headers: { 'Authorization': `Bearer ${token}` }
+                });
+                
+                const data = await response.json();
+                alert(data.success ? '✓ Backup supprimé!' : `Erreur: ${data.message}`);
+                if (data.success) loadBackups();
+            } catch (error) {
+                alert('Erreur lors de la suppression');
+            }
+        }
+
+        // API KEYS MANAGEMENT
+        async function loadApiKeys() {
+            const token = localStorage.getItem('token');
+            const list = document.getElementById('apiKeysList');
+            
+            try {
+                const response = await fetch('/api/admin/apikeys/list', {
+                    headers: { 'Authorization': `Bearer ${token}` }
+                });
+                
+                const data = await response.json();
+                if (data.success && data.keys) {
+                    if (data.keys.length === 0) {
+                        list.innerHTML = '<p class="text-[#2D3436] opacity-75">Aucune clé API</p>';
+                        return;
+                    }
+                    
+                    list.innerHTML = data.keys.map(k => `
+                        <div class="bg-white rounded-2xl p-4 border-l-4 border-[#6C5CE7]">
+                            <div class="flex items-center justify-between mb-2">
+                                <h4 class="font-bold text-[#2D3436]">${k.name}</h4>
+                                <span class="text-xs ${k.is_active ? 'bg-green-100 text-green-700' : 'bg-gray-100 text-gray-700'} px-2 py-1 rounded-full">
+                                    ${k.is_active ? 'Active' : 'Révoquée'}
+                                </span>
+                            </div>
+                            <p class="text-xs font-mono text-[#2D3436] bg-gray-100 p-2 rounded mb-2">${k.key}</p>
+                            <p class="text-xs text-[#2D3436] opacity-75 mb-3">Créée le ${new Date(k.created_at).toLocaleString()}</p>
+                            <div class="flex gap-2">
+                                ${k.is_active ? `
+                                <button onclick="revokeApiKey(${k.id})" class="flex-1 py-2 bg-orange-500 text-white rounded-full text-sm font-semibold hover:bg-orange-600 transition">
+                                    🔒 Révoquer
+                                </button>
+                                ` : ''}
+                                <button onclick="deleteApiKey(${k.id})" class="flex-1 py-2 bg-red-500 text-white rounded-full text-sm font-semibold hover:bg-red-600 transition">
+                                    🗑️ Supprimer
+                                </button>
+                            </div>
+                        </div>
+                    `).join('');
+                }
+            } catch (error) {
+                list.innerHTML = '<p class="text-red-500">Erreur lors du chargement des clés API</p>';
+            }
+        }
+
+        async function generateApiKey() {
+            const name = prompt('Nom de la clé API:');
+            if (!name) return;
+            
+            const token = localStorage.getItem('token');
+            try {
+                const response = await fetch('/api/admin/apikeys/create', {
+                    method: 'POST',
+                    headers: {
+                        'Authorization': `Bearer ${token}`,
+                        'Content-Type': 'application/json'
+                    },
+                    body: JSON.stringify({ name })
+                });
+                
+                const data = await response.json();
+                if (data.success) {
+                    alert(`✓ Clé générée!\n\n${data.key.key}\n\nCopiez-la maintenant, elle ne sera plus affichée.`);
+                    loadApiKeys();
+                } else {
+                    alert(`Erreur: ${data.message}`);
+                }
+            } catch (error) {
+                alert('Erreur lors de la génération');
+            }
+        }
+
+        async function revokeApiKey(keyId) {
+            if (!confirm('Révoquer cette clé API?')) return;
+            
+            const token = localStorage.getItem('token');
+            try {
+                const response = await fetch(`/api/admin/apikeys/${keyId}/revoke`, {
+                    method: 'POST',
+                    headers: { 'Authorization': `Bearer ${token}` }
+                });
+                
+                const data = await response.json();
+                alert(data.success ? '✓ Clé révoquée!' : `Erreur: ${data.message}`);
+                if (data.success) loadApiKeys();
+            } catch (error) {
+                alert('Erreur lors de la révocation');
+            }
+        }
+
+        async function deleteApiKey(keyId) {
+            if (!confirm('Supprimer définitivement cette clé API?')) return;
+            
+            const token = localStorage.getItem('token');
+            try {
+                const response = await fetch(`/api/admin/apikeys/${keyId}`, {
+                    method: 'DELETE',
+                    headers: { 'Authorization': `Bearer ${token}` }
+                });
+                
+                const data = await response.json();
+                alert(data.success ? '✓ Clé supprimée!' : `Erreur: ${data.message}`);
+                if (data.success) loadApiKeys();
+            } catch (error) {
+                alert('Erreur lors de la suppression');
+            }
+        }
+
+        // LOGS MANAGEMENT
+        async function loadSystemLogs() {
+            const token = localStorage.getItem('token');
+            const list = document.getElementById('logsList');
+            
+            try {
+                const response = await fetch('/api/admin/logs/list', {
+                    headers: { 'Authorization': `Bearer ${token}` }
+                });
+                
+                const data = await response.json();
+                if (data.success && data.logs) {
+                    if (data.logs.length === 0) {
+                        list.innerHTML = '<p class="text-[#2D3436] opacity-75">Aucun log disponible</p>';
+                        return;
+                    }
+                    
+                    list.innerHTML = data.logs.map(l => `
+                        <div class="bg-white rounded-2xl p-4">
+                            <div class="flex items-center justify-between mb-2">
+                                <h4 class="font-bold text-[#2D3436]">${l.name}</h4>
+                                <span class="text-xs bg-gray-100 text-[#2D3436] px-2 py-1 rounded-full">${(l.size / 1024).toFixed(2)} KB</span>
+                            </div>
+                            <button onclick="viewLogContent('${l.name}')" class="w-full py-2 bg-[#636E72] text-white rounded-full text-sm font-semibold hover:bg-[#545d61] transition">
+                                👁️ Voir le contenu
+                            </button>
+                        </div>
+                    `).join('');
+                }
+            } catch (error) {
+                list.innerHTML = '<p class="text-red-500">Erreur lors du chargement des logs</p>';
+            }
+        }
+
+        async function refreshLogs() {
+            loadSystemLogs();
+        }
+
+        async function viewLogContent(logName) {
+            const token = localStorage.getItem('token');
+            try {
+                const response = await fetch(`/api/admin/logs/view/${logName}`, {
+                    headers: { 'Authorization': `Bearer ${token}` }
+                });
+                
+                const data = await response.json();
+                if (data.success) {
+                    alert(`📝 ${logName}\n\n${data.content.substring(0, 1000)}${data.content.length > 1000 ? '\n\n... (tronqué)' : ''}`);
+                } else {
+                    alert(`Erreur: ${data.message}`);
+                }
+            } catch (error) {
+                alert('Erreur lors de la lecture du log');
             }
         }
 
