@@ -222,7 +222,8 @@ def get_participants(current_user, room_id):
             'photo_url': user.photo_url,
             'meeting_type_emojis': meeting_type_emojis,
             'joined_at': member.joined_at.isoformat(),
-            'request_status': request_status
+            'request_status': request_status,
+            'is_verified': user.is_verified or False
         })
     
     return jsonify(participants)

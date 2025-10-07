@@ -129,6 +129,20 @@ www.myoneart.com
         </div>
     </div>
 
+    <div id="page-verifications" class="page-content hidden">
+        <div class="px-4 pt-4 pb-4">
+            <div class="flex items-center justify-between mb-4">
+                <h1 class="text-2xl font-bold text-[#2D3436]">✓ Vérifications</h1>
+                <button onclick="logout()" class="px-4 py-2 bg-red-500 text-white rounded-full text-sm font-semibold hover:bg-red-600 transition">
+                    🚪 Déconnexion
+                </button>
+            </div>
+            <div id="verificationsList" class="space-y-3">
+                <p class="text-[#2D3436] opacity-75">Chargement...</p>
+            </div>
+        </div>
+    </div>
+
     <div id="page-reports" class="page-content hidden">
         <div class="px-4 pt-4 pb-4">
             <div class="flex items-center justify-between mb-4">
@@ -235,7 +249,7 @@ www.myoneart.com
     </div>
 
     <div class="bottom-nav">
-        <div class="grid grid-cols-5 h-16">
+        <div class="grid grid-cols-6 h-16">
             <button onclick="switchPage('dashboard')" id="nav-dashboard" class="nav-item active flex flex-col items-center justify-center">
                 <svg fill="none" stroke="currentColor" viewBox="0 0 24 24">
                     <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 19v-6a2 2 0 00-2-2H5a2 2 0 00-2 2v6a2 2 0 002 2h2a2 2 0 002-2zm0 0V9a2 2 0 012-2h2a2 2 0 012 2v10m-6 0a2 2 0 002 2h2a2 2 0 002-2m0 0V5a2 2 0 012-2h2a2 2 0 012 2v14a2 2 0 01-2 2h-2a2 2 0 01-2-2z"/>
@@ -253,6 +267,12 @@ www.myoneart.com
                     <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10.325 4.317c.426-1.756 2.924-1.756 3.35 0a1.724 1.724 0 002.573 1.066c1.543-.94 3.31.826 2.37 2.37a1.724 1.724 0 001.065 2.572c1.756.426 1.756 2.924 0 3.35a1.724 1.724 0 00-1.066 2.573c.94 1.543-.826 3.31-2.37 2.37a1.724 1.724 0 00-2.572 1.065c-.426 1.756-2.924 1.756-3.35 0a1.724 1.724 0 00-2.573-1.066c-1.543.94-3.31-.826-2.37-2.37a1.724 1.724 0 00-1.065-2.572c-1.756-.426-1.756-2.924 0-3.35a1.724 1.724 0 001.066-2.573c-.94-1.543.826-3.31 2.37-2.37.996.608 2.296.07 2.572-1.065z"/><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 12a3 3 0 11-6 0 3 3 0 016 0z"/>
                 </svg>
                 <span class="text-xs mt-1">Options</span>
+            </button>
+            <button onclick="switchPage('verifications')" id="nav-verifications" class="nav-item flex flex-col items-center justify-center">
+                <svg fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z"/>
+                </svg>
+                <span class="text-xs mt-1">Verify</span>
             </button>
             <button onclick="switchPage('reports')" id="nav-reports" class="nav-item flex flex-col items-center justify-center">
                 <svg fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -300,6 +320,8 @@ www.myoneart.com
                 loadReports();
             } else if (page === 'options') {
                 loadProfileOptions();
+            } else if (page === 'verifications') {
+                loadVerifications();
             }
         }
 
@@ -421,6 +443,106 @@ www.myoneart.com
                     </div>
                 </div>
             `).join('');
+        }
+
+        async function loadVerifications() {
+            const token = localStorage.getItem('token');
+            
+            try {
+                const response = await fetch('/api/verification/admin/list?status=pending', {
+                    headers: { 'Authorization': `Bearer ${token}` }
+                });
+                
+                if (response.ok) {
+                    const data = await response.json();
+                    displayVerifications(data.verifications || []);
+                }
+            } catch (error) {
+                console.error('Error loading verifications:', error);
+            }
+        }
+
+        function displayVerifications(verifications) {
+            const list = document.getElementById('verificationsList');
+            
+            if (verifications.length === 0) {
+                list.innerHTML = '<p class="text-[#2D3436] opacity-75">Aucune demande en attente</p>';
+                return;
+            }
+            
+            list.innerHTML = verifications.map(v => `
+                <div class="bg-white rounded-2xl p-4 border-l-4 border-[#6C5CE7]">
+                    <div class="flex items-center justify-between mb-3">
+                        <div>
+                            <h4 class="font-bold text-[#2D3436]">${v.user_name}</h4>
+                            <p class="text-xs text-[#2D3436] opacity-75">${v.user_email}</p>
+                        </div>
+                        <span class="px-2 py-1 rounded-full text-xs font-semibold bg-yellow-500 text-white">
+                            En attente
+                        </span>
+                    </div>
+                    <div class="mb-3">
+                        <img src="${v.photo_url}" alt="Verification Photo" class="w-full rounded-xl">
+                    </div>
+                    <div class="text-xs text-[#2D3436] opacity-75 mb-3">
+                        Demandé le ${new Date(v.created_at).toLocaleDateString()}
+                    </div>
+                    <div class="flex gap-2">
+                        <button onclick="approveVerification(${v.id})" class="flex-1 py-2 bg-green-500 text-white rounded-full text-sm font-semibold hover:bg-green-600 transition">
+                            ✓ Approuver
+                        </button>
+                        <button onclick="rejectVerification(${v.id})" class="flex-1 py-2 bg-red-500 text-white rounded-full text-sm font-semibold hover:bg-red-600 transition">
+                            ✗ Rejeter
+                        </button>
+                    </div>
+                </div>
+            `).join('');
+        }
+
+        async function approveVerification(requestId) {
+            if (!confirm('Approuver cette demande de vérification ?')) return;
+            
+            const token = localStorage.getItem('token');
+            
+            try {
+                const response = await fetch(`/api/verification/admin/${requestId}/approve`, {
+                    method: 'POST',
+                    headers: { 'Authorization': `Bearer ${token}` }
+                });
+                
+                if (response.ok) {
+                    alert('✓ Vérification approuvée !');
+                    loadVerifications();
+                } else {
+                    alert('Erreur lors de l\'approbation');
+                }
+            } catch (error) {
+                console.error('Error approving verification:', error);
+                alert('Erreur lors de l\'approbation');
+            }
+        }
+
+        async function rejectVerification(requestId) {
+            if (!confirm('Rejeter cette demande de vérification ?')) return;
+            
+            const token = localStorage.getItem('token');
+            
+            try {
+                const response = await fetch(`/api/verification/admin/${requestId}/reject`, {
+                    method: 'POST',
+                    headers: { 'Authorization': `Bearer ${token}` }
+                });
+                
+                if (response.ok) {
+                    alert('Demande rejetée');
+                    loadVerifications();
+                } else {
+                    alert('Erreur lors du rejet');
+                }
+            } catch (error) {
+                console.error('Error rejecting verification:', error);
+                alert('Erreur lors du rejet');
+            }
         }
 
         async function loadProfileOptions() {

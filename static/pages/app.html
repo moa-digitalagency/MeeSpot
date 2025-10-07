@@ -241,6 +241,10 @@ www.myoneart.com
                 <span data-i18n="profile.settings">⚙️ Paramètres du compte</span>
             </button>
             
+            <button id="verifyButton" onclick="showVerificationModal()" class="w-full py-3 bg-gradient-to-r from-[#FF4458] to-[#6C5CE7] text-white rounded-full hover:shadow-xl transition font-semibold mb-2">
+                ✓ Get Verified
+            </button>
+            
             <button onclick="logout()" class="w-full py-3 bg-gray-200 text-[#2D3436] rounded-full hover:bg-gray-300 transition font-semibold">
                 <span data-i18n="profile.logout">🚪 Déconnexion</span>
             </button>
@@ -337,6 +341,33 @@ www.myoneart.com
                     Désactiver mon compte
                 </button>
             </div>
+        </div>
+    </div>
+
+    <!-- Verification Modal -->
+    <div id="verificationModal" class="hidden fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50 p-4">
+        <div class="bg-white rounded-3xl w-full max-w-md p-6">
+            <div class="flex justify-between items-center mb-4">
+                <h2 class="text-xl font-bold text-[#2D3436]">✓ Get Verified</h2>
+                <button onclick="closeVerificationModal()" class="text-[#2D3436] text-2xl">&times;</button>
+            </div>
+            
+            <p class="text-sm text-[#2D3436] opacity-75 mb-4">Upload a photo of yourself holding your ID or a piece of paper with "MeetSpot" written on it. This helps us verify your identity.</p>
+            
+            <div class="mb-4">
+                <input type="file" id="verificationPhoto" accept="image/*" class="hidden" onchange="previewVerificationPhoto(event)">
+                <button onclick="document.getElementById('verificationPhoto').click()" class="w-full py-3 border-2 border-dashed border-[#FF4458] rounded-xl text-[#FF4458] font-semibold hover:bg-[#FF4458] hover:text-white transition">
+                    📷 Upload Photo
+                </button>
+            </div>
+            
+            <div id="photoPreview" class="hidden mb-4">
+                <img id="previewImg" src="" alt="Preview" class="w-full rounded-xl">
+            </div>
+            
+            <button id="submitVerification" onclick="submitVerification()" class="w-full py-3 bg-gradient-to-r from-[#FF4458] to-[#6C5CE7] text-white rounded-full font-semibold hover:shadow-xl transition" disabled>
+                Submit for Review
+            </button>
         </div>
     </div>
 
@@ -913,14 +944,19 @@ www.myoneart.com
                     </button>`;
                 }
                 
+                const verifiedBadge = p.is_verified ? '<span class="inline-flex items-center justify-center w-5 h-5 bg-blue-500 text-white rounded-full text-xs">✓</span>' : '';
+                
                 return `
                     <div class="bg-gray-50 rounded-xl p-4">
                         <div class="flex items-center gap-3 mb-2">
-                            <div class="w-12 h-12 rounded-full bg-gradient-to-br from-[#FF4458] to-[#6C5CE7] flex items-center justify-center text-white font-bold">
-                                ${p.name.charAt(0).toUpperCase()}
+                            <div class="relative">
+                                <div class="w-12 h-12 rounded-full bg-gradient-to-br from-[#FF4458] to-[#6C5CE7] flex items-center justify-center text-white font-bold">
+                                    ${p.name.charAt(0).toUpperCase()}
+                                </div>
+                                ${p.is_verified ? '<div class="absolute -bottom-1 -right-1 w-5 h-5 bg-blue-500 text-white rounded-full flex items-center justify-center text-xs">✓</div>' : ''}
                             </div>
                             <div class="flex-1">
-                                <h4 class="font-bold text-[#2D3436]">${p.name} ${emojis} ${isMe ? '(Vous)' : ''}</h4>
+                                <h4 class="font-bold text-[#2D3436]">${p.name} ${verifiedBadge} ${emojis} ${isMe ? '(Vous)' : ''}</h4>
                                 <p class="text-xs text-[#2D3436] opacity-75">${p.age || '?'} ans • ${p.gender || '?'}</p>
                             </div>
                         </div>
@@ -1911,6 +1947,93 @@ www.myoneart.com
                     applyTheme(user.theme);
                 }
             } catch (e) {}
+        }
+
+        // Verification Modal Functions
+        let verificationPhotoData = null;
+        
+        async function showVerificationModal() {
+            // Check verification status first
+            const token = localStorage.getItem('token');
+            try {
+                const response = await fetch('/api/verification/status', {
+                    headers: { 'Authorization': `Bearer ${token}` }
+                });
+                const data = await response.json();
+                
+                if (data.status === 'pending') {
+                    alert('You already have a pending verification request. Please wait for admin approval.');
+                    return;
+                } else if (data.status === 'approved') {
+                    alert('✓ You are already verified!');
+                    return;
+                }
+            } catch (error) {
+                console.error('Error checking verification status:', error);
+            }
+            
+            document.getElementById('verificationModal').classList.remove('hidden');
+        }
+        
+        function closeVerificationModal() {
+            document.getElementById('verificationModal').classList.add('hidden');
+            document.getElementById('photoPreview').classList.add('hidden');
+            document.getElementById('verificationPhoto').value = '';
+            verificationPhotoData = null;
+            document.getElementById('submitVerification').disabled = true;
+        }
+        
+        function previewVerificationPhoto(event) {
+            const file = event.target.files[0];
+            if (file) {
+                const reader = new FileReader();
+                reader.onload = function(e) {
+                    verificationPhotoData = e.target.result;
+                    document.getElementById('previewImg').src = e.target.result;
+                    document.getElementById('photoPreview').classList.remove('hidden');
+                    document.getElementById('submitVerification').disabled = false;
+                };
+                reader.readAsDataURL(file);
+            }
+        }
+        
+        async function submitVerification() {
+            if (!verificationPhotoData) {
+                alert('Please upload a photo first');
+                return;
+            }
+            
+            const token = localStorage.getItem('token');
+            const submitBtn = document.getElementById('submitVerification');
+            submitBtn.disabled = true;
+            submitBtn.textContent = 'Submitting...';
+            
+            try {
+                const response = await fetch('/api/verification/request', {
+                    method: 'POST',
+                    headers: {
+                        'Authorization': `Bearer ${token}`,
+                        'Content-Type': 'application/json'
+                    },
+                    body: JSON.stringify({ photo: verificationPhotoData })
+                });
+                
+                const data = await response.json();
+                
+                if (response.ok) {
+                    alert('✓ Verification request submitted! We will review it soon.');
+                    closeVerificationModal();
+                } else {
+                    alert(data.message || 'Error submitting verification request');
+                    submitBtn.disabled = false;
+                    submitBtn.textContent = 'Submit for Review';
+                }
+            } catch (error) {
+                console.error('Error submitting verification:', error);
+                alert('Error submitting verification request');
+                submitBtn.disabled = false;
+                submitBtn.textContent = 'Submit for Review';
+            }
         }
 
         async function confirmDeactivate() {

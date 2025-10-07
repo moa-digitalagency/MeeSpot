@@ -64,6 +64,14 @@ The backend organizes routes by resource (auth, rooms, establishments, admin, pr
 - **wsgi.py**: Standard WSGI entry point for production deployments
 
 ## Recent Changes (October 2025)
+- **User Verification System** (October 7):
+  - Complete verification workflow: users upload photo → admin reviews → approval/rejection
+  - User interface: "Get Verified" button in profile with photo upload modal
+  - Backend models: VerificationRequest with status (pending/approved/rejected), photo_url storage
+  - Admin dashboard: New "Verifications" tab (6th navigation item, grid-cols-6)
+  - Visual indicators: Blue checkmark badge on verified user profiles in room participants
+  - API endpoints: `/api/verification/request` (POST), `/api/verification/status` (GET), `/api/verification/admin/list?status=pending` (GET), `/api/verification/admin/:id/approve` (POST), `/api/verification/admin/:id/reject` (POST)
+  - Backend includes `is_verified` flag in participant data for UI display
 - **Admin Dashboard - Page Système Added** (October 7):
   - Added 5th navigation tab "Système" in admin dashboard (grid-cols-5)
   - Implemented complete UI for all system management features:

@@ -61,7 +61,7 @@ def create_app():
     db.init_app(app)
     
     with app.app_context():
-        from backend.routes import auth, rooms, admin, establishments, profile, connection_requests, conversations, profile_options
+        from backend.routes import auth, rooms, admin, establishments, profile, connection_requests, conversations, profile_options, verification
         
         app.register_blueprint(auth.bp)
         app.register_blueprint(rooms.bp)
@@ -71,6 +71,7 @@ def create_app():
         app.register_blueprint(connection_requests.bp)
         app.register_blueprint(conversations.bp)
         app.register_blueprint(profile_options.bp)
+        app.register_blueprint(verification.bp)
         
         from backend.routes import static_routes
         app.register_blueprint(static_routes.bp)
