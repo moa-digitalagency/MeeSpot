@@ -213,6 +213,63 @@ def restore_backup(current_user):
             'message': str(e)
         }), 500
 
+@bp.route('/backup/delete/<filename>', methods=['DELETE'])
+@token_required
+@admin_required
+def delete_backup(current_user, filename):
+    """Supprime un backup"""
+    try:
+        # Validation stricte du nom de fichier
+        if not filename.startswith('meetspot_backup_'):
+            return jsonify({
+                'success': False,
+                'message': 'Nom de fichier invalide'
+            }), 400
+        
+        if not filename.endswith('.tar.gz'):
+            return jsonify({
+                'success': False,
+                'message': 'Extension de fichier invalide'
+            }), 400
+        
+        # Bloquer les caractères dangereux
+        if '..' in filename or '/' in filename or '\\' in filename:
+            return jsonify({
+                'success': False,
+                'message': 'Caractères non autorisés dans le nom de fichier'
+            }), 400
+        
+        backup_path = os.path.join('backups', filename)
+        
+        # Vérifier que le chemin réel est bien dans le dossier backups
+        real_backup_path = os.path.realpath(backup_path)
+        real_backups_dir = os.path.realpath('backups')
+        
+        if not real_backup_path.startswith(real_backups_dir):
+            return jsonify({
+                'success': False,
+                'message': 'Accès refusé'
+            }), 403
+        
+        if not os.path.exists(backup_path):
+            return jsonify({
+                'success': False,
+                'message': 'Backup introuvable'
+            }), 404
+        
+        # Supprimer le fichier
+        os.remove(backup_path)
+        
+        return jsonify({
+            'success': True,
+            'message': 'Backup supprimé avec succès'
+        })
+    except Exception as e:
+        return jsonify({
+            'success': False,
+            'message': str(e)
+        }), 500
+
 @bp.route('/update', methods=['POST'])
 @token_required
 @admin_required
@@ -347,7 +404,7 @@ def view_log(current_user, filename):
 
 # ========== API KEYS MANAGEMENT ==========
 
-@bp.route('/api-keys', methods=['GET'])
+@bp.route('/apikeys/list', methods=['GET'])
 @token_required
 @admin_required
 def list_api_keys(current_user):
@@ -364,7 +421,7 @@ def list_api_keys(current_user):
             'message': str(e)
         }), 500
 
-@bp.route('/api-keys', methods=['POST'])
+@bp.route('/apikeys/create', methods=['POST'])
 @token_required
 @admin_required
 def create_api_key(current_user):
@@ -401,7 +458,7 @@ def create_api_key(current_user):
             'message': str(e)
         }), 500
 
-@bp.route('/api-keys/<int:key_id>/revoke', methods=['POST'])
+@bp.route('/apikeys/<int:key_id>/revoke', methods=['POST'])
 @token_required
 @admin_required
 def revoke_api_key(current_user, key_id):
@@ -429,7 +486,7 @@ def revoke_api_key(current_user, key_id):
             'message': str(e)
         }), 500
 
-@bp.route('/api-keys/<int:key_id>/activate', methods=['POST'])
+@bp.route('/apikeys/<int:key_id>/activate', methods=['POST'])
 @token_required
 @admin_required
 def activate_api_key(current_user, key_id):
@@ -457,7 +514,7 @@ def activate_api_key(current_user, key_id):
             'message': str(e)
         }), 500
 
-@bp.route('/api-keys/<int:key_id>', methods=['DELETE'])
+@bp.route('/apikeys/<int:key_id>', methods=['DELETE'])
 @token_required
 @admin_required
 def delete_api_key(current_user, key_id):
