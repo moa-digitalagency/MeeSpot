@@ -25,6 +25,14 @@ def get_users(current_user):
     users = User.query.all()
     return jsonify([user.to_dict() for user in users])
 
+@bp.route('/users/<int:user_id>', methods=['GET'])
+@token_required
+@admin_required
+def get_user_by_id(current_user, user_id):
+    """Get detailed information for a single user"""
+    user = User.query.get_or_404(user_id)
+    return jsonify(user.to_dict())
+
 @bp.route('/reports', methods=['GET'])
 @token_required
 @admin_required

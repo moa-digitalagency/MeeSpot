@@ -892,10 +892,13 @@ www.myoneart.com
                     const user = await response.json();
                     displayUserDetails(user);
                     document.getElementById('userDetailsModal').classList.remove('hidden');
+                } else {
+                    const errorData = await response.json().catch(() => ({}));
+                    alert(`Erreur: ${errorData.message || 'Impossible de charger les détails'}`);
                 }
             } catch (error) {
                 console.error('Error loading user details:', error);
-                alert('Erreur lors du chargement des détails');
+                alert(`Erreur: ${error.message || 'Erreur lors du chargement des détails'}`);
             }
         }
 
