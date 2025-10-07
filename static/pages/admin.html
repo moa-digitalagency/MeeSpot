@@ -551,7 +551,11 @@ www.myoneart.com
                 return;
             }
             
-            list.innerHTML = verifications.map(v => `
+            list.innerHTML = verifications.map((v, index) => {
+                const verificationId = `verification_${v.id}`;
+                window[verificationId] = v;
+                
+                return `
                 <div class="bg-white rounded-2xl p-4 border-l-4 border-[#6C5CE7]">
                     <div class="flex items-center justify-between mb-3">
                         <div>
@@ -563,19 +567,17 @@ www.myoneart.com
                             En attente
                         </span>
                     </div>
-                    <div class="mb-3">
-                        <img src="${v.photo_url}" alt="Verification Photo" class="w-full rounded-xl object-cover" style="max-height: 400px;">
+                    <div class="mb-3 cursor-pointer" onclick="showImageFullscreen('${v.photo_url}')">
+                        <img src="${v.photo_url}" alt="Verification Photo" class="w-full rounded-xl object-cover hover:opacity-90 transition" style="max-height: 400px;">
+                        <p class="text-xs text-center text-[#6C5CE7] mt-1">🔍 Cliquer pour agrandir</p>
                     </div>
-                    ${v.user_photo_url ? `
-                    <div class="mb-3">
-                        <p class="text-xs font-semibold text-[#2D3436] mb-2">Photo de profil :</p>
-                        <img src="${v.user_photo_url}" alt="Profile Photo" class="w-24 h-24 rounded-full object-cover">
-                    </div>
-                    ` : ''}
                     <div class="text-xs text-[#2D3436] opacity-75 mb-3">
                         Demandé le ${new Date(v.created_at).toLocaleDateString()}
                     </div>
                     <div class="flex gap-2">
+                        <button onclick="showUserProfile('${verificationId}')" class="flex-1 py-2 bg-[#6C5CE7] text-white rounded-full text-sm font-semibold hover:bg-[#5b4cc6] transition">
+                            👤 Voir profil
+                        </button>
                         <button onclick="approveVerification(${v.id})" class="flex-1 py-2 bg-green-500 text-white rounded-full text-sm font-semibold hover:bg-green-600 transition">
                             ✓ Approuver
                         </button>
@@ -584,7 +586,8 @@ www.myoneart.com
                         </button>
                     </div>
                 </div>
-            `).join('');
+            `;
+            }).join('');
         }
 
         async function approveVerification(requestId) {
@@ -631,6 +634,73 @@ www.myoneart.com
                 console.error('Error rejecting verification:', error);
                 alert('Erreur lors du rejet');
             }
+        }
+
+        function showImageFullscreen(imageUrl) {
+            const modal = document.getElementById('imageModal');
+            const modalImg = document.getElementById('modalImage');
+            modal.classList.remove('hidden');
+            modalImg.src = imageUrl;
+        }
+
+        function closeImageModal() {
+            document.getElementById('imageModal').classList.add('hidden');
+        }
+
+        function showUserProfile(verificationId) {
+            const user = window[verificationId];
+            if (!user) return;
+            
+            const modal = document.getElementById('profileModal');
+            const content = document.getElementById('profileContent');
+            
+            content.innerHTML = `
+                <div class="text-center mb-4">
+                    ${user.user_photo_url ? `
+                        <img src="${user.user_photo_url}" alt="${user.user_name}" class="w-32 h-32 rounded-full object-cover mx-auto mb-3">
+                    ` : `
+                        <div class="w-32 h-32 rounded-full bg-[#6C5CE7] flex items-center justify-center text-white text-4xl font-bold mx-auto mb-3">
+                            ${user.user_name.charAt(0).toUpperCase()}
+                        </div>
+                    `}
+                    <h3 class="text-xl font-bold text-[#2D3436]">${user.user_name}</h3>
+                    <p class="text-sm text-[#2D3436] opacity-75">${user.user_email}</p>
+                </div>
+                
+                <div class="space-y-3">
+                    ${user.user_gender ? `
+                        <div class="bg-[#F5F5F5] rounded-xl p-3">
+                            <p class="text-xs font-semibold text-[#2D3436] mb-1">Genre</p>
+                            <p class="text-sm text-[#2D3436]">${user.user_gender}</p>
+                        </div>
+                    ` : ''}
+                    
+                    ${user.user_age ? `
+                        <div class="bg-[#F5F5F5] rounded-xl p-3">
+                            <p class="text-xs font-semibold text-[#2D3436] mb-1">Âge</p>
+                            <p class="text-sm text-[#2D3436]">${user.user_age} ans</p>
+                        </div>
+                    ` : ''}
+                    
+                    ${user.user_bio ? `
+                        <div class="bg-[#F5F5F5] rounded-xl p-3">
+                            <p class="text-xs font-semibold text-[#2D3436] mb-1">Bio</p>
+                            <p class="text-sm text-[#2D3436]">${user.user_bio}</p>
+                        </div>
+                    ` : ''}
+                    
+                    <div class="bg-[#F5F5F5] rounded-xl p-3">
+                        <p class="text-xs font-semibold text-[#2D3436] mb-1">Demande de vérification</p>
+                        <p class="text-sm text-[#2D3436]">Demandé le ${new Date(user.created_at).toLocaleDateString()}</p>
+                    </div>
+                </div>
+            `;
+            
+            modal.classList.remove('hidden');
+        }
+
+        function closeProfileModal() {
+            document.getElementById('profileModal').classList.add('hidden');
         }
 
         async function loadProfileOptions() {
@@ -1250,5 +1320,30 @@ www.myoneart.com
         checkAuth();
         loadStats();
     </script>
+
+    <!-- Modal pour afficher l'image en plein écran -->
+    <div id="imageModal" class="hidden fixed inset-0 bg-black bg-opacity-75 flex items-center justify-center z-50" onclick="closeImageModal()">
+        <div class="relative max-w-4xl max-h-screen p-4">
+            <button onclick="closeImageModal()" class="absolute top-6 right-6 text-white text-4xl font-bold hover:text-gray-300 transition z-10">
+                ✕
+            </button>
+            <img id="modalImage" src="" alt="Full screen" class="max-w-full max-h-screen rounded-xl">
+        </div>
+    </div>
+
+    <!-- Modal pour afficher le profil de l'utilisateur -->
+    <div id="profileModal" class="hidden fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50 px-4">
+        <div class="bg-white rounded-2xl p-6 max-w-md w-full max-h-[90vh] overflow-y-auto">
+            <div class="flex items-center justify-between mb-4">
+                <h2 class="text-xl font-bold text-[#2D3436]">👤 Profil de l'utilisateur</h2>
+                <button onclick="closeProfileModal()" class="text-2xl text-[#2D3436] hover:text-[#FF4458] transition">
+                    ✕
+                </button>
+            </div>
+            <div id="profileContent">
+                <!-- Contenu dynamique -->
+            </div>
+        </div>
+    </div>
 </body>
 </html>
