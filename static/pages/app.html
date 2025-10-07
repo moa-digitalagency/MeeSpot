@@ -1083,17 +1083,25 @@ www.myoneart.com
             
             list.innerHTML = requests.map(req => {
                 const userName = requestFilter === 'received' ? req.requester_name : req.target_name;
+                const isVerified = requestFilter === 'received' ? req.requester_verified : req.target_verified;
                 const statusColor = req.status === 'accepted' ? 'green' : req.status === 'rejected' ? 'red' : 'yellow';
                 const statusText = req.status === 'accepted' ? 'Acceptée' : req.status === 'rejected' ? 'Refusée' : 'En attente';
+                
+                const badgeColor = isVerified ? 'bg-blue-500' : 'bg-gray-400 opacity-50';
+                const badgeHtml = `<span class="w-4 h-4 ${badgeColor} rounded-full flex items-center justify-center text-white text-xs">✓</span>`;
                 
                 return `
                     <div class="bg-white rounded-2xl p-4">
                         <div class="flex items-center gap-3 mb-2">
-                            <div class="w-12 h-12 rounded-full bg-gradient-to-br from-[#FF4458] to-[#6C5CE7] flex items-center justify-center text-white font-bold">
+                            <div class="relative w-12 h-12 rounded-full bg-gradient-to-br from-[#FF4458] to-[#6C5CE7] flex items-center justify-center text-white font-bold">
                                 ${userName.charAt(0).toUpperCase()}
+                                <span class="absolute -bottom-1 -right-1 w-4 h-4 ${badgeColor} rounded-full flex items-center justify-center text-white text-xs">✓</span>
                             </div>
                             <div class="flex-1">
-                                <h4 class="font-bold text-[#2D3436]">${userName}</h4>
+                                <h4 class="font-bold text-[#2D3436] flex items-center gap-1">
+                                    ${userName}
+                                    ${badgeHtml}
+                                </h4>
                                 <p class="text-xs text-[#2D3436] opacity-75">${req.room_name}</p>
                             </div>
                             <span class="text-xs px-2 py-1 rounded-full bg-${statusColor}-100 text-${statusColor}-700 font-semibold">${statusText}</span>
@@ -1216,15 +1224,24 @@ www.myoneart.com
             list.innerHTML = conversations.map(conv => {
                 const otherUser = conv.other_user_name;
                 const otherUserId = conv.other_user_id;
+                const isVerified = conv.other_user_verified;
                 const timeInfo = getConversationTimeRemaining(conv.expires_at);
+                
+                const badgeColor = isVerified ? 'bg-blue-500' : 'bg-gray-400 opacity-50';
+                const badgeHtml = `<span class="w-4 h-4 ${badgeColor} rounded-full flex items-center justify-center text-white text-xs">✓</span>`;
+                
                 return `
                     <div onclick="openChat(${conv.id}, '${otherUser}', ${otherUserId})" class="bg-white rounded-2xl p-4 card-hover">
                         <div class="flex items-center gap-3">
-                            <div class="w-12 h-12 rounded-full bg-gradient-to-br from-[#FF4458] to-[#6C5CE7] flex items-center justify-center text-white font-bold">
+                            <div class="relative w-12 h-12 rounded-full bg-gradient-to-br from-[#FF4458] to-[#6C5CE7] flex items-center justify-center text-white font-bold">
                                 ${otherUser.charAt(0).toUpperCase()}
+                                <span class="absolute -bottom-1 -right-1 w-4 h-4 ${badgeColor} rounded-full flex items-center justify-center text-white text-xs">✓</span>
                             </div>
                             <div class="flex-1">
-                                <h4 class="font-bold text-[#2D3436]">${otherUser}</h4>
+                                <h4 class="font-bold text-[#2D3436] flex items-center gap-1">
+                                    ${otherUser}
+                                    ${badgeHtml}
+                                </h4>
                                 <p class="text-xs text-[#2D3436] opacity-75">${conv.room_name || 'Conversation'}</p>
                                 ${timeInfo ? `<p class="text-xs ${conv.is_active ? 'text-[#FF4458]' : 'text-gray-500'} font-semibold mt-1">${timeInfo}</p>` : ''}
                             </div>
