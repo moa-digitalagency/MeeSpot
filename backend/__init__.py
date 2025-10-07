@@ -25,7 +25,25 @@ def create_app():
          methods=["GET", "POST", "PUT", "DELETE", "OPTIONS"]
     )
     
-    app.config['SQLALCHEMY_DATABASE_URI'] = os.environ.get('DATABASE_URL')
+    # Auto-détection de l'URL PostgreSQL
+    database_url = os.environ.get('DATABASE_URL')
+    if not database_url:
+        # Construction automatique depuis les variables individuelles (Replit, etc.)
+        pguser = os.environ.get('PGUSER')
+        pgpassword = os.environ.get('PGPASSWORD')
+        pghost = os.environ.get('PGHOST')
+        pgport = os.environ.get('PGPORT', '5432')
+        pgdatabase = os.environ.get('PGDATABASE')
+        
+        if all([pguser, pgpassword, pghost, pgdatabase]):
+            database_url = f"postgresql://{pguser}:{pgpassword}@{pghost}:{pgport}/{pgdatabase}"
+            print(f"✓ URL PostgreSQL construite automatiquement depuis les variables d'environnement")
+        else:
+            print("⚠️  ATTENTION: Aucune configuration PostgreSQL trouvée")
+    else:
+        print(f"✓ URL PostgreSQL chargée depuis DATABASE_URL")
+    
+    app.config['SQLALCHEMY_DATABASE_URI'] = database_url
     app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
     app.config['SQLALCHEMY_ENGINE_OPTIONS'] = {
         'pool_pre_ping': True,
