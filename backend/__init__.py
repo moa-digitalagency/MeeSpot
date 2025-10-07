@@ -17,9 +17,10 @@ def create_app():
     app = Flask(__name__, static_folder='../static')
     
     # Configuration CORS pour production et développement
+    # Note: L'app utilise localStorage (pas de cookies), donc supports_credentials=False
     CORS(app, 
          resources={r"/api/*": {"origins": "*"}},
-         supports_credentials=True,
+         supports_credentials=False,
          allow_headers=["Content-Type", "Authorization", "X-API-Key"],
          methods=["GET", "POST", "PUT", "DELETE", "OPTIONS"]
     )
