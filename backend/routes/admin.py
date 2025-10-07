@@ -10,6 +10,7 @@ from flask import Blueprint, request, jsonify, send_file
 from backend import db
 from backend.models.user import User
 from backend.models.report import Report
+from backend.models.api_key import APIKey
 from backend.utils.auth import token_required, admin_required
 import subprocess
 import os
@@ -339,6 +340,146 @@ def view_log(current_user, filename):
             'content': content
         })
     except Exception as e:
+        return jsonify({
+            'success': False,
+            'message': str(e)
+        }), 500
+
+# ========== API KEYS MANAGEMENT ==========
+
+@bp.route('/api-keys', methods=['GET'])
+@token_required
+@admin_required
+def list_api_keys(current_user):
+    """Liste toutes les clés API"""
+    try:
+        keys = APIKey.query.order_by(APIKey.created_at.desc()).all()
+        return jsonify({
+            'success': True,
+            'keys': [key.to_dict_safe() for key in keys]
+        })
+    except Exception as e:
+        return jsonify({
+            'success': False,
+            'message': str(e)
+        }), 500
+
+@bp.route('/api-keys', methods=['POST'])
+@token_required
+@admin_required
+def create_api_key(current_user):
+    """Crée une nouvelle clé API"""
+    try:
+        data = request.json
+        
+        if not data.get('name'):
+            return jsonify({
+                'success': False,
+                'message': 'Le nom de la clé est requis'
+            }), 400
+        
+        # Générer une nouvelle clé
+        new_key = APIKey(
+            key=APIKey.generate_key(),
+            name=data['name'],
+            description=data.get('description', ''),
+            created_by=current_user.id
+        )
+        
+        db.session.add(new_key)
+        db.session.commit()
+        
+        return jsonify({
+            'success': True,
+            'message': 'Clé API créée avec succès',
+            'key': new_key.to_dict()
+        }), 201
+    except Exception as e:
+        db.session.rollback()
+        return jsonify({
+            'success': False,
+            'message': str(e)
+        }), 500
+
+@bp.route('/api-keys/<int:key_id>/revoke', methods=['POST'])
+@token_required
+@admin_required
+def revoke_api_key(current_user, key_id):
+    """Révoque une clé API"""
+    try:
+        api_key = APIKey.query.get(key_id)
+        
+        if not api_key:
+            return jsonify({
+                'success': False,
+                'message': 'Clé API introuvable'
+            }), 404
+        
+        api_key.is_active = False
+        db.session.commit()
+        
+        return jsonify({
+            'success': True,
+            'message': 'Clé API révoquée avec succès'
+        })
+    except Exception as e:
+        db.session.rollback()
+        return jsonify({
+            'success': False,
+            'message': str(e)
+        }), 500
+
+@bp.route('/api-keys/<int:key_id>/activate', methods=['POST'])
+@token_required
+@admin_required
+def activate_api_key(current_user, key_id):
+    """Réactive une clé API"""
+    try:
+        api_key = APIKey.query.get(key_id)
+        
+        if not api_key:
+            return jsonify({
+                'success': False,
+                'message': 'Clé API introuvable'
+            }), 404
+        
+        api_key.is_active = True
+        db.session.commit()
+        
+        return jsonify({
+            'success': True,
+            'message': 'Clé API réactivée avec succès'
+        })
+    except Exception as e:
+        db.session.rollback()
+        return jsonify({
+            'success': False,
+            'message': str(e)
+        }), 500
+
+@bp.route('/api-keys/<int:key_id>', methods=['DELETE'])
+@token_required
+@admin_required
+def delete_api_key(current_user, key_id):
+    """Supprime définitivement une clé API"""
+    try:
+        api_key = APIKey.query.get(key_id)
+        
+        if not api_key:
+            return jsonify({
+                'success': False,
+                'message': 'Clé API introuvable'
+            }), 404
+        
+        db.session.delete(api_key)
+        db.session.commit()
+        
+        return jsonify({
+            'success': True,
+            'message': 'Clé API supprimée définitivement'
+        })
+    except Exception as e:
+        db.session.rollback()
         return jsonify({
             'success': False,
             'message': str(e)
