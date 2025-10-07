@@ -455,9 +455,16 @@ www.myoneart.com
 
     <div id="chatModal" class="hidden fixed inset-0 bg-black bg-opacity-50 flex items-end z-50">
         <div class="bg-white rounded-t-3xl w-full p-6 max-h-[90vh] flex flex-col">
-            <div class="flex justify-between items-center mb-4">
+            <div class="flex justify-between items-center mb-2">
                 <h3 id="chatWithName" class="text-xl font-bold text-[#2D3436]"></h3>
                 <button onclick="closeChatModal()" class="w-10 h-10 flex items-center justify-center bg-gray-100 text-gray-600 hover:bg-gray-200 rounded-full text-2xl font-bold transition-colors">×</button>
+            </div>
+            
+            <div class="flex items-center gap-2 mb-4 bg-[#FFEAA7] rounded-xl p-3">
+                <span class="text-sm text-[#2D3436] flex-1">📷 Recevoir des photos</span>
+                <button id="photoConsentToggle" onclick="togglePhotoConsent()" class="w-12 h-6 rounded-full transition-all duration-200 relative bg-gray-300">
+                    <div class="w-5 h-5 bg-white rounded-full absolute top-0.5 left-0.5 transition-all duration-200"></div>
+                </button>
             </div>
             
             <div id="chatMessages" class="bg-[#FFEAA7] rounded-xl p-4 flex-1 overflow-y-auto mb-4 min-h-[400px]"></div>
@@ -493,6 +500,7 @@ www.myoneart.com
     <script>
         let currentRoomId = null;
         let currentConversationId = null;
+        let currentRecipientConsent = false;
         let user = null;
         let currentPage = 'discover';
         let roomFilter = 'active';
@@ -679,9 +687,8 @@ www.myoneart.com
             displayRoomsList(filteredRooms);
         }
 
-        function getTimeRemaining(createdAt) {
-            const created = new Date(createdAt);
-            const expires = new Date(created.getTime() + (24 * 60 * 60 * 1000)); // +24h
+        function getTimeRemaining(createdAt, expiresAt) {
+            const expires = expiresAt ? new Date(expiresAt) : new Date(new Date(createdAt).getTime() + (24 * 60 * 60 * 1000));
             const now = new Date();
             const remaining = expires - now;
             
@@ -714,7 +721,7 @@ www.myoneart.com
                         <div class="flex-1">
                             <h4 class="font-bold text-[#2D3436]">${room.name}</h4>
                             <p class="text-xs text-[#2D3436] opacity-75">${room.member_count || 0} personnes</p>
-                            ${room.is_active ? `<p class="text-xs text-[#FF4458] font-semibold mt-1">${getTimeRemaining(room.created_at)}</p>` : ''}
+                            ${room.is_active ? `<p class="text-xs text-[#FF4458] font-semibold mt-1">${getTimeRemaining(room.created_at, room.expires_at)}</p>` : `<p class="text-xs text-gray-500 font-semibold mt-1">🕐 Expiré</p>`}
                         </div>
                         <span class="text-xs text-[#2D3436] opacity-50">${new Date(room.created_at).toLocaleDateString()}</span>
                     </div>
@@ -1022,7 +1029,9 @@ www.myoneart.com
                 if (response.ok) {
                     const data = await response.json();
                     alert('Demande acceptée ! Vous pouvez maintenant discuter.');
-                    loadRequests();
+                    await loadRequests();
+                    showSection('messages');
+                    await loadConversations();
                 } else {
                     alert('Erreur lors de l\'acceptation');
                 }
@@ -1078,8 +1087,9 @@ www.myoneart.com
             
             list.innerHTML = conversations.map(conv => {
                 const otherUser = conv.other_user_name;
+                const otherUserId = conv.other_user_id;
                 return `
-                    <div onclick="openChat(${conv.id}, '${otherUser}')" class="bg-white rounded-2xl p-4 card-hover">
+                    <div onclick="openChat(${conv.id}, '${otherUser}', ${otherUserId})" class="bg-white rounded-2xl p-4 card-hover">
                         <div class="flex items-center gap-3">
                             <div class="w-12 h-12 rounded-full bg-gradient-to-br from-[#FF4458] to-[#6C5CE7] flex items-center justify-center text-white font-bold">
                                 ${otherUser.charAt(0).toUpperCase()}
@@ -1094,12 +1104,16 @@ www.myoneart.com
             }).join('');
         }
 
-        async function openChat(conversationId, otherUserName) {
+        async function openChat(conversationId, otherUserName, otherUserId) {
             currentConversationId = conversationId;
             document.getElementById('chatWithName').textContent = `💬 ${otherUserName}`;
             document.getElementById('chatModal').classList.remove('hidden');
             
-            await loadPrivateMessages();
+            await Promise.all([
+                loadPrivateMessages(),
+                loadRecipientConsent(otherUserId),
+                loadMyPhotoConsent()
+            ]);
             
             if (messageInterval) clearInterval(messageInterval);
             messageInterval = setInterval(() => {
@@ -1116,6 +1130,75 @@ www.myoneart.com
                 messageInterval = null;
             }
             currentConversationId = null;
+            currentRecipientConsent = false;
+        }
+
+        async function togglePhotoConsent() {
+            const token = localStorage.getItem('token');
+            
+            try {
+                const response = await fetch('/api/profile/photo-consent', {
+                    method: 'POST',
+                    headers: { 'Authorization': `Bearer ${token}` }
+                });
+                
+                if (response.ok) {
+                    const data = await response.json();
+                    updatePhotoConsentUI(data.photo_consent_enabled);
+                }
+            } catch (error) {
+                console.error('Error toggling photo consent:', error);
+            }
+        }
+
+        async function loadMyPhotoConsent() {
+            const token = localStorage.getItem('token');
+            
+            try {
+                const response = await fetch('/api/profile', {
+                    headers: { 'Authorization': `Bearer ${token}` }
+                });
+                
+                if (response.ok) {
+                    const profile = await response.json();
+                    updatePhotoConsentUI(profile.photo_consent_enabled);
+                }
+            } catch (error) {
+                console.error('Error loading photo consent:', error);
+            }
+        }
+
+        async function loadRecipientConsent(userId) {
+            const token = localStorage.getItem('token');
+            
+            try {
+                const response = await fetch(`/api/users/${userId}/profile`, {
+                    headers: { 'Authorization': `Bearer ${token}` }
+                });
+                
+                if (response.ok) {
+                    const profile = await response.json();
+                    currentRecipientConsent = profile.photo_consent_enabled || false;
+                }
+            } catch (error) {
+                console.error('Error loading recipient consent:', error);
+                currentRecipientConsent = false;
+            }
+        }
+
+        function updatePhotoConsentUI(enabled) {
+            const toggle = document.getElementById('photoConsentToggle');
+            const dot = toggle.querySelector('div');
+            
+            if (enabled) {
+                toggle.classList.remove('bg-gray-300');
+                toggle.classList.add('bg-[#00B894]');
+                dot.style.transform = 'translateX(24px)';
+            } else {
+                toggle.classList.remove('bg-[#00B894]');
+                toggle.classList.add('bg-gray-300');
+                dot.style.transform = 'translateX(0)';
+            }
         }
 
         async function viewUserProfile(userId) {
@@ -1301,6 +1384,12 @@ www.myoneart.com
         async function handleChatPhoto(event) {
             const file = event.target.files[0];
             if (!file) return;
+            
+            if (!currentRecipientConsent) {
+                alert('🚫 L\'autre personne n\'accepte pas les photos pour le moment.\n\nVeuillez demander son consentement avant d\'envoyer une photo.');
+                event.target.value = '';
+                return;
+            }
             
             if (!confirm('⚠️ CONSENTEMENT REQUIS ⚠️\n\nEn cliquant sur "OK", vous consentez à :\n• Partager cette photo avec votre interlocuteur\n• Le fait que cette action est irréversible\n• Le fait que cette photo sera stockée sur nos serveurs\n\nÊtes-vous sûr de vouloir envoyer cette photo ?')) {
                 event.target.value = '';
