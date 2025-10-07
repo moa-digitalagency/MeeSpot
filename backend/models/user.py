@@ -39,6 +39,7 @@ class User(db.Model):
     subscription_tier = db.Column(db.String(20), default='free')
     alternative_mode = db.Column(db.Boolean, default=False)
     alternative_name = db.Column(EncryptedString(500))
+    photo_consent_enabled = db.Column(db.Boolean, default=True)
     
     created_at = db.Column(db.DateTime, default=datetime.utcnow)
     
@@ -88,7 +89,8 @@ class User(db.Model):
             'gallery_photos': self.gallery_photos or [],
             'meeting_type': self.meeting_type,
             'interests': self.interests or [],
-            'alternative_mode': self.alternative_mode
+            'alternative_mode': self.alternative_mode,
+            'photo_consent_enabled': self.photo_consent_enabled
         }
     
     def to_public_dict(self):

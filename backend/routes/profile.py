@@ -42,6 +42,8 @@ def update_profile(current_user):
         current_user.alternative_mode = data['alternative_mode']
     if 'alternative_name' in data and current_user.subscription_tier in ['premium', 'platinum']:
         current_user.alternative_name = data['alternative_name']
+    if 'photo_consent_enabled' in data:
+        current_user.photo_consent_enabled = data['photo_consent_enabled']
     
     db.session.commit()
     return jsonify({'message': 'Profile updated successfully', 'profile': current_user.to_dict()})

@@ -23,8 +23,10 @@ class Room(db.Model):
     access_orientation = db.Column(db.String(50))
     access_age_min = db.Column(db.Integer)
     access_age_max = db.Column(db.Integer)
+    access_meeting_type = db.Column(db.String(100))
+    access_religion = db.Column(db.String(100))
+    access_lgbtq_friendly = db.Column(db.String(50))
     
-    event_datetime = db.Column(db.DateTime)
     max_capacity = db.Column(db.Integer)
     is_active = db.Column(db.Boolean, default=True)
     access_code = db.Column(db.String(8), unique=True)
@@ -56,8 +58,16 @@ class Room(db.Model):
             'description': self.description,
             'photo_url': self.photo_url,
             'welcome_message': self.welcome_message,
-            'event_datetime': self.event_datetime.isoformat() if self.event_datetime else None,
+            'created_at': self.created_at.isoformat() if self.created_at else None,
+            'expires_at': self.expires_at.isoformat() if self.expires_at else None,
             'max_capacity': self.max_capacity,
             'member_count': len(self.members),
-            'is_active': self.is_active
+            'is_active': self.is_active,
+            'access_gender': self.access_gender,
+            'access_orientation': self.access_orientation,
+            'access_age_min': self.access_age_min,
+            'access_age_max': self.access_age_max,
+            'access_meeting_type': self.access_meeting_type,
+            'access_religion': self.access_religion,
+            'access_lgbtq_friendly': self.access_lgbtq_friendly
         }

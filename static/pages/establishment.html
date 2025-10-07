@@ -273,17 +273,17 @@ www.myoneart.com
                     <label class="block text-[#2D3436] mb-2 text-sm font-semibold">Message de bienvenue</label>
                     <textarea id="roomWelcome" rows="2" class="w-full px-4 py-3 border border-gray-300 rounded-xl focus:outline-none focus:border-[#FF4458]"></textarea>
                 </div>
-                <div class="grid grid-cols-2 gap-3 mb-3">
-                    <div>
-                        <label class="block text-[#2D3436] mb-2 text-sm font-semibold">Date & heure</label>
-                        <input type="datetime-local" id="roomDateTime" class="w-full px-4 py-3 border border-gray-300 rounded-xl focus:outline-none focus:border-[#FF4458]">
-                    </div>
-                    <div>
-                        <label class="block text-[#2D3436] mb-2 text-sm font-semibold">Capacité max</label>
-                        <input type="number" id="roomCapacity" min="2" class="w-full px-4 py-3 border border-gray-300 rounded-xl focus:outline-none focus:border-[#FF4458]">
-                    </div>
+                <div class="mb-3">
+                    <label class="block text-[#2D3436] mb-2 text-sm font-semibold">Capacité max</label>
+                    <input type="number" id="roomCapacity" min="2" class="w-full px-4 py-3 border border-gray-300 rounded-xl focus:outline-none focus:border-[#FF4458]">
                 </div>
-                <div class="grid grid-cols-3 gap-3 mb-4">
+                
+                <div class="mb-3">
+                    <h4 class="font-bold text-[#2D3436] mb-2">Filtres d'accès (optionnel)</h4>
+                    <p class="text-xs text-[#2D3436] opacity-75 mb-3">Sélectionnez les critères pour filtrer les participants</p>
+                </div>
+                
+                <div class="grid grid-cols-2 gap-3 mb-3">
                     <div>
                         <label class="block text-[#2D3436] mb-2 text-sm font-semibold">Genre</label>
                         <select id="roomGender" class="w-full px-4 py-3 border border-gray-300 rounded-xl focus:outline-none focus:border-[#FF4458]">
@@ -294,13 +294,48 @@ www.myoneart.com
                         </select>
                     </div>
                     <div>
+                        <label class="block text-[#2D3436] mb-2 text-sm font-semibold">Orientation</label>
+                        <select id="roomOrientation" class="w-full px-4 py-3 border border-gray-300 rounded-xl focus:outline-none focus:border-[#FF4458]">
+                            <option value="">Toutes</option>
+                            <option value="heterosexual">Hétérosexuel(le)</option>
+                            <option value="homosexual">Homosexuel(le)</option>
+                            <option value="bisexual">Bisexuel(le)</option>
+                            <option value="pansexual">Pansexuel(le)</option>
+                            <option value="asexual">Asexuel(le)</option>
+                            <option value="other">Autre</option>
+                        </select>
+                    </div>
+                </div>
+                <div class="grid grid-cols-2 gap-3 mb-3">
+                    <div>
                         <label class="block text-[#2D3436] mb-2 text-sm font-semibold">Âge min</label>
-                        <input type="number" id="roomAgeMin" min="18" class="w-full px-4 py-3 border border-gray-300 rounded-xl focus:outline-none focus:border-[#FF4458]">
+                        <input type="number" id="roomAgeMin" min="18" placeholder="18+" class="w-full px-4 py-3 border border-gray-300 rounded-xl focus:outline-none focus:border-[#FF4458]">
                     </div>
                     <div>
                         <label class="block text-[#2D3436] mb-2 text-sm font-semibold">Âge max</label>
-                        <input type="number" id="roomAgeMax" max="120" class="w-full px-4 py-3 border border-gray-300 rounded-xl focus:outline-none focus:border-[#FF4458]">
+                        <input type="number" id="roomAgeMax" max="120" placeholder="Pas de limite" class="w-full px-4 py-3 border border-gray-300 rounded-xl focus:outline-none focus:border-[#FF4458]">
                     </div>
+                </div>
+                <div class="mb-3">
+                    <label class="block text-[#2D3436] mb-2 text-sm font-semibold">Type de rencontre</label>
+                    <select id="roomMeetingType" class="w-full px-4 py-3 border border-gray-300 rounded-xl focus:outline-none focus:border-[#FF4458]">
+                        <option value="">Tous</option>
+                    </select>
+                </div>
+                <div class="mb-3">
+                    <label class="block text-[#2D3436] mb-2 text-sm font-semibold">Religion</label>
+                    <select id="roomReligion" class="w-full px-4 py-3 border border-gray-300 rounded-xl focus:outline-none focus:border-[#FF4458]">
+                        <option value="">Toutes</option>
+                    </select>
+                </div>
+                <div class="mb-4">
+                    <label class="block text-[#2D3436] mb-2 text-sm font-semibold">LGBT+ Friendly</label>
+                    <select id="roomLGBTQ" class="w-full px-4 py-3 border border-gray-300 rounded-xl focus:outline-none focus:border-[#FF4458]">
+                        <option value="">Pas de préférence</option>
+                        <option value="yes">Oui</option>
+                        <option value="no">Non</option>
+                        <option value="prefer_not_to_say">Préfère ne pas dire</option>
+                    </select>
                 </div>
                 <button type="submit" class="w-full py-3 bg-[#00B894] text-white rounded-full hover:bg-[#00a183] transition font-semibold">
                     Créer l'événement
@@ -658,11 +693,14 @@ www.myoneart.com
                 name: document.getElementById('roomName').value,
                 description: document.getElementById('roomDescription').value,
                 welcome_message: document.getElementById('roomWelcome').value,
-                event_datetime: document.getElementById('roomDateTime').value || null,
                 max_capacity: document.getElementById('roomCapacity').value || null,
                 access_gender: document.getElementById('roomGender').value || null,
+                access_orientation: document.getElementById('roomOrientation').value || null,
                 access_age_min: document.getElementById('roomAgeMin').value || null,
-                access_age_max: document.getElementById('roomAgeMax').value || null
+                access_age_max: document.getElementById('roomAgeMax').value || null,
+                access_meeting_type: document.getElementById('roomMeetingType').value || null,
+                access_religion: document.getElementById('roomReligion').value || null,
+                access_lgbtq_friendly: document.getElementById('roomLGBTQ').value || null
             };
             
             try {
