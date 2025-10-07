@@ -49,6 +49,11 @@ The backend organizes routes by resource (auth, rooms, establishments, admin, pr
 - **Gunicorn**: Production WSGI server.
 
 ## Recent Changes (October 2025)
+- **User Registration Bug Fix** (October 7):
+  - Fixed critical TypeError during user registration
+  - Corrected 'photos' parameter to 'gallery_photos' to match User model schema
+  - Ensured gallery_photos always receives a list (even empty) to prevent NULL values
+  - Registration now works correctly with or without gallery photos
 - **Badge Visibility Improvement** (October 7):
   - Increased opacity of non-verified user badges from 50 to 60 for better visibility
   - Gray badges (✓) now more visible for non-verified users across all interfaces
