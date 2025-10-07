@@ -425,6 +425,9 @@ www.myoneart.com
                 </div>
             </div>
 
+            <!-- Status Bar -->
+            <div id="signupStatusBar" class="hidden text-sm font-medium py-2 px-4 rounded-lg mb-4"></div>
+
             <!-- Step 1: Basic Info -->
             <div id="signupStep1" class="signup-step">
                 <div class="mb-4">
@@ -634,6 +637,34 @@ www.myoneart.com
         let signupCurrentStep = 1;
         let signupProfilePhoto = null;
         let signupGalleryPhotos = [];
+        let signupProfilePhotoUrl = null;  // Store uploaded photo URL
+        let signupGalleryPhotoUrls = [];   // Store uploaded gallery URLs
+        let signupStatus = {
+            step: '',
+            message: '',
+            error: false
+        };
+
+        function updateSignupStatus(message, isError = false) {
+            signupStatus.message = message;
+            signupStatus.error = isError;
+            
+            const statusBar = document.getElementById('signupStatusBar');
+            if (statusBar) {
+                statusBar.textContent = message;
+                statusBar.className = `text-sm font-medium py-2 px-4 rounded-lg mb-4 ${
+                    isError ? 'bg-red-100 text-red-700' : 'bg-green-100 text-green-700'
+                }`;
+                statusBar.classList.remove('hidden');
+                
+                // Auto-hide success messages after 3 seconds
+                if (!isError) {
+                    setTimeout(() => {
+                        statusBar.classList.add('hidden');
+                    }, 3000);
+                }
+            }
+        }
 
         function closeUserSignupModal() {
             document.getElementById('userSignupModal').classList.add('hidden');
@@ -691,48 +722,113 @@ www.myoneart.com
             signupCurrentStep = step;
         }
 
-        function previewProfilePhoto(event) {
+        async function previewProfilePhoto(event) {
             const file = event.target.files[0];
-            if (file) {
-                const reader = new FileReader();
-                reader.onload = function(e) {
-                    signupProfilePhoto = e.target.result;
-                    const preview = document.getElementById('profilePhotoPreview');
-                    preview.style.backgroundImage = `url(${e.target.result})`;
-                    preview.style.backgroundSize = 'cover';
-                    preview.style.backgroundPosition = 'center';
-                    preview.textContent = '';
-                    document.getElementById('nextToGallery').disabled = false;
-                };
-                reader.readAsDataURL(file);
-            }
+            if (!file) return;
+            
+            const reader = new FileReader();
+            reader.onload = async function(e) {
+                signupProfilePhoto = e.target.result;
+                const preview = document.getElementById('profilePhotoPreview');
+                preview.style.backgroundImage = `url(${e.target.result})`;
+                preview.style.backgroundSize = 'cover';
+                preview.style.backgroundPosition = 'center';
+                preview.textContent = '⏳';
+                
+                // Upload automatically
+                try {
+                    updateSignupStatus('Uploading profile photo...', false);
+                    const response = await fetch('/api/upload/image', {
+                        method: 'POST',
+                        headers: { 'Content-Type': 'application/json' },
+                        body: JSON.stringify({
+                            image: e.target.result,
+                            type: 'profile'
+                        })
+                    });
+                    
+                    const data = await response.json();
+                    
+                    if (response.ok && data.success) {
+                        signupProfilePhotoUrl = data.url;
+                        preview.textContent = '✓';
+                        setTimeout(() => preview.textContent = '', 500);
+                        updateSignupStatus('Profile photo uploaded!', false);
+                        document.getElementById('nextToGallery').disabled = false;
+                    } else {
+                        updateSignupStatus(`Upload failed: ${data.message || 'Unknown error'}`, true);
+                        preview.textContent = '❌';
+                    }
+                } catch (error) {
+                    updateSignupStatus(`Upload error: ${error.message}`, true);
+                    preview.textContent = '❌';
+                }
+            };
+            reader.readAsDataURL(file);
         }
 
-        function previewGalleryPhotos(event) {
-            const files = Array.from(event.target.files).slice(0, 6);
+        async function previewGalleryPhotos(event) {
+            const files = Array.from(event.target.files).slice(0, 6 - signupGalleryPhotos.length);
             const preview = document.getElementById('galleryPreview');
             
-            files.forEach(file => {
+            for (const file of files) {
                 if (signupGalleryPhotos.length < 6) {
                     const reader = new FileReader();
-                    reader.onload = function(e) {
+                    reader.onload = async function(e) {
                         signupGalleryPhotos.push(e.target.result);
                         const img = document.createElement('div');
-                        img.className = 'aspect-square rounded-xl bg-gray-200';
+                        img.className = 'aspect-square rounded-xl bg-gray-200 flex items-center justify-center text-2xl';
                         img.style.backgroundImage = `url(${e.target.result})`;
                         img.style.backgroundSize = 'cover';
                         img.style.backgroundPosition = 'center';
+                        img.textContent = '⏳';
                         preview.appendChild(img);
+                        
+                        // Upload automatically
+                        try {
+                            updateSignupStatus(`Uploading gallery photo ${signupGalleryPhotoUrls.length + 1}...`, false);
+                            const response = await fetch('/api/upload/image', {
+                                method: 'POST',
+                                headers: { 'Content-Type': 'application/json' },
+                                body: JSON.stringify({
+                                    image: e.target.result,
+                                    type: 'gallery'
+                                })
+                            });
+                            
+                            const data = await response.json();
+                            
+                            if (response.ok && data.success) {
+                                signupGalleryPhotoUrls.push(data.url);
+                                img.textContent = '✓';
+                                setTimeout(() => img.textContent = '', 500);
+                                updateSignupStatus(`Gallery photo ${signupGalleryPhotoUrls.length} uploaded!`, false);
+                            } else {
+                                updateSignupStatus(`Upload failed: ${data.message || 'Unknown error'}`, true);
+                                img.textContent = '❌';
+                            }
+                        } catch (error) {
+                            updateSignupStatus(`Upload error: ${error.message}`, true);
+                            img.textContent = '❌';
+                        }
                     };
                     reader.readAsDataURL(file);
                 }
-            });
+            }
         }
 
         async function completeUserSignup() {
             const btn = event.target;
             btn.disabled = true;
             btn.textContent = 'Creating account...';
+
+            // Validate that photo is uploaded
+            if (!signupProfilePhotoUrl) {
+                updateSignupStatus('⚠️ Please upload a profile photo first', true);
+                btn.disabled = false;
+                btn.textContent = 'Create Account ✨';
+                return;
+            }
 
             const userData = {
                 name: document.getElementById('userSignupName').value,
@@ -743,11 +839,12 @@ www.myoneart.com
                 sexual_orientation: document.getElementById('userSignupOrientation').value,
                 meeting_type: document.getElementById('userSignupMeetingType').value,
                 bio: document.getElementById('userSignupBio').value || '',
-                photo: signupProfilePhoto,
-                gallery: signupGalleryPhotos
+                photo_url: signupProfilePhotoUrl,
+                gallery_urls: signupGalleryPhotoUrls
             };
 
             try {
+                updateSignupStatus('Creating your account...', false);
                 const response = await fetch('/api/auth/register/user', {
                     method: 'POST',
                     headers: { 'Content-Type': 'application/json' },
@@ -757,16 +854,19 @@ www.myoneart.com
                 const data = await response.json();
 
                 if (response.ok) {
+                    updateSignupStatus('✅ Account created successfully!', false);
                     localStorage.setItem('token', data.token);
                     localStorage.setItem('user', JSON.stringify(data.user));
-                    window.location.href = '/app.html';
+                    setTimeout(() => {
+                        window.location.href = '/app.html';
+                    }, 500);
                 } else {
-                    alert(data.message || 'Registration failed');
+                    updateSignupStatus(`❌ ${data.message || 'Registration failed'}`, true);
                     btn.disabled = false;
                     btn.textContent = 'Create Account ✨';
                 }
             } catch (error) {
-                alert('Error during registration');
+                updateSignupStatus(`❌ Error: ${error.message}`, true);
                 btn.disabled = false;
                 btn.textContent = 'Create Account ✨';
             }
