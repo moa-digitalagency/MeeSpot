@@ -15,7 +15,7 @@ MeetSpot is a Progressive Web Application (PWA) dating platform designed to faci
 ## System Architecture
 
 ### UI/UX Decisions
-The platform features a mobile-first responsive design, limited to a maximum viewport width of 768px. It uses a distinct color palette: Primary #FF4458 (vibrant coral), Secondary #6C5CE7 (soft purple), Accent #A29BFE (lavender), Background #FFEAA7 (warm cream), and Text #2D3436 (charcoal). Typography is set with Poppins for headings and Inter for body text. Navigation is managed through fixed bottom navigation bars with SVG icons and bottom sheet modals for mobile-optimized interactions across all dashboards (User, Establishment, Admin).
+The platform features a mobile-first responsive design, limited to a maximum viewport width of 768px. It uses a distinct color palette: Primary #FF4458 (vibrant coral), Secondary #6C5CE7 (soft purple), Accent #A29BFE (lavender), Background #F5F5F5 (light grey), and Text #2D3436 (charcoal). Typography is set with Poppins for headings and Inter for body text. Navigation is managed through fixed bottom navigation bars with SVG icons and bottom sheet modals for mobile-optimized interactions across all dashboards (User, Establishment, Admin).
 
 ### Technical Implementations
 MeetSpot is built as a PWA with a Python Flask backend and a Tailwind CSS frontend. It utilizes a modular backend structure with PostgreSQL via SQLAlchemy ORM. Authentication is handled with JWT (stored in localStorage) and bcrypt for password hashing. All sensitive data, including personal information and private messages, is encrypted at rest using AES-256 (Fernet) with SQLAlchemy TypeDecorators. The frontend uses Vanilla JavaScript for interactivity, supporting full PWA features like service workers for offline support, app manifests for installability, and push notification readiness. An auto-refresh system provides real-time data synchronization for conversations, requests, and room activities, intelligently pausing when the app loses focus.
@@ -64,6 +64,11 @@ The backend organizes routes by resource (auth, rooms, establishments, admin, pr
 - **wsgi.py**: Standard WSGI entry point for production deployments
 
 ## Recent Changes (October 2025)
+- **UI Color Scheme Update** (October 7):
+  - Changed background color from #FFEAA7 (warm cream) to #F5F5F5 (light grey)
+  - Updated all HTML pages (index.html, app.html, admin.html, establishment.html)
+  - Updated manifest.json theme_color to match new background
+  - Maintains coral (#FF4458), purple (#6C5CE7), and lavender (#A29BFE) accents
 - **Conversation Expiration & Countdown System** (October 7):
   - Added `expires_at` and `started_at` fields to PrivateConversation model
   - Implemented tier-based expiration: Free=24h, Premium=7d, Platinum=30d
