@@ -27,16 +27,12 @@ outputType = "webview"
 
 [[workflows.workflow.tasks]]
 task = "shell.exec"
-args = "python main.py"
+args = "gunicorn --bind=0.0.0.0:5000 --workers=2 --reload wsgi:app"
 waitForPort = 5000
 
 [[ports]]
 localPort = 5000
 externalPort = 80
-
-[[ports]]
-localPort = 35745
-externalPort = 3000
 
 [[ports]]
 localPort = 37425
@@ -45,3 +41,7 @@ externalPort = 3002
 [[ports]]
 localPort = 46699
 externalPort = 3001
+
+[deployment]
+deploymentTarget = "autoscale"
+run = ["gunicorn", "--bind=0.0.0.0:5000", "--workers=4", "--reuse-port", "wsgi:app"]
