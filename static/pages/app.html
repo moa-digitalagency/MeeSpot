@@ -463,29 +463,29 @@ www.myoneart.com
     </div>
 
     <div id="chatModal" class="hidden fixed inset-0 bg-black bg-opacity-50 flex items-end z-50">
-        <div class="bg-white rounded-t-3xl w-full p-6 max-h-[90vh] flex flex-col">
-            <div class="flex justify-between items-center mb-2">
+        <div class="bg-white rounded-t-3xl w-full max-h-[90vh] flex flex-col">
+            <div class="flex justify-between items-center p-6 pb-3 flex-shrink-0">
                 <h3 id="chatWithName" class="text-xl font-bold text-[#2D3436]"></h3>
                 <button onclick="closeChatModal()" class="w-10 h-10 flex items-center justify-center bg-gray-100 text-gray-600 hover:bg-gray-200 rounded-full text-2xl font-bold transition-colors">×</button>
             </div>
             
-            <div class="flex items-center gap-2 mb-4 bg-[#FFEAA7] rounded-xl p-3">
+            <div class="flex items-center gap-2 mx-6 mb-3 bg-[#FFEAA7] rounded-xl p-3 flex-shrink-0">
                 <span class="text-sm text-[#2D3436] flex-1">📷 Recevoir des photos</span>
                 <button id="photoConsentToggle" onclick="togglePhotoConsent()" class="w-12 h-6 rounded-full transition-all duration-200 relative bg-gray-300">
                     <div class="w-5 h-5 bg-white rounded-full absolute top-0.5 left-0.5 transition-all duration-200"></div>
                 </button>
             </div>
             
-            <div id="chatMessages" class="bg-[#FFEAA7] rounded-xl p-4 flex-1 overflow-y-auto mb-4 min-h-[400px]"></div>
+            <div id="chatMessages" class="bg-[#FFEAA7] rounded-xl mx-6 p-4 overflow-y-auto flex-1 min-h-0"></div>
             
-            <form onsubmit="sendPrivateMessage(event)" class="flex gap-2">
-                <button type="button" onclick="document.getElementById('chatPhotoInput').click()" class="px-3 py-2 bg-[#6C5CE7] text-white rounded-full hover:bg-[#5f52d6] transition font-semibold">
-                    📷 Photo
+            <form onsubmit="sendPrivateMessage(event)" class="flex gap-2 p-6 pt-4 flex-shrink-0 bg-white border-t border-gray-100">
+                <button type="button" onclick="document.getElementById('chatPhotoInput').click()" class="px-4 py-3 bg-[#6C5CE7] text-white rounded-full hover:bg-[#5f52d6] transition font-semibold flex-shrink-0">
+                    📷
                 </button>
                 <input type="file" id="chatPhotoInput" accept="image/*" class="hidden" onchange="handleChatPhoto(event)">
-                <input type="text" id="privateMessageInput" placeholder="Tapez un message..." class="flex-1 px-4 py-2 border border-gray-300 rounded-full focus:outline-none focus:border-[#FF4458]">
-                <button type="submit" class="px-6 py-2 bg-[#FF4458] text-white rounded-full hover:bg-[#e03d4c] transition">
-                    <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <input type="text" id="privateMessageInput" placeholder="Tapez un message..." class="flex-1 px-4 py-3 border border-gray-300 rounded-full focus:outline-none focus:border-[#FF4458]">
+                <button type="submit" class="px-4 py-3 bg-[#FF4458] text-white rounded-full hover:bg-[#e03d4c] transition flex-shrink-0">
+                    <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                         <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 19l9 2-9-18-9 18 9-2zm0 0v-8"/>
                     </svg>
                 </button>

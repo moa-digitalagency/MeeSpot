@@ -28,8 +28,15 @@ www.myoneart.com
 <body class="bg-[#FFEAA7]">
     <div id="page-dashboard" class="page-content">
         <div class="px-4 pt-4">
-            <h1 class="text-2xl font-bold text-[#2D3436] mb-1">Admin Dashboard</h1>
-            <p class="text-sm text-[#2D3436] opacity-75 mb-4">Gestion de la plateforme</p>
+            <div class="flex items-center justify-between mb-2">
+                <div>
+                    <h1 class="text-2xl font-bold text-[#2D3436] mb-1">Admin Dashboard</h1>
+                    <p class="text-sm text-[#2D3436] opacity-75">Gestion de la plateforme</p>
+                </div>
+                <button onclick="logout()" class="px-4 py-2 bg-red-500 text-white rounded-full text-sm font-semibold hover:bg-red-600 transition">
+                    🚪 Déconnexion
+                </button>
+            </div>
         </div>
 
         <div class="px-4 space-y-3 mb-4">
@@ -54,7 +61,12 @@ www.myoneart.com
 
     <div id="page-users" class="page-content hidden">
         <div class="px-4 pt-4 pb-4">
-            <h1 class="text-2xl font-bold text-[#2D3436] mb-4">Utilisateurs</h1>
+            <div class="flex items-center justify-between mb-4">
+                <h1 class="text-2xl font-bold text-[#2D3436]">Utilisateurs</h1>
+                <button onclick="logout()" class="px-4 py-2 bg-red-500 text-white rounded-full text-sm font-semibold hover:bg-red-600 transition">
+                    🚪 Déconnexion
+                </button>
+            </div>
             <div id="usersList" class="space-y-3">
                 <p class="text-[#2D3436] opacity-75">Chargement...</p>
             </div>
@@ -63,8 +75,15 @@ www.myoneart.com
 
     <div id="page-options" class="page-content hidden">
         <div class="px-4 pt-4 pb-4">
-            <h1 class="text-2xl font-bold text-[#2D3436] mb-1">Options de Profil</h1>
-            <p class="text-sm text-[#2D3436] opacity-75 mb-4">Gérer les options personnalisables</p>
+            <div class="flex items-center justify-between mb-2">
+                <div>
+                    <h1 class="text-2xl font-bold text-[#2D3436] mb-1">Options de Profil</h1>
+                    <p class="text-sm text-[#2D3436] opacity-75">Gérer les options personnalisables</p>
+                </div>
+                <button onclick="logout()" class="px-4 py-2 bg-red-500 text-white rounded-full text-sm font-semibold hover:bg-red-600 transition">
+                    🚪 Déconnexion
+                </button>
+            </div>
             
             <div class="space-y-4">
                 <div class="bg-white rounded-2xl p-4">
@@ -112,7 +131,12 @@ www.myoneart.com
 
     <div id="page-reports" class="page-content hidden">
         <div class="px-4 pt-4 pb-4">
-            <h1 class="text-2xl font-bold text-[#2D3436] mb-4">Signalements</h1>
+            <div class="flex items-center justify-between mb-4">
+                <h1 class="text-2xl font-bold text-[#2D3436]">Signalements</h1>
+                <button onclick="logout()" class="px-4 py-2 bg-red-500 text-white rounded-full text-sm font-semibold hover:bg-red-600 transition">
+                    🚪 Déconnexion
+                </button>
+            </div>
             <div id="reportsList" class="space-y-3">
                 <p class="text-[#2D3436] opacity-75">Chargement...</p>
             </div>
@@ -137,6 +161,18 @@ www.myoneart.com
                     <button type="submit" class="flex-1 py-3 bg-[#FF4458] text-white rounded-full">Ajouter</button>
                 </div>
             </form>
+        </div>
+    </div>
+
+    <div id="userDetailsModal" class="hidden fixed inset-0 bg-black bg-opacity-50 flex items-end z-50">
+        <div class="bg-white rounded-t-3xl w-full p-6 max-h-[90vh] overflow-y-auto">
+            <div class="flex justify-between items-center mb-4">
+                <h3 class="text-2xl font-bold text-[#2D3436]">Détails Utilisateur</h3>
+                <button onclick="closeUserDetailsModal()" class="w-10 h-10 flex items-center justify-center bg-gray-100 text-gray-600 hover:bg-gray-200 rounded-full text-2xl font-bold transition-colors">×</button>
+            </div>
+            <div id="userDetailsContent" class="space-y-4">
+                <p class="text-sm text-[#2D3436] opacity-75 text-center py-4">Chargement...</p>
+            </div>
         </div>
     </div>
 
@@ -256,10 +292,18 @@ www.myoneart.com
                             ${user.role}
                         </span>
                     </div>
-                    <div class="text-sm text-[#2D3436] opacity-75 space-y-1">
+                    <div class="text-sm text-[#2D3436] opacity-75 space-y-1 mb-3">
                         <div>📧 ${user.email}</div>
-                        <div>🎂 ${user.age} ans • ${user.gender}</div>
-                        <div>💎 ${user.subscription_tier}</div>
+                        <div>🎂 ${user.age || 'N/A'} ans • ${user.gender || 'N/A'}</div>
+                        <div>💎 ${user.subscription_tier || 'free'}</div>
+                    </div>
+                    <div class="flex gap-2">
+                        <button onclick="viewUserDetails(${user.id})" class="flex-1 py-2 bg-[#6C5CE7] text-white rounded-full text-sm font-semibold hover:bg-[#5f52d6] transition">
+                            👁️ Voir
+                        </button>
+                        <button onclick="toggleUserBlock(${user.id}, ${user.is_blocked || false})" class="flex-1 py-2 ${user.is_blocked ? 'bg-green-500 hover:bg-green-600' : 'bg-yellow-500 hover:bg-yellow-600'} text-white rounded-full text-sm font-semibold transition">
+                            ${user.is_blocked ? '✅ Débloquer' : '🚫 Bloquer'}
+                        </button>
                     </div>
                 </div>
             `).join('');
@@ -430,6 +474,102 @@ www.myoneart.com
                 }
             } catch (error) {
                 console.error('Error toggling option:', error);
+            }
+        }
+
+        async function viewUserDetails(userId) {
+            const token = localStorage.getItem('token');
+            
+            try {
+                const response = await fetch(`/api/admin/users/${userId}`, {
+                    headers: { 'Authorization': `Bearer ${token}` }
+                });
+                
+                if (response.ok) {
+                    const user = await response.json();
+                    displayUserDetails(user);
+                    document.getElementById('userDetailsModal').classList.remove('hidden');
+                }
+            } catch (error) {
+                console.error('Error loading user details:', error);
+                alert('Erreur lors du chargement des détails');
+            }
+        }
+
+        function displayUserDetails(user) {
+            const content = document.getElementById('userDetailsContent');
+            content.innerHTML = `
+                <div class="bg-white rounded-2xl p-4 border border-gray-200">
+                    ${user.photo_url ? `<img src="${user.photo_url}" class="w-32 h-32 rounded-full mx-auto mb-4 object-cover">` : '<div class="w-32 h-32 rounded-full mx-auto mb-4 bg-gray-200 flex items-center justify-center text-4xl">👤</div>'}
+                    <h3 class="text-xl font-bold text-center text-[#2D3436] mb-4">${user.name}</h3>
+                    
+                    <div class="space-y-3 text-[#2D3436]">
+                        <div class="flex justify-between py-2 border-b">
+                            <span class="font-semibold">Email:</span>
+                            <span>${user.email}</span>
+                        </div>
+                        <div class="flex justify-between py-2 border-b">
+                            <span class="font-semibold">Rôle:</span>
+                            <span class="px-2 py-1 rounded-full text-xs font-semibold ${getRoleBadgeClass(user.role)}">${user.role}</span>
+                        </div>
+                        <div class="flex justify-between py-2 border-b">
+                            <span class="font-semibold">Âge:</span>
+                            <span>${user.age || 'N/A'} ans</span>
+                        </div>
+                        <div class="flex justify-between py-2 border-b">
+                            <span class="font-semibold">Genre:</span>
+                            <span>${user.gender || 'N/A'}</span>
+                        </div>
+                        <div class="flex justify-between py-2 border-b">
+                            <span class="font-semibold">Abonnement:</span>
+                            <span class="uppercase font-bold">${user.subscription_tier || 'free'}</span>
+                        </div>
+                        ${user.bio ? `
+                        <div class="py-2 border-b">
+                            <span class="font-semibold block mb-2">Bio:</span>
+                            <p class="text-sm opacity-75">${user.bio}</p>
+                        </div>` : ''}
+                        <div class="flex justify-between py-2 border-b">
+                            <span class="font-semibold">Inscription:</span>
+                            <span class="text-sm">${new Date(user.created_at).toLocaleDateString()}</span>
+                        </div>
+                    </div>
+                </div>
+            `;
+        }
+
+        function closeUserDetailsModal() {
+            document.getElementById('userDetailsModal').classList.add('hidden');
+        }
+
+        async function toggleUserBlock(userId, isCurrentlyBlocked) {
+            const action = isCurrentlyBlocked ? 'débloquer' : 'bloquer';
+            if (!confirm(`Voulez-vous vraiment ${action} cet utilisateur ?`)) {
+                return;
+            }
+
+            const token = localStorage.getItem('token');
+            
+            try {
+                const response = await fetch(`/api/admin/users/${userId}/block`, {
+                    method: 'PUT',
+                    headers: {
+                        'Authorization': `Bearer ${token}`,
+                        'Content-Type': 'application/json'
+                    },
+                    body: JSON.stringify({ is_blocked: !isCurrentlyBlocked })
+                });
+                
+                if (response.ok) {
+                    alert(`Utilisateur ${action === 'bloquer' ? 'bloqué' : 'débloqué'} avec succès!`);
+                    loadUsers();
+                } else {
+                    const error = await response.json();
+                    alert(error.message || `Erreur lors du ${action}`);
+                }
+            } catch (error) {
+                console.error('Error toggling user block:', error);
+                alert('Erreur de connexion');
             }
         }
 
