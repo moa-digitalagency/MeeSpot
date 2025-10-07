@@ -21,6 +21,7 @@ www.myoneart.com
     <script src="/css/tailwind.js"></script>
     <link href="/css/fonts.css" rel="stylesheet">
     <script src="/js/libs/html5-qrcode.min.js"></script>
+    <script src="/js/translations.js"></script>
     <style>
         body { font-family: 'Inter', sans-serif; padding-bottom: 80px; max-width: 768px; margin: 0 auto; }
         h1, h2, h3, h4, h5, h6 { font-family: 'Poppins', sans-serif; }
@@ -233,15 +234,15 @@ www.myoneart.com
             </div>
 
             <button onclick="showEditProfile()" class="w-full py-3 bg-[#FF4458] text-white rounded-full hover:bg-[#e03d4c] transition font-semibold mb-2">
-                ✏️ Modifier le profil
+                <span data-i18n="profile.edit">✏️ Modifier le profil</span>
             </button>
             
             <button onclick="switchPage('settings')" class="w-full py-3 bg-[#6C5CE7] text-white rounded-full hover:bg-[#5f51d4] transition font-semibold mb-2">
-                ⚙️ Paramètres du compte
+                <span data-i18n="profile.settings">⚙️ Paramètres du compte</span>
             </button>
             
             <button onclick="logout()" class="w-full py-3 bg-gray-200 text-[#2D3436] rounded-full hover:bg-gray-300 transition font-semibold">
-                🚪 Déconnexion
+                <span data-i18n="profile.logout">🚪 Déconnexion</span>
             </button>
         </div>
     </div>
@@ -254,19 +255,19 @@ www.myoneart.com
                         <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 19l-7-7 7-7"/>
                     </svg>
                 </button>
-                <h1 class="text-2xl font-bold text-[#2D3436]">Paramètres du compte</h1>
+                <h1 class="text-2xl font-bold text-[#2D3436]" data-i18n="settings.title">Paramètres du compte</h1>
             </div>
             
             <!-- Account Info (Read-only) -->
             <div class="bg-white rounded-3xl p-6 mb-4 shadow-lg">
-                <h3 class="font-bold text-[#2D3436] mb-4">📋 Informations du compte</h3>
+                <h3 class="font-bold text-[#2D3436] mb-4" data-i18n="settings.account_info">📋 Informations du compte</h3>
                 <div class="space-y-3">
                     <div class="flex justify-between py-2 border-b">
-                        <span class="text-[#2D3436] opacity-75">Nom d'utilisateur</span>
+                        <span class="text-[#2D3436] opacity-75" data-i18n="settings.username">Nom d'utilisateur</span>
                         <span id="settingsUsername" class="font-semibold text-[#2D3436]">-</span>
                     </div>
                     <div class="flex justify-between py-2 border-b">
-                        <span class="text-[#2D3436] opacity-75">Email</span>
+                        <span class="text-[#2D3436] opacity-75" data-i18n="settings.email">Email</span>
                         <span id="settingsEmail" class="font-semibold text-[#2D3436]">-</span>
                     </div>
                     <div class="flex justify-between py-2">
@@ -284,7 +285,7 @@ www.myoneart.com
                 <!-- Language Switch -->
                 <div class="flex justify-between items-center py-3 border-b">
                     <div>
-                        <div class="text-[#2D3436] font-semibold">🌐 Langue</div>
+                        <div class="text-[#2D3436] font-semibold" data-i18n="settings.language">🌐 Langue</div>
                         <div class="text-xs text-gray-500">Language / Idioma</div>
                     </div>
                     <select id="languageSelect" onchange="updateLanguage(this.value)" class="px-4 py-2 border border-gray-300 rounded-xl focus:outline-none focus:border-[#FF4458] bg-white">
@@ -296,7 +297,7 @@ www.myoneart.com
                 <!-- Theme Switch -->
                 <div class="flex justify-between items-center py-3">
                     <div>
-                        <div class="text-[#2D3436] font-semibold">🎨 Thème</div>
+                        <div class="text-[#2D3436] font-semibold" data-i18n="settings.theme">🎨 Thème</div>
                         <div class="text-xs text-gray-500">Apparence de l'application</div>
                     </div>
                     <select id="themeSelect" onchange="updateTheme(this.value)" class="px-4 py-2 border border-gray-300 rounded-xl focus:outline-none focus:border-[#FF4458] bg-white">
@@ -345,27 +346,27 @@ www.myoneart.com
                 <svg fill="none" stroke="currentColor" viewBox="0 0 24 24">
                     <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 12l2-2m0 0l7-7 7 7M5 10v10a1 1 0 001 1h3m10-11l2 2m-2-2v10a1 1 0 01-1 1h-3m-6 0a1 1 0 001-1v-4a1 1 0 011-1h2a1 1 0 011 1v4a1 1 0 001 1m-6 0h6"/>
                 </svg>
-                <span class="text-xs mt-1">Accueil</span>
+                <span class="text-xs mt-1" data-i18n="nav.rooms">Accueil</span>
             </button>
             <button onclick="switchPage('chat')" id="nav-chat" class="nav-item flex flex-col items-center justify-center">
                 <span id="chat-badge" class="notification-badge" style="display: none;">0</span>
                 <svg fill="none" stroke="currentColor" viewBox="0 0 24 24">
                     <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 12h.01M12 12h.01M16 12h.01M21 12c0 4.418-4.03 8-9 8a9.863 9.863 0 01-4.255-.949L3 20l1.395-3.72C3.512 15.042 3 13.574 3 12c0-4.418 4.03-8 9-8s9 3.582 9 8z"/>
                 </svg>
-                <span class="text-xs mt-1">Chat</span>
+                <span class="text-xs mt-1" data-i18n="nav.messages">Chat</span>
             </button>
             <button onclick="switchPage('requests')" id="nav-requests" class="nav-item flex flex-col items-center justify-center">
                 <span id="requests-badge" class="notification-badge" style="display: none;">0</span>
                 <svg fill="none" stroke="currentColor" viewBox="0 0 24 24">
                     <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 4.354a4 4 0 110 5.292M15 21H3v-1a6 6 0 0112 0v1zm0 0h6v-1a6 6 0 00-9-5.197M13 7a4 4 0 11-8 0 4 4 0 018 0z"/>
                 </svg>
-                <span class="text-xs mt-1">Demandes</span>
+                <span class="text-xs mt-1" data-i18n="requests.title">Demandes</span>
             </button>
             <button onclick="switchPage('profile')" id="nav-profile" class="nav-item flex flex-col items-center justify-center">
                 <svg fill="none" stroke="currentColor" viewBox="0 0 24 24">
                     <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M16 7a4 4 0 11-8 0 4 4 0 018 0zM12 14a7 7 0 00-7 7h14a7 7 0 00-7-7z"/>
                 </svg>
-                <span class="text-xs mt-1">Profil</span>
+                <span class="text-xs mt-1" data-i18n="nav.profile">Profil</span>
             </button>
         </div>
     </div>
@@ -1854,8 +1855,10 @@ www.myoneart.com
                     const user = JSON.parse(localStorage.getItem('user'));
                     user.language = lang;
                     localStorage.setItem('user', JSON.stringify(user));
-                    alert('✅ Langue mise à jour ! La page va se recharger.');
-                    setTimeout(() => window.location.reload(), 1000);
+                    
+                    // Apply translation immediately
+                    setLanguage(lang);
+                    alert('✅ ' + (lang === 'fr' ? 'Langue mise à jour !' : 'Language updated!'));
                 }
             } catch (error) {
                 console.error('Error updating language:', error);

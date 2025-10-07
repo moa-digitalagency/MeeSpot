@@ -9,7 +9,7 @@ www.myoneart.com
 const translations = {
     fr: {
         // Navigation
-        'nav.rooms': 'Rooms',
+        'nav.rooms': 'Accueil',
         'nav.messages': 'Messages',
         'nav.profile': 'Profil',
         
@@ -48,6 +48,9 @@ const translations = {
         'messages.empty': 'Aucune conversation',
         'messages.type_message': 'Écrivez votre message...',
         
+        // Requests
+        'requests.title': 'Demandes',
+        
         // Common
         'common.cancel': 'Annuler',
         'common.save': 'Enregistrer',
@@ -60,7 +63,7 @@ const translations = {
     },
     en: {
         // Navigation
-        'nav.rooms': 'Rooms',
+        'nav.rooms': 'Home',
         'nav.messages': 'Messages',
         'nav.profile': 'Profile',
         
@@ -98,6 +101,9 @@ const translations = {
         'messages.title': 'Conversations',
         'messages.empty': 'No conversations',
         'messages.type_message': 'Type your message...',
+        
+        // Requests
+        'requests.title': 'Requests',
         
         // Common
         'common.cancel': 'Cancel',
