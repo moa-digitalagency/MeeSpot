@@ -27,19 +27,55 @@ class VerificationRequest(db.Model):
     
     def to_dict(self):
         user_age = None
-        if self.user and self.user.birthdate:
-            from datetime import date
-            today = date.today()
-            user_age = today.year - self.user.birthdate.year - ((today.month, today.day) < (self.user.birthdate.month, self.user.birthdate.day))
+        user_name = None
+        user_email = None
+        user_gender = None
+        user_bio = None
+        user_photo_url = None
+        
+        if self.user:
+            try:
+                user_name = self.user.name
+            except:
+                pass
+            
+            try:
+                user_email = self.user.email
+            except:
+                pass
+            
+            try:
+                user_gender = self.user.gender
+            except:
+                pass
+            
+            try:
+                user_bio = self.user.bio
+            except:
+                pass
+            
+            try:
+                user_photo_url = self.user.photo_url
+            except:
+                pass
+            
+            try:
+                if self.user.birthdate:
+                    from datetime import date
+                    today = date.today()
+                    user_age = today.year - self.user.birthdate.year - ((today.month, today.day) < (self.user.birthdate.month, self.user.birthdate.day))
+            except:
+                pass
         
         return {
             'id': self.id,
             'user_id': self.user_id,
-            'user_name': self.user.name if self.user else None,
-            'user_email': self.user.email if self.user else None,
-            'user_gender': self.user.gender if self.user else None,
+            'user_name': user_name,
+            'user_email': user_email,
+            'user_gender': user_gender,
             'user_age': user_age,
-            'user_photo_url': self.user.photo_url if self.user else None,
+            'user_bio': user_bio,
+            'user_photo_url': user_photo_url,
             'photo_url': self.photo_url,
             'status': self.status,
             'admin_notes': self.admin_notes,

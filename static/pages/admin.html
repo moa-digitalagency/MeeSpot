@@ -453,16 +453,27 @@ www.myoneart.com
             
             list.innerHTML = users.map(user => `
                 <div class="bg-white rounded-2xl p-4">
-                    <div class="flex items-center justify-between mb-2">
-                        <h4 class="font-bold text-[#2D3436]">${user.name}</h4>
-                        <span class="px-2 py-1 rounded-full text-xs font-semibold ${getRoleBadgeClass(user.role)}">
-                            ${user.role}
-                        </span>
-                    </div>
-                    <div class="text-sm text-[#2D3436] opacity-75 space-y-1 mb-3">
-                        <div>📧 ${user.email}</div>
-                        <div>🎂 ${user.age || 'N/A'} ans • ${user.gender || 'N/A'}</div>
-                        <div>💎 ${user.subscription_tier || 'free'}</div>
+                    <div class="flex items-start gap-3 mb-3">
+                        ${user.photo_url ? `
+                            <img src="${user.photo_url}" alt="${user.name}" class="w-16 h-16 rounded-full object-cover">
+                        ` : `
+                            <div class="w-16 h-16 rounded-full bg-[#6C5CE7] flex items-center justify-center text-white text-xl font-bold">
+                                ${user.name ? user.name.charAt(0).toUpperCase() : '?'}
+                            </div>
+                        `}
+                        <div class="flex-1">
+                            <div class="flex items-center justify-between mb-2">
+                                <h4 class="font-bold text-[#2D3436]">${user.name}${user.is_verified ? ' <span class="text-blue-500" title="Vérifié">✓</span>' : ''}</h4>
+                                <span class="px-2 py-1 rounded-full text-xs font-semibold ${getRoleBadgeClass(user.role)}">
+                                    ${user.role}
+                                </span>
+                            </div>
+                            <div class="text-sm text-[#2D3436] opacity-75 space-y-1">
+                                <div>📧 ${user.email}</div>
+                                <div>🎂 ${user.age || 'N/A'} ans • ${user.gender || 'N/A'}</div>
+                                <div>💎 ${user.subscription_tier || 'free'}</div>
+                            </div>
+                        </div>
                     </div>
                     <div class="flex gap-2">
                         <button onclick="viewUserDetails(${user.id})" class="flex-1 py-2 bg-[#6C5CE7] text-white rounded-full text-sm font-semibold hover:bg-[#5f52d6] transition">
