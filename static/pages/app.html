@@ -1154,30 +1154,34 @@ www.myoneart.com
 
         async function openChat(conversationId, otherUserName, otherUserId) {
             currentConversationId = conversationId;
+            lastMessageCount = 0;
             document.getElementById('chatWithName').textContent = `💬 ${otherUserName}`;
             document.getElementById('chatModal').classList.remove('hidden');
             
             await Promise.all([
-                loadPrivateMessages(),
+                loadPrivateMessages(true),
                 loadRecipientConsent(otherUserId),
                 loadMyPhotoConsent()
             ]);
             
-            if (messageInterval) clearInterval(messageInterval);
-            messageInterval = setInterval(() => {
+            if (autoRefreshIntervals.messages) {
+                clearInterval(autoRefreshIntervals.messages);
+            }
+            autoRefreshIntervals.messages = setInterval(() => {
                 if (currentConversationId === conversationId) {
                     loadPrivateMessages();
                 }
-            }, 3000);
+            }, 1500);
         }
 
         function closeChatModal() {
             document.getElementById('chatModal').classList.add('hidden');
-            if (messageInterval) {
-                clearInterval(messageInterval);
-                messageInterval = null;
+            if (autoRefreshIntervals.messages) {
+                clearInterval(autoRefreshIntervals.messages);
+                delete autoRefreshIntervals.messages;
             }
             currentConversationId = null;
+            lastMessageCount = 0;
             currentRecipientConsent = false;
         }
 
@@ -1365,7 +1369,10 @@ www.myoneart.com
             document.getElementById('userProfileModal').classList.add('hidden');
         }
 
-        async function loadPrivateMessages() {
+        let lastMessageCount = 0;
+        let isUserAtBottom = true;
+
+        async function loadPrivateMessages(scrollToBottom = false) {
             if (!currentConversationId) return;
             
             const token = localStorage.getItem('token');
@@ -1377,15 +1384,22 @@ www.myoneart.com
                 
                 if (response.ok) {
                     const messages = await response.json();
-                    displayPrivateMessages(messages);
+                    const hasNewMessages = messages.length > lastMessageCount;
+                    lastMessageCount = messages.length;
+                    displayPrivateMessages(messages, hasNewMessages || scrollToBottom);
                 }
             } catch (error) {
                 console.error('Error loading messages:', error);
             }
         }
 
-        function displayPrivateMessages(messages) {
+        function displayPrivateMessages(messages, shouldScrollToBottom) {
             const container = document.getElementById('chatMessages');
+            const wasAtBottom = container.scrollHeight - container.scrollTop <= container.clientHeight + 100;
+            
+            if (shouldScrollToBottom === undefined) {
+                shouldScrollToBottom = false;
+            }
             
             if (messages.length === 0) {
                 container.innerHTML = '<p class="text-sm text-[#2D3436] opacity-75 text-center">Aucun message</p>';
@@ -1414,7 +1428,10 @@ www.myoneart.com
                     </div>
                 `;
             }).join('');
-            container.scrollTop = container.scrollHeight;
+            
+            if (shouldScrollToBottom || wasAtBottom) {
+                container.scrollTop = container.scrollHeight;
+            }
         }
 
         function toggleEmojiPicker() {
@@ -1458,7 +1475,7 @@ www.myoneart.com
                 });
                 
                 if (response.ok) {
-                    loadPrivateMessages();
+                    loadPrivateMessages(true);
                     event.target.value = '';
                 } else {
                     alert('❌ Erreur lors de l\'envoi de la photo');
@@ -1488,7 +1505,7 @@ www.myoneart.com
                 
                 if (response.ok) {
                     document.getElementById('privateMessageInput').value = '';
-                    loadPrivateMessages();
+                    loadPrivateMessages(true);
                 }
             } catch (error) {
                 console.error('Error sending message:', error);
@@ -1920,12 +1937,6 @@ www.myoneart.com
                 autoRefreshIntervals.rooms = setInterval(() => {
                     loadPastRooms();
                 }, 30000);
-            }
-
-            if (currentConversationId) {
-                autoRefreshIntervals.messages = setInterval(() => {
-                    loadPrivateMessages();
-                }, 5000);
             }
 
             if (currentRoomId) {
