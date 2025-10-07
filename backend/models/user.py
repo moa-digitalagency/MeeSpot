@@ -41,6 +41,9 @@ class User(db.Model):
     alternative_name = db.Column(EncryptedString(500))
     photo_consent_enabled = db.Column(db.Boolean, default=True)
     
+    language = db.Column(db.String(5), default='fr')
+    theme = db.Column(db.String(10), default='light')
+    
     created_at = db.Column(db.DateTime, default=datetime.utcnow)
     
     rooms = db.relationship('RoomMember', back_populates='user', cascade='all, delete-orphan')
@@ -90,7 +93,9 @@ class User(db.Model):
             'meeting_type': self.meeting_type,
             'interests': self.interests or [],
             'alternative_mode': self.alternative_mode,
-            'photo_consent_enabled': self.photo_consent_enabled
+            'photo_consent_enabled': self.photo_consent_enabled,
+            'language': self.language or 'fr',
+            'theme': self.theme or 'light'
         }
     
     def to_public_dict(self):

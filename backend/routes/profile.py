@@ -44,6 +44,10 @@ def update_profile(current_user):
         current_user.alternative_name = data['alternative_name']
     if 'photo_consent_enabled' in data:
         current_user.photo_consent_enabled = data['photo_consent_enabled']
+    if 'language' in data:
+        current_user.language = data['language']
+    if 'theme' in data:
+        current_user.theme = data['theme']
     
     db.session.commit()
     return jsonify({'message': 'Profile updated successfully', 'profile': current_user.to_dict()})
