@@ -501,14 +501,21 @@ www.myoneart.com
                         <div>
                             <h4 class="font-bold text-[#2D3436]">${v.user_name}</h4>
                             <p class="text-xs text-[#2D3436] opacity-75">${v.user_email}</p>
+                            ${v.user_gender ? `<p class="text-xs text-[#2D3436] opacity-75">${v.user_gender}${v.user_age ? `, ${v.user_age} ans` : ''}</p>` : ''}
                         </div>
                         <span class="px-2 py-1 rounded-full text-xs font-semibold bg-yellow-500 text-white">
                             En attente
                         </span>
                     </div>
                     <div class="mb-3">
-                        <img src="${v.photo_url}" alt="Verification Photo" class="w-full rounded-xl">
+                        <img src="${v.photo_url}" alt="Verification Photo" class="w-full rounded-xl object-cover" style="max-height: 400px;">
                     </div>
+                    ${v.user_photo_url ? `
+                    <div class="mb-3">
+                        <p class="text-xs font-semibold text-[#2D3436] mb-2">Photo de profil :</p>
+                        <img src="${v.user_photo_url}" alt="Profile Photo" class="w-24 h-24 rounded-full object-cover">
+                    </div>
+                    ` : ''}
                     <div class="text-xs text-[#2D3436] opacity-75 mb-3">
                         Demandé le ${new Date(v.created_at).toLocaleDateString()}
                     </div>

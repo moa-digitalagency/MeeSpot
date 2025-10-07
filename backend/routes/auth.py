@@ -32,10 +32,15 @@ def register_user():
     
     email_to_check = data['email'].lower().strip()
     
+    # Check if email exists (handle decryption errors gracefully)
     users = User.query.all()
     for u in users:
-        if u.email and u.email.lower() == email_to_check:
-            return jsonify({'message': 'Email already exists'}), 400
+        try:
+            if u.email and u.email.lower() == email_to_check:
+                return jsonify({'message': 'Email already exists'}), 400
+        except Exception:
+            # Skip users with corrupted encrypted data
+            continue
     
     password_hash = bcrypt.hashpw(data['password'].encode('utf-8'), bcrypt.gensalt()).decode('utf-8')
     
@@ -127,10 +132,15 @@ def register_establishment():
     
     email_to_check = data['email'].lower().strip()
     
+    # Check if email exists (handle decryption errors gracefully)
     users = User.query.all()
     for u in users:
-        if u.email and u.email.lower() == email_to_check:
-            return jsonify({'message': 'Email already exists'}), 400
+        try:
+            if u.email and u.email.lower() == email_to_check:
+                return jsonify({'message': 'Email already exists'}), 400
+        except Exception:
+            # Skip users with corrupted encrypted data
+            continue
     
     password_hash = bcrypt.hashpw(data['password'].encode('utf-8'), bcrypt.gensalt()).decode('utf-8')
     
@@ -177,10 +187,15 @@ def register():
     
     email_to_check = data['email'].lower().strip()
     
+    # Check if email exists (handle decryption errors gracefully)
     users = User.query.all()
     for u in users:
-        if u.email and u.email.lower() == email_to_check:
-            return jsonify({'message': 'Email already exists'}), 400
+        try:
+            if u.email and u.email.lower() == email_to_check:
+                return jsonify({'message': 'Email already exists'}), 400
+        except Exception:
+            # Skip users with corrupted encrypted data
+            continue
     
     password_hash = bcrypt.hashpw(data['password'].encode('utf-8'), bcrypt.gensalt()).decode('utf-8')
     
