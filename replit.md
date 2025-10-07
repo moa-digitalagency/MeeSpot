@@ -64,6 +64,27 @@ The backend organizes routes by resource (auth, rooms, establishments, admin, pr
 - **wsgi.py**: Standard WSGI entry point for production deployments
 
 ## Recent Changes (October 2025)
+- **Admin Dashboard - Page Système Added** (October 7):
+  - Added 5th navigation tab "Système" in admin dashboard (grid-cols-5)
+  - Implemented complete UI for all system management features:
+    - 💾 Backup & Restauration (create, list, restore backups)
+    - 🔄 GitHub Updates (one-click update from repository)
+    - 🗄️ Database Migrations (execute schema changes)
+    - 🔑 API Keys Management (create, list, revoke, activate, delete)
+    - 📝 Logs Viewer (view update logs and system logs)
+  - All backend admin endpoints now accessible via user-friendly interface
+  - Alert-based feedback for all system operations
+- **Separate Registration Flows** (October 7):
+  - Implemented dedicated signup modals for Users and Establishments
+  - Dropdown menu in header with two options: "As User" and "As Establishment"
+  - User signup: name, email, password, birthdate (optional)
+  - Establishment signup: contact_name, email, password, establishment_name, address (optional)
+  - Backend endpoints: `/api/auth/register/user` and `/api/auth/register/establishment`
+- **Chat System Optimization** (October 7):
+  - Reduced polling interval from 5s to 1.5s for more responsive chat
+  - Dedicated chat polling system separate from global auto-refresh
+  - Intelligent scroll detection to preserve user position
+  - Proper interval cleanup on modal close
 - **UI Color Scheme Update** (October 7):
   - Changed background color from #FFEAA7 (warm cream) to #F5F5F5 (light grey)
   - Updated all HTML pages (index.html, app.html, admin.html, establishment.html)
