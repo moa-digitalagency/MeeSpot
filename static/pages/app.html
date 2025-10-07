@@ -346,23 +346,27 @@ www.myoneart.com
 
     <!-- Verification Modal -->
     <div id="verificationModal" class="hidden fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50 p-4">
-        <div class="bg-white rounded-3xl w-full max-w-md p-6">
+        <div class="bg-white rounded-3xl w-full max-w-md p-6 max-h-[90vh] overflow-y-auto">
             <div class="flex justify-between items-center mb-4">
                 <h2 class="text-xl font-bold text-[#2D3436]">✓ Get Verified</h2>
                 <button onclick="closeVerificationModal()" class="text-[#2D3436] text-2xl">&times;</button>
             </div>
             
-            <p class="text-sm text-[#2D3436] opacity-75 mb-4">Upload a photo of yourself holding your ID or a piece of paper with "MeetSpot" written on it. This helps us verify your identity.</p>
+            <p class="text-sm text-[#2D3436] opacity-75 mb-4">Upload or capture a photo of yourself holding your ID or a piece of paper with "MeetSpot" written on it. This helps us verify your identity.</p>
             
-            <div class="mb-4">
+            <div class="grid grid-cols-2 gap-2 mb-4">
                 <input type="file" id="verificationPhoto" accept="image/*" class="hidden" onchange="previewVerificationPhoto(event)">
-                <button onclick="document.getElementById('verificationPhoto').click()" class="w-full py-3 border-2 border-dashed border-[#FF4458] rounded-xl text-[#FF4458] font-semibold hover:bg-[#FF4458] hover:text-white transition">
-                    📷 Upload Photo
+                <button onclick="document.getElementById('verificationPhoto').click()" class="py-3 border-2 border-dashed border-[#FF4458] rounded-xl text-[#FF4458] font-semibold hover:bg-[#FF4458] hover:text-white transition">
+                    📁 Upload Photo
+                </button>
+                <input type="file" id="verificationCamera" accept="image/*" capture="user" class="hidden" onchange="previewVerificationPhoto(event)">
+                <button onclick="document.getElementById('verificationCamera').click()" class="py-3 border-2 border-dashed border-[#6C5CE7] rounded-xl text-[#6C5CE7] font-semibold hover:bg-[#6C5CE7] hover:text-white transition">
+                    📷 Capture Photo
                 </button>
             </div>
             
             <div id="photoPreview" class="hidden mb-4">
-                <img id="previewImg" src="" alt="Preview" class="w-full rounded-xl">
+                <img id="previewImg" src="" alt="Preview" class="w-full rounded-xl max-h-64 object-cover">
             </div>
             
             <button id="submitVerification" onclick="submitVerification()" class="w-full py-3 bg-gradient-to-r from-[#FF4458] to-[#6C5CE7] text-white rounded-full font-semibold hover:shadow-xl transition" disabled>
