@@ -18,7 +18,11 @@ MeetSpot is a Progressive Web Application (PWA) dating platform designed to faci
 The platform features a mobile-first responsive design, limited to a maximum viewport width of 768px. It uses a distinct color palette: Primary #FF4458 (vibrant coral), Secondary #6C5CE7 (soft purple), Accent #A29BFE (lavender), Background #FFEAA7 (warm cream), and Text #2D3436 (charcoal). Typography is set with Poppins for headings and Inter for body text. Navigation is managed through fixed bottom navigation bars with SVG icons and bottom sheet modals for mobile-optimized interactions across all dashboards (User, Establishment, Admin).
 
 ### Technical Implementations
-MeetSpot is built as a PWA with a Python Flask backend and a Tailwind CSS frontend. It utilizes a modular backend structure with PostgreSQL via SQLAlchemy ORM. Authentication is handled with JWT and bcrypt for password hashing. All sensitive data, including personal information and private messages, is encrypted at rest using AES-256 (Fernet) with SQLAlchemy TypeDecorators. The frontend uses Vanilla JavaScript for interactivity, supporting full PWA features like service workers for offline support, app manifests for installability, and push notification readiness. An auto-refresh system provides real-time data synchronization for conversations, requests, and room activities, intelligently pausing when the app loses focus.
+MeetSpot is built as a PWA with a Python Flask backend and a Tailwind CSS frontend. It utilizes a modular backend structure with PostgreSQL via SQLAlchemy ORM. Authentication is handled with JWT (stored in localStorage) and bcrypt for password hashing. All sensitive data, including personal information and private messages, is encrypted at rest using AES-256 (Fernet) with SQLAlchemy TypeDecorators. The frontend uses Vanilla JavaScript for interactivity, supporting full PWA features like service workers for offline support, app manifests for installability, and push notification readiness. An auto-refresh system provides real-time data synchronization for conversations, requests, and room activities, intelligently pausing when the app loses focus.
+
+**CORS Configuration**: Flask-CORS configured with `supports_credentials=False` and wildcard origins to support cross-origin API requests. JWT tokens are stored in localStorage (not cookies), enabling stateless authentication across deployments.
+
+**Request Validation**: All API endpoints validate request data before processing, ensuring `request.json` is not None and all required fields are present, preventing connection errors during login/registration.
 
 ### Feature Specifications
 - **User Roles & Access Control**: Admin, Establishment, and User roles with role-based access control. Room access can be filtered by gender, orientation, and age.
@@ -48,3 +52,18 @@ The backend organizes routes by resource (auth, rooms, establishments, admin, pr
 - **PyJWT**: Python library for JSON Web Token (JWT) authentication.
 - **Bcrypt**: For password hashing.
 - **Cryptography (Fernet/AES-256)**: For encryption of sensitive data at rest.
+- **Flask-CORS**: Cross-Origin Resource Sharing support for API endpoints.
+- **Gunicorn**: Production WSGI server for Python applications.
+
+## Deployment Documentation
+- **DEPLOYMENT.md**: Comprehensive deployment guide for PythonAnywhere and Railway with step-by-step instructions
+- **.env.example**: Template for environment variables (DATABASE_URL, SECRET_KEY, ENCRYPTION_KEY, FLASK_ENV)
+- **passenger_wsgi.py**: PythonAnywhere-specific WSGI configuration
+- **wsgi.py**: Standard WSGI entry point for production deployments
+
+## Recent Changes (October 2025)
+- Fixed deployment login issues by correcting CORS configuration (supports_credentials=False with wildcard origins)
+- Added request validation in auth endpoints to prevent None errors
+- Created comprehensive deployment documentation for PythonAnywhere and Railway
+- Added .env.example template with all required environment variables
+- Improved error handling and validation across authentication routes
