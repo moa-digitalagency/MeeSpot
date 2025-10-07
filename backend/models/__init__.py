@@ -16,5 +16,6 @@ from backend.models.subscription_plan import SubscriptionPlan
 from backend.models.connection_request import ConnectionRequest
 from backend.models.private_conversation import PrivateConversation
 from backend.models.private_message import PrivateMessage
+from backend.models.offline_payment import OfflinePayment
 
-__all__ = ['User', 'Establishment', 'Room', 'RoomMember', 'Message', 'Report', 'SubscriptionPlan', 'ConnectionRequest', 'PrivateConversation', 'PrivateMessage']
+__all__ = ['User', 'Establishment', 'Room', 'RoomMember', 'Message', 'Report', 'SubscriptionPlan', 'ConnectionRequest', 'PrivateConversation', 'PrivateMessage', 'OfflinePayment']
