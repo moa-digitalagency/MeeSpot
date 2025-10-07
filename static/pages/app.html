@@ -978,7 +978,7 @@ www.myoneart.com
                 
                 const verifiedBadge = p.is_verified 
                     ? '<span class="inline-flex items-center justify-center w-5 h-5 bg-blue-500 text-white rounded-full text-xs">✓</span>' 
-                    : '<span class="inline-flex items-center justify-center w-5 h-5 bg-gray-400 text-white rounded-full text-xs opacity-50">✓</span>';
+                    : '<span class="inline-flex items-center justify-center w-5 h-5 bg-gray-400 text-white rounded-full text-xs opacity-60">✓</span>';
                 
                 return `
                     <div class="bg-gray-50 rounded-xl p-4">
@@ -987,9 +987,7 @@ www.myoneart.com
                                 <div class="w-12 h-12 rounded-full bg-gradient-to-br from-[#FF4458] to-[#6C5CE7] flex items-center justify-center text-white font-bold">
                                     ${p.name.charAt(0).toUpperCase()}
                                 </div>
-                                ${p.is_verified 
-                                    ? '<div class="absolute -bottom-1 -right-1 w-5 h-5 bg-blue-500 text-white rounded-full flex items-center justify-center text-xs">✓</div>' 
-                                    : '<div class="absolute -bottom-1 -right-1 w-5 h-5 bg-gray-400 text-white rounded-full flex items-center justify-center text-xs opacity-50">✓</div>'}
+                                <div class="absolute -bottom-1 -right-1 w-5 h-5 ${p.is_verified ? 'bg-blue-500' : 'bg-gray-400'} text-white rounded-full flex items-center justify-center text-xs ${p.is_verified ? '' : 'opacity-60'}">✓</div>
                             </div>
                             <div class="flex-1">
                                 <h4 class="font-bold text-[#2D3436]">${p.name} ${verifiedBadge} ${emojis} ${isMe ? '(Vous)' : ''}</h4>
@@ -1119,7 +1117,7 @@ www.myoneart.com
                 const statusColor = req.status === 'accepted' ? 'green' : req.status === 'rejected' ? 'red' : 'yellow';
                 const statusText = req.status === 'accepted' ? 'Acceptée' : req.status === 'rejected' ? 'Refusée' : 'En attente';
                 
-                const badgeColor = isVerified ? 'bg-blue-500' : 'bg-gray-400 opacity-50';
+                const badgeColor = isVerified ? 'bg-blue-500' : 'bg-gray-400 opacity-60';
                 const badgeHtml = `<span class="w-4 h-4 ${badgeColor} rounded-full flex items-center justify-center text-white text-xs">✓</span>`;
                 
                 return `
@@ -1264,7 +1262,7 @@ www.myoneart.com
                 const isVerified = conv.other_user_verified;
                 const timeInfo = getConversationTimeRemaining(conv.expires_at);
                 
-                const badgeColor = isVerified ? 'bg-blue-500' : 'bg-gray-400 opacity-50';
+                const badgeColor = isVerified ? 'bg-blue-500' : 'bg-gray-400 opacity-60';
                 const badgeHtml = `<span class="w-4 h-4 ${badgeColor} rounded-full flex items-center justify-center text-white text-xs">✓</span>`;
                 
                 return `
@@ -1295,7 +1293,7 @@ www.myoneart.com
             lastMessageCount = 0;
             const badgeHtml = isVerified 
                 ? '<span class="inline-flex items-center justify-center w-5 h-5 bg-blue-500 text-white rounded-full text-xs ml-2">✓</span>'
-                : '<span class="inline-flex items-center justify-center w-5 h-5 bg-gray-400 text-white rounded-full text-xs ml-2 opacity-50">✓</span>';
+                : '<span class="inline-flex items-center justify-center w-5 h-5 bg-gray-400 text-white rounded-full text-xs ml-2 opacity-60">✓</span>';
             document.getElementById('chatWithName').innerHTML = `💬 ${otherUserName} ${badgeHtml}`;
             
             // Update countdown
@@ -1500,13 +1498,13 @@ www.myoneart.com
             
             const verifiedBadge = profile.is_verified 
                 ? '<span class="inline-flex items-center justify-center w-6 h-6 bg-blue-500 text-white rounded-full text-sm ml-2">✓</span>' 
-                : '<span class="inline-flex items-center justify-center w-6 h-6 bg-gray-400 text-white rounded-full text-sm ml-2 opacity-50">✓</span>';
+                : '<span class="inline-flex items-center justify-center w-6 h-6 bg-gray-400 text-white rounded-full text-sm ml-2 opacity-60">✓</span>';
             
             const html = `
                 <div class="text-center mb-6">
                     <div class="relative w-24 h-24 mx-auto mb-3 rounded-full bg-gradient-to-br from-[#FF4458] to-[#6C5CE7] flex items-center justify-center text-white font-bold text-3xl overflow-hidden">
                         ${profile.photo_url ? `<img src="${profile.photo_url}" class="w-full h-full object-cover">` : profile.name.charAt(0).toUpperCase()}
-                        <div class="absolute -bottom-1 -right-1 w-7 h-7 ${profile.is_verified ? 'bg-blue-500' : 'bg-gray-400 opacity-50'} text-white rounded-full flex items-center justify-center text-sm">✓</div>
+                        <div class="absolute -bottom-1 -right-1 w-7 h-7 ${profile.is_verified ? 'bg-blue-500' : 'bg-gray-400 opacity-60'} text-white rounded-full flex items-center justify-center text-sm">✓</div>
                     </div>
                     <h4 class="text-2xl font-bold text-[#2D3436] flex items-center justify-center">${profile.name} ${verifiedBadge}</h4>
                     <p class="text-sm text-[#2D3436] opacity-75">${profile.age || '?'} ans</p>
