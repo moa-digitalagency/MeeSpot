@@ -555,8 +555,11 @@ www.myoneart.com
 
     <div id="chatModal" class="hidden fixed inset-0 bg-black bg-opacity-50 flex items-end z-50">
         <div class="bg-white rounded-t-3xl w-full max-h-[90vh] flex flex-col">
-            <div class="flex justify-between items-center p-6 pb-3 flex-shrink-0">
-                <h3 id="chatWithName" class="text-xl font-bold text-[#2D3436]"></h3>
+            <div class="flex justify-between items-center p-6 pb-2 flex-shrink-0">
+                <div>
+                    <h3 id="chatWithName" class="text-xl font-bold text-[#2D3436]"></h3>
+                    <p id="chatCountdown" class="text-sm text-red-600 font-semibold mt-1"></p>
+                </div>
                 <button onclick="closeChatModal()" class="w-10 h-10 flex items-center justify-center bg-gray-100 text-gray-600 hover:bg-gray-200 rounded-full text-2xl font-bold transition-colors">×</button>
             </div>
             
@@ -600,7 +603,9 @@ www.myoneart.com
     <script>
         let currentRoomId = null;
         let currentConversationId = null;
+        let currentConversationExpiresAt = null;
         let currentRecipientConsent = false;
+        let countdownInterval = null;
         let user = null;
         let currentPage = 'discover';
         let roomFilter = 'active';
@@ -1263,7 +1268,7 @@ www.myoneart.com
                 const badgeHtml = `<span class="w-4 h-4 ${badgeColor} rounded-full flex items-center justify-center text-white text-xs">✓</span>`;
                 
                 return `
-                    <div onclick="openChat(${conv.id}, '${otherUser}', ${otherUserId}, ${isVerified})" class="bg-white rounded-2xl p-4 card-hover">
+                    <div onclick="openChat(${conv.id}, '${otherUser}', ${otherUserId}, ${isVerified}, '${conv.expires_at}')" class="bg-white rounded-2xl p-4 card-hover">
                         <div class="flex items-center gap-3">
                             <div class="relative w-12 h-12 rounded-full bg-gradient-to-br from-[#FF4458] to-[#6C5CE7] flex items-center justify-center text-white font-bold">
                                 ${otherUser.charAt(0).toUpperCase()}
@@ -1283,13 +1288,19 @@ www.myoneart.com
             }).join('');
         }
 
-        async function openChat(conversationId, otherUserName, otherUserId, isVerified = false) {
+        async function openChat(conversationId, otherUserName, otherUserId, isVerified = false, expiresAt = null) {
             currentConversationId = conversationId;
+            // Clean up expiresAt - convert string 'null' or 'undefined' to actual null
+            currentConversationExpiresAt = (expiresAt && expiresAt !== 'null' && expiresAt !== 'undefined') ? expiresAt : null;
             lastMessageCount = 0;
             const badgeHtml = isVerified 
                 ? '<span class="inline-flex items-center justify-center w-5 h-5 bg-blue-500 text-white rounded-full text-xs ml-2">✓</span>'
                 : '<span class="inline-flex items-center justify-center w-5 h-5 bg-gray-400 text-white rounded-full text-xs ml-2 opacity-50">✓</span>';
             document.getElementById('chatWithName').innerHTML = `💬 ${otherUserName} ${badgeHtml}`;
+            
+            // Update countdown
+            updateChatCountdown();
+            
             document.getElementById('chatModal').classList.remove('hidden');
             
             await Promise.all([
@@ -1306,6 +1317,22 @@ www.myoneart.com
                     loadPrivateMessages();
                 }
             }, 1500);
+            
+            // Start countdown interval
+            if (countdownInterval) {
+                clearInterval(countdownInterval);
+            }
+            countdownInterval = setInterval(updateChatCountdown, 60000); // Update every minute
+        }
+        
+        function updateChatCountdown() {
+            if (!currentConversationExpiresAt) {
+                document.getElementById('chatCountdown').textContent = '';
+                return;
+            }
+            
+            const timeRemaining = getConversationTimeRemaining(currentConversationExpiresAt);
+            document.getElementById('chatCountdown').textContent = timeRemaining;
         }
 
         function closeChatModal() {
@@ -1314,7 +1341,12 @@ www.myoneart.com
                 clearInterval(autoRefreshIntervals.messages);
                 delete autoRefreshIntervals.messages;
             }
+            if (countdownInterval) {
+                clearInterval(countdownInterval);
+                countdownInterval = null;
+            }
             currentConversationId = null;
+            currentConversationExpiresAt = null;
             lastMessageCount = 0;
             currentRecipientConsent = false;
         }
