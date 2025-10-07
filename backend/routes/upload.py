@@ -28,6 +28,16 @@ def upload_image():
         image_data = data['image'].split(',')[1] if ',' in data['image'] else data['image']
         image_bytes = base64.b64decode(image_data)
         
+        # Security: Validate file size (max 10MB)
+        max_size = 10 * 1024 * 1024  # 10MB
+        if len(image_bytes) > max_size:
+            return jsonify({'message': 'Image too large (max 10MB)'}), 400
+        
+        # Security: Basic image validation (check for JPEG/PNG magic bytes)
+        if not (image_bytes.startswith(b'\xff\xd8\xff') or  # JPEG
+                image_bytes.startswith(b'\x89PNG')):         # PNG
+            return jsonify({'message': 'Only JPEG and PNG images are allowed'}), 400
+        
         # Determine upload directory
         if image_type == 'profile':
             upload_dir = 'static/uploads/profiles'
