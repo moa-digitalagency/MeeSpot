@@ -26,6 +26,10 @@ def establishment():
 def admin():
     return send_from_directory('../static/pages', 'admin.html')
 
+@bp.route('/docs/api')
+def api_docs():
+    return send_from_directory('../static/pages', 'api-docs.html')
+
 @bp.route('/uploads/<path:filename>')
 def serve_upload(filename):
     response = send_from_directory('../uploads', filename)
