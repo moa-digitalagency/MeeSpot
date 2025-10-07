@@ -64,6 +64,21 @@ The backend organizes routes by resource (auth, rooms, establishments, admin, pr
 - **wsgi.py**: Standard WSGI entry point for production deployments
 
 ## Recent Changes (October 2025)
+- **Step-by-Step User Signup with Photos** (October 7):
+  - Implemented 4-step registration process for users:
+    - Step 1: Basic info (name, email, password, birthdate) with progress bar
+    - Step 2: Profile details (gender, sexual orientation, meeting type preferences, bio)
+    - Step 3: Profile photo upload (required, with live preview)
+    - Step 4: Photo gallery upload (optional, max 6 photos)
+  - Backend handles base64 photo upload and saves to `/uploads/profiles/` and `/uploads/gallery/`
+  - Validation at each step before allowing user to proceed
+  - Separate establishment signup remains simple and unchanged
+  - All photos stored securely with unique UUIDs
+- **Room & Chat Countdown Timers** (October 7):
+  - Added red countdown timers for active rooms in dashboard (shows hours/minutes remaining)
+  - Replaces static date display with dynamic time remaining indicator
+  - Countdown timers already implemented for conversations in chat interface
+  - Visual indicators: green "Actif" status + red countdown for active rooms
 - **User Verification System** (October 7):
   - Complete verification workflow: users upload photo → admin reviews → approval/rejection
   - User interface: "Get Verified" button in profile with photo upload modal

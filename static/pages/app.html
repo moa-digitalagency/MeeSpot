@@ -728,7 +728,7 @@ www.myoneart.com
                         </div>
                         <div class="text-right">
                             <span class="text-xs ${room.is_active ? 'text-green-600' : 'text-red-600'} font-semibold">${room.is_active ? 'Actif' : 'Expiré'}</span>
-                            <p class="text-xs text-[#2D3436] opacity-50">${new Date(room.created_at).toLocaleDateString()}</p>
+                            ${room.is_active ? `<p class="text-xs text-red-600 font-semibold">${getTimeRemaining(room.created_at, room.expires_at)}</p>` : `<p class="text-xs text-gray-500 opacity-50">${new Date(room.created_at).toLocaleDateString()}</p>`}
                         </div>
                     </div>
                 </div>
