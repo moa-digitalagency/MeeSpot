@@ -32,7 +32,7 @@ def api_docs():
 
 @bp.route('/uploads/<path:filename>')
 def serve_upload(filename):
-    response = send_from_directory('../uploads', filename)
+    response = send_from_directory('../static/uploads', filename)
     response.headers['Cache-Control'] = 'public, max-age=31536000'
     return response
 
