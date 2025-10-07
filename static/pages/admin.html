@@ -143,6 +143,64 @@ www.myoneart.com
         </div>
     </div>
 
+    <div id="page-system" class="page-content hidden">
+        <div class="px-4 pt-4 pb-4">
+            <div class="flex items-center justify-between mb-4">
+                <div>
+                    <h1 class="text-2xl font-bold text-[#2D3436] mb-1">Système</h1>
+                    <p class="text-sm text-[#2D3436] opacity-75">Backup, Mises à jour & Gestion</p>
+                </div>
+                <button onclick="logout()" class="px-4 py-2 bg-red-500 text-white rounded-full text-sm font-semibold hover:bg-red-600 transition">
+                    🚪 Déconnexion
+                </button>
+            </div>
+
+            <div class="space-y-4">
+                <div class="bg-white rounded-2xl p-4">
+                    <h3 class="font-bold text-[#2D3436] mb-3">💾 Backup & Restauration</h3>
+                    <div class="space-y-2">
+                        <button onclick="createBackup()" class="w-full py-3 bg-[#00B894] text-white rounded-xl font-semibold hover:bg-[#00a183] transition">
+                            📦 Créer un Backup
+                        </button>
+                        <button onclick="viewBackups()" class="w-full py-3 bg-[#6C5CE7] text-white rounded-xl font-semibold hover:bg-[#5f52d6] transition">
+                            📂 Voir les Backups
+                        </button>
+                    </div>
+                </div>
+
+                <div class="bg-white rounded-2xl p-4">
+                    <h3 class="font-bold text-[#2D3436] mb-3">🔄 Mise à Jour</h3>
+                    <button onclick="updateFromGithub()" class="w-full py-3 bg-[#FF4458] text-white rounded-xl font-semibold hover:bg-[#e03d4c] transition">
+                        🚀 Mettre à jour depuis GitHub
+                    </button>
+                </div>
+
+                <div class="bg-white rounded-2xl p-4">
+                    <h3 class="font-bold text-[#2D3436] mb-3">🗄️ Base de Données</h3>
+                    <button onclick="migrateDatabase()" class="w-full py-3 bg-[#A29BFE] text-white rounded-xl font-semibold hover:bg-[#9189f7] transition">
+                        🔧 Exécuter les Migrations
+                    </button>
+                </div>
+
+                <div class="bg-white rounded-2xl p-4">
+                    <h3 class="font-bold text-[#2D3436] mb-3">🔑 Clés API</h3>
+                    <div class="space-y-2">
+                        <button onclick="viewApiKeys()" class="w-full py-3 bg-[#6C5CE7] text-white rounded-xl font-semibold hover:bg-[#5f52d6] transition">
+                            📋 Gérer les Clés API
+                        </button>
+                    </div>
+                </div>
+
+                <div class="bg-white rounded-2xl p-4">
+                    <h3 class="font-bold text-[#2D3436] mb-3">📝 Logs</h3>
+                    <button onclick="viewLogs()" class="w-full py-3 bg-[#636E72] text-white rounded-xl font-semibold hover:bg-[#545d61] transition">
+                        📄 Voir les Logs
+                    </button>
+                </div>
+            </div>
+        </div>
+    </div>
+
     <div id="addOptionModal" class="hidden fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50">
         <div class="bg-white rounded-3xl w-full max-w-md m-4 p-6">
             <h3 class="text-xl font-bold text-[#2D3436] mb-4">Ajouter une Option</h3>
@@ -177,7 +235,7 @@ www.myoneart.com
     </div>
 
     <div class="bottom-nav">
-        <div class="grid grid-cols-4 h-16">
+        <div class="grid grid-cols-5 h-16">
             <button onclick="switchPage('dashboard')" id="nav-dashboard" class="nav-item active flex flex-col items-center justify-center">
                 <svg fill="none" stroke="currentColor" viewBox="0 0 24 24">
                     <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 19v-6a2 2 0 00-2-2H5a2 2 0 00-2 2v6a2 2 0 002 2h2a2 2 0 002-2zm0 0V9a2 2 0 012-2h2a2 2 0 012 2v10m-6 0a2 2 0 002 2h2a2 2 0 002-2m0 0V5a2 2 0 012-2h2a2 2 0 012 2v14a2 2 0 01-2 2h-2a2 2 0 01-2-2z"/>
@@ -201,6 +259,12 @@ www.myoneart.com
                     <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 9v2m0 4h.01m-6.938 4h13.856c1.54 0 2.502-1.667 1.732-3L13.732 4c-.77-1.333-2.694-1.333-3.464 0L3.34 16c-.77 1.333.192 3 1.732 3z"/>
                 </svg>
                 <span class="text-xs mt-1">Reports</span>
+            </button>
+            <button onclick="switchPage('system')" id="nav-system" class="nav-item flex flex-col items-center justify-center">
+                <svg fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 12h14M5 12a2 2 0 01-2-2V6a2 2 0 012-2h14a2 2 0 012 2v4a2 2 0 01-2 2M5 12a2 2 0 00-2 2v4a2 2 0 002 2h14a2 2 0 002-2v-4a2 2 0 00-2-2m-2-4h.01M17 16h.01"/>
+                </svg>
+                <span class="text-xs mt-1">Système</span>
             </button>
         </div>
     </div>
@@ -570,6 +634,154 @@ www.myoneart.com
             } catch (error) {
                 console.error('Error toggling user block:', error);
                 alert('Erreur de connexion');
+            }
+        }
+
+        async function createBackup() {
+            if (!confirm('Créer un backup complet de l\'application ?')) return;
+            
+            const token = localStorage.getItem('token');
+            const btn = event.target;
+            btn.disabled = true;
+            btn.textContent = '⏳ Création en cours...';
+            
+            try {
+                const response = await fetch('/api/admin/backup/create', {
+                    method: 'POST',
+                    headers: { 'Authorization': `Bearer ${token}` }
+                });
+                
+                const data = await response.json();
+                if (data.success) {
+                    alert('✅ ' + data.message);
+                } else {
+                    alert('❌ ' + data.message);
+                }
+            } catch (error) {
+                alert('Erreur lors de la création du backup');
+            } finally {
+                btn.disabled = false;
+                btn.textContent = '📦 Créer un Backup';
+            }
+        }
+
+        async function viewBackups() {
+            const token = localStorage.getItem('token');
+            
+            try {
+                const response = await fetch('/api/admin/backup/list', {
+                    headers: { 'Authorization': `Bearer ${token}` }
+                });
+                
+                const data = await response.json();
+                if (data.success && data.backups) {
+                    let msg = '📂 Backups disponibles:\n\n';
+                    data.backups.forEach(b => {
+                        msg += `📦 ${b.name}\n   ${b.size_mb} MB - ${new Date(b.date * 1000).toLocaleString()}\n\n`;
+                    });
+                    alert(msg || 'Aucun backup disponible');
+                }
+            } catch (error) {
+                alert('Erreur lors du chargement des backups');
+            }
+        }
+
+        async function updateFromGithub() {
+            if (!confirm('⚠️ Cette action va mettre à jour l\'application depuis GitHub.\nUn backup sera créé automatiquement.\n\nContinuer ?')) return;
+            
+            const token = localStorage.getItem('token');
+            const btn = event.target;
+            btn.disabled = true;
+            btn.textContent = '⏳ Mise à jour en cours...';
+            
+            try {
+                const response = await fetch('/api/admin/update', {
+                    method: 'POST',
+                    headers: { 'Authorization': `Bearer ${token}` }
+                });
+                
+                const data = await response.json();
+                if (data.success) {
+                    alert('✅ ' + data.message + '\n\n' + data.output);
+                    setTimeout(() => window.location.reload(), 2000);
+                } else {
+                    alert('❌ ' + data.message + '\n\n' + (data.error || data.output));
+                }
+            } catch (error) {
+                alert('Erreur lors de la mise à jour');
+            } finally {
+                btn.disabled = false;
+                btn.textContent = '🚀 Mettre à jour depuis GitHub';
+            }
+        }
+
+        async function migrateDatabase() {
+            if (!confirm('Exécuter les migrations de base de données ?')) return;
+            
+            const token = localStorage.getItem('token');
+            const btn = event.target;
+            btn.disabled = true;
+            btn.textContent = '⏳ Migration en cours...';
+            
+            try {
+                const response = await fetch('/api/admin/database/migrate', {
+                    method: 'POST',
+                    headers: { 'Authorization': `Bearer ${token}` }
+                });
+                
+                const data = await response.json();
+                if (data.success) {
+                    alert('✅ ' + data.message + '\n\n' + data.output);
+                } else {
+                    alert('❌ ' + data.message + '\n\n' + (data.error || data.output));
+                }
+            } catch (error) {
+                alert('Erreur lors de la migration');
+            } finally {
+                btn.disabled = false;
+                btn.textContent = '🔧 Exécuter les Migrations';
+            }
+        }
+
+        async function viewApiKeys() {
+            const token = localStorage.getItem('token');
+            
+            try {
+                const response = await fetch('/api/admin/api-keys', {
+                    headers: { 'Authorization': `Bearer ${token}` }
+                });
+                
+                const data = await response.json();
+                if (data.success && data.keys) {
+                    let msg = '🔑 Clés API:\n\n';
+                    data.keys.forEach(k => {
+                        msg += `${k.is_active ? '✅' : '❌'} ${k.name}\n   Créée: ${new Date(k.created_at).toLocaleDateString()}\n\n`;
+                    });
+                    alert(msg || 'Aucune clé API');
+                }
+            } catch (error) {
+                alert('Erreur lors du chargement des clés API');
+            }
+        }
+
+        async function viewLogs() {
+            const token = localStorage.getItem('token');
+            
+            try {
+                const response = await fetch('/api/admin/logs/list', {
+                    headers: { 'Authorization': `Bearer ${token}` }
+                });
+                
+                const data = await response.json();
+                if (data.success && data.logs) {
+                    let msg = '📝 Logs disponibles:\n\n';
+                    data.logs.forEach(l => {
+                        msg += `📄 ${l.name}\n   ${(l.size / 1024).toFixed(2)} KB\n\n`;
+                    });
+                    alert(msg || 'Aucun log disponible');
+                }
+            } catch (error) {
+                alert('Erreur lors du chargement des logs');
             }
         }
 
