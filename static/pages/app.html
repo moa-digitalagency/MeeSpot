@@ -38,7 +38,7 @@ www.myoneart.com
         @keyframes slideUp { from { transform: translateY(100%); opacity: 0; } to { transform: translateY(0); opacity: 1; } }
     </style>
 </head>
-<body class="bg-[#FFEAA7]">
+<body class="bg-[#F5F5F5]">
     <div id="updateBanner" class="update-banner">
         <p class="text-sm font-semibold">Nouvelle version disponible!</p>
         <button onclick="applyUpdate()" class="text-xs underline mt-1">Mettre à jour maintenant</button>
@@ -469,14 +469,14 @@ www.myoneart.com
                 <button onclick="closeChatModal()" class="w-10 h-10 flex items-center justify-center bg-gray-100 text-gray-600 hover:bg-gray-200 rounded-full text-2xl font-bold transition-colors">×</button>
             </div>
             
-            <div class="flex items-center gap-2 mx-6 mb-3 bg-[#FFEAA7] rounded-xl p-3 flex-shrink-0">
+            <div class="flex items-center gap-2 mx-6 mb-3 bg-[#F5F5F5] rounded-xl p-3 flex-shrink-0">
                 <span class="text-sm text-[#2D3436] flex-1">📷 Recevoir des photos</span>
                 <button id="photoConsentToggle" onclick="togglePhotoConsent()" class="w-12 h-6 rounded-full transition-all duration-200 relative bg-gray-300">
                     <div class="w-5 h-5 bg-white rounded-full absolute top-0.5 left-0.5 transition-all duration-200"></div>
                 </button>
             </div>
             
-            <div id="chatMessages" class="bg-[#FFEAA7] rounded-xl mx-6 p-4 overflow-y-auto flex-1 min-h-0"></div>
+            <div id="chatMessages" class="bg-[#F5F5F5] rounded-xl mx-6 p-4 overflow-y-auto flex-1 min-h-0"></div>
             
             <form onsubmit="sendPrivateMessage(event)" class="flex gap-2 p-6 pt-4 flex-shrink-0 bg-white border-t border-gray-100">
                 <button type="button" onclick="document.getElementById('chatPhotoInput').click()" class="px-4 py-3 bg-[#6C5CE7] text-white rounded-full hover:bg-[#5f52d6] transition font-semibold flex-shrink-0">
@@ -817,7 +817,7 @@ www.myoneart.com
                     document.getElementById('participantsRoomName').textContent = room.name;
                     
                     let details = `
-                        <div class="bg-[#FFEAA7] rounded-xl p-4 mb-4 text-sm">
+                        <div class="bg-[#F5F5F5] rounded-xl p-4 mb-4 text-sm">
                             <p class="text-[#2D3436] mb-2">${room.description || 'Pas de description'}</p>
                             <div class="flex items-center gap-4 text-[#2D3436] opacity-75">
                                 <span>📍 ${room.establishment_name || 'Établissement'}</span>
@@ -1337,7 +1337,7 @@ www.myoneart.com
                     <p class="text-sm text-[#2D3436] opacity-75">${profile.age || '?'} ans</p>
                 </div>
                 
-                ${profile.bio ? `<div class="bg-[#FFEAA7] rounded-xl p-4 mb-4"><p class="text-sm text-[#2D3436]">${profile.bio}</p></div>` : ''}
+                ${profile.bio ? `<div class="bg-[#F5F5F5] rounded-xl p-4 mb-4"><p class="text-sm text-[#2D3436]">${profile.bio}</p></div>` : ''}
                 
                 ${meetingTypeHtml}
                 
