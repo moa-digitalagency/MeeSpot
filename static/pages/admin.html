@@ -665,8 +665,11 @@ www.myoneart.com
         }
 
         async function showUserProfile(verificationId) {
-            const user = window[verificationId];
-            if (!user) return;
+            const verification = window[verificationId];
+            if (!verification) {
+                alert('Données de vérification non trouvées');
+                return;
+            }
             
             const modal = document.getElementById('profileModal');
             const content = document.getElementById('profileContent');
@@ -674,7 +677,7 @@ www.myoneart.com
             
             // Charger le profil complet de l'utilisateur
             try {
-                const response = await fetch(`/api/admin/users/${user.user_id}`, {
+                const response = await fetch(`/api/admin/users/${verification.user_id}`, {
                     headers: { 'Authorization': `Bearer ${token}` }
                 });
                 
@@ -690,7 +693,7 @@ www.myoneart.com
                                     ${fullUser.name ? fullUser.name.charAt(0).toUpperCase() : '?'}
                                 </div>
                             `}
-                            <h3 class="text-xl font-bold text-[#2D3436]">${fullUser.name}</h3>
+                            <h3 class="text-xl font-bold text-[#2D3436]">${fullUser.name}${fullUser.is_verified ? ' <span class="text-blue-500">✓</span>' : ''}</h3>
                             <p class="text-sm text-[#2D3436] opacity-75">${fullUser.email}</p>
                         </div>
                         
@@ -736,15 +739,16 @@ www.myoneart.com
                             
                             <div class="bg-[#F5F5F5] rounded-xl p-3">
                                 <p class="text-xs font-semibold text-[#2D3436] mb-1">Demande de vérification</p>
-                                <p class="text-sm text-[#2D3436]">Demandé le ${new Date(user.created_at).toLocaleDateString()}</p>
+                                <p class="text-sm text-[#2D3436]">Demandé le ${new Date(verification.created_at).toLocaleDateString()}</p>
                             </div>
                         </div>
                     `;
                 } else {
-                    // Fallback sur les données limitées si l'API échoue
-                    content.innerHTML = `<p class="text-red-500">Erreur lors du chargement du profil complet</p>`;
+                    const errorData = await response.json();
+                    content.innerHTML = `<p class="text-red-500">Erreur: ${errorData.message || 'Impossible de charger le profil'}</p>`;
                 }
             } catch (error) {
+                console.error('Error loading profile:', error);
                 content.innerHTML = `<p class="text-red-500">Erreur: ${error.message}</p>`;
             }
             
