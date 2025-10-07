@@ -329,6 +329,7 @@ www.myoneart.com
             const token = localStorage.getItem('token');
             
             try {
+                // Charger les utilisateurs
                 const usersResponse = await fetch('/api/admin/users', {
                     headers: { 'Authorization': `Bearer ${token}` }
                 });
@@ -340,8 +341,32 @@ www.myoneart.com
                     const establishments = users.filter(u => u.role === 'establishment').length;
                     document.getElementById('totalEstablishments').textContent = establishments;
                 }
+                
+                // Charger les rooms
+                const roomsResponse = await fetch('/api/rooms', {
+                    headers: { 'Authorization': `Bearer ${token}` }
+                });
+                
+                if (roomsResponse.ok) {
+                    const rooms = await roomsResponse.json();
+                    const now = new Date();
+                    const activeRooms = rooms.filter(r => new Date(r.expires_at) > now);
+                    document.getElementById('totalRooms').textContent = activeRooms.length;
+                }
+                
+                // Charger les signalements
+                const reportsResponse = await fetch('/api/admin/reports', {
+                    headers: { 'Authorization': `Bearer ${token}` }
+                });
+                
+                if (reportsResponse.ok) {
+                    const reports = await reportsResponse.json();
+                    const pendingReports = reports.filter(r => r.status === 'pending');
+                    document.getElementById('totalReports').textContent = pendingReports.length;
+                }
             } catch (error) {
                 console.error('Error loading stats:', error);
+                alert('Erreur lors du chargement des statistiques. Veuillez vous reconnecter.');
             }
         }
 

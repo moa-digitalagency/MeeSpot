@@ -64,6 +64,15 @@ The backend organizes routes by resource (auth, rooms, establishments, admin, pr
 - **wsgi.py**: Standard WSGI entry point for production deployments
 
 ## Recent Changes (October 2025)
+- **Admin Dashboard Stats Fixed & UI Improvements** (October 7):
+  - Fixed loadStats() function to properly fetch and display all dashboard statistics:
+    - Total users from `/api/admin/users`
+    - Total establishments (filtered from users by role)
+    - Active rooms from `/api/rooms` (filtered by expiration date)
+    - Pending reports from `/api/admin/reports` (filtered by status)
+  - Landing page hero "Get Started" button now correctly opens signup dropdown menu
+  - Verification photos properly organized in `/uploads/verifications/` folder
+  - Enhanced error handling with user alerts for failed stats loading
 - **Step-by-Step User Signup with Photos** (October 7):
   - Implemented 4-step registration process for users:
     - Step 1: Basic info (name, email, password, birthdate) with progress bar
