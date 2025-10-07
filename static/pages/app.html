@@ -1189,9 +1189,14 @@ www.myoneart.com
                 if (response.ok) {
                     const conversations = await response.json();
                     displayConversations(conversations);
+                } else {
+                    const list = document.getElementById('conversationsList');
+                    list.innerHTML = `<p class="text-sm text-red-500 text-center py-8">Erreur de chargement des conversations</p>`;
                 }
             } catch (error) {
                 console.error('Error loading conversations:', error);
+                const list = document.getElementById('conversationsList');
+                list.innerHTML = `<p class="text-sm text-red-500 text-center py-8">Erreur: ${error.message}</p>`;
             }
         }
         
@@ -1235,7 +1240,7 @@ www.myoneart.com
                 const badgeHtml = `<span class="w-4 h-4 ${badgeColor} rounded-full flex items-center justify-center text-white text-xs">✓</span>`;
                 
                 return `
-                    <div onclick="openChat(${conv.id}, '${otherUser}', ${otherUserId})" class="bg-white rounded-2xl p-4 card-hover">
+                    <div onclick="openChat(${conv.id}, '${otherUser}', ${otherUserId}, ${isVerified})" class="bg-white rounded-2xl p-4 card-hover">
                         <div class="flex items-center gap-3">
                             <div class="relative w-12 h-12 rounded-full bg-gradient-to-br from-[#FF4458] to-[#6C5CE7] flex items-center justify-center text-white font-bold">
                                 ${otherUser.charAt(0).toUpperCase()}
@@ -1255,10 +1260,13 @@ www.myoneart.com
             }).join('');
         }
 
-        async function openChat(conversationId, otherUserName, otherUserId) {
+        async function openChat(conversationId, otherUserName, otherUserId, isVerified = false) {
             currentConversationId = conversationId;
             lastMessageCount = 0;
-            document.getElementById('chatWithName').textContent = `💬 ${otherUserName}`;
+            const badgeHtml = isVerified 
+                ? '<span class="inline-flex items-center justify-center w-5 h-5 bg-blue-500 text-white rounded-full text-xs ml-2">✓</span>'
+                : '<span class="inline-flex items-center justify-center w-5 h-5 bg-gray-400 text-white rounded-full text-xs ml-2 opacity-50">✓</span>';
+            document.getElementById('chatWithName').innerHTML = `💬 ${otherUserName} ${badgeHtml}`;
             document.getElementById('chatModal').classList.remove('hidden');
             
             await Promise.all([
@@ -2255,8 +2263,8 @@ www.myoneart.com
         };
 
         const originalOpenChat = openChat;
-        openChat = async function(conversationId, otherUserName) {
-            await originalOpenChat(conversationId, otherUserName);
+        openChat = async function(conversationId, otherUserName, otherUserId, isVerified) {
+            await originalOpenChat(conversationId, otherUserName, otherUserId, isVerified);
             startAutoRefresh();
         };
 
