@@ -158,6 +158,7 @@ def get_participants(current_user, room_id):
     from backend.models.profile_option import ProfileOption
     from backend.models.connection_request import ConnectionRequest
     from backend.models.private_conversation import PrivateConversation
+    from backend.models.user_block import UserBlock
     
     room = Room.query.get_or_404(room_id)
     
@@ -170,6 +171,9 @@ def get_participants(current_user, room_id):
     
     active_members = RoomMember.query.filter_by(room_id=room_id, active=True).all()
     
+    blocked_ids = [block.blocked_id for block in UserBlock.query.filter_by(blocker_id=current_user.id).all()]
+    blocker_ids = [block.blocker_id for block in UserBlock.query.filter_by(blocked_id=current_user.id).all()]
+    
     meeting_type_options = {opt.value: opt.emoji for opt in ProfileOption.query.filter_by(category='meeting_type', is_active=True).all()}
     
     participants = []
@@ -177,6 +181,9 @@ def get_participants(current_user, room_id):
         user = member.user
         
         if user.id == current_user.id:
+            continue
+        
+        if user.id in blocked_ids or user.id in blocker_ids:
             continue
         
         meeting_type_emojis = []

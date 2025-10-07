@@ -107,6 +107,15 @@ www.myoneart.com
         <div class="px-4 pt-4 pb-2">
             <h1 class="text-2xl font-bold text-[#2D3436] mb-4">Messages</h1>
             
+            <div class="flex gap-2 mb-4">
+                <button id="conv-filter-active" onclick="filterConversations('active')" class="flex-1 py-2 px-4 rounded-full bg-[#FF4458] text-white text-sm font-semibold">
+                    💬 Actives
+                </button>
+                <button id="conv-filter-expired" onclick="filterConversations('expired')" class="flex-1 py-2 px-4 rounded-full bg-gray-200 text-[#2D3436] text-sm font-semibold">
+                    🕐 Expirées
+                </button>
+            </div>
+            
             <div id="conversationsList" class="space-y-3">
                 <p class="text-sm text-[#2D3436] opacity-75 text-center py-8">Chargement...</p>
             </div>
@@ -504,6 +513,7 @@ www.myoneart.com
         let user = null;
         let currentPage = 'discover';
         let roomFilter = 'active';
+        let conversationFilter = 'active';
         let requestFilter = 'received';
         let html5QrCode = null;
         let userRooms = [];
@@ -1060,11 +1070,25 @@ www.myoneart.com
             }
         }
 
+        async function filterConversations(filter) {
+            conversationFilter = filter;
+            
+            document.getElementById('conv-filter-active').classList.remove('bg-[#FF4458]', 'text-white');
+            document.getElementById('conv-filter-active').classList.add('bg-gray-200', 'text-[#2D3436]');
+            document.getElementById('conv-filter-expired').classList.remove('bg-[#FF4458]', 'text-white');
+            document.getElementById('conv-filter-expired').classList.add('bg-gray-200', 'text-[#2D3436]');
+            
+            document.getElementById(`conv-filter-${filter}`).classList.remove('bg-gray-200', 'text-[#2D3436]');
+            document.getElementById(`conv-filter-${filter}`).classList.add('bg-[#FF4458]', 'text-white');
+            
+            await loadConversations();
+        }
+
         async function loadConversations() {
             const token = localStorage.getItem('token');
             
             try {
-                const response = await fetch('/api/conversations', {
+                const response = await fetch(`/api/conversations?filter=${conversationFilter}`, {
                     headers: { 'Authorization': `Bearer ${token}` }
                 });
                 
@@ -1076,18 +1100,41 @@ www.myoneart.com
                 console.error('Error loading conversations:', error);
             }
         }
+        
+        function getConversationTimeRemaining(expiresAt) {
+            if (!expiresAt) return '';
+            
+            const expires = new Date(expiresAt);
+            const now = new Date();
+            const remaining = expires - now;
+            
+            if (remaining <= 0) return '🕐 Expirée';
+            
+            const days = Math.floor(remaining / (1000 * 60 * 60 * 24));
+            const hours = Math.floor((remaining % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
+            const minutes = Math.floor((remaining % (1000 * 60 * 60)) / (1000 * 60));
+            
+            if (days > 0) {
+                return `⏱️ ${days}j ${hours}h restant${days > 1 ? 's' : ''}`;
+            } else if (hours > 0) {
+                return `⏱️ ${hours}h ${minutes}min restant${hours > 1 || minutes > 1 ? 's' : ''}`;
+            } else {
+                return `⏱️ ${minutes}min restant${minutes > 1 ? 's' : ''}`;
+            }
+        }
 
         function displayConversations(conversations) {
             const list = document.getElementById('conversationsList');
             
             if (conversations.length === 0) {
-                list.innerHTML = '<p class="text-sm text-[#2D3436] opacity-75 text-center py-8">Aucune conversation</p>';
+                list.innerHTML = `<p class="text-sm text-[#2D3436] opacity-75 text-center py-8">Aucune conversation ${conversationFilter === 'active' ? 'active' : 'expirée'}</p>`;
                 return;
             }
             
             list.innerHTML = conversations.map(conv => {
                 const otherUser = conv.other_user_name;
                 const otherUserId = conv.other_user_id;
+                const timeInfo = getConversationTimeRemaining(conv.expires_at);
                 return `
                     <div onclick="openChat(${conv.id}, '${otherUser}', ${otherUserId})" class="bg-white rounded-2xl p-4 card-hover">
                         <div class="flex items-center gap-3">
@@ -1097,6 +1144,7 @@ www.myoneart.com
                             <div class="flex-1">
                                 <h4 class="font-bold text-[#2D3436]">${otherUser}</h4>
                                 <p class="text-xs text-[#2D3436] opacity-75">${conv.room_name || 'Conversation'}</p>
+                                ${timeInfo ? `<p class="text-xs ${conv.is_active ? 'text-[#FF4458]' : 'text-gray-500'} font-semibold mt-1">${timeInfo}</p>` : ''}
                             </div>
                         </div>
                     </div>

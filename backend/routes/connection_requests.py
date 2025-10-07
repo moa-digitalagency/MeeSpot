@@ -84,6 +84,7 @@ def accept_request(current_user, request_id):
     user2_id = max(conn_request.requester_id, conn_request.target_id)
     
     existing_conv = PrivateConversation.query.filter_by(
+        room_id=conn_request.room_id,
         user1_id=user1_id,
         user2_id=user2_id,
         is_active=True
@@ -92,10 +93,21 @@ def accept_request(current_user, request_id):
     if existing_conv:
         conversation = existing_conv
     else:
+        from backend.models.user import User
+        requester = User.query.get(conn_request.requester_id)
+        target = User.query.get(conn_request.target_id)
+        
+        tier_priority = {'platinum': 3, 'premium': 2, 'free': 1}
+        best_tier = requester.subscription_tier if tier_priority.get(requester.subscription_tier, 1) >= tier_priority.get(target.subscription_tier, 1) else target.subscription_tier
+        
+        duration = PrivateConversation.calculate_expiry_duration(best_tier)
+        expires_at = datetime.utcnow() + duration
+        
         conversation = PrivateConversation(
             room_id=conn_request.room_id,
             user1_id=user1_id,
-            user2_id=user2_id
+            user2_id=user2_id,
+            expires_at=expires_at
         )
         db.session.add(conversation)
         db.session.flush()

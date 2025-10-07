@@ -19,12 +19,23 @@ bp = Blueprint('conversations', __name__, url_prefix='/api/conversations')
 @bp.route('', methods=['GET'])
 @token_required
 def get_conversations(current_user):
+    filter_status = request.args.get('filter', 'active')
+    
     conversations = PrivateConversation.query.filter(
         db.or_(
             PrivateConversation.user1_id == current_user.id,
             PrivateConversation.user2_id == current_user.id
         )
     ).order_by(PrivateConversation.started_at.desc()).all()
+    
+    for conv in conversations:
+        conv.check_and_expire()
+    db.session.commit()
+    
+    if filter_status == 'active':
+        conversations = [c for c in conversations if c.is_active]
+    elif filter_status == 'expired':
+        conversations = [c for c in conversations if not c.is_active]
     
     return jsonify([conv.to_dict(current_user.id) for conv in conversations])
 
@@ -36,6 +47,9 @@ def get_conversation(current_user, conversation_id):
     if conversation.user1_id != current_user.id and conversation.user2_id != current_user.id:
         return jsonify({'message': 'Unauthorized'}), 403
     
+    conversation.check_and_expire()
+    db.session.commit()
+    
     return jsonify(conversation.to_dict(current_user.id))
 
 @bp.route('/<int:conversation_id>/messages', methods=['GET'])
@@ -45,6 +59,12 @@ def get_messages(current_user, conversation_id):
     
     if conversation.user1_id != current_user.id and conversation.user2_id != current_user.id:
         return jsonify({'message': 'Unauthorized'}), 403
+    
+    conversation.check_and_expire()
+    db.session.commit()
+    
+    if not conversation.is_active:
+        return jsonify({'message': 'This conversation has expired'}), 400
     
     messages = PrivateMessage.query.filter_by(conversation_id=conversation_id).order_by(PrivateMessage.created_at).all()
     
@@ -63,8 +83,11 @@ def send_message(current_user, conversation_id):
     if conversation.user1_id != current_user.id and conversation.user2_id != current_user.id:
         return jsonify({'message': 'Unauthorized'}), 403
     
+    conversation.check_and_expire()
+    db.session.commit()
+    
     if not conversation.is_active:
-        return jsonify({'message': 'Conversation is closed'}), 400
+        return jsonify({'message': 'This conversation has expired'}), 400
     
     data = request.json
     content = data.get('content')
@@ -90,8 +113,11 @@ def send_photo(current_user, conversation_id):
     if conversation.user1_id != current_user.id and conversation.user2_id != current_user.id:
         return jsonify({'message': 'Unauthorized'}), 403
     
+    conversation.check_and_expire()
+    db.session.commit()
+    
     if not conversation.is_active:
-        return jsonify({'message': 'Conversation is closed'}), 400
+        return jsonify({'message': 'This conversation has expired'}), 400
     
     if 'photo' not in request.files:
         return jsonify({'message': 'No photo provided'}), 400
