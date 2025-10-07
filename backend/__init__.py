@@ -15,7 +15,14 @@ db = SQLAlchemy()
 
 def create_app():
     app = Flask(__name__, static_folder='../static')
-    CORS(app)
+    
+    # Configuration CORS pour production et développement
+    CORS(app, 
+         resources={r"/api/*": {"origins": "*"}},
+         supports_credentials=True,
+         allow_headers=["Content-Type", "Authorization", "X-API-Key"],
+         methods=["GET", "POST", "PUT", "DELETE", "OPTIONS"]
+    )
     
     app.config['SQLALCHEMY_DATABASE_URI'] = os.environ.get('DATABASE_URL')
     app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
