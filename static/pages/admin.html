@@ -609,18 +609,24 @@ www.myoneart.com
             try {
                 const response = await fetch(`/api/verification/admin/${requestId}/approve`, {
                     method: 'POST',
-                    headers: { 'Authorization': `Bearer ${token}` }
+                    headers: { 
+                        'Authorization': `Bearer ${token}`,
+                        'Content-Type': 'application/json'
+                    },
+                    body: JSON.stringify({})
                 });
+                
+                const data = await response.json();
                 
                 if (response.ok) {
                     alert('✓ Vérification approuvée !');
                     loadVerifications();
                 } else {
-                    alert('Erreur lors de l\'approbation');
+                    alert(`Erreur: ${data.message || 'Erreur lors de l\'approbation'}`);
                 }
             } catch (error) {
                 console.error('Error approving verification:', error);
-                alert('Erreur lors de l\'approbation');
+                alert(`Erreur: ${error.message}`);
             }
         }
 
@@ -658,54 +664,89 @@ www.myoneart.com
             document.getElementById('imageModal').classList.add('hidden');
         }
 
-        function showUserProfile(verificationId) {
+        async function showUserProfile(verificationId) {
             const user = window[verificationId];
             if (!user) return;
             
             const modal = document.getElementById('profileModal');
             const content = document.getElementById('profileContent');
+            const token = localStorage.getItem('token');
             
-            content.innerHTML = `
-                <div class="text-center mb-4">
-                    ${user.user_photo_url ? `
-                        <img src="${user.user_photo_url}" alt="${user.user_name}" class="w-32 h-32 rounded-full object-cover mx-auto mb-3">
-                    ` : `
-                        <div class="w-32 h-32 rounded-full bg-[#6C5CE7] flex items-center justify-center text-white text-4xl font-bold mx-auto mb-3">
-                            ${user.user_name.charAt(0).toUpperCase()}
-                        </div>
-                    `}
-                    <h3 class="text-xl font-bold text-[#2D3436]">${user.user_name}</h3>
-                    <p class="text-sm text-[#2D3436] opacity-75">${user.user_email}</p>
-                </div>
+            // Charger le profil complet de l'utilisateur
+            try {
+                const response = await fetch(`/api/admin/users/${user.user_id}`, {
+                    headers: { 'Authorization': `Bearer ${token}` }
+                });
                 
-                <div class="space-y-3">
-                    ${user.user_gender ? `
-                        <div class="bg-[#F5F5F5] rounded-xl p-3">
-                            <p class="text-xs font-semibold text-[#2D3436] mb-1">Genre</p>
-                            <p class="text-sm text-[#2D3436]">${user.user_gender}</p>
-                        </div>
-                    ` : ''}
+                if (response.ok) {
+                    const fullUser = await response.json();
                     
-                    ${user.user_age ? `
-                        <div class="bg-[#F5F5F5] rounded-xl p-3">
-                            <p class="text-xs font-semibold text-[#2D3436] mb-1">Âge</p>
-                            <p class="text-sm text-[#2D3436]">${user.user_age} ans</p>
+                    content.innerHTML = `
+                        <div class="text-center mb-4">
+                            ${fullUser.photo_url ? `
+                                <img src="${fullUser.photo_url}" alt="${fullUser.name}" class="w-32 h-32 rounded-full object-cover mx-auto mb-3 cursor-pointer" onclick="showImageFullscreen('${fullUser.photo_url}')">
+                            ` : `
+                                <div class="w-32 h-32 rounded-full bg-[#6C5CE7] flex items-center justify-center text-white text-4xl font-bold mx-auto mb-3">
+                                    ${fullUser.name ? fullUser.name.charAt(0).toUpperCase() : '?'}
+                                </div>
+                            `}
+                            <h3 class="text-xl font-bold text-[#2D3436]">${fullUser.name}</h3>
+                            <p class="text-sm text-[#2D3436] opacity-75">${fullUser.email}</p>
                         </div>
-                    ` : ''}
-                    
-                    ${user.user_bio ? `
-                        <div class="bg-[#F5F5F5] rounded-xl p-3">
-                            <p class="text-xs font-semibold text-[#2D3436] mb-1">Bio</p>
-                            <p class="text-sm text-[#2D3436]">${user.user_bio}</p>
+                        
+                        <div class="space-y-3">
+                            ${fullUser.gender ? `
+                                <div class="bg-[#F5F5F5] rounded-xl p-3">
+                                    <p class="text-xs font-semibold text-[#2D3436] mb-1">Genre</p>
+                                    <p class="text-sm text-[#2D3436]">${fullUser.gender}</p>
+                                </div>
+                            ` : ''}
+                            
+                            ${fullUser.age ? `
+                                <div class="bg-[#F5F5F5] rounded-xl p-3">
+                                    <p class="text-xs font-semibold text-[#2D3436] mb-1">Âge</p>
+                                    <p class="text-sm text-[#2D3436]">${fullUser.age} ans</p>
+                                </div>
+                            ` : ''}
+                            
+                            ${fullUser.sexual_orientation ? `
+                                <div class="bg-[#F5F5F5] rounded-xl p-3">
+                                    <p class="text-xs font-semibold text-[#2D3436] mb-1">Orientation</p>
+                                    <p class="text-sm text-[#2D3436]">${fullUser.sexual_orientation}</p>
+                                </div>
+                            ` : ''}
+                            
+                            ${fullUser.bio ? `
+                                <div class="bg-[#F5F5F5] rounded-xl p-3">
+                                    <p class="text-xs font-semibold text-[#2D3436] mb-1">Bio</p>
+                                    <p class="text-sm text-[#2D3436]">${fullUser.bio}</p>
+                                </div>
+                            ` : ''}
+                            
+                            ${fullUser.gallery_photos && fullUser.gallery_photos.length > 0 ? `
+                                <div class="bg-[#F5F5F5] rounded-xl p-3">
+                                    <p class="text-xs font-semibold text-[#2D3436] mb-2">Galerie photos</p>
+                                    <div class="grid grid-cols-3 gap-2">
+                                        ${fullUser.gallery_photos.map(photo => `
+                                            <img src="${photo}" alt="Gallery" class="w-full h-20 object-cover rounded-lg cursor-pointer" onclick="showImageFullscreen('${photo}')">
+                                        `).join('')}
+                                    </div>
+                                </div>
+                            ` : ''}
+                            
+                            <div class="bg-[#F5F5F5] rounded-xl p-3">
+                                <p class="text-xs font-semibold text-[#2D3436] mb-1">Demande de vérification</p>
+                                <p class="text-sm text-[#2D3436]">Demandé le ${new Date(user.created_at).toLocaleDateString()}</p>
+                            </div>
                         </div>
-                    ` : ''}
-                    
-                    <div class="bg-[#F5F5F5] rounded-xl p-3">
-                        <p class="text-xs font-semibold text-[#2D3436] mb-1">Demande de vérification</p>
-                        <p class="text-sm text-[#2D3436]">Demandé le ${new Date(user.created_at).toLocaleDateString()}</p>
-                    </div>
-                </div>
-            `;
+                    `;
+                } else {
+                    // Fallback sur les données limitées si l'API échoue
+                    content.innerHTML = `<p class="text-red-500">Erreur lors du chargement du profil complet</p>`;
+                }
+            } catch (error) {
+                content.innerHTML = `<p class="text-red-500">Erreur: ${error.message}</p>`;
+            }
             
             modal.classList.remove('hidden');
         }
@@ -759,9 +800,10 @@ www.myoneart.com
                         <span class="font-semibold text-[#2D3436]">${opt.label}</span>
                         <span class="text-xs text-gray-500 ml-2">(${opt.value})</span>
                     </div>
-                    <button onclick="toggleOption(${opt.id}, ${opt.is_active})" class="px-3 py-1 rounded-full text-xs ${opt.is_active ? 'bg-green-500 text-white' : 'bg-gray-300 text-[#2D3436]'}">
-                        ${opt.is_active ? 'Actif' : 'Désactivé'}
-                    </button>
+                    <label class="relative inline-flex items-center cursor-pointer">
+                        <input type="checkbox" ${opt.is_active ? 'checked' : ''} onchange="toggleOption(${opt.id})" class="sr-only peer">
+                        <div class="w-11 h-6 bg-gray-300 peer-focus:outline-none rounded-full peer peer-checked:after:translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-[2px] after:left-[2px] after:bg-white after:border-gray-300 after:border after:rounded-full after:h-5 after:w-5 after:transition-all peer-checked:bg-green-500"></div>
+                    </label>
                 </div>
             `).join('');
         }
@@ -811,24 +853,26 @@ www.myoneart.com
             }
         }
 
-        async function toggleOption(optionId, currentStatus) {
+        async function toggleOption(optionId) {
             const token = localStorage.getItem('token');
             
             try {
-                const response = await fetch(`/api/profile-options/${optionId}`, {
-                    method: 'PUT',
+                const response = await fetch(`/api/profile-options/${optionId}/toggle`, {
+                    method: 'POST',
                     headers: {
-                        'Authorization': `Bearer ${token}`,
-                        'Content-Type': 'application/json'
-                    },
-                    body: JSON.stringify({ is_active: !currentStatus })
+                        'Authorization': `Bearer ${token}`
+                    }
                 });
                 
                 if (response.ok) {
+                    const data = await response.json();
                     loadProfileOptions();
+                } else {
+                    alert('Erreur lors du changement de statut');
                 }
             } catch (error) {
                 console.error('Error toggling option:', error);
+                alert('Erreur de connexion');
             }
         }
 
@@ -855,8 +899,8 @@ www.myoneart.com
             const content = document.getElementById('userDetailsContent');
             content.innerHTML = `
                 <div class="bg-white rounded-2xl p-4 border border-gray-200">
-                    ${user.photo_url ? `<img src="${user.photo_url}" class="w-32 h-32 rounded-full mx-auto mb-4 object-cover">` : '<div class="w-32 h-32 rounded-full mx-auto mb-4 bg-gray-200 flex items-center justify-center text-4xl">👤</div>'}
-                    <h3 class="text-xl font-bold text-center text-[#2D3436] mb-4">${user.name}</h3>
+                    ${user.photo_url ? `<img src="${user.photo_url}" class="w-32 h-32 rounded-full mx-auto mb-4 object-cover cursor-pointer" onclick="showImageFullscreen('${user.photo_url}')">` : '<div class="w-32 h-32 rounded-full mx-auto mb-4 bg-gray-200 flex items-center justify-center text-4xl">👤</div>'}
+                    <h3 class="text-xl font-bold text-center text-[#2D3436] mb-4">${user.name}${user.is_verified ? ' <span class="text-blue-500">✓</span>' : ''}</h3>
                     
                     <div class="space-y-3 text-[#2D3436]">
                         <div class="flex justify-between py-2 border-b">
@@ -875,6 +919,12 @@ www.myoneart.com
                             <span class="font-semibold">Genre:</span>
                             <span>${user.gender || 'N/A'}</span>
                         </div>
+                        ${user.sexual_orientation ? `
+                        <div class="flex justify-between py-2 border-b">
+                            <span class="font-semibold">Orientation:</span>
+                            <span>${user.sexual_orientation}</span>
+                        </div>
+                        ` : ''}
                         <div class="flex justify-between py-2 border-b">
                             <span class="font-semibold">Abonnement:</span>
                             <span class="uppercase font-bold">${user.subscription_tier || 'free'}</span>
@@ -883,6 +933,15 @@ www.myoneart.com
                         <div class="py-2 border-b">
                             <span class="font-semibold block mb-2">Bio:</span>
                             <p class="text-sm opacity-75">${user.bio}</p>
+                        </div>` : ''}
+                        ${user.gallery_photos && user.gallery_photos.length > 0 ? `
+                        <div class="py-2 border-b">
+                            <span class="font-semibold block mb-2">Galerie photos:</span>
+                            <div class="grid grid-cols-3 gap-2">
+                                ${user.gallery_photos.map(photo => `
+                                    <img src="${photo}" alt="Gallery" class="w-full h-20 object-cover rounded-lg cursor-pointer" onclick="showImageFullscreen('${photo}')">
+                                `).join('')}
+                            </div>
                         </div>` : ''}
                         <div class="flex justify-between py-2 border-b">
                             <span class="font-semibold">Inscription:</span>

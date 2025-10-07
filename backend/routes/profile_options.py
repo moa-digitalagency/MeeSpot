@@ -68,6 +68,21 @@ def update_option(current_user, option_id):
     
     return jsonify(option.to_dict())
 
+@bp.route('/<int:option_id>/toggle', methods=['POST'])
+@token_required
+@admin_required
+def toggle_option(current_user, option_id):
+    """Admin: Toggle profile option active status"""
+    option = ProfileOption.query.get_or_404(option_id)
+    option.is_active = not option.is_active
+    
+    db.session.commit()
+    
+    return jsonify({
+        'message': f'Option {"activée" if option.is_active else "désactivée"}',
+        'option': option.to_dict()
+    })
+
 @bp.route('/<int:option_id>', methods=['DELETE'])
 @token_required
 @admin_required
