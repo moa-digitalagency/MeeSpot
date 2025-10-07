@@ -49,6 +49,14 @@ The backend organizes routes by resource (auth, rooms, establishments, admin, pr
 - **Gunicorn**: Production WSGI server.
 
 ## Recent Changes (October 2025)
+- **Image Upload System Overhaul** (October 7):
+  - Fixed registration timeout issues caused by large base64 images
+  - Created new `/api/upload/image` endpoint for progressive image uploads
+  - Images now upload automatically when selected (no waiting until final submit)
+  - Added real-time status bar with visual feedback (⏳ uploading, ✓ success, ❌ error)
+  - Added security validation: max 10MB, JPEG/PNG only
+  - Registration now sends lightweight URLs instead of heavy base64 data
+  - Users get clear error messages throughout the signup process
 - **User Registration Bug Fix** (October 7):
   - Fixed critical TypeError during user registration
   - Corrected 'photos' parameter to 'gallery_photos' to match User model schema
