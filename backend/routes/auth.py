@@ -20,6 +20,12 @@ bp = Blueprint('auth', __name__, url_prefix='/api')
 @bp.route('/auth/register', methods=['POST'])
 def register():
     data = request.json
+    if not data:
+        return jsonify({'message': 'No data provided'}), 400
+    
+    if 'email' not in data or 'password' not in data or 'name' not in data:
+        return jsonify({'message': 'Missing required fields'}), 400
+    
     email_to_check = data['email'].lower().strip()
     
     users = User.query.all()
@@ -64,6 +70,12 @@ def register():
 @bp.route('/auth/login', methods=['POST'])
 def login():
     data = request.json
+    if not data:
+        return jsonify({'message': 'No data provided'}), 400
+    
+    if 'email' not in data or 'password' not in data:
+        return jsonify({'message': 'Missing email or password'}), 400
+    
     email_to_find = data['email'].lower().strip()
     
     users = User.query.all()
