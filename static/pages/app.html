@@ -136,7 +136,7 @@ www.myoneart.com
     </div>
 
     <div id="page-rooms" class="page-content hidden">
-        <div class="px-4 pt-4 pb-2">
+        <div class="px-4 pt-4 pb-24">
             <h1 class="text-2xl font-bold text-[#2D3436] mb-4">Tous mes rooms</h1>
             
             <div class="flex gap-2 mb-4">
@@ -174,7 +174,7 @@ www.myoneart.com
     </div>
 
     <div id="page-profile" class="page-content hidden">
-        <div class="px-4 pt-4">
+        <div class="px-4 pt-4 pb-24">
             <h1 class="text-2xl font-bold text-[#2D3436] mb-6">Mon Profil</h1>
             
             <div class="bg-white rounded-3xl p-6 mb-4 shadow-lg">
@@ -252,7 +252,7 @@ www.myoneart.com
     </div>
 
     <div id="page-settings" class="page-content hidden">
-        <div class="px-4 pt-4">
+        <div class="px-4 pt-4 pb-24">
             <div class="flex items-center mb-6">
                 <button onclick="switchPage('profile')" class="mr-4 text-[#2D3436]">
                     <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -944,7 +944,9 @@ www.myoneart.com
                     </button>`;
                 }
                 
-                const verifiedBadge = p.is_verified ? '<span class="inline-flex items-center justify-center w-5 h-5 bg-blue-500 text-white rounded-full text-xs">✓</span>' : '';
+                const verifiedBadge = p.is_verified 
+                    ? '<span class="inline-flex items-center justify-center w-5 h-5 bg-blue-500 text-white rounded-full text-xs">✓</span>' 
+                    : '<span class="inline-flex items-center justify-center w-5 h-5 bg-gray-400 text-white rounded-full text-xs opacity-50">✓</span>';
                 
                 return `
                     <div class="bg-gray-50 rounded-xl p-4">
@@ -953,7 +955,9 @@ www.myoneart.com
                                 <div class="w-12 h-12 rounded-full bg-gradient-to-br from-[#FF4458] to-[#6C5CE7] flex items-center justify-center text-white font-bold">
                                     ${p.name.charAt(0).toUpperCase()}
                                 </div>
-                                ${p.is_verified ? '<div class="absolute -bottom-1 -right-1 w-5 h-5 bg-blue-500 text-white rounded-full flex items-center justify-center text-xs">✓</div>' : ''}
+                                ${p.is_verified 
+                                    ? '<div class="absolute -bottom-1 -right-1 w-5 h-5 bg-blue-500 text-white rounded-full flex items-center justify-center text-xs">✓</div>' 
+                                    : '<div class="absolute -bottom-1 -right-1 w-5 h-5 bg-gray-400 text-white rounded-full flex items-center justify-center text-xs opacity-50">✓</div>'}
                             </div>
                             <div class="flex-1">
                                 <h4 class="font-bold text-[#2D3436]">${p.name} ${verifiedBadge} ${emojis} ${isMe ? '(Vous)' : ''}</h4>
