@@ -100,7 +100,7 @@ def register_user():
         lgbtq_friendly=data.get('lgbtq_friendly'),
         bio=data.get('bio'),
         photo_url=photo_url,
-        photos=','.join(gallery_urls) if gallery_urls else None
+        gallery_photos=gallery_urls
     )
     
     if data.get('meeting_type'):
