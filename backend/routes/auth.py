@@ -44,48 +44,14 @@ def register_user():
     
     password_hash = bcrypt.hashpw(data['password'].encode('utf-8'), bcrypt.gensalt()).decode('utf-8')
     
-    # Handle profile photo upload (REQUIRED)
-    if not data.get('photo'):
+    # Photo URL is now passed directly (already uploaded via /api/upload/image)
+    if not data.get('photo_url'):
         return jsonify({'message': 'Profile photo is required'}), 400
     
-    photo_url = None
-    try:
-        photo_data = data['photo'].split(',')[1] if ',' in data['photo'] else data['photo']
-        photo_bytes = base64.b64decode(photo_data)
-        
-        upload_dir = 'static/uploads/profiles'
-        os.makedirs(upload_dir, exist_ok=True)
-        
-        filename = f"user_{uuid.uuid4().hex}.jpg"
-        filepath = os.path.join(upload_dir, filename)
-        
-        with open(filepath, 'wb') as f:
-            f.write(photo_bytes)
-        
-        photo_url = f'/uploads/profiles/{filename}'
-    except Exception as e:
-        return jsonify({'message': f'Error saving profile photo: {str(e)}'}), 500
+    photo_url = data.get('photo_url')
     
-    # Handle gallery photos upload
-    gallery_urls = []
-    if data.get('gallery') and isinstance(data['gallery'], list):
-        gallery_dir = 'static/uploads/gallery'
-        os.makedirs(gallery_dir, exist_ok=True)
-        
-        for i, photo in enumerate(data['gallery'][:6]):  # Max 6 photos
-            try:
-                photo_data = photo.split(',')[1] if ',' in photo else photo
-                photo_bytes = base64.b64decode(photo_data)
-                
-                filename = f"gallery_{uuid.uuid4().hex}.jpg"
-                filepath = os.path.join(gallery_dir, filename)
-                
-                with open(filepath, 'wb') as f:
-                    f.write(photo_bytes)
-                
-                gallery_urls.append(f'/uploads/gallery/{filename}')
-            except Exception as e:
-                print(f"Error saving gallery photo {i}: {str(e)}")
+    # Gallery URLs are now passed directly (already uploaded)
+    gallery_urls = data.get('gallery_urls', [])
     
     user = User(
         email=data['email'],
