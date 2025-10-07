@@ -719,6 +719,36 @@ www.myoneart.com
                                 </div>
                             ` : ''}
                             
+                            ${fullUser.religion ? `
+                                <div class="bg-[#F5F5F5] rounded-xl p-3">
+                                    <p class="text-xs font-semibold text-[#2D3436] mb-1">🙏 Religion</p>
+                                    <p class="text-sm text-[#2D3436]">${fullUser.religion}</p>
+                                </div>
+                            ` : ''}
+                            
+                            ${fullUser.lgbtq_friendly ? `
+                                <div class="bg-[#F5F5F5] rounded-xl p-3">
+                                    <p class="text-xs font-semibold text-[#2D3436] mb-1">🏳️‍🌈 LGBT+ Friendly</p>
+                                    <p class="text-sm text-[#2D3436]">${fullUser.lgbtq_friendly === 'yes' ? '✅ Oui' : fullUser.lgbtq_friendly === 'no' ? '❌ Non' : '🤐 Préfère ne pas répondre'}</p>
+                                </div>
+                            ` : ''}
+                            
+                            ${fullUser.meeting_type ? `
+                                <div class="bg-[#F5F5F5] rounded-xl p-3">
+                                    <p class="text-xs font-semibold text-[#2D3436] mb-1">💕 Je recherche</p>
+                                    <p class="text-sm text-[#2D3436]">${fullUser.meeting_type}</p>
+                                </div>
+                            ` : ''}
+                            
+                            ${fullUser.interests && (Array.isArray(fullUser.interests) ? fullUser.interests.length > 0 : fullUser.interests) ? `
+                                <div class="bg-[#F5F5F5] rounded-xl p-3">
+                                    <p class="text-xs font-semibold text-[#2D3436] mb-2">🎯 Intérêts</p>
+                                    <div class="flex flex-wrap gap-1">
+                                        ${(Array.isArray(fullUser.interests) ? fullUser.interests : [fullUser.interests]).map(interest => `<span class="px-2 py-1 bg-[#A29BFE] text-white rounded-full text-xs">${interest}</span>`).join('')}
+                                    </div>
+                                </div>
+                            ` : ''}
+                            
                             ${fullUser.bio ? `
                                 <div class="bg-[#F5F5F5] rounded-xl p-3">
                                     <p class="text-xs font-semibold text-[#2D3436] mb-1">Bio</p>
@@ -930,6 +960,32 @@ www.myoneart.com
                         <div class="flex justify-between py-2 border-b">
                             <span class="font-semibold">Orientation:</span>
                             <span>${user.sexual_orientation}</span>
+                        </div>
+                        ` : ''}
+                        ${user.religion ? `
+                        <div class="flex justify-between py-2 border-b">
+                            <span class="font-semibold">🙏 Religion:</span>
+                            <span>${user.religion}</span>
+                        </div>
+                        ` : ''}
+                        ${user.lgbtq_friendly ? `
+                        <div class="flex justify-between py-2 border-b">
+                            <span class="font-semibold">🏳️‍🌈 LGBT+ Friendly:</span>
+                            <span>${user.lgbtq_friendly === 'yes' ? '✅ Oui' : user.lgbtq_friendly === 'no' ? '❌ Non' : '🤐 Préfère ne pas répondre'}</span>
+                        </div>
+                        ` : ''}
+                        ${user.meeting_type ? `
+                        <div class="flex justify-between py-2 border-b">
+                            <span class="font-semibold">💕 Recherche:</span>
+                            <span>${user.meeting_type}</span>
+                        </div>
+                        ` : ''}
+                        ${user.interests && (Array.isArray(user.interests) ? user.interests.length > 0 : user.interests) ? `
+                        <div class="py-2 border-b">
+                            <span class="font-semibold block mb-2">🎯 Intérêts:</span>
+                            <div class="flex flex-wrap gap-1">
+                                ${(Array.isArray(user.interests) ? user.interests : [user.interests]).map(interest => `<span class="px-2 py-1 bg-[#A29BFE] text-white rounded-full text-xs">${interest}</span>`).join('')}
+                            </div>
                         </div>
                         ` : ''}
                         <div class="flex justify-between py-2 border-b">
