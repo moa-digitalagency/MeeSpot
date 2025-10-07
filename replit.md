@@ -1,7 +1,7 @@
 # MeetSpot - PWA Dating Platform
 
 ## Overview
-MeetSpot is a Progressive Web Application (PWA) dating platform designed to facilitate real-life meetings at physical venues. Inspired by the clean interfaces of Bumble and Hinge, its core purpose is to connect users for events rather than endless swiping. The platform supports multiple user roles: Admin for platform management, Establishment for venue owners to create events, and Users for members to join rooms and connect. It aims to offer a modern, mobile-first experience with a focus on privacy, security, and user-friendly interaction.
+MeetSpot is a Progressive Web Application (PWA) dating platform designed to facilitate real-life meetings at physical venues. Inspired by clean interfaces, its core purpose is to connect users for events rather than endless swiping. The platform supports multiple user roles: Admin for platform management, Establishment for venue owners to create events, and Users for members to join rooms and connect. It aims to offer a modern, mobile-first experience with a focus on privacy, security, and user-friendly interaction, ultimately fostering real-life connections.
 
 ## User Preferences
 - Focus on real-life meetings over endless swiping
@@ -18,124 +18,32 @@ MeetSpot is a Progressive Web Application (PWA) dating platform designed to faci
 The platform features a mobile-first responsive design, limited to a maximum viewport width of 768px. It uses a distinct color palette: Primary #FF4458 (vibrant coral), Secondary #6C5CE7 (soft purple), Accent #A29BFE (lavender), Background #F5F5F5 (light grey), and Text #2D3436 (charcoal). Typography is set with Poppins for headings and Inter for body text. Navigation is managed through fixed bottom navigation bars with SVG icons and bottom sheet modals for mobile-optimized interactions across all dashboards (User, Establishment, Admin).
 
 ### Technical Implementations
-MeetSpot is built as a PWA with a Python Flask backend and a Tailwind CSS frontend. It utilizes a modular backend structure with PostgreSQL via SQLAlchemy ORM. Authentication is handled with JWT (stored in localStorage) and bcrypt for password hashing. All sensitive data, including personal information and private messages, is encrypted at rest using AES-256 (Fernet) with SQLAlchemy TypeDecorators. The frontend uses Vanilla JavaScript for interactivity, supporting full PWA features like service workers for offline support, app manifests for installability, and push notification readiness. An auto-refresh system provides real-time data synchronization for conversations, requests, and room activities, intelligently pausing when the app loses focus.
-
-**CORS Configuration**: Flask-CORS configured with `supports_credentials=False` and wildcard origins to support cross-origin API requests. JWT tokens are stored in localStorage (not cookies), enabling stateless authentication across deployments.
-
-**Request Validation**: All API endpoints validate request data before processing, ensuring `request.json` is not None and all required fields are present, preventing connection errors during login/registration.
+MeetSpot is built as a PWA with a Python Flask backend and a Tailwind CSS frontend. It utilizes a modular backend structure with PostgreSQL via SQLAlchemy ORM. Authentication is handled with JWT (stored in localStorage) and bcrypt for password hashing. All sensitive data, including personal information and private messages, is encrypted at rest using AES-256 (Fernet) with SQLAlchemy TypeDecorators. The frontend uses Vanilla JavaScript for interactivity, supporting full PWA features like service workers for offline support, app manifests for installability, and push notification readiness. An auto-refresh system provides real-time data synchronization for conversations, requests, and room activities, intelligently pausing when the app loses focus. CORS is configured with `supports_credentials=False` and wildcard origins. All API endpoints validate request data.
 
 ### Feature Specifications
-- **User Roles & Access Control**: Admin, Establishment, and User roles with role-based access control. Room access can be filtered by gender, orientation, and age.
-- **Rooms System**: Event-based meeting spaces at physical venues with 24-hour expiration. Rooms are joined via unique 8-character access codes or QR code scanning.
-- **Connection & Communication**: Replaces group chat with a system of connection requests between users. Upon acceptance, private 1-to-1 encrypted conversations are established. Private messages support text, emojis (16-emoji picker), and photo uploads with explicit consent confirmation.
-- **Conversation Expiration System**: Conversations automatically expire based on subscription tier (Free: 24h, Premium: 7 days, Platinum: 30 days). Expiration calculated from best tier between both users. UI displays real-time countdown (days/hours/minutes). Server-side enforcement on all conversation endpoints (send_message, get_messages, get_conversation, send_photo) prevents messaging in expired threads. Conversations are unique per (room_id, user1, user2), allowing same users to have multiple conversations in different rooms. Active/expired filter in messages UI.
-- **User Blocking System**: Users can block others via UserBlock model with unique constraint. Blocked users are completely invisible across all rooms in get_participants(). Bidirectional filtering ensures both blocker and blocked users never see each other.
-- **Subscription Tiers**: Multiple tiers for Users (Free, Premium, Platinum) offering features like priority access, alternative identity mode (hiding photos/pseudonyms), and unlimited messaging. Establishments also have subscription plans for creating rooms and accessing analytics.
-- **Profile Management**: Enriched user profiles include auto-generated usernames, birthdate (for dynamic age calculation), sexual orientation, multi-select meeting types, interests, and photo galleries. Admin-customizable profile options (gender, meeting type, interest) are managed via a dedicated dashboard.
-- **Reporting & Moderation**: A system for users to report inappropriate content or behavior, with admin oversight.
-- **Backup & Deployment System**: Comprehensive admin-managed system for automated backups (database, uploaded files, configuration), secure restoration with path validation, database migrations with auto-detection of schema changes, and GitHub-based updates with pre-update backups. Backups use PostgreSQL custom format and are compressed to .tar.gz with automatic rotation (keeps last 10).
+- **User Roles & Access Control**: Admin, Establishment, and User roles with role-based access control, including gender, orientation, and age filtering for room access.
+- **Rooms System**: Event-based meeting spaces at physical venues with 24-hour expiration, joined via 8-character access codes or QR scanning.
+- **Connection & Communication**: Replaces group chat with connection requests. Accepted requests establish private, encrypted 1-to-1 conversations with text, emojis, and photo uploads.
+- **Conversation Expiration System**: Conversations expire based on subscription tier (24h, 7 days, 30 days), enforced server-side with UI countdowns. Conversations are unique per (room_id, user1, user2).
+- **User Blocking System**: Users can block others, making blocked users completely invisible bidirectionally across the platform.
+- **Subscription Tiers**: Multiple tiers for Users (Free, Premium, Platinum) and Establishments, offering features like priority access, alternative identity mode, and analytics.
+- **Profile Management**: Enriched user profiles include auto-generated usernames, dynamic age calculation, sexual orientation, multi-select meeting types, interests, and photo galleries. Admin-customizable profile options.
+- **Reporting & Moderation**: System for users to report inappropriate content with admin oversight.
+- **User Verification**: Multi-step user verification process including photo upload and admin approval/rejection, with visual indicators for verification status.
+- **Multi-step User Signup**: A 4-step registration process for users, including basic info, profile details, and photo uploads.
+- **Backup & Deployment System**: Admin-managed system for automated backups (database, uploaded files, configuration), secure restoration, database migrations with auto-detection, and GitHub-based updates with pre-update backups.
 
 ### System Design Choices
-The backend organizes routes by resource (auth, rooms, establishments, admin, profile, connection_requests, conversations) and uses a centralized configuration. Database schema includes Users (with detailed demographics and subscription info), Establishments, Rooms (with access rules and expiration), RoomMembers, ConnectionRequest, PrivateConversation (with expires_at, started_at, room_id NOT NULL, unique constraint on room_id+user1_id+user2_id), PrivateMessage (with photo_url support), UserBlock (with unique constraint on blocker_id+blocked_id), Reports, and SubscriptionPlans. A `ProfileOption` model allows admins to define and manage selectable options for user profiles dynamically.
-
-**Deployment & Backup Infrastructure**:
-- `scripts/backup.py`: Creates comprehensive backups (PostgreSQL dump in custom format, uploads folder, .env, requirements.txt, .encryption_key)
-- `scripts/restore.py`: Secure restoration with tar extraction validation, path traversal protection, and pg_restore error enforcement
-- `scripts/migrate_database.py`: Automatic database migration with schema introspection, detects missing tables/columns and applies changes safely
-- `scripts/update_from_github.py`: GitHub-based updates with automatic pre-update backups, git pull, database migration, and server restart
-- Admin API endpoints (`/api/admin/backup/*`) for managing backups, checking updates, applying updates, and running migrations with proper authentication and timeout handling
+The backend organizes routes by resource (auth, rooms, establishments, admin, profile, connection_requests, conversations) and uses a centralized configuration. Database schema includes Users, Establishments, Rooms, RoomMembers, ConnectionRequest, PrivateConversation, PrivateMessage, UserBlock, Reports, SubscriptionPlans, and ProfileOption for dynamic customization. Deployment and backup infrastructure includes `scripts/backup.py`, `scripts/restore.py`, `scripts/migrate_database.py`, and `scripts/update_from_github.py`, all manageable via admin API endpoints.
 
 ## External Dependencies
-- **PostgreSQL**: Primary database for all application data.
-- **Tailwind CSS**: Utility-first CSS framework for styling the frontend.
-- **QRious library (v4.0.2)**: Used for generating QR codes for establishment events.
-- **Python Flask**: Web framework for the backend.
-- **SQLAlchemy**: Python SQL toolkit and Object-Relational Mapper.
-- **PyJWT**: Python library for JSON Web Token (JWT) authentication.
-- **Bcrypt**: For password hashing.
-- **Cryptography (Fernet/AES-256)**: For encryption of sensitive data at rest.
-- **Flask-CORS**: Cross-Origin Resource Sharing support for API endpoints.
-- **Gunicorn**: Production WSGI server for Python applications.
-
-## Deployment Documentation
-- **DEPLOYMENT.md**: Comprehensive deployment guide for PythonAnywhere and Railway with step-by-step instructions
-- **.env.example**: Template for environment variables (DATABASE_URL, SECRET_KEY, ENCRYPTION_KEY, FLASK_ENV)
-- **passenger_wsgi.py**: PythonAnywhere-specific WSGI configuration
-- **wsgi.py**: Standard WSGI entry point for production deployments
-
-## Recent Changes (October 2025)
-- **Admin Dashboard Stats Fixed & UI Improvements** (October 7):
-  - Fixed loadStats() function to properly fetch and display all dashboard statistics:
-    - Total users from `/api/admin/users`
-    - Total establishments (filtered from users by role)
-    - Active rooms from `/api/rooms` (filtered by expiration date)
-    - Pending reports from `/api/admin/reports` (filtered by status)
-  - Landing page hero "Get Started" button now correctly opens signup dropdown menu
-  - Verification photos properly organized in `/uploads/verifications/` folder
-  - Enhanced error handling with user alerts for failed stats loading
-- **Step-by-Step User Signup with Photos** (October 7):
-  - Implemented 4-step registration process for users:
-    - Step 1: Basic info (name, email, password, birthdate) with progress bar
-    - Step 2: Profile details (gender, sexual orientation, meeting type preferences, bio)
-    - Step 3: Profile photo upload (required, with live preview)
-    - Step 4: Photo gallery upload (optional, max 6 photos)
-  - Backend handles base64 photo upload and saves to `/uploads/profiles/` and `/uploads/gallery/`
-  - Validation at each step before allowing user to proceed
-  - Separate establishment signup remains simple and unchanged
-  - All photos stored securely with unique UUIDs
-- **Room & Chat Countdown Timers** (October 7):
-  - Added red countdown timers for active rooms in dashboard (shows hours/minutes remaining)
-  - Replaces static date display with dynamic time remaining indicator
-  - Countdown timers already implemented for conversations in chat interface
-  - Visual indicators: green "Actif" status + red countdown for active rooms
-- **User Verification System** (October 7):
-  - Complete verification workflow: users upload photo → admin reviews → approval/rejection
-  - User interface: "Get Verified" button in profile with photo upload modal
-  - Backend models: VerificationRequest with status (pending/approved/rejected), photo_url storage
-  - Admin dashboard: New "Verifications" tab (6th navigation item, grid-cols-6)
-  - Visual indicators: Blue checkmark badge on verified user profiles in room participants
-  - API endpoints: `/api/verification/request` (POST), `/api/verification/status` (GET), `/api/verification/admin/list?status=pending` (GET), `/api/verification/admin/:id/approve` (POST), `/api/verification/admin/:id/reject` (POST)
-  - Backend includes `is_verified` flag in participant data for UI display
-- **Admin Dashboard - Page Système Added** (October 7):
-  - Added 5th navigation tab "Système" in admin dashboard (grid-cols-5)
-  - Implemented complete UI for all system management features:
-    - 💾 Backup & Restauration (create, list, restore backups)
-    - 🔄 GitHub Updates (one-click update from repository)
-    - 🗄️ Database Migrations (execute schema changes)
-    - 🔑 API Keys Management (create, list, revoke, activate, delete)
-    - 📝 Logs Viewer (view update logs and system logs)
-  - All backend admin endpoints now accessible via user-friendly interface
-  - Alert-based feedback for all system operations
-- **Separate Registration Flows** (October 7):
-  - Implemented dedicated signup modals for Users and Establishments
-  - Dropdown menu in header with two options: "As User" and "As Establishment"
-  - User signup: name, email, password, birthdate (optional)
-  - Establishment signup: contact_name, email, password, establishment_name, address (optional)
-  - Backend endpoints: `/api/auth/register/user` and `/api/auth/register/establishment`
-- **Chat System Optimization** (October 7):
-  - Reduced polling interval from 5s to 1.5s for more responsive chat
-  - Dedicated chat polling system separate from global auto-refresh
-  - Intelligent scroll detection to preserve user position
-  - Proper interval cleanup on modal close
-- **UI Color Scheme Update** (October 7):
-  - Changed background color from #FFEAA7 (warm cream) to #F5F5F5 (light grey)
-  - Updated all HTML pages (index.html, app.html, admin.html, establishment.html)
-  - Updated manifest.json theme_color to match new background
-  - Maintains coral (#FF4458), purple (#6C5CE7), and lavender (#A29BFE) accents
-- **Conversation Expiration & Countdown System** (October 7):
-  - Added `expires_at` and `started_at` fields to PrivateConversation model
-  - Implemented tier-based expiration: Free=24h, Premium=7d, Platinum=30d
-  - Added `check_and_expire()` method enforced on all conversation endpoints
-  - Built UI countdown timer showing days/hours/minutes remaining
-  - Added active/expired filter in messages interface with query param support
-  - Unique constraint on (room_id, user1_id, user2_id) for room-specific conversations
-  - Server-side validation prevents messaging/reading in expired conversations (400 error)
-- **User Blocking System** (October 7):
-  - Created UserBlock model with unique(blocker_id, blocked_id) constraint
-  - Integrated bidirectional filtering in get_participants() endpoint
-  - Blocked users completely invisible across all rooms
-- Fixed deployment login issues by correcting CORS configuration (supports_credentials=False with wildcard origins)
-- Added request validation in auth endpoints to prevent None errors
-- Created comprehensive deployment documentation for PythonAnywhere and Railway
-- Added .env.example template with all required environment variables
-- Improved error handling and validation across authentication routes
+- **PostgreSQL**: Primary database.
+- **Tailwind CSS**: Frontend styling.
+- **QRious library (v4.0.2)**: QR code generation.
+- **Python Flask**: Backend web framework.
+- **SQLAlchemy**: Python ORM.
+- **PyJWT**: JWT authentication.
+- **Bcrypt**: Password hashing.
+- **Cryptography (Fernet/AES-256)**: Data encryption at rest.
+- **Flask-CORS**: Cross-Origin Resource Sharing.
+- **Gunicorn**: Production WSGI server.
