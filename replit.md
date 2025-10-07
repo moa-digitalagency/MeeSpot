@@ -47,3 +47,9 @@ The backend organizes routes by resource (auth, rooms, establishments, admin, pr
 - **Cryptography (Fernet/AES-256)**: Data encryption at rest.
 - **Flask-CORS**: Cross-Origin Resource Sharing.
 - **Gunicorn**: Production WSGI server.
+
+## Recent Changes (October 2025)
+- **Badge Visibility Improvement** (October 7):
+  - Increased opacity of non-verified user badges from 50 to 60 for better visibility
+  - Gray badges (✓) now more visible for non-verified users across all interfaces
+  - Applied consistently in: participants list, conversation list, request list, chat header, profile modal
