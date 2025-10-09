@@ -17,30 +17,11 @@ class EncryptionService:
             encryption_key = os.environ.get('ENCRYPTION_KEY')
             
         if encryption_key is None:
-            key_file = '.encryption_key'
-            if os.path.exists(key_file):
-                try:
-                    with open(key_file, 'r') as f:
-                        encryption_key = f.read().strip()
-                    os.environ['ENCRYPTION_KEY'] = encryption_key
-                    print(f"✓ Loaded encryption key from {key_file}")
-                except Exception as e:
-                    print(f"⚠️  ERROR: Failed to load encryption key from {key_file}: {e}")
-                    raise RuntimeError("Encryption key file corrupted")
-            else:
-                encryption_key = Fernet.generate_key().decode()
-                os.environ['ENCRYPTION_KEY'] = encryption_key
-                try:
-                    with open(key_file, 'w') as f:
-                        f.write(encryption_key)
-                    os.chmod(key_file, 0o600)
-                    print(f"⚠️  IMPORTANT: Generated new encryption key and saved to {key_file}")
-                    print(f"   Keep this file safe! Losing it means encrypted data cannot be recovered.")
-                    print(f"   For production: Set ENCRYPTION_KEY environment variable instead.")
-                    print(f"   ENCRYPTION_KEY={encryption_key}")
-                except Exception as e:
-                    print(f"⚠️  WARNING: Could not save key to file: {e}")
-                    print(f"   Set this in your environment: ENCRYPTION_KEY={encryption_key}")
+            raise RuntimeError(
+                "ENCRYPTION_KEY environment variable is required but not set.\n"
+                "Please set ENCRYPTION_KEY in your environment variables.\n"
+                "You can generate a key using: python -c 'from cryptography.fernet import Fernet; print(Fernet.generate_key().decode())'"
+            )
         
         if isinstance(encryption_key, str):
             encryption_key = encryption_key.encode()
