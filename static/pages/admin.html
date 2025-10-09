@@ -204,6 +204,11 @@ www.myoneart.com
                     <p class="text-sm text-[#2D3436] opacity-75">Gérer les demandes de forfaits utilisateurs et établissements</p>
                 </button>
 
+                <button onclick="switchPage('plans')" class="w-full bg-white rounded-2xl p-4 text-left hover:shadow-lg transition">
+                    <h3 class="font-bold text-[#2D3436] mb-1">💎 Gérer les Plans</h3>
+                    <p class="text-sm text-[#2D3436] opacity-75">CRUD des forfaits disponibles (Utilisateurs & Établissements)</p>
+                </button>
+
                 <div class="bg-white rounded-2xl p-4">
                     <h3 class="font-bold text-[#2D3436] mb-3">🌐 Langue par Défaut</h3>
                     <select id="defaultLanguage" onchange="updateDefaultLanguage()" class="w-full px-4 py-3 border border-gray-300 rounded-xl focus:outline-none focus:border-[#FF4458]">
@@ -301,6 +306,99 @@ www.myoneart.com
             <div id="subscriptionRequestsList" class="space-y-3">
                 <p class="text-[#2D3436] opacity-75">Chargement...</p>
             </div>
+        </div>
+    </div>
+
+    <div id="page-plans" class="page-content hidden">
+        <div class="px-4 pt-4 pb-4">
+            <div class="flex items-center justify-between mb-4">
+                <div class="flex items-center gap-3">
+                    <button onclick="switchPage('system')" class="w-10 h-10 flex items-center justify-center bg-gray-100 text-gray-600 hover:bg-gray-200 rounded-full transition">
+                        <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 19l-7-7 7-7"/></svg>
+                    </button>
+                    <h1 class="text-2xl font-bold text-[#2D3436]">💎 Gérer les Plans</h1>
+                </div>
+                <button onclick="showAddPlanModal()" class="px-4 py-2 bg-[#FF4458] text-white rounded-full text-sm font-semibold">
+                    + Ajouter
+                </button>
+            </div>
+
+            <div class="flex gap-2 mb-4">
+                <button id="plans-filter-user" onclick="filterPlans('user')" class="flex-1 py-2 px-4 rounded-full bg-[#FF4458] text-white text-sm font-semibold">
+                    👤 Utilisateurs
+                </button>
+                <button id="plans-filter-establishment" onclick="filterPlans('establishment')" class="flex-1 py-2 px-4 rounded-full bg-gray-200 text-[#2D3436] text-sm font-semibold">
+                    🏪 Établissements
+                </button>
+            </div>
+
+            <div id="plansList" class="space-y-3">
+                <p class="text-[#2D3436] opacity-75">Chargement...</p>
+            </div>
+        </div>
+    </div>
+
+    <div id="addPlanModal" class="hidden fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50">
+        <div class="bg-white rounded-3xl w-full max-w-md m-4 p-6">
+            <h3 class="text-xl font-bold text-[#2D3436] mb-4">Ajouter un Plan</h3>
+            <form onsubmit="addPlan(event)">
+                <div class="mb-3">
+                    <label class="block text-[#2D3436] mb-2 text-sm font-semibold">Rôle</label>
+                    <select id="newPlanRole" required class="w-full px-4 py-3 border border-gray-300 rounded-xl focus:outline-none focus:border-[#FF4458]">
+                        <option value="user">👤 Utilisateur</option>
+                        <option value="establishment">🏪 Établissement</option>
+                    </select>
+                </div>
+                <div class="mb-3">
+                    <label class="block text-[#2D3436] mb-2 text-sm font-semibold">Nom du Plan</label>
+                    <input type="text" id="newPlanName" required class="w-full px-4 py-3 border border-gray-300 rounded-xl focus:outline-none focus:border-[#FF4458]" placeholder="ex: Premium">
+                </div>
+                <div class="mb-3">
+                    <label class="block text-[#2D3436] mb-2 text-sm font-semibold">Description</label>
+                    <textarea id="newPlanDescription" required class="w-full px-4 py-3 border border-gray-300 rounded-xl focus:outline-none focus:border-[#FF4458]" placeholder="Description du plan" rows="3"></textarea>
+                </div>
+                <div class="mb-3">
+                    <label class="block text-[#2D3436] mb-2 text-sm font-semibold">Prix (€/mois)</label>
+                    <input type="number" id="newPlanPrice" required step="0.01" class="w-full px-4 py-3 border border-gray-300 rounded-xl focus:outline-none focus:border-[#FF4458]" placeholder="9.99">
+                </div>
+                <div class="mb-4">
+                    <label class="block text-[#2D3436] mb-2 text-sm font-semibold">Rooms par jour</label>
+                    <input type="number" id="newPlanRooms" required class="w-full px-4 py-3 border border-gray-300 rounded-xl focus:outline-none focus:border-[#FF4458]" placeholder="5">
+                </div>
+                <div class="flex gap-2">
+                    <button type="button" onclick="closeAddPlanModal()" class="flex-1 py-3 bg-gray-200 text-[#2D3436] rounded-full">Annuler</button>
+                    <button type="submit" class="flex-1 py-3 bg-[#FF4458] text-white rounded-full">Ajouter</button>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <div id="editPlanModal" class="hidden fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50">
+        <div class="bg-white rounded-3xl w-full max-w-md m-4 p-6">
+            <h3 class="text-xl font-bold text-[#2D3436] mb-4">Modifier le Plan</h3>
+            <form onsubmit="updatePlan(event)">
+                <input type="hidden" id="editPlanId">
+                <div class="mb-3">
+                    <label class="block text-[#2D3436] mb-2 text-sm font-semibold">Nom du Plan</label>
+                    <input type="text" id="editPlanName" required class="w-full px-4 py-3 border border-gray-300 rounded-xl focus:outline-none focus:border-[#FF4458]">
+                </div>
+                <div class="mb-3">
+                    <label class="block text-[#2D3436] mb-2 text-sm font-semibold">Description</label>
+                    <textarea id="editPlanDescription" required class="w-full px-4 py-3 border border-gray-300 rounded-xl focus:outline-none focus:border-[#FF4458]" rows="3"></textarea>
+                </div>
+                <div class="mb-3">
+                    <label class="block text-[#2D3436] mb-2 text-sm font-semibold">Prix (€/mois)</label>
+                    <input type="number" id="editPlanPrice" required step="0.01" class="w-full px-4 py-3 border border-gray-300 rounded-xl focus:outline-none focus:border-[#FF4458]">
+                </div>
+                <div class="mb-4">
+                    <label class="block text-[#2D3436] mb-2 text-sm font-semibold">Rooms par jour</label>
+                    <input type="number" id="editPlanRooms" required class="w-full px-4 py-3 border border-gray-300 rounded-xl focus:outline-none focus:border-[#FF4458]">
+                </div>
+                <div class="flex gap-2">
+                    <button type="button" onclick="closeEditPlanModal()" class="flex-1 py-3 bg-gray-200 text-[#2D3436] rounded-full">Annuler</button>
+                    <button type="submit" class="flex-1 py-3 bg-[#FF4458] text-white rounded-full">Enregistrer</button>
+                </div>
+            </form>
         </div>
     </div>
 
@@ -419,6 +517,8 @@ www.myoneart.com
                 loadSystemLogs();
             } else if (page === 'subscriptions') {
                 loadSubscriptionRequests();
+            } else if (page === 'plans') {
+                loadPlans();
             }
         }
 
@@ -560,6 +660,196 @@ www.myoneart.com
                 loadSubscriptionRequests();
             } catch (error) {
                 alert('Erreur lors du rejet');
+            }
+        }
+
+        let currentPlansFilter = 'user';
+        let allPlans = [];
+
+        async function loadPlans() {
+            const token = localStorage.getItem('token');
+            const list = document.getElementById('plansList');
+            
+            try {
+                const response = await fetch('/api/admin/plans', {
+                    headers: { 'Authorization': `Bearer ${token}` }
+                });
+                
+                if (!response.ok) throw new Error('API error');
+                
+                allPlans = await response.json();
+                filterPlans(currentPlansFilter);
+            } catch (error) {
+                console.error('Error loading plans:', error);
+                list.innerHTML = '<p class="text-red-500">Erreur lors du chargement des plans</p>';
+            }
+        }
+
+        function filterPlans(role) {
+            currentPlansFilter = role;
+            
+            document.getElementById('plans-filter-user').className = role === 'user' 
+                ? 'flex-1 py-2 px-4 rounded-full bg-[#FF4458] text-white text-sm font-semibold'
+                : 'flex-1 py-2 px-4 rounded-full bg-gray-200 text-[#2D3436] text-sm font-semibold';
+            document.getElementById('plans-filter-establishment').className = role === 'establishment'
+                ? 'flex-1 py-2 px-4 rounded-full bg-[#FF4458] text-white text-sm font-semibold'
+                : 'flex-1 py-2 px-4 rounded-full bg-gray-200 text-[#2D3436] text-sm font-semibold';
+            
+            const filtered = allPlans.filter(p => p.role === role);
+            const list = document.getElementById('plansList');
+            
+            if (filtered.length === 0) {
+                list.innerHTML = '<p class="text-[#2D3436] opacity-75">Aucun plan disponible</p>';
+                return;
+            }
+            
+            list.innerHTML = filtered.map(plan => `
+                <div class="bg-gradient-to-br from-[#6C5CE7] to-[#A29BFE] rounded-2xl p-4 text-white">
+                    <div class="flex justify-between items-start mb-3">
+                        <div class="flex-1">
+                            <h4 class="text-xl font-bold">${plan.name}</h4>
+                            <p class="text-sm opacity-90">${plan.description}</p>
+                        </div>
+                        <div class="text-right ml-3">
+                            <div class="text-2xl font-bold">${plan.price}€</div>
+                            <div class="text-xs opacity-75">/mois</div>
+                        </div>
+                    </div>
+                    <div class="text-sm opacity-90 mb-3">
+                        📍 ${plan.rooms_per_day} ${plan.rooms_per_day > 1 ? 'rooms' : 'room'} par jour
+                    </div>
+                    <div class="flex gap-2">
+                        <button onclick="showEditPlanModal(${plan.id})" class="flex-1 py-2 bg-white/20 text-white rounded-full text-sm font-semibold hover:bg-white/30 transition">
+                            ✏️ Modifier
+                        </button>
+                        <button onclick="togglePlanActive(${plan.id}, ${!plan.is_active})" class="flex-1 py-2 ${plan.is_active ? 'bg-red-500/80' : 'bg-green-500/80'} text-white rounded-full text-sm font-semibold hover:opacity-90 transition">
+                            ${plan.is_active ? '🚫 Désactiver' : '✅ Activer'}
+                        </button>
+                    </div>
+                </div>
+            `).join('');
+        }
+
+        function showAddPlanModal() {
+            document.getElementById('newPlanRole').value = currentPlansFilter;
+            document.getElementById('addPlanModal').classList.remove('hidden');
+        }
+
+        function closeAddPlanModal() {
+            document.getElementById('addPlanModal').classList.add('hidden');
+            document.getElementById('newPlanName').value = '';
+            document.getElementById('newPlanDescription').value = '';
+            document.getElementById('newPlanPrice').value = '';
+            document.getElementById('newPlanRooms').value = '';
+        }
+
+        async function addPlan(e) {
+            e.preventDefault();
+            const token = localStorage.getItem('token');
+            
+            const data = {
+                role: document.getElementById('newPlanRole').value,
+                name: document.getElementById('newPlanName').value,
+                description: document.getElementById('newPlanDescription').value,
+                price: parseFloat(document.getElementById('newPlanPrice').value),
+                rooms_per_day: parseInt(document.getElementById('newPlanRooms').value)
+            };
+            
+            try {
+                const response = await fetch('/api/admin/plans', {
+                    method: 'POST',
+                    headers: {
+                        'Authorization': `Bearer ${token}`,
+                        'Content-Type': 'application/json'
+                    },
+                    body: JSON.stringify(data)
+                });
+                
+                if (response.ok) {
+                    alert('✓ Plan ajouté avec succès!');
+                    closeAddPlanModal();
+                    loadPlans();
+                } else {
+                    const error = await response.json();
+                    alert(error.error || 'Erreur lors de l\'ajout');
+                }
+            } catch (error) {
+                alert('Erreur de connexion');
+            }
+        }
+
+        function showEditPlanModal(planId) {
+            const plan = allPlans.find(p => p.id === planId);
+            if (!plan) return;
+            
+            document.getElementById('editPlanId').value = plan.id;
+            document.getElementById('editPlanName').value = plan.name;
+            document.getElementById('editPlanDescription').value = plan.description;
+            document.getElementById('editPlanPrice').value = plan.price;
+            document.getElementById('editPlanRooms').value = plan.rooms_per_day;
+            document.getElementById('editPlanModal').classList.remove('hidden');
+        }
+
+        function closeEditPlanModal() {
+            document.getElementById('editPlanModal').classList.add('hidden');
+        }
+
+        async function updatePlan(e) {
+            e.preventDefault();
+            const token = localStorage.getItem('token');
+            const planId = document.getElementById('editPlanId').value;
+            
+            const data = {
+                name: document.getElementById('editPlanName').value,
+                description: document.getElementById('editPlanDescription').value,
+                price: parseFloat(document.getElementById('editPlanPrice').value),
+                rooms_per_day: parseInt(document.getElementById('editPlanRooms').value)
+            };
+            
+            try {
+                const response = await fetch(`/api/admin/plans/${planId}`, {
+                    method: 'PUT',
+                    headers: {
+                        'Authorization': `Bearer ${token}`,
+                        'Content-Type': 'application/json'
+                    },
+                    body: JSON.stringify(data)
+                });
+                
+                if (response.ok) {
+                    alert('✓ Plan mis à jour!');
+                    closeEditPlanModal();
+                    loadPlans();
+                } else {
+                    const error = await response.json();
+                    alert(error.error || 'Erreur lors de la mise à jour');
+                }
+            } catch (error) {
+                alert('Erreur de connexion');
+            }
+        }
+
+        async function togglePlanActive(planId, isActive) {
+            const token = localStorage.getItem('token');
+            
+            try {
+                const response = await fetch(`/api/admin/plans/${planId}/toggle`, {
+                    method: 'POST',
+                    headers: {
+                        'Authorization': `Bearer ${token}`,
+                        'Content-Type': 'application/json'
+                    },
+                    body: JSON.stringify({ is_active: isActive })
+                });
+                
+                if (response.ok) {
+                    alert(`✓ Plan ${isActive ? 'activé' : 'désactivé'}!`);
+                    loadPlans();
+                } else {
+                    alert('Erreur lors de la modification');
+                }
+            } catch (error) {
+                alert('Erreur de connexion');
             }
         }
 
