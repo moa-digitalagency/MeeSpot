@@ -92,3 +92,13 @@ The backend organizes routes by resource (auth, rooms, establishments, admin, pr
   - Increased opacity of non-verified user badges from 50 to 60 for better visibility
   - Gray badges (✓) now more visible for non-verified users across all interfaces
   - Applied consistently in: participants list, conversation list, request list, chat header, profile modal
+- **Subscription Plans Management & UI Enhancements** (October 9):
+  - Added comprehensive CRUD system for subscription plans in admin panel with activation/deactivation toggle
+  - Created dedicated admin page "Gérer les Plans" for managing both user and establishment subscription plans
+  - Added `is_active` column to SubscriptionPlan model for plan activation control
+  - New admin API endpoints: GET/POST `/api/admin/plans`, PUT `/api/admin/plans/<id>`, POST `/api/admin/plans/<id>/toggle`
+  - Fixed subscription requests loading issue in admin panel with improved error handling
+  - Subscription change modal now available for both users and establishments in profile section
+  - Updated terminology across entire app: replaced "événements/salle" with "room/rooms" for consistency
+  - All landing page signup buttons (Free/Premium/Platinum) now properly trigger registration modal
+  - Fixed internationalization (i18n) system on landing page with automatic language detection from localStorage

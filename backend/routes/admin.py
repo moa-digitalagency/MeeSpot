@@ -627,8 +627,9 @@ def toggle_plan_active(current_user, plan_id):
     plan.is_active = data.get("is_active", not plan.is_active)
     db.session.commit()
     
+    status = "activated" if plan.is_active else "deactivated"
     return jsonify({
-        "message": f"Plan {\"activated\" if plan.is_active else \"deactivated\"}",
+        "message": f"Plan {status}",
         "plan": plan.to_dict()
     })
 
