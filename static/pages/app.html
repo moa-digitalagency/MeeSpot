@@ -671,22 +671,30 @@ www.myoneart.com
                     document.getElementById('profileEmail').textContent = profile.email;
                     document.getElementById('profileSubTier').textContent = profile.subscription_tier || 'free';
                     
-                    // Always show verification badges (blue if verified, gray if not)
+                    // Always show verification badges with status-based colors
                     const avatarBadge = document.getElementById('profileAvatarBadge');
                     const nameBadge = document.getElementById('profileNameBadge');
                     
                     avatarBadge.classList.remove('hidden');
                     nameBadge.classList.remove('hidden');
                     
-                    if (profile.is_verified) {
-                        avatarBadge.classList.remove('bg-gray-400', 'opacity-60');
+                    // Remove all color classes
+                    avatarBadge.classList.remove('bg-gray-400', 'bg-orange-500', 'bg-blue-500', 'opacity-60');
+                    nameBadge.classList.remove('bg-gray-400', 'bg-orange-500', 'bg-blue-500', 'opacity-60');
+                    
+                    const verificationStatus = profile.verification_status || 'none';
+                    
+                    if (verificationStatus === 'verified') {
+                        // Verified: blue badge
                         avatarBadge.classList.add('bg-blue-500');
-                        nameBadge.classList.remove('bg-gray-400', 'opacity-60');
                         nameBadge.classList.add('bg-blue-500');
+                    } else if (verificationStatus === 'pending') {
+                        // Pending: orange badge
+                        avatarBadge.classList.add('bg-orange-500');
+                        nameBadge.classList.add('bg-orange-500');
                     } else {
-                        avatarBadge.classList.remove('bg-blue-500');
+                        // None: gray badge
                         avatarBadge.classList.add('bg-gray-400', 'opacity-60');
-                        nameBadge.classList.remove('bg-blue-500');
                         nameBadge.classList.add('bg-gray-400', 'opacity-60');
                     }
                     
