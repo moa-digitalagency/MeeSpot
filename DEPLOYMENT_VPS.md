@@ -72,7 +72,7 @@ python3 -c "import secrets; print(secrets.token_hex(32))"
 
 ```bash
 # Clone your repository
-git clone https://github.com/yourusername/meetspot.git
+git clone https://github.com/moa-digitalagency/MeeSpot.git meetspot
 cd meetspot
 
 # Create virtual environment
