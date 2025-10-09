@@ -428,6 +428,8 @@ www.myoneart.com
             const token = localStorage.getItem('token');
             const list = document.getElementById('subscriptionRequestsList');
             
+            list.innerHTML = '<p class="text-[#2D3436] opacity-75">Chargement...</p>';
+            
             try {
                 const [requestsRes, plansRes] = await Promise.all([
                     fetch('/api/subscriptions/pending', {
@@ -438,11 +440,16 @@ www.myoneart.com
                     })
                 ]);
                 
+                if (!requestsRes.ok || !plansRes.ok) {
+                    throw new Error('API error');
+                }
+                
                 const requests = await requestsRes.json();
                 const plans = await plansRes.json();
                 
                 filterSubscriptionRequests(currentSubsFilter, requests, plans);
             } catch (error) {
+                console.error('Error loading subscription requests:', error);
                 list.innerHTML = '<p class="text-red-500">Erreur lors du chargement des demandes</p>';
             }
         }
