@@ -96,16 +96,9 @@ def create_app():
         import bcrypt
         
         admin_email = 'admin@meetspot.com'
-        admin_exists = False
+        admin_username = 'admin_meetspot'
         
-        users = User.query.all()
-        for u in users:
-            try:
-                if u.email and u.email.lower() == admin_email:
-                    admin_exists = True
-                    break
-            except Exception:
-                continue
+        admin_exists = User.query.filter_by(username=admin_username).first() is not None
         
         if not admin_exists:
             admin_password = 'm33t5p0t'
@@ -115,7 +108,7 @@ def create_app():
                 email=admin_email,
                 password_hash=password_hash,
                 name='Admin MeetSpot',
-                username='admin_meetspot',
+                username=admin_username,
                 role='admin'
             )
             
@@ -123,7 +116,7 @@ def create_app():
             db.session.commit()
             print(f"✓ Compte admin créé: {admin_email}")
         else:
-            print(f"✓ Compte admin existant: {admin_email}")
+            print(f"✓ Compte admin existant: {admin_username}")
         
         from backend.utils.seed_data import initialize_seed_data
         initialize_seed_data()
