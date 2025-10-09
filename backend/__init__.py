@@ -90,6 +90,7 @@ def create_app():
             for plan in plans:
                 db.session.add(plan)
             db.session.commit()
+            print("✓ Plans d'abonnement créés")
         
         from backend.models.user import User
         import bcrypt
@@ -123,5 +124,8 @@ def create_app():
             print(f"✓ Compte admin créé: {admin_email}")
         else:
             print(f"✓ Compte admin existant: {admin_email}")
+        
+        from backend.utils.seed_data import initialize_seed_data
+        initialize_seed_data()
     
     return app
