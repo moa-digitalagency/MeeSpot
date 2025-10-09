@@ -9,6 +9,7 @@
 from flask import Blueprint, request, jsonify
 from backend import db
 from backend.models.subscription_request import SubscriptionRequest
+from backend.models.subscription_plan import SubscriptionPlan
 from backend.utils.auth import token_required, admin_required
 from datetime import datetime
 
@@ -108,3 +109,10 @@ def reject_request(current_user, request_id):
         'message': 'Subscription request rejected',
         'request': sub_request.to_dict()
     })
+
+@bp.route('/plans', methods=['GET'])
+@token_required
+def get_plans(current_user):
+    """Get all subscription plans"""
+    plans = SubscriptionPlan.query.all()
+    return jsonify([p.to_dict() for p in plans])
