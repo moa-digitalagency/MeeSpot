@@ -49,6 +49,17 @@ The backend organizes routes by resource (auth, rooms, establishments, admin, pr
 - **Gunicorn**: Production WSGI server.
 
 ## Recent Changes (October 2025)
+- **Data Security & Seed System Overhaul** (October 9):
+  - Verified all sensitive data encryption: email, name, bio, photo_url encrypted with AES-256 (Fernet)
+  - Created comprehensive seed system with 43 pre-loaded profile options (persistent across restarts)
+  - Profile options include: Genders (4), Sexual Orientations (6), Religions (10), Meeting Types (5), Interests (15), LGBTQ Friendly (3)
+  - Implemented automated seed for default data: 1 admin (admin@meetspot.com), 1 establishment (cafe@test.com), 2 test users (sophie@test.com, julien@test.com)
+  - All seed data persists after server restarts - stored in PostgreSQL database
+  - CRUD admin panel fully functional with real-time activation/deactivation toggle for profile options
+  - Options instantly synchronized between admin panel and signup forms
+  - Moved SECRET_KEY and ENCRYPTION_KEY from files to secure Replit environment variables
+  - Removed .encryption_key file for enhanced security
+  - File: backend/utils/seed_data.py handles all initialization
 - **Enhanced User Registration** (October 9):
   - Added age validation: minimum 18 years old required for registration
   - Made all profile fields mandatory: gender, orientation, meeting type, religion, LGBT friendly, interests, and bio
