@@ -549,3 +549,86 @@ def delete_api_key(current_user, key_id):
             'success': False,
             'message': str(e)
         }), 500
+
+
+# ========== SUBSCRIPTION PLANS MANAGEMENT ==========
+
+@bp.route("/plans", methods=["GET"])
+@token_required
+@admin_required
+def get_all_plans(current_user):
+    """Get all subscription plans"""
+    from backend.models.subscription_plan import SubscriptionPlan
+    plans = SubscriptionPlan.query.all()
+    return jsonify([p.to_dict() for p in plans])
+
+@bp.route("/plans", methods=["POST"])
+@token_required
+@admin_required
+def create_plan(current_user):
+    """Create a new subscription plan"""
+    from backend.models.subscription_plan import SubscriptionPlan
+    data = request.json
+    
+    if not all(k in data for k in ["role", "name", "description", "price", "rooms_per_day"]):
+        return jsonify({"error": "Missing required fields"}), 400
+    
+    plan = SubscriptionPlan(
+        role=data["role"],
+        name=data["name"],
+        description=data["description"],
+        price=data["price"],
+        rooms_per_day=data["rooms_per_day"],
+        is_active=True
+    )
+    
+    db.session.add(plan)
+    db.session.commit()
+    
+    return jsonify({
+        "message": "Plan created successfully",
+        "plan": plan.to_dict()
+    })
+
+@bp.route("/plans/<int:plan_id>", methods=["PUT"])
+@token_required
+@admin_required
+def update_plan(current_user, plan_id):
+    """Update a subscription plan"""
+    from backend.models.subscription_plan import SubscriptionPlan
+    plan = SubscriptionPlan.query.get_or_404(plan_id)
+    data = request.json
+    
+    if "name" in data:
+        plan.name = data["name"]
+    if "description" in data:
+        plan.description = data["description"]
+    if "price" in data:
+        plan.price = data["price"]
+    if "rooms_per_day" in data:
+        plan.rooms_per_day = data["rooms_per_day"]
+    
+    db.session.commit()
+    
+    return jsonify({
+        "message": "Plan updated successfully",
+        "plan": plan.to_dict()
+    })
+
+@bp.route("/plans/<int:plan_id>/toggle", methods=["POST"])
+@token_required
+@admin_required
+def toggle_plan_active(current_user, plan_id):
+    """Toggle plan active status"""
+    from backend.models.subscription_plan import SubscriptionPlan
+    plan = SubscriptionPlan.query.get_or_404(plan_id)
+    data = request.json
+    
+    plan.is_active = data.get("is_active", not plan.is_active)
+    db.session.commit()
+    
+    return jsonify({
+        "message": f"Plan {\"activated\" if plan.is_active else \"deactivated\"}",
+        "plan": plan.to_dict()
+    })
+
