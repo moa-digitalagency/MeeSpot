@@ -90,5 +90,38 @@ def create_app():
             for plan in plans:
                 db.session.add(plan)
             db.session.commit()
+        
+        from backend.models.user import User
+        import bcrypt
+        
+        admin_email = 'admin@meetspot.com'
+        admin_exists = False
+        
+        users = User.query.all()
+        for u in users:
+            try:
+                if u.email and u.email.lower() == admin_email:
+                    admin_exists = True
+                    break
+            except Exception:
+                continue
+        
+        if not admin_exists:
+            admin_password = 'm33t5p0t'
+            password_hash = bcrypt.hashpw(admin_password.encode('utf-8'), bcrypt.gensalt()).decode('utf-8')
+            
+            admin_user = User(
+                email=admin_email,
+                password_hash=password_hash,
+                name='Admin MeetSpot',
+                username='admin_meetspot',
+                role='admin'
+            )
+            
+            db.session.add(admin_user)
+            db.session.commit()
+            print(f"✓ Compte admin créé: {admin_email}")
+        else:
+            print(f"✓ Compte admin existant: {admin_email}")
     
     return app
