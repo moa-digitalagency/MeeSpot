@@ -90,7 +90,7 @@ www.myoneart.com
                 <div class="text-6xl mb-4">💝✨</div>
                 <h2 class="text-4xl font-bold mb-4">Rencontrez de Vraies Personnes dans de Vrais Lieux</h2>
                 <p class="text-lg mb-6 opacity-90 max-w-2xl">Rejoignez des rooms de rencontre sélectionnés dans vos lieux préférés. Fini le swipe infini, place aux connexions authentiques.</p>
-                <button onclick="toggleSignupMenu()" class="px-8 py-3 bg-white text-[#FF4458] rounded-full text-lg font-semibold hover:bg-gray-100 transition shadow-lg">🚀 Commencer</button>
+                <button onclick="showUserSignup()" class="px-8 py-3 bg-white text-[#FF4458] rounded-full text-lg font-semibold hover:bg-gray-100 transition shadow-lg">🚀 Commencer</button>
             </div>
         </div>
         
@@ -140,7 +140,7 @@ www.myoneart.com
                     <li>✅ Rejoindre les rooms publiques</li>
                     <li>✅ Conversations 24h</li>
                 </ul>
-                <button onclick="showRegister()" class="w-full py-3 bg-gray-200 text-[#2D3436] rounded-full hover:bg-gray-300 transition font-semibold">Commencer</button>
+                <button onclick="showUserSignup()" class="w-full py-3 bg-gray-200 text-[#2D3436] rounded-full hover:bg-gray-300 transition font-semibold">Commencer</button>
             </div>
             <div class="bg-white rounded-2xl p-6 card-hover border-4 border-[#FF4458] shadow-xl relative overflow-hidden">
                 <div class="text-xs bg-[#FF4458] text-white px-3 py-1 rounded-full inline-block mb-2 font-bold">⭐ POPULAIRE</div>
@@ -154,7 +154,7 @@ www.myoneart.com
                     <li>🎭 Mode identité alternative</li>
                     <li>📅 Conversations de 7 jours</li>
                 </ul>
-                <button onclick="showRegister()" class="w-full py-3 bg-[#FF4458] text-white rounded-full hover:bg-[#e03d4c] transition font-semibold shadow-lg">Démarrer Premium 🚀</button>
+                <button onclick="showUserSignup()" class="w-full py-3 bg-[#FF4458] text-white rounded-full hover:bg-[#e03d4c] transition font-semibold shadow-lg">Démarrer Premium 🚀</button>
             </div>
             <div class="bg-gradient-to-br from-[#6C5CE7] to-[#5f51d4] rounded-2xl p-6 card-hover shadow-xl text-white">
                 <div class="flex items-center justify-between mb-2">
@@ -169,7 +169,7 @@ www.myoneart.com
                     <li>📆 Conversations de 30 jours</li>
                     <li>⚡ Boost de profil</li>
                 </ul>
-                <button onclick="showRegister()" class="w-full py-3 bg-white text-[#6C5CE7] rounded-full hover:bg-gray-100 transition font-bold shadow-lg">Passer à Platinum ✨</button>
+                <button onclick="showUserSignup()" class="w-full py-3 bg-white text-[#6C5CE7] rounded-full hover:bg-gray-100 transition font-bold shadow-lg">Passer à Platinum ✨</button>
             </div>
         </div>
     </section>
@@ -1181,6 +1181,16 @@ www.myoneart.com
                 .then(registration => console.log('ServiceWorker registered'))
                 .catch(error => console.log('ServiceWorker registration failed:', error));
         }
+    </script>
+
+    <!-- Copyright Footer -->
+    <footer class="bg-white py-6 px-4 border-t border-gray-200">
+        <div class="text-center text-sm text-[#2D3436] opacity-75">
+            <p>© <span id="currentYear"></span> MeetSpot - Fait avec ❤️ et ☕ par <a href="https://myoneart.com" target="_blank" class="text-[#FF4458] hover:underline font-semibold">MOA Digital Agency LLC</a></p>
+        </div>
+    </footer>
+    <script>
+        document.getElementById('currentYear').textContent = new Date().getFullYear();
     </script>
 </body>
 </html>
