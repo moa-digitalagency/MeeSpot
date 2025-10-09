@@ -198,6 +198,19 @@ www.myoneart.com
                     <h3 class="font-bold text-[#2D3436] mb-1">📝 Logs Système</h3>
                     <p class="text-sm text-[#2D3436] opacity-75">Visualiser les logs de l'application</p>
                 </button>
+
+                <button onclick="switchPage('subscriptions')" class="w-full bg-white rounded-2xl p-4 text-left hover:shadow-lg transition">
+                    <h3 class="font-bold text-[#2D3436] mb-1">💳 Demandes de Forfaits</h3>
+                    <p class="text-sm text-[#2D3436] opacity-75">Gérer les demandes de forfaits utilisateurs et établissements</p>
+                </button>
+
+                <div class="bg-white rounded-2xl p-4">
+                    <h3 class="font-bold text-[#2D3436] mb-3">🌐 Langue par Défaut</h3>
+                    <select id="defaultLanguage" onchange="updateDefaultLanguage()" class="w-full px-4 py-3 border border-gray-300 rounded-xl focus:outline-none focus:border-[#FF4458]">
+                        <option value="fr">Français</option>
+                        <option value="en">English</option>
+                    </select>
+                </div>
             </div>
         </div>
     </div>
@@ -260,6 +273,32 @@ www.myoneart.com
             </button>
 
             <div id="logsList" class="space-y-3">
+                <p class="text-[#2D3436] opacity-75">Chargement...</p>
+            </div>
+        </div>
+    </div>
+
+    <div id="page-subscriptions" class="page-content hidden">
+        <div class="px-4 pt-4 pb-4">
+            <div class="flex items-center justify-between mb-4">
+                <div class="flex items-center gap-3">
+                    <button onclick="switchPage('system')" class="w-10 h-10 flex items-center justify-center bg-gray-100 text-gray-600 hover:bg-gray-200 rounded-full transition">
+                        <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 19l-7-7 7-7"/></svg>
+                    </button>
+                    <h1 class="text-2xl font-bold text-[#2D3436]">💳 Demandes de Forfaits</h1>
+                </div>
+            </div>
+
+            <div class="flex gap-2 mb-4">
+                <button id="subs-filter-user" onclick="filterSubscriptionRequests('user')" class="flex-1 py-2 px-4 rounded-full bg-[#FF4458] text-white text-sm font-semibold">
+                    👤 Utilisateurs
+                </button>
+                <button id="subs-filter-establishment" onclick="filterSubscriptionRequests('establishment')" class="flex-1 py-2 px-4 rounded-full bg-gray-200 text-[#2D3436] text-sm font-semibold">
+                    🏪 Établissements
+                </button>
+            </div>
+
+            <div id="subscriptionRequestsList" class="space-y-3">
                 <p class="text-[#2D3436] opacity-75">Chargement...</p>
             </div>
         </div>
