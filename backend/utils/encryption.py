@@ -18,11 +18,10 @@ class EncryptionService:
             key = os.environ.get('ENCRYPTION_KEY')
             
         if key is None:
-            raise RuntimeError(
-                "ENCRYPTION_KEY environment variable is required but not set.\n"
-                "Please set ENCRYPTION_KEY in your environment variables.\n"
-                "You can generate a key using: python -c 'from cryptography.fernet import Fernet; print(Fernet.generate_key().decode())'"
-            )
+            key = Fernet.generate_key()
+            os.environ['ENCRYPTION_KEY'] = key.decode()
+            print(f"⚠️  ENCRYPTION_KEY auto-generated. Add this to your environment variables for persistence:")
+            print(f"ENCRYPTION_KEY={key.decode()}")
         
         if isinstance(key, str):
             key = key.encode()
