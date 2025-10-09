@@ -102,3 +102,16 @@ The backend organizes routes by resource (auth, rooms, establishments, admin, pr
   - Updated terminology across entire app: replaced "événements/salle" with "room/rooms" for consistency
   - All landing page signup buttons (Free/Premium/Platinum) now properly trigger registration modal
   - Fixed internationalization (i18n) system on landing page with automatic language detection from localStorage
+- **VPS Deployment & Production Fixes** (October 9):
+  - Fixed critical database migration issue for VPS/Hostinger deployment: `subscription_plans.role` column missing error
+  - Created automatic database migration system (`backend/utils/db_migration.py`) that runs on startup
+  - Migration system automatically adds missing columns to existing tables (role, is_active) without data loss
+  - Fixed subscription plan initialization to include `role='establishment'` parameter
+  - Removed auto-generated encryption key warning from console logs for production environments
+  - Users must now set ENCRYPTION_KEY and SECRET_KEY as environment variables (not auto-generated)
+  - Updated admin user detection to use username instead of encrypted email for reliability
+- **Landing Page UX Improvements** (October 9):
+  - All CTA buttons (Commencer, Premium, Platinum) now trigger step-by-step user registration directly
+  - Added copyright footer: "© 2025 MeetSpot - Fait avec ❤️ et ☕ par MOA Digital Agency LLC"
+  - Footer includes clickable link to myoneart.com
+  - Dynamic year display in copyright automatically updates
