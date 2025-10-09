@@ -417,6 +417,142 @@ www.myoneart.com
                 loadApiKeys();
             } else if (page === 'logs') {
                 loadSystemLogs();
+            } else if (page === 'subscriptions') {
+                loadSubscriptionRequests();
+            }
+        }
+
+        let currentSubsFilter = 'user';
+
+        async function loadSubscriptionRequests() {
+            const token = localStorage.getItem('token');
+            const list = document.getElementById('subscriptionRequestsList');
+            
+            try {
+                const [requestsRes, plansRes] = await Promise.all([
+                    fetch('/api/subscriptions/pending', {
+                        headers: { 'Authorization': `Bearer ${token}` }
+                    }),
+                    fetch('/api/subscriptions/plans', {
+                        headers: { 'Authorization': `Bearer ${token}` }
+                    })
+                ]);
+                
+                const requests = await requestsRes.json();
+                const plans = await plansRes.json();
+                
+                filterSubscriptionRequests(currentSubsFilter, requests, plans);
+            } catch (error) {
+                list.innerHTML = '<p class="text-red-500">Erreur lors du chargement des demandes</p>';
+            }
+        }
+
+        function filterSubscriptionRequests(role, requests = null, plans = null) {
+            currentSubsFilter = role;
+            
+            document.getElementById('subs-filter-user').className = role === 'user' 
+                ? 'flex-1 py-2 px-4 rounded-full bg-[#FF4458] text-white text-sm font-semibold'
+                : 'flex-1 py-2 px-4 rounded-full bg-gray-200 text-[#2D3436] text-sm font-semibold';
+            document.getElementById('subs-filter-establishment').className = role === 'establishment'
+                ? 'flex-1 py-2 px-4 rounded-full bg-[#FF4458] text-white text-sm font-semibold'
+                : 'flex-1 py-2 px-4 rounded-full bg-gray-200 text-[#2D3436] text-sm font-semibold';
+            
+            if (!requests || !plans) {
+                loadSubscriptionRequests();
+                return;
+            }
+            
+            const filtered = requests.filter(r => r.user && r.user.role === role);
+            const rolePlans = plans.filter(p => p.role === role);
+            
+            const list = document.getElementById('subscriptionRequestsList');
+            
+            const plansHtml = rolePlans.length > 0 ? `
+                <div class="bg-gradient-to-br from-[#6C5CE7] to-[#5a4dd9] rounded-2xl p-4 text-white mb-4">
+                    <h3 class="font-bold mb-3">💎 Plans disponibles pour ${role === 'user' ? 'Utilisateurs' : 'Établissements'}</h3>
+                    <div class="space-y-2">
+                        ${rolePlans.map(plan => `
+                            <div class="bg-white/20 rounded-xl p-3">
+                                <div class="flex justify-between items-center">
+                                    <span class="font-semibold">${plan.name}</span>
+                                    <span class="text-sm">${plan.price}€/mois</span>
+                                </div>
+                                <div class="text-xs mt-1 opacity-90">${plan.description}</div>
+                            </div>
+                        `).join('')}
+                    </div>
+                </div>
+            ` : '';
+            
+            if (filtered.length === 0) {
+                list.innerHTML = plansHtml + '<p class="text-[#2D3436] opacity-75">Aucune demande en attente</p>';
+                return;
+            }
+            
+            list.innerHTML = plansHtml + filtered.map(req => `
+                <div class="bg-white rounded-2xl p-4">
+                    <div class="flex items-center justify-between mb-3">
+                        <div>
+                            <h4 class="font-bold text-[#2D3436]">${req.user.name}</h4>
+                            <p class="text-sm text-[#2D3436] opacity-75">${req.user.email}</p>
+                        </div>
+                        <button onclick="viewUserProfile(${req.user_id})" class="px-3 py-1 bg-blue-500 text-white rounded-full text-sm">
+                            👁️ Voir
+                        </button>
+                    </div>
+                    <div class="bg-[#F5F5F5] rounded-xl p-3 mb-3">
+                        <div class="text-sm font-semibold text-[#2D3436] mb-1">Forfait demandé:</div>
+                        <div class="text-lg font-bold text-[#FF4458]">${req.subscription_tier}</div>
+                    </div>
+                    <div class="flex gap-2">
+                        <button onclick="approveSubscriptionRequest(${req.id})" class="flex-1 py-2 bg-[#00B894] text-white rounded-full text-sm font-semibold">
+                            ✓ Approuver
+                        </button>
+                        <button onclick="rejectSubscriptionRequest(${req.id})" class="flex-1 py-2 bg-red-500 text-white rounded-full text-sm font-semibold">
+                            ✕ Rejeter
+                        </button>
+                    </div>
+                </div>
+            `).join('');
+        }
+
+        async function approveSubscriptionRequest(requestId) {
+            if (!confirm('Approuver cette demande de forfait?')) return;
+            
+            const token = localStorage.getItem('token');
+            try {
+                const response = await fetch(`/api/subscriptions/${requestId}/approve`, {
+                    method: 'POST',
+                    headers: { 'Authorization': `Bearer ${token}` }
+                });
+                
+                const data = await response.json();
+                alert(data.message || '✓ Demande approuvée!');
+                loadSubscriptionRequests();
+            } catch (error) {
+                alert('Erreur lors de l\'approbation');
+            }
+        }
+
+        async function rejectSubscriptionRequest(requestId) {
+            const reason = prompt('Raison du rejet (optionnel):');
+            
+            const token = localStorage.getItem('token');
+            try {
+                const response = await fetch(`/api/subscriptions/${requestId}/reject`, {
+                    method: 'POST',
+                    headers: {
+                        'Authorization': `Bearer ${token}`,
+                        'Content-Type': 'application/json'
+                    },
+                    body: JSON.stringify({ reason: reason || '' })
+                });
+                
+                const data = await response.json();
+                alert(data.message || '✓ Demande rejetée!');
+                loadSubscriptionRequests();
+            } catch (error) {
+                alert('Erreur lors du rejet');
             }
         }
 
