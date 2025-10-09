@@ -49,6 +49,21 @@ The backend organizes routes by resource (auth, rooms, establishments, admin, pr
 - **Gunicorn**: Production WSGI server.
 
 ## Recent Changes (October 2025)
+- **Enhanced User Registration** (October 9):
+  - Added age validation: minimum 18 years old required for registration
+  - Made all profile fields mandatory: gender, orientation, meeting type, religion, LGBT friendly, interests, and bio
+  - Added comprehensive interests selection with 12 options (music, travel, sports, food, art, cinema, reading, tech, gaming, fashion, photography, fitness)
+  - Religion and LGBT friendly fields now required during signup
+  - Backend validation ensures all required fields are provided before account creation
+  - Frontend validates at least one interest must be selected
+- **Subscription Request System** (October 9):
+  - Created new SubscriptionRequest model for managing paid subscription upgrades
+  - Users can request subscription upgrades (Premium, Platinum) from their profile
+  - Admin can approve/reject subscription requests with optional rejection reason
+  - New API endpoints: `/api/subscriptions/request`, `/api/subscriptions/my-requests`, `/api/subscriptions/pending`
+  - Admin endpoints for approval/rejection: `/api/subscriptions/<id>/approve`, `/api/subscriptions/<id>/reject`
+  - Approved subscriptions automatically update user's subscription_tier
+  - Complete audit trail with timestamps and reviewer tracking
 - **Image Upload System Overhaul** (October 7):
   - Fixed registration timeout issues caused by large base64 images
   - Created new `/api/upload/image` endpoint for progressive image uploads
