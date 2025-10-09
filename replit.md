@@ -115,3 +115,9 @@ The backend organizes routes by resource (auth, rooms, establishments, admin, pr
   - Added copyright footer: "© 2025 MeetSpot - Fait avec ❤️ et ☕ par MOA Digital Agency LLC"
   - Footer includes clickable link to myoneart.com
   - Dynamic year display in copyright automatically updates
+- **Subscription Plans Fix** (October 9):
+  - Fixed missing user subscription plans in database initialization
+  - Created 3 user plans: Free ($0), Premium ($19), Platinum ($39)
+  - Created 3 establishment plans: One-shot ($9), Silver ($49), Gold ($99)
+  - Updated initialization logic to create both user and establishment plans separately
+  - Plans now display correctly in user profile "Changer de Forfait" modal

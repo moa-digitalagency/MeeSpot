@@ -84,16 +84,31 @@ def create_app():
         run_migrations()
         
         from backend.models.subscription_plan import SubscriptionPlan
-        if not SubscriptionPlan.query.first():
-            plans = [
+        
+        user_plans_exist = SubscriptionPlan.query.filter_by(role='user').first() is not None
+        establishment_plans_exist = SubscriptionPlan.query.filter_by(role='establishment').first() is not None
+        
+        if not user_plans_exist:
+            user_plans = [
+                SubscriptionPlan(name='free', price=0, rooms_per_day=0, description='Plan gratuit - Parcourir les rooms, rejoindre les rooms publiques, conversations 24h', role='user'),
+                SubscriptionPlan(name='premium', price=19, rooms_per_day=0, description='Plan Premium - Accès prioritaire aux rooms, mode identité alternative, conversations de 7 jours', role='user'),
+                SubscriptionPlan(name='platinum', price=39, rooms_per_day=0, description='Plan Platinum - Accès VIP aux rooms, messagerie illimitée, conversations de 30 jours, boost de profil', role='user')
+            ]
+            for plan in user_plans:
+                db.session.add(plan)
+            db.session.commit()
+            print("✓ Plans d'abonnement utilisateurs créés")
+        
+        if not establishment_plans_exist:
+            establishment_plans = [
                 SubscriptionPlan(name='one-shot', price=9.0, rooms_per_day=1, description='Create 1 room per day', role='establishment'),
                 SubscriptionPlan(name='silver', price=49.0, rooms_per_day=1, description='Create 1 room per day + analytics', role='establishment'),
                 SubscriptionPlan(name='gold', price=99.0, rooms_per_day=3, description='Create up to 3 rooms per day', role='establishment')
             ]
-            for plan in plans:
+            for plan in establishment_plans:
                 db.session.add(plan)
             db.session.commit()
-            print("✓ Plans d'abonnement créés")
+            print("✓ Plans d'abonnement établissements créés")
         
         from backend.models.user import User
         import bcrypt
