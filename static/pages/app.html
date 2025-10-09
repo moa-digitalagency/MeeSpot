@@ -671,14 +671,33 @@ www.myoneart.com
                     document.getElementById('profileEmail').textContent = profile.email;
                     document.getElementById('profileSubTier').textContent = profile.subscription_tier || 'free';
                     
-                    // Show verification badges if user is verified
+                    // Always show verification badges (blue if verified, gray if not)
+                    const avatarBadge = document.getElementById('profileAvatarBadge');
+                    const nameBadge = document.getElementById('profileNameBadge');
+                    
+                    avatarBadge.classList.remove('hidden');
+                    nameBadge.classList.remove('hidden');
+                    
                     if (profile.is_verified) {
-                        document.getElementById('profileAvatarBadge').classList.remove('hidden');
-                        document.getElementById('profileNameBadge').classList.remove('hidden');
+                        avatarBadge.classList.remove('bg-gray-400', 'opacity-60');
+                        avatarBadge.classList.add('bg-blue-500');
+                        nameBadge.classList.remove('bg-gray-400', 'opacity-60');
+                        nameBadge.classList.add('bg-blue-500');
                     } else {
-                        document.getElementById('profileAvatarBadge').classList.add('hidden');
-                        document.getElementById('profileNameBadge').classList.add('hidden');
+                        avatarBadge.classList.remove('bg-blue-500');
+                        avatarBadge.classList.add('bg-gray-400', 'opacity-60');
+                        nameBadge.classList.remove('bg-blue-500');
+                        nameBadge.classList.add('bg-gray-400', 'opacity-60');
                     }
+                    
+                    // Update profile photo if available
+                    const avatarLarge = document.getElementById('profileAvatarLarge');
+                    if (profile.photo_url) {
+                        avatarLarge.innerHTML = `<img src="${profile.photo_url}" class="w-full h-full object-cover rounded-full">`;
+                    } else {
+                        avatarLarge.textContent = profile.name.charAt(0).toUpperCase();
+                    }
+                    
                     document.getElementById('profileAge').textContent = profile.age || '-';
                     document.getElementById('profileGender').textContent = profile.gender || '-';
                     document.getElementById('profileOrientation').textContent = profile.sexual_orientation || '-';
