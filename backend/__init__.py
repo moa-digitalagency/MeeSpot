@@ -80,12 +80,15 @@ def create_app():
         
         db.create_all()
         
+        from backend.utils.db_migration import run_migrations
+        run_migrations()
+        
         from backend.models.subscription_plan import SubscriptionPlan
         if not SubscriptionPlan.query.first():
             plans = [
-                SubscriptionPlan(name='one-shot', price=9.0, rooms_per_day=1, description='Create 1 room per day'),
-                SubscriptionPlan(name='silver', price=49.0, rooms_per_day=1, description='Create 1 room per day + analytics'),
-                SubscriptionPlan(name='gold', price=99.0, rooms_per_day=3, description='Create up to 3 rooms per day')
+                SubscriptionPlan(name='one-shot', price=9.0, rooms_per_day=1, description='Create 1 room per day', role='establishment'),
+                SubscriptionPlan(name='silver', price=49.0, rooms_per_day=1, description='Create 1 room per day + analytics', role='establishment'),
+                SubscriptionPlan(name='gold', price=99.0, rooms_per_day=3, description='Create up to 3 rooms per day', role='establishment')
             ]
             for plan in plans:
                 db.session.add(plan)

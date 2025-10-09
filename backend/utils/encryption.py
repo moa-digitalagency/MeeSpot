@@ -20,8 +20,6 @@ class EncryptionService:
         if key is None:
             key = Fernet.generate_key()
             os.environ['ENCRYPTION_KEY'] = key.decode()
-            print(f"⚠️  ENCRYPTION_KEY auto-generated. Add this to your environment variables for persistence:")
-            print(f"ENCRYPTION_KEY={key.decode()}")
         
         if isinstance(key, str):
             key = key.encode()
