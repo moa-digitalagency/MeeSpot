@@ -56,7 +56,7 @@ www.myoneart.com
         <div id="page-dashboard" class="page-content">
             <div class="px-4 pt-4">
                 <h1 class="text-2xl font-bold text-[#2D3436] mb-1">Dashboard</h1>
-                <p class="text-sm text-[#2D3436] opacity-75 mb-4">Vos événements</p>
+                <p class="text-sm text-[#2D3436] opacity-75 mb-4">Vos rooms</p>
             </div>
 
             <div class="px-4 mb-4">
@@ -74,12 +74,12 @@ www.myoneart.com
             </div>
 
             <div id="roomsList" class="px-4 space-y-4">
-                <p class="text-[#2D3436] opacity-75">Aucun événement créé.</p>
+                <p class="text-[#2D3436] opacity-75">Aucune room créée.</p>
             </div>
 
             <div class="px-4 pt-6">
                 <button onclick="showCreateRoom()" class="w-full py-4 bg-gradient-to-r from-[#00B894] to-[#00a183] text-white rounded-full hover:opacity-90 transition font-semibold shadow-lg">
-                    + Créer un événement
+                    + Créer une room
                 </button>
             </div>
         </div>
@@ -204,7 +204,7 @@ www.myoneart.com
     <div id="roomDetailsModal" class="hidden fixed inset-0 bg-black bg-opacity-50 flex items-end z-50">
         <div class="bg-white rounded-t-3xl w-full p-6 max-h-[90vh] overflow-y-auto">
             <div class="flex justify-between items-center mb-4">
-                <h3 class="text-xl font-bold text-[#2D3436]">Détails de l'événement</h3>
+                <h3 class="text-xl font-bold text-[#2D3436]">Détails de la room</h3>
                 <button onclick="closeRoomDetails()" class="text-gray-500 hover:text-gray-700 text-2xl">&times;</button>
             </div>
             
@@ -256,13 +256,13 @@ www.myoneart.com
     <div id="createRoomModal" class="hidden fixed inset-0 bg-black bg-opacity-50 flex items-end z-50">
         <div class="bg-white rounded-t-3xl w-full p-6 max-h-[85vh] overflow-y-auto">
             <div class="flex justify-between items-center mb-4">
-                <h3 class="text-xl font-bold text-[#2D3436]">Nouvel événement</h3>
+                <h3 class="text-xl font-bold text-[#2D3436]">Nouvelle room</h3>
                 <button onclick="closeCreateRoom()" class="text-gray-500 hover:text-gray-700 text-2xl">&times;</button>
             </div>
             
             <form onsubmit="createRoom(event)">
                 <div class="mb-3">
-                    <label class="block text-[#2D3436] mb-2 text-sm font-semibold">Nom de l'événement</label>
+                    <label class="block text-[#2D3436] mb-2 text-sm font-semibold">Nom de la room</label>
                     <input type="text" id="roomName" required class="w-full px-4 py-3 border border-gray-300 rounded-xl focus:outline-none focus:border-[#FF4458]">
                 </div>
                 <div class="mb-3">
@@ -338,7 +338,7 @@ www.myoneart.com
                     </select>
                 </div>
                 <button type="submit" class="w-full py-3 bg-[#00B894] text-white rounded-full hover:bg-[#00a183] transition font-semibold">
-                    Créer l'événement
+                    Créer la room
                 </button>
             </form>
         </div>
@@ -447,7 +447,7 @@ www.myoneart.com
             const list = document.getElementById('roomsList');
             
             if (rooms.length === 0) {
-                list.innerHTML = '<p class="text-[#2D3436] opacity-75">Aucun événement trouvé.</p>';
+                list.innerHTML = '<p class="text-[#2D3436] opacity-75">Aucune room trouvée.</p>';
                 return;
             }
             
@@ -587,7 +587,7 @@ www.myoneart.com
             
             ctx.font = '16px Inter, sans-serif';
             ctx.fillStyle = '#666';
-            ctx.fillText('Événement MeetSpot', 200, 70);
+            ctx.fillText('Room MeetSpot', 200, 70);
             
             const qrX = (tempCanvas.width - 200) / 2;
             ctx.drawImage(canvas, qrX, 100, 200, 200);
@@ -599,7 +599,7 @@ www.myoneart.com
             ctx.font = '14px Inter, sans-serif';
             ctx.fillStyle = '#666';
             ctx.fillText('Scannez le QR code ou utilisez le code ci-dessus', 200, 390);
-            ctx.fillText('pour rejoindre cet événement', 200, 410);
+            ctx.fillText('pour rejoindre cette room', 200, 410);
             
             tempCanvas.toBlob((blob) => {
                 const url = URL.createObjectURL(blob);
@@ -616,7 +616,7 @@ www.myoneart.com
         function editRoomName() {
             const nameElement = document.getElementById('detailsRoomName');
             const currentName = nameElement.textContent;
-            const newName = prompt('Nouveau nom de l\'événement:', currentName);
+            const newName = prompt('Nouveau nom de la room:', currentName);
             
             if (newName && newName.trim() !== '' && newName !== currentName) {
                 updateRoomName(currentEditingRoomId, newName.trim());
@@ -714,7 +714,7 @@ www.myoneart.com
                 });
                 
                 if (response.ok) {
-                    alert('Événement créé avec succès !');
+                    alert('Room créée avec succès !');
                     e.target.reset();
                     closeCreateRoom();
                     loadAnalytics();
