@@ -53,6 +53,16 @@ def register_user():
     # Gallery URLs are now passed directly (already uploaded)
     gallery_urls = data.get('gallery_urls', [])
     
+    # Validate age minimum 18 years
+    if data.get('birthdate'):
+        birthdate = datetime.strptime(data['birthdate'], '%Y-%m-%d').date()
+        today = datetime.now().date()
+        age = today.year - birthdate.year
+        if today.month < birthdate.month or (today.month == birthdate.month and today.day < birthdate.day):
+            age -= 1
+        if age < 18:
+            return jsonify({'message': 'You must be at least 18 years old to register'}), 400
+    
     user = User(
         email=data['email'],
         password_hash=password_hash,
@@ -66,13 +76,10 @@ def register_user():
         lgbtq_friendly=data.get('lgbtq_friendly'),
         bio=data.get('bio'),
         photo_url=photo_url,
-        gallery_photos=gallery_urls
+        gallery_photos=gallery_urls,
+        meeting_type=data.get('meeting_type'),
+        interests=data.get('interests', [])
     )
-    
-    if data.get('meeting_type'):
-        user.meeting_type = data['meeting_type']
-    if data.get('interests'):
-        user.interests = data['interests']
     
     db.session.add(user)
     db.session.commit()

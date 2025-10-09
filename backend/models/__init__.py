@@ -17,5 +17,6 @@ from backend.models.connection_request import ConnectionRequest
 from backend.models.private_conversation import PrivateConversation
 from backend.models.private_message import PrivateMessage
 from backend.models.verification_request import VerificationRequest
+from backend.models.subscription_request import SubscriptionRequest
 
-__all__ = ['User', 'Establishment', 'Room', 'RoomMember', 'Message', 'Report', 'SubscriptionPlan', 'ConnectionRequest', 'PrivateConversation', 'PrivateMessage', 'VerificationRequest']
+__all__ = ['User', 'Establishment', 'Room', 'RoomMember', 'Message', 'Report', 'SubscriptionPlan', 'ConnectionRequest', 'PrivateConversation', 'PrivateMessage', 'VerificationRequest', 'SubscriptionRequest']
