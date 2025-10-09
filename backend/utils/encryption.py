@@ -9,24 +9,25 @@
 import os
 import base64
 from cryptography.fernet import Fernet
-from typing import Optional
+from typing import Optional, Union
 
 class EncryptionService:
     def __init__(self, encryption_key: Optional[str] = None):
-        if encryption_key is None:
-            encryption_key = os.environ.get('ENCRYPTION_KEY')
+        key: Union[str, bytes, None] = encryption_key
+        if key is None:
+            key = os.environ.get('ENCRYPTION_KEY')
             
-        if encryption_key is None:
+        if key is None:
             raise RuntimeError(
                 "ENCRYPTION_KEY environment variable is required but not set.\n"
                 "Please set ENCRYPTION_KEY in your environment variables.\n"
                 "You can generate a key using: python -c 'from cryptography.fernet import Fernet; print(Fernet.generate_key().decode())'"
             )
         
-        if isinstance(encryption_key, str):
-            encryption_key = encryption_key.encode()
+        if isinstance(key, str):
+            key = key.encode()
         
-        self.fernet = Fernet(encryption_key)
+        self.fernet = Fernet(key)
     
     def encrypt(self, plaintext: Optional[str]) -> Optional[str]:
         if plaintext is None or plaintext == '':
