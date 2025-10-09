@@ -483,8 +483,85 @@ www.myoneart.com
                     </select>
                 </div>
                 <div class="mb-4">
-                    <label class="block text-[#2D3436] mb-2 text-sm font-semibold">📝 Bio (optional)</label>
-                    <textarea id="userSignupBio" rows="3" maxlength="500" class="w-full px-4 py-3 border border-gray-300 rounded-xl focus:outline-none focus:border-[#FF4458]" placeholder="Tell us about yourself..."></textarea>
+                    <label class="block text-[#2D3436] mb-2 text-sm font-semibold">🙏 Religion</label>
+                    <select id="userSignupReligion" required class="w-full px-4 py-3 border border-gray-300 rounded-xl focus:outline-none focus:border-[#FF4458]">
+                        <option value="">Select...</option>
+                        <option value="christianity">Christianity</option>
+                        <option value="islam">Islam</option>
+                        <option value="judaism">Judaism</option>
+                        <option value="buddhism">Buddhism</option>
+                        <option value="hinduism">Hinduism</option>
+                        <option value="atheist">Atheist</option>
+                        <option value="agnostic">Agnostic</option>
+                        <option value="spiritual">Spiritual</option>
+                        <option value="other">Other</option>
+                    </select>
+                </div>
+                <div class="mb-4">
+                    <label class="block text-[#2D3436] mb-2 text-sm font-semibold">🏳️‍🌈 LGBT+ Friendly</label>
+                    <select id="userSignupLGBTQ" required class="w-full px-4 py-3 border border-gray-300 rounded-xl focus:outline-none focus:border-[#FF4458]">
+                        <option value="">Select...</option>
+                        <option value="yes">Yes</option>
+                        <option value="no">No</option>
+                        <option value="prefer_not_say">Prefer not to say</option>
+                    </select>
+                </div>
+                <div class="mb-4">
+                    <label class="block text-[#2D3436] mb-2 text-sm font-semibold">🎯 Interests (select at least one)</label>
+                    <div class="max-h-40 overflow-y-auto border border-gray-300 rounded-xl p-3 space-y-2">
+                        <label class="flex items-center">
+                            <input type="checkbox" name="userSignupInterest" value="music" class="mr-2 w-4 h-4 text-[#FF4458] rounded">
+                            <span class="text-sm">🎵 Music</span>
+                        </label>
+                        <label class="flex items-center">
+                            <input type="checkbox" name="userSignupInterest" value="travel" class="mr-2 w-4 h-4 text-[#FF4458] rounded">
+                            <span class="text-sm">✈️ Travel</span>
+                        </label>
+                        <label class="flex items-center">
+                            <input type="checkbox" name="userSignupInterest" value="sports" class="mr-2 w-4 h-4 text-[#FF4458] rounded">
+                            <span class="text-sm">⚽ Sports</span>
+                        </label>
+                        <label class="flex items-center">
+                            <input type="checkbox" name="userSignupInterest" value="food" class="mr-2 w-4 h-4 text-[#FF4458] rounded">
+                            <span class="text-sm">🍽️ Food</span>
+                        </label>
+                        <label class="flex items-center">
+                            <input type="checkbox" name="userSignupInterest" value="art" class="mr-2 w-4 h-4 text-[#FF4458] rounded">
+                            <span class="text-sm">🎨 Art</span>
+                        </label>
+                        <label class="flex items-center">
+                            <input type="checkbox" name="userSignupInterest" value="cinema" class="mr-2 w-4 h-4 text-[#FF4458] rounded">
+                            <span class="text-sm">🎬 Cinema</span>
+                        </label>
+                        <label class="flex items-center">
+                            <input type="checkbox" name="userSignupInterest" value="reading" class="mr-2 w-4 h-4 text-[#FF4458] rounded">
+                            <span class="text-sm">📚 Reading</span>
+                        </label>
+                        <label class="flex items-center">
+                            <input type="checkbox" name="userSignupInterest" value="tech" class="mr-2 w-4 h-4 text-[#FF4458] rounded">
+                            <span class="text-sm">💻 Tech</span>
+                        </label>
+                        <label class="flex items-center">
+                            <input type="checkbox" name="userSignupInterest" value="gaming" class="mr-2 w-4 h-4 text-[#FF4458] rounded">
+                            <span class="text-sm">🎮 Gaming</span>
+                        </label>
+                        <label class="flex items-center">
+                            <input type="checkbox" name="userSignupInterest" value="fashion" class="mr-2 w-4 h-4 text-[#FF4458] rounded">
+                            <span class="text-sm">👗 Fashion</span>
+                        </label>
+                        <label class="flex items-center">
+                            <input type="checkbox" name="userSignupInterest" value="photography" class="mr-2 w-4 h-4 text-[#FF4458] rounded">
+                            <span class="text-sm">📸 Photography</span>
+                        </label>
+                        <label class="flex items-center">
+                            <input type="checkbox" name="userSignupInterest" value="fitness" class="mr-2 w-4 h-4 text-[#FF4458] rounded">
+                            <span class="text-sm">💪 Fitness</span>
+                        </label>
+                    </div>
+                </div>
+                <div class="mb-4">
+                    <label class="block text-[#2D3436] mb-2 text-sm font-semibold">📝 Bio (required)</label>
+                    <textarea id="userSignupBio" rows="3" maxlength="500" required class="w-full px-4 py-3 border border-gray-300 rounded-xl focus:outline-none focus:border-[#FF4458]" placeholder="Tell us about yourself..."></textarea>
                 </div>
                 <div class="flex gap-2">
                     <button onclick="goToSignupStep(1)" class="flex-1 py-3 bg-gray-200 text-[#2D3436] rounded-full hover:bg-gray-300 transition font-semibold">← Back</button>
@@ -691,14 +768,38 @@ www.myoneart.com
                         alert('Please fill all required fields');
                         return;
                     }
+                    
+                    // Validate age minimum 18 years
+                    const today = new Date();
+                    const birth = new Date(birthdate);
+                    let age = today.getFullYear() - birth.getFullYear();
+                    const monthDiff = today.getMonth() - birth.getMonth();
+                    if (monthDiff < 0 || (monthDiff === 0 && today.getDate() < birth.getDate())) {
+                        age--;
+                    }
+                    
+                    if (age < 18) {
+                        alert('You must be at least 18 years old to register');
+                        return;
+                    }
                 }
                 if (signupCurrentStep === 2) {
                     const gender = document.getElementById('userSignupGender').value;
                     const orientation = document.getElementById('userSignupOrientation').value;
                     const meetingType = document.getElementById('userSignupMeetingType').value;
+                    const religion = document.getElementById('userSignupReligion').value;
+                    const lgbtq = document.getElementById('userSignupLGBTQ').value;
+                    const bio = document.getElementById('userSignupBio').value;
                     
-                    if (!gender || !orientation || !meetingType) {
+                    if (!gender || !orientation || !meetingType || !religion || !lgbtq || !bio) {
                         alert('Please fill all required fields');
+                        return;
+                    }
+                    
+                    // Validate at least one interest selected
+                    const interests = Array.from(document.querySelectorAll('input[name="userSignupInterest"]:checked')).map(cb => cb.value);
+                    if (interests.length === 0) {
+                        alert('Please select at least one interest');
                         return;
                     }
                 }
@@ -830,6 +931,9 @@ www.myoneart.com
                 return;
             }
 
+            // Get selected interests
+            const interests = Array.from(document.querySelectorAll('input[name="userSignupInterest"]:checked')).map(cb => cb.value);
+
             const userData = {
                 name: document.getElementById('userSignupName').value,
                 email: document.getElementById('userSignupEmail').value,
@@ -838,6 +942,9 @@ www.myoneart.com
                 gender: document.getElementById('userSignupGender').value,
                 sexual_orientation: document.getElementById('userSignupOrientation').value,
                 meeting_type: document.getElementById('userSignupMeetingType').value,
+                religion: document.getElementById('userSignupReligion').value,
+                lgbtq_friendly: document.getElementById('userSignupLGBTQ').value,
+                interests: interests,
                 bio: document.getElementById('userSignupBio').value || '',
                 photo_url: signupProfilePhotoUrl,
                 gallery_urls: signupGalleryPhotoUrls
