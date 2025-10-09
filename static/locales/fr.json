@@ -11,7 +11,7 @@
   "how_it_works": "Comment ça marche",
   "find_vibe": "Trouvez votre ambiance",
   "find_vibe_desc": "Parcourez des événements organisés dans des lieux locaux correspondant à vos intérêts",
-  "join_room": "Rejoignez le salon",
+  "join_room": "Rejoignez la Room",
   "join_room_desc": "Réservez votre place dans des événements de rencontre exclusifs avec des membres vérifiés",
   "meet_person": "Rencontrez en personne",
   "meet_person_desc": "Connectez-vous face à face dans un environnement sûr et amusant conçu pour de vraies connexions",
@@ -25,13 +25,13 @@
   
   "free_features": {
     "browse": "Parcourir les événements",
-    "join": "Rejoindre les salons publics",
+    "join": "Rejoindre les rooms publiques",
     "messaging": "Messagerie de base"
   },
   
   "premium_features": {
     "all_free": "Toutes les fonctionnalités gratuites",
-    "priority": "Accès prioritaire aux salons",
+    "priority": "Accès prioritaire aux rooms",
     "alternative": "Mode identité alternative",
     "filters": "Filtres avancés"
   },
@@ -67,7 +67,11 @@
     "have_account": "Vous avez déjà un compte ?",
     "login_link": "Connexion",
     "signup_link": "S'inscrire",
-    "create_account": "Créer un compte"
+    "create_account": "Créer un compte",
+    "as_user": "En tant qu'utilisateur",
+    "as_establishment": "En tant qu'établissement",
+    "join_events": "Rejoignez des événements et rencontrez des gens",
+    "host_events": "Organisez des événements dans votre lieu"
   },
   
   "app": {
@@ -83,39 +87,77 @@
     "subscription": "Abonnement",
     "alternative_mode": "Activer le mode identité alternative",
     "alternative_name": "Nom alternatif",
-    "update_profile": "Mettre à jour le profil"
+    "update_profile": "Mettre à jour le profil",
+    "home": "Accueil",
+    "join_a_room": "Rejoignez une room",
+    "enter_access_code": "Entrez le code d'accès",
+    "access_code_placeholder": "Ex: A3B7K9M2",
+    "join": "Rejoindre",
+    "my_rooms": "Mes rooms",
+    "see_all": "Voir tous →",
+    "loading": "Chargement...",
+    "messages": "Messages",
+    "active": "Actives",
+    "expired": "Expirées",
+    "all_my_rooms": "Tous mes rooms",
+    "requests": "Demandes",
+    "received": "Reçues",
+    "sent": "Envoyées",
+    "new_version_available": "Nouvelle version disponible!",
+    "update_now": "Mettre à jour maintenant",
+    "install_meetspot": "Installer MeetSpot",
+    "quick_access": "Accès rapide depuis votre écran d'accueil",
+    "later": "Plus tard",
+    "install": "Installer"
   },
   
   "establishment": {
     "dashboard": "Tableau de bord de l'établissement",
-    "manage_venue": "Gérez votre lieu et vos événements",
+    "manage_venue": "Gérez votre lieu et vos rooms",
     "setup_establishment": "Configurer votre établissement",
     "venue_name": "Nom du lieu",
     "description": "Description",
     "address": "Adresse",
     "create_establishment": "Créer l'établissement",
     "subscription_plan": "Plan d'abonnement",
-    "rooms_today": "Salons aujourd'hui",
+    "rooms_today": "Rooms aujourd'hui",
     "total_members": "Membres totaux",
-    "create_new_event": "Créer un nouvel événement",
-    "event_name": "Nom de l'événement",
+    "create_new_room": "Créer une nouvelle room",
+    "room_name": "Nom de la room",
     "max_capacity": "Capacité maximale",
     "welcome_message": "Message de bienvenue",
-    "event_datetime": "Date et heure de l'événement",
+    "room_datetime": "Date et heure de la room",
     "gender_filter": "Filtre de genre",
     "min_age": "Âge minimum",
     "max_age": "Âge maximum",
     "any": "Tous",
-    "create_event": "Créer l'événement",
-    "your_events": "Vos événements",
-    "no_events_created": "Aucun événement créé pour le moment."
+    "create_room": "Créer la room",
+    "your_rooms": "Vos rooms",
+    "no_rooms_created": "Aucune room créée pour le moment.",
+    "configuration": "Configuration",
+    "create_your_establishment": "Créez votre établissement",
+    "all": "Tous",
+    "active_plural": "Actifs",
+    "expired_plural": "Expirés",
+    "no_room_created": "Aucune room créée.",
+    "analytics": "Analytics",
+    "total_rooms": "Rooms totales",
+    "active_rooms": "Rooms actives",
+    "total_members_stats": "Membres totaux",
+    "rooms_today_stats": "Rooms aujourd'hui",
+    "subscription_details": "Détails abonnement",
+    "plan": "Plan",
+    "monthly_cost": "Coût mensuel",
+    "daily_limit": "Limite quotidienne",
+    "establishment_profile": "Profil établissement",
+    "monthly_price": "Prix mensuel"
   },
   
   "admin": {
     "dashboard": "Tableau de bord administrateur",
     "platform_management": "Gestion et modération de la plateforme",
     "total_users": "Utilisateurs totaux",
-    "active_rooms": "Salons actifs",
+    "active_rooms": "Rooms actifs",
     "establishments": "Établissements",
     "pending_reports": "Signalements en attente",
     "users": "Utilisateurs",
@@ -125,7 +167,18 @@
     "no_users": "Aucun utilisateur pour le moment.",
     "no_reports": "Aucun signalement pour le moment.",
     "subscription_plans": "Plans d'abonnement",
-    "view_app": "Voir l'application"
+    "view_app": "Voir l'application",
+    "verifications": "Vérifications",
+    "subscription_requests": "Demandes de forfaits",
+    "system_settings": "Paramètres système",
+    "default_language": "Langue par défaut",
+    "french": "Français",
+    "english": "Anglais",
+    "user_requests": "Demandes utilisateurs",
+    "establishment_requests": "Demandes établissements",
+    "pending": "En attente",
+    "approved": "Approuvées",
+    "rejected": "Rejetées"
   },
   
   "room": {
@@ -135,30 +188,72 @@
     "ongoing": "En cours",
     "send": "Envoyer",
     "type_message": "Tapez un message...",
-    "must_join": "Vous devez rejoindre le salon en premier"
+    "must_join": "Vous devez rejoindre la room en premier"
   },
   
   "plans": {
     "one_shot": {
       "name": "One-Shot",
-      "price": "$9",
-      "rooms": "1 salon par jour",
+      "price": "9$",
+      "rooms": "1 room par jour",
       "analytics": "Analyses de base"
     },
     "silver": {
       "name": "Silver",
-      "price": "$49",
-      "rooms": "1 salon par jour",
+      "price": "49$",
+      "rooms": "1 room par jour",
       "analytics": "Analyses avancées",
       "support": "Support prioritaire"
     },
     "gold": {
       "name": "Gold",
-      "price": "$99",
-      "rooms": "3 salons par jour",
+      "price": "99$",
+      "rooms": "3 rooms par jour",
       "analytics": "Analyses premium",
       "support": "Support VIP",
       "branding": "Branding personnalisé"
     }
+  },
+  
+  "settings": {
+    "title": "Paramètres du compte",
+    "account_info": "Informations du compte",
+    "username": "Nom d'utilisateur",
+    "email": "Email",
+    "age": "Âge",
+    "language": "Langue",
+    "language_french": "Français",
+    "language_english": "English",
+    "theme": "Thème",
+    "theme_light": "Clair",
+    "theme_dark": "Sombre",
+    "subscription": "Abonnement",
+    "request_subscription": "Demander un forfait",
+    "deactivate": "Désactiver mon compte",
+    "deactivate_warning": "La désactivation de votre compte est permanente et supprimera toutes vos données."
+  },
+  
+  "verification": {
+    "not_verified": "Non vérifié",
+    "pending": "En attente d'approbation",
+    "verified": "Vérifié",
+    "request_verification": "Demander la vérification",
+    "submit_photo": "Soumettre une photo"
+  },
+  
+  "common": {
+    "cancel": "Annuler",
+    "save": "Enregistrer",
+    "delete": "Supprimer",
+    "confirm": "Confirmer",
+    "close": "Fermer",
+    "yes": "Oui",
+    "no": "Non",
+    "loading": "Chargement...",
+    "view_profile": "Voir le profil",
+    "approve": "Approuver",
+    "reject": "Rejeter",
+    "accept": "Accepter",
+    "decline": "Refuser"
   }
 }

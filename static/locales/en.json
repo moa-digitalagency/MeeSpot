@@ -67,7 +67,11 @@
     "have_account": "Already have an account?",
     "login_link": "Login",
     "signup_link": "Sign up",
-    "create_account": "Create Account"
+    "create_account": "Create Account",
+    "as_user": "As User",
+    "as_establishment": "As Establishment",
+    "join_events": "Join events & meet people",
+    "host_events": "Host events at your venue"
   },
   
   "app": {
@@ -83,12 +87,33 @@
     "subscription": "Subscription",
     "alternative_mode": "Enable Alternative Identity Mode",
     "alternative_name": "Alternative Name",
-    "update_profile": "Update Profile"
+    "update_profile": "Update Profile",
+    "home": "Home",
+    "join_a_room": "Join a room",
+    "enter_access_code": "Enter access code",
+    "access_code_placeholder": "Ex: A3B7K9M2",
+    "join": "Join",
+    "my_rooms": "My rooms",
+    "see_all": "See all →",
+    "loading": "Loading...",
+    "messages": "Messages",
+    "active": "Active",
+    "expired": "Expired",
+    "all_my_rooms": "All my rooms",
+    "requests": "Requests",
+    "received": "Received",
+    "sent": "Sent",
+    "new_version_available": "New version available!",
+    "update_now": "Update now",
+    "install_meetspot": "Install MeetSpot",
+    "quick_access": "Quick access from your home screen",
+    "later": "Later",
+    "install": "Install"
   },
   
   "establishment": {
     "dashboard": "Establishment Dashboard",
-    "manage_venue": "Manage your venue and events",
+    "manage_venue": "Manage your venue and rooms",
     "setup_establishment": "Setup Your Establishment",
     "venue_name": "Venue Name",
     "description": "Description",
@@ -97,18 +122,35 @@
     "subscription_plan": "Subscription Plan",
     "rooms_today": "Rooms Today",
     "total_members": "Total Members",
-    "create_new_event": "Create New Event",
-    "event_name": "Event Name",
+    "create_new_room": "Create New Room",
+    "room_name": "Room Name",
     "max_capacity": "Max Capacity",
     "welcome_message": "Welcome Message",
-    "event_datetime": "Event Date & Time",
+    "room_datetime": "Room Date & Time",
     "gender_filter": "Gender Filter",
     "min_age": "Min Age",
     "max_age": "Max Age",
     "any": "Any",
-    "create_event": "Create Event",
-    "your_events": "Your Events",
-    "no_events_created": "No events created yet."
+    "create_room": "Create Room",
+    "your_rooms": "Your Rooms",
+    "no_rooms_created": "No rooms created yet.",
+    "configuration": "Configuration",
+    "create_your_establishment": "Create your establishment",
+    "all": "All",
+    "active_plural": "Active",
+    "expired_plural": "Expired",
+    "no_room_created": "No room created.",
+    "analytics": "Analytics",
+    "total_rooms": "Total Rooms",
+    "active_rooms": "Active Rooms",
+    "total_members_stats": "Total Members",
+    "rooms_today_stats": "Rooms Today",
+    "subscription_details": "Subscription Details",
+    "plan": "Plan",
+    "monthly_cost": "Monthly Cost",
+    "daily_limit": "Daily Limit",
+    "establishment_profile": "Establishment Profile",
+    "monthly_price": "Monthly Price"
   },
   
   "admin": {
@@ -125,7 +167,18 @@
     "no_users": "No users yet.",
     "no_reports": "No reports yet.",
     "subscription_plans": "Subscription Plans",
-    "view_app": "View App"
+    "view_app": "View App",
+    "verifications": "Verifications",
+    "subscription_requests": "Subscription Requests",
+    "system_settings": "System Settings",
+    "default_language": "Default Language",
+    "french": "Français",
+    "english": "English",
+    "user_requests": "User Requests",
+    "establishment_requests": "Establishment Requests",
+    "pending": "Pending",
+    "approved": "Approved",
+    "rejected": "Rejected"
   },
   
   "room": {
@@ -160,5 +213,47 @@
       "support": "VIP support",
       "branding": "Custom branding"
     }
+  },
+  
+  "settings": {
+    "title": "Account Settings",
+    "account_info": "Account Information",
+    "username": "Username",
+    "email": "Email",
+    "age": "Age",
+    "language": "Language",
+    "language_french": "Français",
+    "language_english": "English",
+    "theme": "Theme",
+    "theme_light": "Light",
+    "theme_dark": "Dark",
+    "subscription": "Subscription",
+    "request_subscription": "Request Subscription",
+    "deactivate": "Deactivate my account",
+    "deactivate_warning": "Account deactivation is permanent and will delete all your data."
+  },
+  
+  "verification": {
+    "not_verified": "Not Verified",
+    "pending": "Pending Approval",
+    "verified": "Verified",
+    "request_verification": "Request Verification",
+    "submit_photo": "Submit Photo"
+  },
+  
+  "common": {
+    "cancel": "Cancel",
+    "save": "Save",
+    "delete": "Delete",
+    "confirm": "Confirm",
+    "close": "Close",
+    "yes": "Yes",
+    "no": "No",
+    "loading": "Loading...",
+    "view_profile": "View Profile",
+    "approve": "Approve",
+    "reject": "Reject",
+    "accept": "Accept",
+    "decline": "Decline"
   }
 }
