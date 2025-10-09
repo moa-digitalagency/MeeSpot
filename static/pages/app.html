@@ -251,6 +251,10 @@ www.myoneart.com
                 <span data-i18n="profile.edit">✏️ Modifier le profil</span>
             </button>
             
+            <button onclick="showSubscriptionPlans()" class="w-full py-3 bg-gradient-to-r from-[#6C5CE7] to-[#A29BFE] text-white rounded-full hover:opacity-90 transition font-semibold mb-2">
+                💎 Changer de Forfait
+            </button>
+            
             <button onclick="switchPage('settings')" class="w-full py-3 bg-[#6C5CE7] text-white rounded-full hover:bg-[#5f51d4] transition font-semibold mb-2">
                 <span data-i18n="profile.settings">⚙️ Paramètres du compte</span>
             </button>
@@ -530,6 +534,19 @@ www.myoneart.com
                     💾 Enregistrer les modifications
                 </button>
             </form>
+        </div>
+    </div>
+
+    <div id="subscriptionPlansModal" class="hidden fixed inset-0 bg-black bg-opacity-50 flex items-end z-50">
+        <div class="bg-white rounded-t-3xl w-full p-6 max-h-[90vh] overflow-y-auto">
+            <div class="flex justify-between items-center mb-6">
+                <h3 class="text-2xl font-bold text-[#2D3436]">💎 Plans d'Abonnement</h3>
+                <button onclick="closeSubscriptionPlans()" class="w-10 h-10 flex items-center justify-center bg-gray-100 text-gray-600 hover:bg-gray-200 rounded-full text-2xl font-bold transition-colors">×</button>
+            </div>
+            <div id="subscriptionPlansList" class="space-y-3">
+                <p class="text-[#2D3436] opacity-75 text-center py-4">Chargement...</p>
+            </div>
+            <div id="subscriptionRequestStatus" class="mt-4"></div>
         </div>
     </div>
 
@@ -1885,6 +1902,106 @@ www.myoneart.com
 
         function closeEditProfile() {
             document.getElementById('editProfileModal').classList.add('hidden');
+        }
+
+        async function showSubscriptionPlans() {
+            const modal = document.getElementById('subscriptionPlansModal');
+            const list = document.getElementById('subscriptionPlansList');
+            const status = document.getElementById('subscriptionRequestStatus');
+            
+            modal.classList.remove('hidden');
+            
+            const token = localStorage.getItem('token');
+            const userData = localStorage.getItem('user');
+            const user = JSON.parse(userData);
+            
+            try {
+                const [plansRes, requestsRes] = await Promise.all([
+                    fetch('/api/subscriptions/plans', {
+                        headers: { 'Authorization': `Bearer ${token}` }
+                    }),
+                    fetch('/api/subscriptions/my-requests', {
+                        headers: { 'Authorization': `Bearer ${token}` }
+                    })
+                ]);
+                
+                const plans = await plansRes.json();
+                const requests = await requestsRes.json();
+                
+                const userPlans = plans.filter(p => p.role === user.role);
+                const pendingRequest = requests.find(r => r.status === 'pending');
+                
+                if (pendingRequest) {
+                    status.innerHTML = `
+                        <div class="bg-yellow-100 border-l-4 border-yellow-500 p-4 rounded-xl">
+                            <p class="font-semibold text-yellow-700">⏳ Demande en attente</p>
+                            <p class="text-sm text-yellow-600">Vous avez une demande pour "${pendingRequest.subscription_tier}" en attente d'approbation.</p>
+                        </div>
+                    `;
+                } else {
+                    status.innerHTML = '';
+                }
+                
+                list.innerHTML = userPlans.map(plan => `
+                    <div class="bg-gradient-to-br from-[#6C5CE7] to-[#A29BFE] rounded-2xl p-4 text-white">
+                        <div class="flex justify-between items-start mb-3">
+                            <div>
+                                <h4 class="text-xl font-bold">${plan.name}</h4>
+                                <p class="text-sm opacity-90">${plan.description}</p>
+                            </div>
+                            <div class="text-right">
+                                <div class="text-2xl font-bold">${plan.price}€</div>
+                                <div class="text-xs opacity-75">/mois</div>
+                            </div>
+                        </div>
+                        <div class="text-sm opacity-90 mb-3">
+                            ${plan.rooms_per_day} ${plan.rooms_per_day > 1 ? 'salles' : 'salle'} par jour
+                        </div>
+                        ${user.subscription_tier === plan.name 
+                            ? '<div class="bg-white/20 text-center py-2 rounded-full text-sm font-semibold">✓ Plan actuel</div>'
+                            : pendingRequest
+                            ? '<div class="bg-white/20 text-center py-2 rounded-full text-sm font-semibold opacity-50">Demande en attente</div>'
+                            : `<button onclick="requestSubscriptionChange('${plan.name}')" class="w-full bg-white text-[#6C5CE7] py-2 rounded-full text-sm font-semibold hover:bg-gray-100 transition">
+                                Demander ce plan
+                              </button>`
+                        }
+                    </div>
+                `).join('');
+            } catch (error) {
+                list.innerHTML = '<p class="text-red-500 text-center">Erreur lors du chargement des plans</p>';
+            }
+        }
+
+        function closeSubscriptionPlans() {
+            document.getElementById('subscriptionPlansModal').classList.add('hidden');
+        }
+
+        async function requestSubscriptionChange(tier) {
+            if (!confirm(`Demander le forfait "${tier}" ?\n\nVotre demande sera examinée par un administrateur.`)) return;
+            
+            const token = localStorage.getItem('token');
+            
+            try {
+                const response = await fetch('/api/subscriptions/request', {
+                    method: 'POST',
+                    headers: {
+                        'Authorization': `Bearer ${token}`,
+                        'Content-Type': 'application/json'
+                    },
+                    body: JSON.stringify({ subscription_tier: tier })
+                });
+                
+                const data = await response.json();
+                
+                if (response.ok) {
+                    alert('✓ Demande envoyée avec succès!\n\nVous recevrez une notification une fois la demande examinée.');
+                    closeSubscriptionPlans();
+                } else {
+                    alert(data.error || 'Erreur lors de la demande');
+                }
+            } catch (error) {
+                alert('Erreur de connexion');
+            }
         }
 
         async function updateProfile(e) {
