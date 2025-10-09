@@ -703,30 +703,36 @@ www.myoneart.com
                     document.getElementById('profileOrientation').textContent = profile.sexual_orientation || '-';
                     document.getElementById('profileBioText').textContent = profile.bio || 'Aucune bio';
                     
+                    // Always show religion section
                     if (profile.religion) {
                         const religionOption = options.religion.find(r => r.value === profile.religion);
                         document.getElementById('profileReligion').textContent = religionOption ? religionOption.label : profile.religion;
-                        document.getElementById('profileReligionRow').style.display = 'flex';
+                    } else {
+                        document.getElementById('profileReligion').textContent = 'Non renseigné';
                     }
+                    document.getElementById('profileReligionRow').style.display = 'flex';
                     
-                    if (profile.lgbtq_friendly) {
-                        const lgbtqLabels = {
-                            'yes': '✅ Oui',
-                            'no': '❌ Non',
-                            'prefer_not_say': '🤐 Je préfère ne pas répondre'
-                        };
-                        document.getElementById('profileLGBTQ').textContent = lgbtqLabels[profile.lgbtq_friendly] || '-';
-                        document.getElementById('profileLGBTQRow').style.display = 'flex';
-                    }
+                    // Always show LGBT friendly section
+                    const lgbtqLabels = {
+                        'yes': '✅ Oui',
+                        'no': '❌ Non',
+                        'prefer_not_say': '🤐 Je préfère ne pas répondre'
+                    };
+                    document.getElementById('profileLGBTQ').textContent = profile.lgbtq_friendly ? (lgbtqLabels[profile.lgbtq_friendly] || '-') : 'Non renseigné';
+                    document.getElementById('profileLGBTQRow').style.display = 'flex';
                     
+                    // Always show meeting type section
                     if (profile.meeting_type) {
                         const option = options.meeting_type.find(o => o.value === profile.meeting_type);
                         const emoji = option?.emoji || '';
                         const label = option?.label || profile.meeting_type;
                         document.getElementById('profileMeetingTypes').innerHTML = `<span class="px-3 py-1 bg-[#FF4458] text-white rounded-full text-sm">${emoji} ${label}</span>`;
-                        document.getElementById('profileMeetingTypesSection').style.display = 'block';
+                    } else {
+                        document.getElementById('profileMeetingTypes').innerHTML = `<span class="text-[#2D3436] opacity-50">Non renseigné</span>`;
                     }
+                    document.getElementById('profileMeetingTypesSection').style.display = 'block';
                     
+                    // Always show interests section
                     if (profile.interests && profile.interests.length > 0) {
                         const interestsHtml = profile.interests.map(interest => {
                             const option = options.interest.find(o => o.value === interest);
@@ -734,8 +740,10 @@ www.myoneart.com
                             return `<span class="px-3 py-1 bg-[#A29BFE] text-white rounded-full text-sm">${label}</span>`;
                         }).join('');
                         document.getElementById('profileInterests').innerHTML = interestsHtml;
-                        document.getElementById('profileInterestsSection').style.display = 'block';
+                    } else {
+                        document.getElementById('profileInterests').innerHTML = `<span class="text-[#2D3436] opacity-50">Aucun intérêt renseigné</span>`;
                     }
+                    document.getElementById('profileInterestsSection').style.display = 'block';
                 }
             } catch (error) {
                 console.error('Error loading profile:', error);
