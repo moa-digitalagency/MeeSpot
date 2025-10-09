@@ -154,28 +154,31 @@ def seed_default_establishment():
         print("✓ Établissement de test déjà présent dans la base de données")
         return
     
-    # Créer un utilisateur établissement
-    establishment_email = 'cafe@test.com'
-    password_hash = bcrypt.hashpw('test123'.encode('utf-8'), bcrypt.gensalt()).decode('utf-8')
+    # Vérifier si l'utilisateur existe déjà
+    establishment_user = User.query.filter_by(username='cafe_central').first()
     
-    establishment_user = User(
-        email=establishment_email,
-        password_hash=password_hash,
-        name='Café Central',
-        username='cafe_central',
-        role='establishment'
-    )
-    
-    db.session.add(establishment_user)
-    db.session.commit()
+    if not establishment_user:
+        # Créer un utilisateur établissement
+        establishment_email = 'cafe@test.com'
+        password_hash = bcrypt.hashpw('test123'.encode('utf-8'), bcrypt.gensalt()).decode('utf-8')
+        
+        establishment_user = User(
+            email=establishment_email,
+            password_hash=password_hash,
+            name='Café Central',
+            username='cafe_central',
+            role='establishment'
+        )
+        
+        db.session.add(establishment_user)
+        db.session.commit()
     
     # Créer l'établissement
     establishment = Establishment(
         user_id=establishment_user.id,
         name='Le Café Central',
         description='Un café chaleureux au cœur de la ville, parfait pour des rencontres authentiques. Ambiance conviviale et décontractée.',
-        address='15 Rue de la République, 75001 Paris',
-        contact_name='Marie Lefebvre'
+        address='15 Rue de la République, 75001 Paris'
     )
     
     db.session.add(establishment)
