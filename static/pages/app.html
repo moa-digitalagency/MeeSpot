@@ -1935,6 +1935,10 @@ www.myoneart.com
                     })
                 ]);
                 
+                if (!plansRes.ok || !requestsRes.ok) {
+                    throw new Error('Failed to load subscription data');
+                }
+                
                 const plans = await plansRes.json();
                 const requests = await requestsRes.json();
                 
@@ -2443,8 +2447,8 @@ www.myoneart.com
 
             if (currentRoomId) {
                 autoRefreshIntervals.participants = setInterval(() => {
-                    const participantsList = document.getElementById('participantsList');
-                    if (participantsList && !participantsList.classList.contains('hidden')) {
+                    const participantsModal = document.getElementById('participantsModal');
+                    if (participantsModal && !participantsModal.classList.contains('hidden')) {
                         loadRoomParticipants();
                     }
                 }, 20000);
