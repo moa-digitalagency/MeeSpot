@@ -63,13 +63,33 @@ The backend organizes routes by resource (auth, rooms, establishments, admin, pr
 - **Gunicorn**: Production WSGI server.
 
 ## Environment Variables & Secrets
+
+### Sur Replit
 Les secrets suivants doivent être configurés dans Replit Secrets :
-- `SECRET_KEY`: Clé secrète Flask pour signer les sessions et cookies (32+ caractères aléatoires)
-- `ENCRYPTION_KEY`: Clé pour chiffrer les données sensibles en base de données (32+ caractères aléatoires)
-- `SESSION_SECRET`: Clé pour les sessions Flask (auto-générée par Replit)
+- `ENCRYPTION_KEY`: Clé pour chiffrer les données sensibles en base de données (44 caractères - généré par Fernet)
+- `SECRET_KEY` ou `SESSION_SECRET`: Clé secrète Flask pour signer les sessions et JWT (32+ caractères)
 - `DATABASE_URL`: URL PostgreSQL (auto-configurée par Replit Database)
 
-**Note**: Les clés SECRET_KEY et ENCRYPTION_KEY sont obligatoires pour le déploiement et doivent être identiques entre développement et production.
+### Déploiement Externe (Hors Replit)
+Pour déployer en dehors de Replit tout en gardant les mêmes données :
+
+1. **Utilisez les MÊMES secrets que sur Replit**
+   - `ENCRYPTION_KEY` : ⚠️ CRITIQUE - Doit être identique pour accéder aux données chiffrées
+   - `SECRET_KEY` : Utilisez cette variable en dehors de Replit (au lieu de SESSION_SECRET)
+   - `DATABASE_URL` : Format PostgreSQL standard
+
+2. **Fichiers de Configuration**
+   - Copiez `.env.example` vers `.env` et remplissez avec vos secrets
+   - Utilisez `python verify_config.py` pour vérifier votre configuration
+
+3. **Guide Complet**
+   - Voir `DEPLOIEMENT_EXTERNE.md` pour un guide détaillé pas-à-pas
+   - Includes migration de données, tests, et déploiement sur différentes plateformes
+
+**⚠️ IMPORTANT**: 
+- L'`ENCRYPTION_KEY` doit être **IDENTIQUE** entre Replit et production
+- Si vous changez cette clé, toutes les données chiffrées (emails, noms) deviennent irrécupérables
+- L'application détecte automatiquement SECRET_KEY (externe) ou SESSION_SECRET (Replit)
 
 ## Recent Changes (October 2025)
 - **Critical Bug Fixes & Security Updates** (October 10):

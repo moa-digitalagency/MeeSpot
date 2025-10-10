@@ -49,7 +49,7 @@ def create_app():
         'pool_pre_ping': True,
         'pool_recycle': 300,
     }
-    app.config['SECRET_KEY'] = os.environ.get('SESSION_SECRET')
+    app.config['SECRET_KEY'] = os.environ.get('SECRET_KEY') or os.environ.get('SESSION_SECRET')
     
     @app.after_request
     def add_no_cache_headers(response):

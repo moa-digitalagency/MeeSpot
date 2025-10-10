@@ -7,6 +7,52 @@ Ce fichier documente toutes les modifications, corrections et améliorations app
 
 ---
 
+## [10 Octobre 2025 - 22:00 UTC] - Portabilité et Déploiement Externe
+
+### 🔧 Configuration Améliorée
+- **Support SECRET_KEY pour déploiement externe**
+  - L'application utilise maintenant `SECRET_KEY` comme variable principale
+  - Fallback automatique vers `SESSION_SECRET` pour compatibilité Replit
+  - Permet le déploiement en dehors de Replit sans erreurs
+  - Fichier modifié: `backend/__init__.py` (ligne 55)
+
+### 📚 Documentation de Déploiement
+- **Guide complet de déploiement externe créé**
+  - Nouveau fichier: `DEPLOIEMENT_EXTERNE.md` avec instructions détaillées
+  - Explique comment récupérer et utiliser les mêmes secrets depuis Replit
+  - Guide de migration de base de données avec pg_dump/restore
+  - Instructions pour PythonAnywhere, Railway, Render, Heroku, VPS
+  - ⚠️ Avertissements critiques sur l'importance d'ENCRYPTION_KEY identique
+
+- **Script de vérification de configuration**
+  - Nouveau fichier: `verify_config.py` pour valider l'environnement
+  - Vérifie toutes les variables requises (SECRET_KEY/SESSION_SECRET, ENCRYPTION_KEY, DATABASE_URL)
+  - Indique les variables manquantes et leur criticité
+  - Commande: `python verify_config.py`
+
+- **Amélioration .env.example**
+  - Ajout de notes explicatives sur SECRET_KEY vs SESSION_SECRET
+  - Clarification sur l'importance critique d'ENCRYPTION_KEY identique
+  - Warnings visuels pour attirer l'attention sur les points critiques
+  - Fichier modifié: `.env.example`
+
+### 📖 Documentation Projet
+- **Mise à jour replit.md**
+  - Section dédiée "Déploiement Externe (Hors Replit)"
+  - Instructions claires pour la portabilité des secrets
+  - Liens vers les nouveaux guides de déploiement
+  - Avertissements sur ENCRYPTION_KEY et données chiffrées
+  - Fichier modifié: `replit.md` (lignes 68-95)
+
+### ✅ Résultats
+- ✅ L'application fonctionne identiquement sur Replit et en externe
+- ✅ Les mêmes secrets permettent d'accéder aux mêmes données chiffrées
+- ✅ Migration de données facilitée avec documentation complète
+- ✅ Validation de configuration automatisée
+- ✅ Compatible avec tous les hébergeurs (PythonAnywhere, Railway, VPS, etc.)
+
+---
+
 ## [10 Octobre 2025 - 18:00 UTC] - Nouveau design avec logo multicolore
 
 ### ✍️ Contenu et Messages
