@@ -7,6 +7,17 @@ Ce fichier documente toutes les modifications, corrections et améliorations app
 
 ---
 
+## [10 Octobre 2025 - 16:54 UTC] - Fix endpoint établissements
+
+### 🐛 Corrections de bugs
+- **Fix erreur 403 sur changement de forfait (établissements)**
+  - Problème: Les établissements utilisaient l'endpoint admin `/api/admin/plans` qui nécessite des droits administrateur
+  - Solution: Changement vers l'endpoint public `/api/subscriptions/plans` accessible aux établissements
+  - Fichier modifié: `static/pages/establishment.html` (ligne 817)
+  - Erreur corrigée: `GET /api/admin/plans 403 (FORBIDDEN)`
+
+---
+
 ## [10 Octobre 2025] - Système de notifications et paramètres de messages
 
 ### 🎯 Fonctionnalités ajoutées

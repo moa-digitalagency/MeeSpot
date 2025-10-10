@@ -811,7 +811,7 @@ www.myoneart.com
             document.getElementById('changePlanModal').classList.remove('hidden');
             
             try {
-                const response = await fetch('/api/admin/plans', {
+                const response = await fetch('/api/subscriptions/plans', {
                     headers: { 'Authorization': `Bearer ${token}` }
                 });
                 
