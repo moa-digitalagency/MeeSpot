@@ -15,6 +15,12 @@ Ce fichier documente toutes les modifications, corrections et améliorations app
   - Nouveau sous-titre: "Chaque lieu devient une opportunité de rencontre authentique."
   - Message plus percutant et concis qui différencie clairement la plateforme
 
+### 🎯 Interface Utilisateur
+- **Dashboard utilisateur amélioré**
+  - Ajout du logo multicolore avant le titre "Accueil"
+  - Barre verticale comme séparateur entre le logo et le texte
+  - Amélioration visuelle de l'en-tête du dashboard
+
 ### 🎨 Design et Identité visuelle
 - **Nouveau logo et favicon multicolore**
   - Logo avec dégradé vibrant : rose, violet, bleu cyan, vert turquoise
