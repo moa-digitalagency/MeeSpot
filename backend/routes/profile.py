@@ -132,6 +132,17 @@ def delete_gallery_photo(current_user, index):
         'gallery': gallery
     })
 
+@bp.route('/photo-consent', methods=['POST'])
+@token_required
+def toggle_photo_consent(current_user):
+    """Toggle photo consent on/off"""
+    current_user.photo_consent_enabled = not current_user.photo_consent_enabled
+    db.session.commit()
+    return jsonify({
+        'message': 'Photo consent updated',
+        'photo_consent_enabled': current_user.photo_consent_enabled
+    })
+
 @bp.route('/password', methods=['PUT'])
 @token_required
 def change_password(current_user):

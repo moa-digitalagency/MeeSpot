@@ -50,6 +50,15 @@ www.myoneart.com
         body.dark-theme input, body.dark-theme textarea, body.dark-theme select { background-color: #333; color: #f5f5f5; }
         body.dark-theme .bottom-nav { background-color: #2d2d2d; box-shadow: 0 -2px 10px rgba(255,255,255,0.1); }
         body.dark-theme .shadow-lg { box-shadow: 0 10px 15px -3px rgba(0,0,0,0.5) !important; }
+        body.dark-theme .dark-theme-hidden { display: none !important; }
+        body.dark-theme .light-theme-hidden { display: block !important; }
+        .light-theme-hidden { display: none; }
+        
+        /* Profile Carousel */
+        .profile-carousel { overflow: hidden; position: relative; }
+        .profile-track { display: flex; animation: scroll-left 30s linear infinite; }
+        @keyframes scroll-left { 0% { transform: translateX(0); } 100% { transform: translateX(-50%); } }
+        .profile-card { min-width: 120px; margin: 0 8px; }
     </style>
 </head>
 <body class="bg-[#F5F5F5]">
@@ -82,7 +91,8 @@ www.myoneart.com
         <div class="px-4 pt-4 pb-2">
             <div class="flex justify-between items-center mb-4">
                 <div class="flex items-center gap-3">
-                    <img src="/images/logo.png" alt="MatchSpot" class="h-8">
+                    <img src="/images/logo.png" alt="MatchSpot" class="h-8 dark-theme-hidden">
+                    <img src="/images/logo-dark.png" alt="MatchSpot" class="h-8 light-theme-hidden" style="display:none;">
                 </div>
                 <div class="w-10 h-10 rounded-full bg-gradient-to-br from-[#FF4081] to-[#00D4FF] flex items-center justify-center text-white font-semibold" id="userAvatar">
                     U
@@ -102,6 +112,14 @@ www.myoneart.com
                 <button onclick="joinWithCode()" class="w-full py-3 bg-[#FF4081] text-white rounded-full hover:bg-[#e0377a] transition font-semibold">
                     Rejoindre
                 </button>
+            </div>
+
+            <div class="mb-6">
+                <h3 class="font-bold text-[#2D3436] mb-3">✨ Profils déjà inscrits</h3>
+                <div class="profile-carousel">
+                    <div class="profile-track" id="profileCarousel">
+                    </div>
+                </div>
             </div>
 
             <div class="mb-4">
@@ -716,9 +734,11 @@ www.myoneart.com
                         avatarBadge.classList.add('bg-blue-500');
                         nameBadge.classList.add('bg-blue-500');
                     } else if (verificationStatus === 'pending') {
-                        // Pending: orange badge
-                        avatarBadge.classList.add('bg-orange-500');
-                        nameBadge.classList.add('bg-orange-500');
+                        // Pending: hourglass emoji instead of orange badge
+                        avatarBadge.classList.add('bg-gray-400');
+                        nameBadge.classList.add('bg-gray-400');
+                        avatarBadge.innerHTML = '⏳';
+                        nameBadge.innerHTML = '⏳';
                     } else {
                         // None: gray badge
                         avatarBadge.classList.add('bg-gray-400', 'opacity-60');
@@ -2453,7 +2473,10 @@ www.myoneart.com
             
             setTimeout(() => {
                 const installPrompt = document.getElementById('installPrompt');
-                if (installPrompt && !localStorage.getItem('pwa_install_dismissed')) {
+                const dismissedDate = localStorage.getItem('pwa_install_dismissed_date');
+                const sevenDaysAgo = Date.now() - (7 * 24 * 60 * 60 * 1000);
+                
+                if (installPrompt && (!dismissedDate || parseInt(dismissedDate) < sevenDaysAgo)) {
                     installPrompt.classList.add('show');
                 }
             }, 5000);
@@ -2472,7 +2495,7 @@ www.myoneart.com
 
         function dismissInstall() {
             document.getElementById('installPrompt').classList.remove('show');
-            localStorage.setItem('pwa_install_dismissed', 'true');
+            localStorage.setItem('pwa_install_dismissed_date', Date.now().toString());
         }
 
         function applyUpdate() {
@@ -2574,6 +2597,35 @@ www.myoneart.com
             console.log('You are offline');
         });
 
+        function initProfileCarousel() {
+            const profiles = [
+                { name: 'Sophie', age: 24, gradient: 'from-pink-500 to-purple-500' },
+                { name: 'Malik', age: 28, gradient: 'from-blue-500 to-cyan-500' },
+                { name: 'Emma', age: 26, gradient: 'from-green-500 to-teal-500' },
+                { name: 'Yuki', age: 23, gradient: 'from-yellow-500 to-orange-500' },
+                { name: 'Carlos', age: 30, gradient: 'from-red-500 to-pink-500' },
+                { name: 'Amara', age: 25, gradient: 'from-purple-500 to-indigo-500' },
+                { name: 'Liam', age: 27, gradient: 'from-cyan-500 to-blue-500' },
+                { name: 'Priya', age: 29, gradient: 'from-orange-500 to-red-500' },
+                { name: 'Ahmed', age: 31, gradient: 'from-teal-500 to-green-500' },
+                { name: 'Zoe', age: 22, gradient: 'from-indigo-500 to-purple-500' }
+            ];
+            
+            const duplicatedProfiles = [...profiles, ...profiles];
+            
+            const carouselHtml = duplicatedProfiles.map(profile => `
+                <div class="profile-card">
+                    <div class="w-20 h-20 rounded-full bg-gradient-to-br ${profile.gradient} flex items-center justify-center text-white text-2xl font-bold">
+                        ${profile.name.charAt(0)}
+                    </div>
+                    <p class="text-xs text-center text-[#2D3436] mt-1 font-semibold">${profile.name}, ${profile.age}</p>
+                </div>
+            `).join('');
+            
+            document.getElementById('profileCarousel').innerHTML = carouselHtml;
+        }
+
+        initProfileCarousel();
         startAutoRefresh();
     </script>
 </body>
