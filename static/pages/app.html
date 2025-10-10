@@ -13,11 +13,12 @@ www.myoneart.com
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
     <title>MatchSpot - Discover Events</title>
     <link rel="manifest" href="/manifest.json">
-    <meta name="theme-color" content="#FF4458">
+    <meta name="theme-color" content="#FF4081">
     <meta name="apple-mobile-web-app-capable" content="yes">
     <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
     <meta name="apple-mobile-web-app-title" content="MatchSpot">
     <link rel="apple-touch-icon" href="/images/icon-192.png">
+    <link rel="icon" type="image/png" href="/images/favicon.png">
     <script src="/css/tailwind.js"></script>
     <link href="/css/fonts.css" rel="stylesheet">
     <script src="/js/libs/html5-qrcode.min.js"></script>
@@ -29,10 +30,10 @@ www.myoneart.com
         .card-hover:active { transform: scale(0.98); }
         .bottom-nav { position: fixed; bottom: 0; left: 0; right: 0; max-width: 768px; margin: 0 auto; background: white; box-shadow: 0 -2px 10px rgba(0,0,0,0.1); z-index: 50; }
         .nav-item { transition: all 0.2s; position: relative; }
-        .nav-item.active { color: #FF4458; }
+        .nav-item.active { color: #FF4081; }
         .nav-item svg { width: 24px; height: 24px; }
-        .notification-badge { position: absolute; top: 8px; right: 50%; transform: translateX(50%); background: #FF4458; color: white; border-radius: 50%; min-width: 18px; height: 18px; display: flex; align-items: center; justify-content: center; font-size: 10px; font-weight: bold; padding: 0 4px; }
-        .update-banner { position: fixed; top: 0; left: 0; right: 0; background: #6C5CE7; color: white; padding: 12px; text-align: center; z-index: 100; transform: translateY(-100%); transition: transform 0.3s; max-width: 768px; margin: 0 auto; }
+        .notification-badge { position: absolute; top: 8px; right: 50%; transform: translateX(50%); background: #FF4081; color: white; border-radius: 50%; min-width: 18px; height: 18px; display: flex; align-items: center; justify-content: center; font-size: 10px; font-weight: bold; padding: 0 4px; }
+        .update-banner { position: fixed; top: 0; left: 0; right: 0; background: #5B4DFF; color: white; padding: 12px; text-align: center; z-index: 100; transform: translateY(-100%); transition: transform 0.3s; max-width: 768px; margin: 0 auto; }
         .update-banner.show { transform: translateY(0); }
         .install-prompt { position: fixed; bottom: 80px; left: 16px; right: 16px; max-width: 736px; margin: 0 auto; background: white; padding: 16px; border-radius: 12px; box-shadow: 0 4px 12px rgba(0,0,0,0.2); z-index: 60; display: none; }
         .install-prompt.show { display: block; animation: slideUp 0.3s ease; }
@@ -59,8 +60,8 @@ www.myoneart.com
 
     <div id="installPrompt" class="install-prompt">
         <div class="flex items-center gap-3">
-            <div class="w-12 h-12 rounded-xl bg-gradient-to-br from-[#FF4458] to-[#6C5CE7] flex items-center justify-center text-white text-2xl">
-                ❤️
+            <div class="w-12 h-12 rounded-xl flex items-center justify-center">
+                <img src="/images/logo.png" alt="MatchSpot" class="w-10 h-10">
             </div>
             <div class="flex-1">
                 <h3 class="font-bold text-[#2D3436]">Installer MatchSpot</h3>
@@ -71,7 +72,7 @@ www.myoneart.com
             <button onclick="dismissInstall()" class="flex-1 py-2 px-4 bg-gray-200 text-[#2D3436] rounded-full text-sm font-semibold">
                 Plus tard
             </button>
-            <button onclick="installPWA()" class="flex-1 py-2 px-4 bg-[#FF4458] text-white rounded-full text-sm font-semibold">
+            <button onclick="installPWA()" class="flex-1 py-2 px-4 bg-[#FF4081] text-white rounded-full text-sm font-semibold">
                 Installer
             </button>
         </div>
@@ -84,7 +85,7 @@ www.myoneart.com
                     <h1 class="text-2xl font-bold text-[#2D3436]">Accueil</h1>
                     <p class="text-sm text-[#2D3436] opacity-75">Rejoignez une room</p>
                 </div>
-                <div class="w-10 h-10 rounded-full bg-gradient-to-br from-[#FF4458] to-[#A29BFE] flex items-center justify-center text-white font-semibold" id="userAvatar">
+                <div class="w-10 h-10 rounded-full bg-gradient-to-br from-[#FF4081] to-[#00D4FF] flex items-center justify-center text-white font-semibold" id="userAvatar">
                     U
                 </div>
             </div>
@@ -92,14 +93,14 @@ www.myoneart.com
             <div class="bg-white rounded-3xl p-6 shadow-lg mb-6">
                 <h3 class="font-bold text-[#2D3436] mb-4 text-center">Entrez le code d'accès</h3>
                 <div class="flex gap-2 mb-3">
-                    <input type="text" id="accessCodeInput" placeholder="Ex: A3B7K9M2" maxlength="8" class="flex-1 px-4 py-3 border-2 border-gray-300 rounded-xl focus:outline-none focus:border-[#FF4458] text-center font-mono text-lg uppercase" oninput="this.value = this.value.toUpperCase()">
-                    <button onclick="showQRScanner()" class="px-4 py-3 bg-[#6C5CE7] text-white rounded-xl hover:bg-[#5f52d6] transition flex items-center justify-center">
+                    <input type="text" id="accessCodeInput" placeholder="Ex: A3B7K9M2" maxlength="8" class="flex-1 px-4 py-3 border-2 border-gray-300 rounded-xl focus:outline-none focus:border-[#FF4081] text-center font-mono text-lg uppercase" oninput="this.value = this.value.toUpperCase()">
+                    <button onclick="showQRScanner()" class="px-4 py-3 bg-[#5B4DFF] text-white rounded-xl hover:bg-[#5f52d6] transition flex items-center justify-center">
                         <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 4v1m6 11h2m-6 0h-2v4m0-11v3m0 0h.01M12 12h4.01M16 20h4M4 12h4m12 0h.01M5 8h2a1 1 0 001-1V5a1 1 0 00-1-1H5a1 1 0 00-1 1v2a1 1 0 001 1zm12 0h2a1 1 0 001-1V5a1 1 0 00-1-1h-2a1 1 0 00-1 1v2a1 1 0 001 1zM5 20h2a1 1 0 001-1v-2a1 1 0 00-1-1H5a1 1 0 00-1 1v2a1 1 0 001 1z"/>
                         </svg>
                     </button>
                 </div>
-                <button onclick="joinWithCode()" class="w-full py-3 bg-[#FF4458] text-white rounded-full hover:bg-[#e03d4c] transition font-semibold">
+                <button onclick="joinWithCode()" class="w-full py-3 bg-[#FF4081] text-white rounded-full hover:bg-[#e0377a] transition font-semibold">
                     Rejoindre
                 </button>
             </div>
@@ -107,7 +108,7 @@ www.myoneart.com
             <div class="mb-4">
                 <div class="flex justify-between items-center mb-3">
                     <h3 class="font-bold text-[#2D3436]">Mes rooms</h3>
-                    <button onclick="switchPage('rooms')" class="text-sm text-[#FF4458] font-semibold">Voir tous →</button>
+                    <button onclick="switchPage('rooms')" class="text-sm text-[#FF4081] font-semibold">Voir tous →</button>
                 </div>
                 <div id="pastRoomsList" class="space-y-3">
                     <p class="text-sm text-[#2D3436] opacity-75 text-center py-8">Chargement...</p>
@@ -121,7 +122,7 @@ www.myoneart.com
             <h1 class="text-2xl font-bold text-[#2D3436] mb-4">Messages</h1>
             
             <div class="flex gap-2 mb-4">
-                <button id="conv-filter-active" onclick="filterConversations('active')" class="flex-1 py-2 px-4 rounded-full bg-[#FF4458] text-white text-sm font-semibold">
+                <button id="conv-filter-active" onclick="filterConversations('active')" class="flex-1 py-2 px-4 rounded-full bg-[#FF4081] text-white text-sm font-semibold">
                     💬 Actives
                 </button>
                 <button id="conv-filter-expired" onclick="filterConversations('expired')" class="flex-1 py-2 px-4 rounded-full bg-gray-200 text-[#2D3436] text-sm font-semibold">
@@ -140,7 +141,7 @@ www.myoneart.com
             <h1 class="text-2xl font-bold text-[#2D3436] mb-4">Tous mes rooms</h1>
             
             <div class="flex gap-2 mb-4">
-                <button id="filter-active" onclick="filterRooms('active')" class="flex-1 py-2 px-4 rounded-full bg-[#FF4458] text-white text-sm font-semibold">
+                <button id="filter-active" onclick="filterRooms('active')" class="flex-1 py-2 px-4 rounded-full bg-[#FF4081] text-white text-sm font-semibold">
                     Actifs
                 </button>
                 <button id="filter-expired" onclick="filterRooms('expired')" class="flex-1 py-2 px-4 rounded-full bg-gray-200 text-[#2D3436] text-sm font-semibold">
@@ -159,7 +160,7 @@ www.myoneart.com
             <h1 class="text-2xl font-bold text-[#2D3436] mb-4">Demandes</h1>
             
             <div class="flex gap-2 mb-4">
-                <button id="req-filter-received" onclick="filterRequests('received')" class="flex-1 py-2 px-4 rounded-full bg-[#FF4458] text-white text-sm font-semibold">
+                <button id="req-filter-received" onclick="filterRequests('received')" class="flex-1 py-2 px-4 rounded-full bg-[#FF4081] text-white text-sm font-semibold">
                     Reçues
                 </button>
                 <button id="req-filter-sent" onclick="filterRequests('sent')" class="flex-1 py-2 px-4 rounded-full bg-gray-200 text-[#2D3436] text-sm font-semibold">
@@ -180,7 +181,7 @@ www.myoneart.com
             <div class="bg-white rounded-3xl p-6 mb-4 shadow-lg">
                 <div class="flex items-center mb-6">
                     <div class="relative">
-                        <div class="w-20 h-20 rounded-full bg-gradient-to-br from-[#FF4458] to-[#A29BFE] flex items-center justify-center text-white text-3xl font-bold" id="profileAvatarLarge">
+                        <div class="w-20 h-20 rounded-full bg-gradient-to-br from-[#FF4081] to-[#00D4FF] flex items-center justify-center text-white text-3xl font-bold" id="profileAvatarLarge">
                             U
                         </div>
                         <div id="profileAvatarBadge" class="hidden absolute bottom-0 right-0 w-6 h-6 bg-blue-500 rounded-full flex items-center justify-center border-2 border-white">
@@ -205,7 +206,7 @@ www.myoneart.com
                 <div class="space-y-3">
                     <div class="flex justify-between py-2 border-b">
                         <span class="text-[#2D3436] opacity-75">Abonnement</span>
-                        <span id="profileSubTier" class="font-semibold text-[#FF4458] capitalize">-</span>
+                        <span id="profileSubTier" class="font-semibold text-[#FF4081] capitalize">-</span>
                     </div>
                     <div class="flex justify-between py-2 border-b">
                         <span class="text-[#2D3436] opacity-75">Âge</span>
@@ -247,19 +248,19 @@ www.myoneart.com
                 <p id="profileBioText" class="text-[#2D3436] opacity-75">Aucune bio</p>
             </div>
 
-            <button onclick="showEditProfile()" class="w-full py-3 bg-[#FF4458] text-white rounded-full hover:bg-[#e03d4c] transition font-semibold mb-2">
+            <button onclick="showEditProfile()" class="w-full py-3 bg-[#FF4081] text-white rounded-full hover:bg-[#e0377a] transition font-semibold mb-2">
                 <span data-i18n="profile.edit">✏️ Modifier le profil</span>
             </button>
             
-            <button onclick="showSubscriptionPlans()" class="w-full py-3 bg-gradient-to-r from-[#6C5CE7] to-[#A29BFE] text-white rounded-full hover:opacity-90 transition font-semibold mb-2">
+            <button onclick="showSubscriptionPlans()" class="w-full py-3 bg-gradient-to-r from-[#5B4DFF] to-[#00D4FF] text-white rounded-full hover:opacity-90 transition font-semibold mb-2">
                 💎 Changer de Forfait
             </button>
             
-            <button onclick="switchPage('settings')" class="w-full py-3 bg-[#6C5CE7] text-white rounded-full hover:bg-[#5f51d4] transition font-semibold mb-2">
+            <button onclick="switchPage('settings')" class="w-full py-3 bg-[#5B4DFF] text-white rounded-full hover:bg-[#5f51d4] transition font-semibold mb-2">
                 <span data-i18n="profile.settings">⚙️ Paramètres du compte</span>
             </button>
             
-            <button id="verifyButton" onclick="showVerificationModal()" class="w-full py-3 bg-gradient-to-r from-[#FF4458] to-[#6C5CE7] text-white rounded-full hover:shadow-xl transition font-semibold mb-2">
+            <button id="verifyButton" onclick="showVerificationModal()" class="w-full py-3 bg-gradient-to-r from-[#FF4081] via-[#5B4DFF] to-[#00D4FF] text-white rounded-full hover:shadow-xl transition font-semibold mb-2">
                 ✓ Get Verified
             </button>
             
@@ -310,7 +311,7 @@ www.myoneart.com
                         <div class="text-[#2D3436] font-semibold" data-i18n="settings.language">🌐 Langue</div>
                         <div class="text-xs text-gray-500">Language / Idioma</div>
                     </div>
-                    <select id="languageSelect" onchange="updateLanguage(this.value)" class="px-4 py-2 border border-gray-300 rounded-xl focus:outline-none focus:border-[#FF4458] bg-white">
+                    <select id="languageSelect" onchange="updateLanguage(this.value)" class="px-4 py-2 border border-gray-300 rounded-xl focus:outline-none focus:border-[#FF4081] bg-white">
                         <option value="fr">🇫🇷 Français</option>
                         <option value="en">🇬🇧 English</option>
                     </select>
@@ -322,7 +323,7 @@ www.myoneart.com
                         <div class="text-[#2D3436] font-semibold" data-i18n="settings.theme">🎨 Thème</div>
                         <div class="text-xs text-gray-500">Apparence de l'application</div>
                     </div>
-                    <select id="themeSelect" onchange="updateTheme(this.value)" class="px-4 py-2 border border-gray-300 rounded-xl focus:outline-none focus:border-[#FF4458] bg-white">
+                    <select id="themeSelect" onchange="updateTheme(this.value)" class="px-4 py-2 border border-gray-300 rounded-xl focus:outline-none focus:border-[#FF4081] bg-white">
                         <option value="light">☀️ Clair</option>
                         <option value="dark">🌙 Sombre</option>
                     </select>
@@ -335,17 +336,17 @@ www.myoneart.com
                 <form onsubmit="changePassword(event)">
                     <div class="mb-3">
                         <label class="block text-[#2D3436] mb-2 text-sm">Mot de passe actuel</label>
-                        <input type="password" id="currentPassword" required class="w-full px-4 py-3 border border-gray-300 rounded-xl focus:outline-none focus:border-[#FF4458]">
+                        <input type="password" id="currentPassword" required class="w-full px-4 py-3 border border-gray-300 rounded-xl focus:outline-none focus:border-[#FF4081]">
                     </div>
                     <div class="mb-3">
                         <label class="block text-[#2D3436] mb-2 text-sm">Nouveau mot de passe</label>
-                        <input type="password" id="newPassword" required minlength="6" class="w-full px-4 py-3 border border-gray-300 rounded-xl focus:outline-none focus:border-[#FF4458]">
+                        <input type="password" id="newPassword" required minlength="6" class="w-full px-4 py-3 border border-gray-300 rounded-xl focus:outline-none focus:border-[#FF4081]">
                     </div>
                     <div class="mb-4">
                         <label class="block text-[#2D3436] mb-2 text-sm">Confirmer le nouveau mot de passe</label>
-                        <input type="password" id="confirmPassword" required minlength="6" class="w-full px-4 py-3 border border-gray-300 rounded-xl focus:outline-none focus:border-[#FF4458]">
+                        <input type="password" id="confirmPassword" required minlength="6" class="w-full px-4 py-3 border border-gray-300 rounded-xl focus:outline-none focus:border-[#FF4081]">
                     </div>
-                    <button type="submit" class="w-full py-3 bg-[#6C5CE7] text-white rounded-full hover:bg-[#5f51d4] transition font-semibold">
+                    <button type="submit" class="w-full py-3 bg-[#5B4DFF] text-white rounded-full hover:bg-[#5f51d4] transition font-semibold">
                         Mettre à jour le mot de passe
                     </button>
                 </form>
@@ -374,11 +375,11 @@ www.myoneart.com
             
             <div class="grid grid-cols-2 gap-2 mb-4">
                 <input type="file" id="verificationPhoto" accept="image/*" class="hidden" onchange="previewVerificationPhoto(event)">
-                <button onclick="document.getElementById('verificationPhoto').click()" class="py-3 border-2 border-dashed border-[#FF4458] rounded-xl text-[#FF4458] font-semibold hover:bg-[#FF4458] hover:text-white transition">
+                <button onclick="document.getElementById('verificationPhoto').click()" class="py-3 border-2 border-dashed border-[#FF4081] rounded-xl text-[#FF4081] font-semibold hover:bg-[#FF4081] hover:text-white transition">
                     📁 Upload Photo
                 </button>
                 <input type="file" id="verificationCamera" accept="image/*" capture="user" class="hidden" onchange="previewVerificationPhoto(event)">
-                <button onclick="document.getElementById('verificationCamera').click()" class="py-3 border-2 border-dashed border-[#6C5CE7] rounded-xl text-[#6C5CE7] font-semibold hover:bg-[#6C5CE7] hover:text-white transition">
+                <button onclick="document.getElementById('verificationCamera').click()" class="py-3 border-2 border-dashed border-[#5B4DFF] rounded-xl text-[#5B4DFF] font-semibold hover:bg-[#5B4DFF] hover:text-white transition">
                     📷 Capture Photo
                 </button>
             </div>
@@ -387,7 +388,7 @@ www.myoneart.com
                 <img id="previewImg" src="" alt="Preview" class="w-full rounded-xl max-h-64 object-cover">
             </div>
             
-            <button id="submitVerification" onclick="submitVerification()" class="w-full py-3 bg-gradient-to-r from-[#FF4458] to-[#6C5CE7] text-white rounded-full font-semibold hover:shadow-xl transition" disabled>
+            <button id="submitVerification" onclick="submitVerification()" class="w-full py-3 bg-gradient-to-r from-[#FF4081] via-[#5B4DFF] to-[#00D4FF] text-white rounded-full font-semibold hover:shadow-xl transition" disabled>
                 Submit for Review
             </button>
         </div>
@@ -446,12 +447,12 @@ www.myoneart.com
                 <div class="mb-6">
                     <label class="block text-[#2D3436] mb-2 text-sm font-semibold">📸 Photo de profil</label>
                     <div class="flex items-center gap-4">
-                        <div id="currentProfilePhoto" class="w-20 h-20 rounded-full bg-gradient-to-br from-[#FF4458] to-[#A29BFE] flex items-center justify-center text-white text-2xl font-bold overflow-hidden">
+                        <div id="currentProfilePhoto" class="w-20 h-20 rounded-full bg-gradient-to-br from-[#FF4081] to-[#00D4FF] flex items-center justify-center text-white text-2xl font-bold overflow-hidden">
                             U
                         </div>
                         <div class="flex-1">
                             <input type="file" id="profilePhotoFile" accept="image/*" class="hidden">
-                            <button type="button" onclick="document.getElementById('profilePhotoFile').click()" class="w-full py-2 bg-[#6C5CE7] text-white rounded-xl hover:bg-[#5f51d4] transition text-sm">
+                            <button type="button" onclick="document.getElementById('profilePhotoFile').click()" class="w-full py-2 bg-[#5B4DFF] text-white rounded-xl hover:bg-[#5f51d4] transition text-sm">
                                 Choisir une photo
                             </button>
                         </div>
@@ -464,7 +465,7 @@ www.myoneart.com
                     <div id="editGalleryPhotos" class="grid grid-cols-3 gap-2 mb-2">
                     </div>
                     <input type="file" id="galleryPhotoFile" accept="image/*" class="hidden">
-                    <button type="button" onclick="document.getElementById('galleryPhotoFile').click()" class="w-full py-2 bg-[#A29BFE] text-white rounded-xl hover:bg-[#9088ee] transition text-sm">
+                    <button type="button" onclick="document.getElementById('galleryPhotoFile').click()" class="w-full py-2 bg-[#00D4FF] text-white rounded-xl hover:bg-[#9088ee] transition text-sm">
                         ➕ Ajouter une photo
                     </button>
                 </div>
@@ -472,13 +473,13 @@ www.myoneart.com
                 <!-- Bio -->
                 <div class="mb-4">
                     <label class="block text-[#2D3436] mb-2 text-sm font-semibold">📝 Bio</label>
-                    <textarea id="editProfileBio" rows="3" maxlength="500" class="w-full px-4 py-3 border border-gray-300 rounded-xl focus:outline-none focus:border-[#FF4458]" placeholder="Parlez-nous de vous..."></textarea>
+                    <textarea id="editProfileBio" rows="3" maxlength="500" class="w-full px-4 py-3 border border-gray-300 rounded-xl focus:outline-none focus:border-[#FF4081]" placeholder="Parlez-nous de vous..."></textarea>
                 </div>
 
                 <!-- Genre -->
                 <div class="mb-4">
                     <label class="block text-[#2D3436] mb-2 text-sm font-semibold">👤 Genre</label>
-                    <select id="editProfileGender" class="w-full px-4 py-3 border border-gray-300 rounded-xl focus:outline-none focus:border-[#FF4458]">
+                    <select id="editProfileGender" class="w-full px-4 py-3 border border-gray-300 rounded-xl focus:outline-none focus:border-[#FF4081]">
                         <option value="">Sélectionnez...</option>
                     </select>
                 </div>
@@ -486,7 +487,7 @@ www.myoneart.com
                 <!-- Orientation sexuelle -->
                 <div class="mb-4">
                     <label class="block text-[#2D3436] mb-2 text-sm font-semibold">❤️ Orientation sexuelle</label>
-                    <select id="editProfileOrientation" class="w-full px-4 py-3 border border-gray-300 rounded-xl focus:outline-none focus:border-[#FF4458]">
+                    <select id="editProfileOrientation" class="w-full px-4 py-3 border border-gray-300 rounded-xl focus:outline-none focus:border-[#FF4081]">
                         <option value="">Sélectionnez...</option>
                         <option value="heterosexual">Hétérosexuel(le)</option>
                         <option value="homosexual">Homosexuel(le)</option>
@@ -500,7 +501,7 @@ www.myoneart.com
                 <!-- Religion -->
                 <div class="mb-4">
                     <label class="block text-[#2D3436] mb-2 text-sm font-semibold">🙏 Religion</label>
-                    <select id="editProfileReligion" class="w-full px-4 py-3 border border-gray-300 rounded-xl focus:outline-none focus:border-[#FF4458]">
+                    <select id="editProfileReligion" class="w-full px-4 py-3 border border-gray-300 rounded-xl focus:outline-none focus:border-[#FF4081]">
                         <option value="">Sélectionnez...</option>
                     </select>
                 </div>
@@ -508,7 +509,7 @@ www.myoneart.com
                 <!-- LGBT+ Friendly -->
                 <div class="mb-4">
                     <label class="block text-[#2D3436] mb-2 text-sm font-semibold">🏳️‍🌈 LGBT+ Friendly</label>
-                    <select id="editProfileLGBTQ" class="w-full px-4 py-3 border rounded-xl focus:ring-2 focus:ring-[#FF4458] focus:border-transparent">
+                    <select id="editProfileLGBTQ" class="w-full px-4 py-3 border rounded-xl focus:ring-2 focus:ring-[#FF4081] focus:border-transparent">
                         <option value="">Sélectionnez...</option>
                         <option value="yes">Oui</option>
                         <option value="no">Non</option>
@@ -530,7 +531,7 @@ www.myoneart.com
                     </div>
                 </div>
 
-                <button type="submit" class="w-full py-3 bg-[#FF4458] text-white rounded-full hover:bg-[#e03d4c] transition font-semibold">
+                <button type="submit" class="w-full py-3 bg-[#FF4081] text-white rounded-full hover:bg-[#e0377a] transition font-semibold">
                     💾 Enregistrer les modifications
                 </button>
             </form>
@@ -590,12 +591,12 @@ www.myoneart.com
             <div id="chatMessages" class="bg-[#F5F5F5] rounded-xl mx-6 p-4 overflow-y-auto flex-1 min-h-0"></div>
             
             <form onsubmit="sendPrivateMessage(event)" class="flex gap-2 p-6 pt-4 flex-shrink-0 bg-white border-t border-gray-100">
-                <button type="button" onclick="document.getElementById('chatPhotoInput').click()" class="px-4 py-3 bg-[#6C5CE7] text-white rounded-full hover:bg-[#5f52d6] transition font-semibold flex-shrink-0">
+                <button type="button" onclick="document.getElementById('chatPhotoInput').click()" class="px-4 py-3 bg-[#5B4DFF] text-white rounded-full hover:bg-[#5f52d6] transition font-semibold flex-shrink-0">
                     📷
                 </button>
                 <input type="file" id="chatPhotoInput" accept="image/*" class="hidden" onchange="handleChatPhoto(event)">
-                <input type="text" id="privateMessageInput" placeholder="Tapez un message..." class="flex-1 px-4 py-3 border border-gray-300 rounded-full focus:outline-none focus:border-[#FF4458]">
-                <button type="submit" class="px-4 py-3 bg-[#FF4458] text-white rounded-full hover:bg-[#e03d4c] transition flex-shrink-0">
+                <input type="text" id="privateMessageInput" placeholder="Tapez un message..." class="flex-1 px-4 py-3 border border-gray-300 rounded-full focus:outline-none focus:border-[#FF4081]">
+                <button type="submit" class="px-4 py-3 bg-[#FF4081] text-white rounded-full hover:bg-[#e0377a] transition flex-shrink-0">
                     <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                         <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 19l9 2-9-18-9 18 9-2zm0 0v-8"/>
                     </svg>
@@ -761,7 +762,7 @@ www.myoneart.com
                         const option = options.meeting_type.find(o => o.value === profile.meeting_type);
                         const emoji = option?.emoji || '';
                         const label = option?.label || profile.meeting_type;
-                        document.getElementById('profileMeetingTypes').innerHTML = `<span class="px-3 py-1 bg-[#FF4458] text-white rounded-full text-sm">${emoji} ${label}</span>`;
+                        document.getElementById('profileMeetingTypes').innerHTML = `<span class="px-3 py-1 bg-[#FF4081] text-white rounded-full text-sm">${emoji} ${label}</span>`;
                     } else {
                         document.getElementById('profileMeetingTypes').innerHTML = `<span class="text-[#2D3436] opacity-50">Non renseigné</span>`;
                     }
@@ -772,7 +773,7 @@ www.myoneart.com
                         const interestsHtml = profile.interests.map(interest => {
                             const option = options.interest.find(o => o.value === interest);
                             const label = option?.label || interest;
-                            return `<span class="px-3 py-1 bg-[#A29BFE] text-white rounded-full text-sm">${label}</span>`;
+                            return `<span class="px-3 py-1 bg-[#00D4FF] text-white rounded-full text-sm">${label}</span>`;
                         }).join('');
                         document.getElementById('profileInterests').innerHTML = interestsHtml;
                     } else {
@@ -813,7 +814,7 @@ www.myoneart.com
             list.innerHTML = rooms.map(room => `
                 <div onclick="openParticipants(${room.id})" class="bg-white rounded-2xl p-4 card-hover">
                     <div class="flex items-center gap-3">
-                        <div class="w-12 h-12 rounded-full bg-gradient-to-br from-[#FF4458] to-[#A29BFE] flex items-center justify-center text-white text-xl">
+                        <div class="w-12 h-12 rounded-full bg-gradient-to-br from-[#FF4081] to-[#00D4FF] flex items-center justify-center text-white text-xl">
                             🎉
                         </div>
                         <div class="flex-1">
@@ -851,11 +852,11 @@ www.myoneart.com
             roomFilter = filter;
             
             document.querySelectorAll('[id^="filter-"]').forEach(el => {
-                el.classList.remove('bg-[#FF4458]', 'text-white');
+                el.classList.remove('bg-[#FF4081]', 'text-white');
                 el.classList.add('bg-gray-200', 'text-[#2D3436]');
             });
             document.getElementById(`filter-${filter}`).classList.remove('bg-gray-200', 'text-[#2D3436]');
-            document.getElementById(`filter-${filter}`).classList.add('bg-[#FF4458]', 'text-white');
+            document.getElementById(`filter-${filter}`).classList.add('bg-[#FF4081]', 'text-white');
             
             const filteredRooms = userRooms.filter(room => 
                 filter === 'active' ? room.is_active : !room.is_active
@@ -892,13 +893,13 @@ www.myoneart.com
             list.innerHTML = rooms.map(room => `
                 <div onclick="openParticipants(${room.id})" class="bg-white rounded-2xl p-4 card-hover">
                     <div class="flex items-center gap-3">
-                        <div class="w-12 h-12 rounded-full bg-gradient-to-br from-[#FF4458] to-[#A29BFE] flex items-center justify-center text-white text-xl">
+                        <div class="w-12 h-12 rounded-full bg-gradient-to-br from-[#FF4081] to-[#00D4FF] flex items-center justify-center text-white text-xl">
                             🎉
                         </div>
                         <div class="flex-1">
                             <h4 class="font-bold text-[#2D3436]">${room.name}</h4>
                             <p class="text-xs text-[#2D3436] opacity-75">${room.member_count || 0} personnes</p>
-                            ${room.is_active ? `<p class="text-xs text-[#FF4458] font-semibold mt-1">${getTimeRemaining(room.created_at, room.expires_at)}</p>` : `<p class="text-xs text-gray-500 font-semibold mt-1">🕐 Expiré</p>`}
+                            ${room.is_active ? `<p class="text-xs text-[#FF4081] font-semibold mt-1">${getTimeRemaining(room.created_at, room.expires_at)}</p>` : `<p class="text-xs text-gray-500 font-semibold mt-1">🕐 Expiré</p>`}
                         </div>
                         <span class="text-xs text-[#2D3436] opacity-50">${new Date(room.created_at).toLocaleDateString()}</span>
                     </div>
@@ -1029,7 +1030,7 @@ www.myoneart.com
                         💬 Converser
                     </button>`;
                 } else if (p.request_status === 'pending') {
-                    requestButton = `<button class="flex-1 py-2 bg-[#A29BFE] text-white rounded-full text-sm font-semibold cursor-default">
+                    requestButton = `<button class="flex-1 py-2 bg-[#00D4FF] text-white rounded-full text-sm font-semibold cursor-default">
                         ⏳ Envoyé
                     </button>`;
                 } else if (p.request_status === 'rejected') {
@@ -1037,7 +1038,7 @@ www.myoneart.com
                         ❌ Rejeté
                     </button>`;
                 } else {
-                    requestButton = `<button onclick="sendConnectionRequest(${p.id})" class="flex-1 py-2 bg-[#FF4458] text-white rounded-full text-sm font-semibold hover:bg-[#e03d4c] transition-colors">
+                    requestButton = `<button onclick="sendConnectionRequest(${p.id})" class="flex-1 py-2 bg-[#FF4081] text-white rounded-full text-sm font-semibold hover:bg-[#e0377a] transition-colors">
                         💬 Demande
                     </button>`;
                 }
@@ -1050,7 +1051,7 @@ www.myoneart.com
                     <div class="bg-gray-50 rounded-xl p-4">
                         <div class="flex items-center gap-3 mb-2">
                             <div class="relative ${!isMe ? 'cursor-pointer' : ''}" ${!isMe ? `onclick="viewUserProfile(${p.id})"` : ''}>
-                                <div class="w-12 h-12 rounded-full bg-gradient-to-br from-[#FF4458] to-[#6C5CE7] flex items-center justify-center text-white font-bold overflow-hidden">
+                                <div class="w-12 h-12 rounded-full bg-gradient-to-br from-[#FF4081] via-[#5B4DFF] to-[#00D4FF] flex items-center justify-center text-white font-bold overflow-hidden">
                                     ${p.photo_url ? `<img src="${p.photo_url}" class="w-full h-full object-cover">` : p.name.charAt(0).toUpperCase()}
                                 </div>
                                 <div class="absolute -bottom-1 -right-1 w-5 h-5 ${p.is_verified ? 'bg-blue-500' : 'bg-gray-400'} text-white rounded-full flex items-center justify-center text-xs ${p.is_verified ? '' : 'opacity-60'}">✓</div>
@@ -1063,7 +1064,7 @@ www.myoneart.com
                         ${p.bio ? `<p class="text-sm text-[#2D3436] opacity-75 mb-2">${p.bio}</p>` : ''}
                         ${!isMe ? `
                             <div class="flex gap-2">
-                                <button onclick="viewUserProfile(${p.id})" class="flex-1 py-2 bg-[#6C5CE7] text-white rounded-full text-sm font-semibold hover:bg-[#5b4ed6] transition-colors">
+                                <button onclick="viewUserProfile(${p.id})" class="flex-1 py-2 bg-[#5B4DFF] text-white rounded-full text-sm font-semibold hover:bg-[#5b4ed6] transition-colors">
                                     👤 Voir profil
                                 </button>
                                 ${requestButton}
@@ -1189,11 +1190,11 @@ www.myoneart.com
             requestFilter = filter;
             
             document.querySelectorAll('[id^="req-filter-"]').forEach(el => {
-                el.classList.remove('bg-[#FF4458]', 'text-white');
+                el.classList.remove('bg-[#FF4081]', 'text-white');
                 el.classList.add('bg-gray-200', 'text-[#2D3436]');
             });
             document.getElementById(`req-filter-${filter}`).classList.remove('bg-gray-200', 'text-[#2D3436]');
-            document.getElementById(`req-filter-${filter}`).classList.add('bg-[#FF4458]', 'text-white');
+            document.getElementById(`req-filter-${filter}`).classList.add('bg-[#FF4081]', 'text-white');
             
             loadRequests();
         }
@@ -1218,7 +1219,7 @@ www.myoneart.com
                 return `
                     <div class="bg-white rounded-2xl p-4">
                         <div class="flex items-center gap-3 mb-2">
-                            <div class="relative w-12 h-12 rounded-full bg-gradient-to-br from-[#FF4458] to-[#6C5CE7] flex items-center justify-center text-white font-bold">
+                            <div class="relative w-12 h-12 rounded-full bg-gradient-to-br from-[#FF4081] via-[#5B4DFF] to-[#00D4FF] flex items-center justify-center text-white font-bold">
                                 ${userName.charAt(0).toUpperCase()}
                                 <span class="absolute -bottom-1 -right-1 w-4 h-4 ${badgeColor} rounded-full flex items-center justify-center text-white text-xs">✓</span>
                             </div>
@@ -1288,13 +1289,13 @@ www.myoneart.com
         async function filterConversations(filter) {
             conversationFilter = filter;
             
-            document.getElementById('conv-filter-active').classList.remove('bg-[#FF4458]', 'text-white');
+            document.getElementById('conv-filter-active').classList.remove('bg-[#FF4081]', 'text-white');
             document.getElementById('conv-filter-active').classList.add('bg-gray-200', 'text-[#2D3436]');
-            document.getElementById('conv-filter-expired').classList.remove('bg-[#FF4458]', 'text-white');
+            document.getElementById('conv-filter-expired').classList.remove('bg-[#FF4081]', 'text-white');
             document.getElementById('conv-filter-expired').classList.add('bg-gray-200', 'text-[#2D3436]');
             
             document.getElementById(`conv-filter-${filter}`).classList.remove('bg-gray-200', 'text-[#2D3436]');
-            document.getElementById(`conv-filter-${filter}`).classList.add('bg-[#FF4458]', 'text-white');
+            document.getElementById(`conv-filter-${filter}`).classList.add('bg-[#FF4081]', 'text-white');
             
             await loadConversations();
         }
@@ -1372,7 +1373,7 @@ www.myoneart.com
                 return `
                     <div onclick="openChat(${conv.id}, '${otherUser}', ${otherUserId}, ${isVerified}, '${conv.expires_at}')" class="bg-white rounded-2xl p-4 card-hover">
                         <div class="flex items-center gap-3">
-                            <div class="relative w-12 h-12 rounded-full bg-gradient-to-br from-[#FF4458] to-[#6C5CE7] flex items-center justify-center text-white font-bold">
+                            <div class="relative w-12 h-12 rounded-full bg-gradient-to-br from-[#FF4081] via-[#5B4DFF] to-[#00D4FF] flex items-center justify-center text-white font-bold">
                                 ${otherUser.charAt(0).toUpperCase()}
                                 <span class="absolute -bottom-1 -right-1 w-4 h-4 ${badgeColor} rounded-full flex items-center justify-center text-white text-xs">✓</span>
                             </div>
@@ -1382,7 +1383,7 @@ www.myoneart.com
                                     ${badgeHtml}
                                 </h4>
                                 <p class="text-xs text-[#2D3436] opacity-75">${conv.room_name || 'Conversation'}</p>
-                                ${timeInfo ? `<p class="text-xs ${conv.is_active ? 'text-[#FF4458]' : 'text-gray-500'} font-semibold mt-1">${timeInfo}</p>` : ''}
+                                ${timeInfo ? `<p class="text-xs ${conv.is_active ? 'text-[#FF4081]' : 'text-gray-500'} font-semibold mt-1">${timeInfo}</p>` : ''}
                             </div>
                             ${unreadBadge}
                         </div>
@@ -1562,7 +1563,7 @@ www.myoneart.com
             const meetingTypeHtml = meetingTypeOption ? `
                 <div class="mb-4">
                     <p class="text-xs text-[#2D3436] opacity-60 mb-1">💕 Recherche</p>
-                    <span class="inline-block px-3 py-1 bg-[#FF4458] text-white rounded-full text-sm">${meetingTypeOption.emoji || ''} ${meetingTypeOption.label}</span>
+                    <span class="inline-block px-3 py-1 bg-[#FF4081] text-white rounded-full text-sm">${meetingTypeOption.emoji || ''} ${meetingTypeOption.label}</span>
                 </div>
             ` : '';
             
@@ -1592,7 +1593,7 @@ www.myoneart.com
                     <div class="flex flex-wrap gap-2">
                         ${profile.interests.map(interest => {
                             const option = options.interest.find(o => o.value === interest);
-                            return `<span class="px-3 py-1 bg-[#A29BFE] text-white rounded-full text-sm">${option ? option.label : interest}</span>`;
+                            return `<span class="px-3 py-1 bg-[#00D4FF] text-white rounded-full text-sm">${option ? option.label : interest}</span>`;
                         }).join('')}
                     </div>
                 </div>
@@ -1617,7 +1618,7 @@ www.myoneart.com
             
             const html = `
                 <div class="text-center mb-6">
-                    <div class="relative w-24 h-24 mx-auto mb-3 rounded-full bg-gradient-to-br from-[#FF4458] to-[#6C5CE7] flex items-center justify-center text-white font-bold text-3xl overflow-hidden">
+                    <div class="relative w-24 h-24 mx-auto mb-3 rounded-full bg-gradient-to-br from-[#FF4081] via-[#5B4DFF] to-[#00D4FF] flex items-center justify-center text-white font-bold text-3xl overflow-hidden">
                         ${profile.photo_url ? `<img src="${profile.photo_url}" class="w-full h-full object-cover">` : profile.name.charAt(0).toUpperCase()}
                         <div class="absolute -bottom-1 -right-1 w-7 h-7 ${profile.is_verified ? 'bg-blue-500' : 'bg-gray-400 opacity-60'} text-white rounded-full flex items-center justify-center text-sm">✓</div>
                     </div>
@@ -1705,7 +1706,7 @@ www.myoneart.com
                 
                 return `
                     <div class="mb-3 ${isMe ? 'text-right' : 'text-left'}">
-                        <div class="inline-block max-w-[70%] ${isMe ? 'bg-[#FF4458] text-white' : 'bg-white text-[#2D3436]'} rounded-2xl px-4 py-2">
+                        <div class="inline-block max-w-[70%] ${isMe ? 'bg-[#FF4081] text-white' : 'bg-white text-[#2D3436]'} rounded-2xl px-4 py-2">
                             ${messageContent}
                             <div class="text-xs opacity-75 mt-1">${new Date(msg.created_at).toLocaleTimeString()}</div>
                         </div>
@@ -1842,8 +1843,8 @@ www.myoneart.com
                 const meetingTypesHtml = profileOptions.meeting_type.map(opt => {
                     const checked = currentProfileData.meeting_type === opt.value;
                     return `
-                        <label class="flex items-center py-2 px-3 border rounded-xl hover:bg-gray-50 cursor-pointer transition-all ${checked ? 'border-[#FF4458] bg-[#FF4458] bg-opacity-5' : ''}">
-                            <input type="radio" name="meetingType" value="${opt.value}" ${checked ? 'checked' : ''} class="mr-3 w-5 h-5 text-[#FF4458] focus:ring-[#FF4458]">
+                        <label class="flex items-center py-2 px-3 border rounded-xl hover:bg-gray-50 cursor-pointer transition-all ${checked ? 'border-[#FF4081] bg-[#FF4081] bg-opacity-5' : ''}">
+                            <input type="radio" name="meetingType" value="${opt.value}" ${checked ? 'checked' : ''} class="mr-3 w-5 h-5 text-[#FF4081] focus:ring-[#FF4081]">
                             <span class="text-[#2D3436] font-medium">${opt.emoji || ''} ${opt.label}</span>
                         </label>
                     `;
@@ -2010,7 +2011,7 @@ www.myoneart.com
                 }
                 
                 list.innerHTML = userPlans.map(plan => `
-                    <div class="bg-gradient-to-br from-[#6C5CE7] to-[#A29BFE] rounded-2xl p-4 text-white">
+                    <div class="bg-gradient-to-br from-[#5B4DFF] to-[#00D4FF] rounded-2xl p-4 text-white">
                         <div class="flex justify-between items-start mb-3">
                             <div>
                                 <h4 class="text-xl font-bold">${plan.name}</h4>
@@ -2028,7 +2029,7 @@ www.myoneart.com
                             ? '<div class="bg-white/20 text-center py-2 rounded-full text-sm font-semibold">✓ Plan actuel</div>'
                             : pendingRequest
                             ? '<div class="bg-white/20 text-center py-2 rounded-full text-sm font-semibold opacity-50">Demande en attente</div>'
-                            : `<button onclick="requestSubscriptionChange('${plan.name}')" class="w-full bg-white text-[#6C5CE7] py-2 rounded-full text-sm font-semibold hover:bg-gray-100 transition">
+                            : `<button onclick="requestSubscriptionChange('${plan.name}')" class="w-full bg-white text-[#5B4DFF] py-2 rounded-full text-sm font-semibold hover:bg-gray-100 transition">
                                 Demander ce plan
                               </button>`
                         }

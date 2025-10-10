@@ -13,7 +13,7 @@ www.myoneart.com
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
     <title>MatchSpot - Admin Dashboard</title>
     <link rel="manifest" href="/manifest.json">
-    <meta name="theme-color" content="#FF4458">
+    <meta name="theme-color" content="#FF4081">
     <script src="/css/tailwind.js"></script>
     <link href="/css/fonts.css" rel="stylesheet">
     <style>
@@ -21,7 +21,7 @@ www.myoneart.com
         h1, h2, h3, h4, h5, h6 { font-family: 'Poppins', sans-serif; }
         .bottom-nav { position: fixed; bottom: 0; left: 0; right: 0; max-width: 768px; margin: 0 auto; background: white; box-shadow: 0 -2px 10px rgba(0,0,0,0.1); z-index: 50; }
         .nav-item { transition: all 0.2s; }
-        .nav-item.active { color: #FF4458; }
+        .nav-item.active { color: #FF4081; }
         .nav-item svg { width: 24px; height: 24px; }
     </style>
 </head>
@@ -40,11 +40,11 @@ www.myoneart.com
         </div>
 
         <div class="px-4 space-y-3 mb-4">
-            <div class="bg-gradient-to-br from-[#FF4458] to-[#e03d4c] rounded-2xl p-5 text-white">
+            <div class="bg-gradient-to-br from-[#FF4081] to-[#e03d4c] rounded-2xl p-5 text-white">
                 <div class="text-sm opacity-90 mb-1">Utilisateurs totaux</div>
                 <div id="totalUsers" class="text-3xl font-bold">0</div>
             </div>
-            <div class="bg-gradient-to-br from-[#6C5CE7] to-[#5a4dd9] rounded-2xl p-5 text-white">
+            <div class="bg-gradient-to-br from-[#5B4DFF] to-[#5a4dd9] rounded-2xl p-5 text-white">
                 <div class="text-sm opacity-90 mb-1">Rooms actives</div>
                 <div id="totalRooms" class="text-3xl font-bold">0</div>
             </div>
@@ -89,7 +89,7 @@ www.myoneart.com
                 <div class="bg-white rounded-2xl p-4">
                     <div class="flex items-center justify-between mb-3">
                         <h3 class="font-bold text-[#2D3436]">⚧️ Genres</h3>
-                        <button onclick="showAddOptionModal('gender')" class="px-3 py-1 bg-[#FF4458] text-white rounded-full text-sm">+ Ajouter</button>
+                        <button onclick="showAddOptionModal('gender')" class="px-3 py-1 bg-[#FF4081] text-white rounded-full text-sm">+ Ajouter</button>
                     </div>
                     <div id="genderOptions" class="space-y-2">
                         <p class="text-[#2D3436] opacity-75 text-sm">Chargement...</p>
@@ -99,7 +99,7 @@ www.myoneart.com
                 <div class="bg-white rounded-2xl p-4">
                     <div class="flex items-center justify-between mb-3">
                         <h3 class="font-bold text-[#2D3436]">🙏 Religions</h3>
-                        <button onclick="showAddOptionModal('religion')" class="px-3 py-1 bg-[#FF4458] text-white rounded-full text-sm">+ Ajouter</button>
+                        <button onclick="showAddOptionModal('religion')" class="px-3 py-1 bg-[#FF4081] text-white rounded-full text-sm">+ Ajouter</button>
                     </div>
                     <div id="religionOptions" class="space-y-2">
                         <p class="text-[#2D3436] opacity-75 text-sm">Chargement...</p>
@@ -109,7 +109,7 @@ www.myoneart.com
                 <div class="bg-white rounded-2xl p-4">
                     <div class="flex items-center justify-between mb-3">
                         <h3 class="font-bold text-[#2D3436]">💕 Types de Rencontre</h3>
-                        <button onclick="showAddOptionModal('meeting_type')" class="px-3 py-1 bg-[#FF4458] text-white rounded-full text-sm">+ Ajouter</button>
+                        <button onclick="showAddOptionModal('meeting_type')" class="px-3 py-1 bg-[#FF4081] text-white rounded-full text-sm">+ Ajouter</button>
                     </div>
                     <div id="meetingTypeOptions" class="space-y-2">
                         <p class="text-[#2D3436] opacity-75 text-sm">Chargement...</p>
@@ -119,7 +119,7 @@ www.myoneart.com
                 <div class="bg-white rounded-2xl p-4">
                     <div class="flex items-center justify-between mb-3">
                         <h3 class="font-bold text-[#2D3436]">🎯 Centres d'Intérêt</h3>
-                        <button onclick="showAddOptionModal('interest')" class="px-3 py-1 bg-[#FF4458] text-white rounded-full text-sm">+ Ajouter</button>
+                        <button onclick="showAddOptionModal('interest')" class="px-3 py-1 bg-[#FF4081] text-white rounded-full text-sm">+ Ajouter</button>
                     </div>
                     <div id="interestOptions" class="space-y-2">
                         <p class="text-[#2D3436] opacity-75 text-sm">Chargement...</p>
@@ -177,7 +177,7 @@ www.myoneart.com
 
                 <div class="bg-white rounded-2xl p-4">
                     <h3 class="font-bold text-[#2D3436] mb-3">🔄 Mise à Jour</h3>
-                    <button onclick="updateFromGithub()" class="w-full py-3 bg-[#FF4458] text-white rounded-xl font-semibold hover:bg-[#e03d4c] transition">
+                    <button onclick="updateFromGithub()" class="w-full py-3 bg-[#FF4081] text-white rounded-xl font-semibold hover:bg-[#e03d4c] transition">
                         🚀 Mettre à jour depuis GitHub
                     </button>
                 </div>
@@ -211,7 +211,7 @@ www.myoneart.com
 
                 <div class="bg-white rounded-2xl p-4">
                     <h3 class="font-bold text-[#2D3436] mb-3">🌐 Langue par Défaut</h3>
-                    <select id="defaultLanguage" onchange="updateDefaultLanguage()" class="w-full px-4 py-3 border border-gray-300 rounded-xl focus:outline-none focus:border-[#FF4458]">
+                    <select id="defaultLanguage" onchange="updateDefaultLanguage()" class="w-full px-4 py-3 border border-gray-300 rounded-xl focus:outline-none focus:border-[#FF4081]">
                         <option value="fr">Français</option>
                         <option value="en">English</option>
                     </select>
@@ -252,7 +252,7 @@ www.myoneart.com
                 </div>
             </div>
 
-            <button onclick="generateApiKey()" class="w-full mb-4 py-3 bg-[#6C5CE7] text-white rounded-xl font-semibold hover:bg-[#5a4dd9] transition">
+            <button onclick="generateApiKey()" class="w-full mb-4 py-3 bg-[#5B4DFF] text-white rounded-xl font-semibold hover:bg-[#5a4dd9] transition">
                 ➕ Générer une Nouvelle Clé
             </button>
 
@@ -295,7 +295,7 @@ www.myoneart.com
             </div>
 
             <div class="flex gap-2 mb-4">
-                <button id="subs-filter-user" onclick="filterSubscriptionRequests('user')" class="flex-1 py-2 px-4 rounded-full bg-[#FF4458] text-white text-sm font-semibold">
+                <button id="subs-filter-user" onclick="filterSubscriptionRequests('user')" class="flex-1 py-2 px-4 rounded-full bg-[#FF4081] text-white text-sm font-semibold">
                     👤 Utilisateurs
                 </button>
                 <button id="subs-filter-establishment" onclick="filterSubscriptionRequests('establishment')" class="flex-1 py-2 px-4 rounded-full bg-gray-200 text-[#2D3436] text-sm font-semibold">
@@ -318,13 +318,13 @@ www.myoneart.com
                     </button>
                     <h1 class="text-2xl font-bold text-[#2D3436]">💎 Gérer les Plans</h1>
                 </div>
-                <button onclick="showAddPlanModal()" class="px-4 py-2 bg-[#FF4458] text-white rounded-full text-sm font-semibold">
+                <button onclick="showAddPlanModal()" class="px-4 py-2 bg-[#FF4081] text-white rounded-full text-sm font-semibold">
                     + Ajouter
                 </button>
             </div>
 
             <div class="flex gap-2 mb-4">
-                <button id="plans-filter-user" onclick="filterPlans('user')" class="flex-1 py-2 px-4 rounded-full bg-[#FF4458] text-white text-sm font-semibold">
+                <button id="plans-filter-user" onclick="filterPlans('user')" class="flex-1 py-2 px-4 rounded-full bg-[#FF4081] text-white text-sm font-semibold">
                     👤 Utilisateurs
                 </button>
                 <button id="plans-filter-establishment" onclick="filterPlans('establishment')" class="flex-1 py-2 px-4 rounded-full bg-gray-200 text-[#2D3436] text-sm font-semibold">
@@ -344,30 +344,30 @@ www.myoneart.com
             <form onsubmit="addPlan(event)">
                 <div class="mb-3">
                     <label class="block text-[#2D3436] mb-2 text-sm font-semibold">Rôle</label>
-                    <select id="newPlanRole" required class="w-full px-4 py-3 border border-gray-300 rounded-xl focus:outline-none focus:border-[#FF4458]">
+                    <select id="newPlanRole" required class="w-full px-4 py-3 border border-gray-300 rounded-xl focus:outline-none focus:border-[#FF4081]">
                         <option value="user">👤 Utilisateur</option>
                         <option value="establishment">🏪 Établissement</option>
                     </select>
                 </div>
                 <div class="mb-3">
                     <label class="block text-[#2D3436] mb-2 text-sm font-semibold">Nom du Plan</label>
-                    <input type="text" id="newPlanName" required class="w-full px-4 py-3 border border-gray-300 rounded-xl focus:outline-none focus:border-[#FF4458]" placeholder="ex: Premium">
+                    <input type="text" id="newPlanName" required class="w-full px-4 py-3 border border-gray-300 rounded-xl focus:outline-none focus:border-[#FF4081]" placeholder="ex: Premium">
                 </div>
                 <div class="mb-3">
                     <label class="block text-[#2D3436] mb-2 text-sm font-semibold">Description</label>
-                    <textarea id="newPlanDescription" required class="w-full px-4 py-3 border border-gray-300 rounded-xl focus:outline-none focus:border-[#FF4458]" placeholder="Description du plan" rows="3"></textarea>
+                    <textarea id="newPlanDescription" required class="w-full px-4 py-3 border border-gray-300 rounded-xl focus:outline-none focus:border-[#FF4081]" placeholder="Description du plan" rows="3"></textarea>
                 </div>
                 <div class="mb-3">
                     <label class="block text-[#2D3436] mb-2 text-sm font-semibold">Prix (€/mois)</label>
-                    <input type="number" id="newPlanPrice" required step="0.01" class="w-full px-4 py-3 border border-gray-300 rounded-xl focus:outline-none focus:border-[#FF4458]" placeholder="9.99">
+                    <input type="number" id="newPlanPrice" required step="0.01" class="w-full px-4 py-3 border border-gray-300 rounded-xl focus:outline-none focus:border-[#FF4081]" placeholder="9.99">
                 </div>
                 <div class="mb-4">
                     <label class="block text-[#2D3436] mb-2 text-sm font-semibold">Rooms par jour</label>
-                    <input type="number" id="newPlanRooms" required class="w-full px-4 py-3 border border-gray-300 rounded-xl focus:outline-none focus:border-[#FF4458]" placeholder="5">
+                    <input type="number" id="newPlanRooms" required class="w-full px-4 py-3 border border-gray-300 rounded-xl focus:outline-none focus:border-[#FF4081]" placeholder="5">
                 </div>
                 <div class="flex gap-2">
                     <button type="button" onclick="closeAddPlanModal()" class="flex-1 py-3 bg-gray-200 text-[#2D3436] rounded-full">Annuler</button>
-                    <button type="submit" class="flex-1 py-3 bg-[#FF4458] text-white rounded-full">Ajouter</button>
+                    <button type="submit" class="flex-1 py-3 bg-[#FF4081] text-white rounded-full">Ajouter</button>
                 </div>
             </form>
         </div>
@@ -380,23 +380,23 @@ www.myoneart.com
                 <input type="hidden" id="editPlanId">
                 <div class="mb-3">
                     <label class="block text-[#2D3436] mb-2 text-sm font-semibold">Nom du Plan</label>
-                    <input type="text" id="editPlanName" required class="w-full px-4 py-3 border border-gray-300 rounded-xl focus:outline-none focus:border-[#FF4458]">
+                    <input type="text" id="editPlanName" required class="w-full px-4 py-3 border border-gray-300 rounded-xl focus:outline-none focus:border-[#FF4081]">
                 </div>
                 <div class="mb-3">
                     <label class="block text-[#2D3436] mb-2 text-sm font-semibold">Description</label>
-                    <textarea id="editPlanDescription" required class="w-full px-4 py-3 border border-gray-300 rounded-xl focus:outline-none focus:border-[#FF4458]" rows="3"></textarea>
+                    <textarea id="editPlanDescription" required class="w-full px-4 py-3 border border-gray-300 rounded-xl focus:outline-none focus:border-[#FF4081]" rows="3"></textarea>
                 </div>
                 <div class="mb-3">
                     <label class="block text-[#2D3436] mb-2 text-sm font-semibold">Prix (€/mois)</label>
-                    <input type="number" id="editPlanPrice" required step="0.01" class="w-full px-4 py-3 border border-gray-300 rounded-xl focus:outline-none focus:border-[#FF4458]">
+                    <input type="number" id="editPlanPrice" required step="0.01" class="w-full px-4 py-3 border border-gray-300 rounded-xl focus:outline-none focus:border-[#FF4081]">
                 </div>
                 <div class="mb-4">
                     <label class="block text-[#2D3436] mb-2 text-sm font-semibold">Rooms par jour</label>
-                    <input type="number" id="editPlanRooms" required class="w-full px-4 py-3 border border-gray-300 rounded-xl focus:outline-none focus:border-[#FF4458]">
+                    <input type="number" id="editPlanRooms" required class="w-full px-4 py-3 border border-gray-300 rounded-xl focus:outline-none focus:border-[#FF4081]">
                 </div>
                 <div class="flex gap-2">
                     <button type="button" onclick="closeEditPlanModal()" class="flex-1 py-3 bg-gray-200 text-[#2D3436] rounded-full">Annuler</button>
-                    <button type="submit" class="flex-1 py-3 bg-[#FF4458] text-white rounded-full">Enregistrer</button>
+                    <button type="submit" class="flex-1 py-3 bg-[#FF4081] text-white rounded-full">Enregistrer</button>
                 </div>
             </form>
         </div>
@@ -409,15 +409,15 @@ www.myoneart.com
                 <input type="hidden" id="newOptionCategory">
                 <div class="mb-3">
                     <label class="block text-[#2D3436] mb-2 text-sm font-semibold">Valeur (ID)</label>
-                    <input type="text" id="newOptionValue" required class="w-full px-4 py-3 border border-gray-300 rounded-xl focus:outline-none focus:border-[#FF4458]" placeholder="ex: pansexual">
+                    <input type="text" id="newOptionValue" required class="w-full px-4 py-3 border border-gray-300 rounded-xl focus:outline-none focus:border-[#FF4081]" placeholder="ex: pansexual">
                 </div>
                 <div class="mb-4">
                     <label class="block text-[#2D3436] mb-2 text-sm font-semibold">Libellé</label>
-                    <input type="text" id="newOptionLabel" required class="w-full px-4 py-3 border border-gray-300 rounded-xl focus:outline-none focus:border-[#FF4458]" placeholder="ex: Pansexuel(le)">
+                    <input type="text" id="newOptionLabel" required class="w-full px-4 py-3 border border-gray-300 rounded-xl focus:outline-none focus:border-[#FF4081]" placeholder="ex: Pansexuel(le)">
                 </div>
                 <div class="flex gap-2">
                     <button type="button" onclick="closeAddOptionModal()" class="flex-1 py-3 bg-gray-200 text-[#2D3436] rounded-full">Annuler</button>
-                    <button type="submit" class="flex-1 py-3 bg-[#FF4458] text-white rounded-full">Ajouter</button>
+                    <button type="submit" class="flex-1 py-3 bg-[#FF4081] text-white rounded-full">Ajouter</button>
                 </div>
             </form>
         </div>
@@ -558,10 +558,10 @@ www.myoneart.com
             currentSubsFilter = role;
             
             document.getElementById('subs-filter-user').className = role === 'user' 
-                ? 'flex-1 py-2 px-4 rounded-full bg-[#FF4458] text-white text-sm font-semibold'
+                ? 'flex-1 py-2 px-4 rounded-full bg-[#FF4081] text-white text-sm font-semibold'
                 : 'flex-1 py-2 px-4 rounded-full bg-gray-200 text-[#2D3436] text-sm font-semibold';
             document.getElementById('subs-filter-establishment').className = role === 'establishment'
-                ? 'flex-1 py-2 px-4 rounded-full bg-[#FF4458] text-white text-sm font-semibold'
+                ? 'flex-1 py-2 px-4 rounded-full bg-[#FF4081] text-white text-sm font-semibold'
                 : 'flex-1 py-2 px-4 rounded-full bg-gray-200 text-[#2D3436] text-sm font-semibold';
             
             if (!requests || !plans) {
@@ -575,7 +575,7 @@ www.myoneart.com
             const list = document.getElementById('subscriptionRequestsList');
             
             const plansHtml = rolePlans.length > 0 ? `
-                <div class="bg-gradient-to-br from-[#6C5CE7] to-[#5a4dd9] rounded-2xl p-4 text-white mb-4">
+                <div class="bg-gradient-to-br from-[#5B4DFF] to-[#5a4dd9] rounded-2xl p-4 text-white mb-4">
                     <h3 class="font-bold mb-3">💎 Plans disponibles pour ${role === 'user' ? 'Utilisateurs' : 'Établissements'}</h3>
                     <div class="space-y-2">
                         ${rolePlans.map(plan => `
@@ -609,7 +609,7 @@ www.myoneart.com
                     </div>
                     <div class="bg-[#F5F5F5] rounded-xl p-3 mb-3">
                         <div class="text-sm font-semibold text-[#2D3436] mb-1">Forfait demandé:</div>
-                        <div class="text-lg font-bold text-[#FF4458]">${req.subscription_tier}</div>
+                        <div class="text-lg font-bold text-[#FF4081]">${req.subscription_tier}</div>
                     </div>
                     <div class="flex gap-2">
                         <button onclick="approveSubscriptionRequest(${req.id})" class="flex-1 py-2 bg-[#00B894] text-white rounded-full text-sm font-semibold">
@@ -689,10 +689,10 @@ www.myoneart.com
             currentPlansFilter = role;
             
             document.getElementById('plans-filter-user').className = role === 'user' 
-                ? 'flex-1 py-2 px-4 rounded-full bg-[#FF4458] text-white text-sm font-semibold'
+                ? 'flex-1 py-2 px-4 rounded-full bg-[#FF4081] text-white text-sm font-semibold'
                 : 'flex-1 py-2 px-4 rounded-full bg-gray-200 text-[#2D3436] text-sm font-semibold';
             document.getElementById('plans-filter-establishment').className = role === 'establishment'
-                ? 'flex-1 py-2 px-4 rounded-full bg-[#FF4458] text-white text-sm font-semibold'
+                ? 'flex-1 py-2 px-4 rounded-full bg-[#FF4081] text-white text-sm font-semibold'
                 : 'flex-1 py-2 px-4 rounded-full bg-gray-200 text-[#2D3436] text-sm font-semibold';
             
             const filtered = allPlans.filter(p => p.role === role);
@@ -704,7 +704,7 @@ www.myoneart.com
             }
             
             list.innerHTML = filtered.map(plan => `
-                <div class="bg-gradient-to-br from-[#6C5CE7] to-[#A29BFE] rounded-2xl p-4 text-white">
+                <div class="bg-gradient-to-br from-[#5B4DFF] to-[#A29BFE] rounded-2xl p-4 text-white">
                     <div class="flex justify-between items-start mb-3">
                         <div class="flex-1">
                             <h4 class="text-xl font-bold">${plan.name}</h4>
@@ -929,7 +929,7 @@ www.myoneart.com
                         ${user.photo_url ? `
                             <img src="${user.photo_url}" alt="${user.name}" class="w-16 h-16 rounded-full object-cover">
                         ` : `
-                            <div class="w-16 h-16 rounded-full bg-[#6C5CE7] flex items-center justify-center text-white text-xl font-bold">
+                            <div class="w-16 h-16 rounded-full bg-[#5B4DFF] flex items-center justify-center text-white text-xl font-bold">
                                 ${user.name ? user.name.charAt(0).toUpperCase() : '?'}
                             </div>
                         `}
@@ -953,7 +953,7 @@ www.myoneart.com
                         </div>
                     </div>
                     <div class="flex gap-2">
-                        <button onclick="viewUserDetails(${user.id})" class="flex-1 py-2 bg-[#6C5CE7] text-white rounded-full text-sm font-semibold hover:bg-[#5f52d6] transition">
+                        <button onclick="viewUserDetails(${user.id})" class="flex-1 py-2 bg-[#5B4DFF] text-white rounded-full text-sm font-semibold hover:bg-[#5f52d6] transition">
                             👁️ Voir
                         </button>
                         <button onclick="toggleUserBlock(${user.id}, ${user.is_blocked || false})" class="flex-1 py-2 ${user.is_blocked ? 'bg-green-500 hover:bg-green-600' : 'bg-yellow-500 hover:bg-yellow-600'} text-white rounded-full text-sm font-semibold transition">
@@ -966,8 +966,8 @@ www.myoneart.com
 
         function getRoleBadgeClass(role) {
             switch(role) {
-                case 'admin': return 'bg-[#FF4458] text-white';
-                case 'establishment': return 'bg-[#6C5CE7] text-white';
+                case 'admin': return 'bg-[#FF4081] text-white';
+                case 'establishment': return 'bg-[#5B4DFF] text-white';
                 default: return 'bg-[#00B894] text-white';
             }
         }
@@ -999,7 +999,7 @@ www.myoneart.com
             }
             
             list.innerHTML = reports.map(report => `
-                <div class="bg-white rounded-2xl p-4 border-l-4 border-[#FF4458]">
+                <div class="bg-white rounded-2xl p-4 border-l-4 border-[#FF4081]">
                     <div class="flex items-center justify-between mb-2">
                         <h4 class="font-bold text-[#2D3436] capitalize">${report.report_type}</h4>
                         <span class="px-2 py-1 rounded-full text-xs font-semibold ${report.status === 'pending' ? 'bg-yellow-500 text-white' : 'bg-gray-300 text-[#2D3436]'}">
@@ -1044,7 +1044,7 @@ www.myoneart.com
                 window[verificationId] = v;
                 
                 return `
-                <div class="bg-white rounded-2xl p-4 border-l-4 border-[#6C5CE7]">
+                <div class="bg-white rounded-2xl p-4 border-l-4 border-[#5B4DFF]">
                     <div class="flex items-center justify-between mb-3">
                         <div>
                             <h4 class="font-bold text-[#2D3436]">${v.user_name}</h4>
@@ -1057,13 +1057,13 @@ www.myoneart.com
                     </div>
                     <div class="mb-3 cursor-pointer" onclick="showImageFullscreen('${v.photo_url}')">
                         <img src="${v.photo_url}" alt="Verification Photo" class="w-full rounded-xl object-cover hover:opacity-90 transition" style="max-height: 400px;">
-                        <p class="text-xs text-center text-[#6C5CE7] mt-1">🔍 Cliquer pour agrandir</p>
+                        <p class="text-xs text-center text-[#5B4DFF] mt-1">🔍 Cliquer pour agrandir</p>
                     </div>
                     <div class="text-xs text-[#2D3436] opacity-75 mb-3">
                         Demandé le ${new Date(v.created_at).toLocaleDateString()}
                     </div>
                     <div class="flex gap-2">
-                        <button onclick="showUserProfile('${verificationId}')" class="flex-1 py-2 bg-[#6C5CE7] text-white rounded-full text-sm font-semibold hover:bg-[#5b4cc6] transition">
+                        <button onclick="showUserProfile('${verificationId}')" class="flex-1 py-2 bg-[#5B4DFF] text-white rounded-full text-sm font-semibold hover:bg-[#5b4cc6] transition">
                             👤 Voir profil
                         </button>
                         <button onclick="approveVerification(${v.id})" class="flex-1 py-2 bg-green-500 text-white rounded-full text-sm font-semibold hover:bg-green-600 transition">
@@ -1166,7 +1166,7 @@ www.myoneart.com
                             ${fullUser.photo_url ? `
                                 <img src="${fullUser.photo_url}" alt="${fullUser.name}" class="w-32 h-32 rounded-full object-cover mx-auto mb-3 cursor-pointer" onclick="showImageFullscreen('${fullUser.photo_url}')">
                             ` : `
-                                <div class="w-32 h-32 rounded-full bg-[#6C5CE7] flex items-center justify-center text-white text-4xl font-bold mx-auto mb-3">
+                                <div class="w-32 h-32 rounded-full bg-[#5B4DFF] flex items-center justify-center text-white text-4xl font-bold mx-auto mb-3">
                                     ${fullUser.name ? fullUser.name.charAt(0).toUpperCase() : '?'}
                                 </div>
                             `}
@@ -1710,7 +1710,7 @@ www.myoneart.com
                             </div>
                             <p class="text-xs text-[#2D3436] opacity-75 mb-3">${new Date(b.created).toLocaleString()}</p>
                             <div class="flex gap-2">
-                                <button onclick="restoreBackup('${b.name}')" class="flex-1 py-2 bg-[#6C5CE7] text-white rounded-full text-sm font-semibold hover:bg-[#5a4dd9] transition">
+                                <button onclick="restoreBackup('${b.name}')" class="flex-1 py-2 bg-[#5B4DFF] text-white rounded-full text-sm font-semibold hover:bg-[#5a4dd9] transition">
                                     🔄 Restaurer
                                 </button>
                                 <button onclick="deleteBackup('${b.name}')" class="flex-1 py-2 bg-red-500 text-white rounded-full text-sm font-semibold hover:bg-red-600 transition">
@@ -1785,7 +1785,7 @@ www.myoneart.com
                     }
                     
                     list.innerHTML = data.keys.map(k => `
-                        <div class="bg-white rounded-2xl p-4 border-l-4 border-[#6C5CE7]">
+                        <div class="bg-white rounded-2xl p-4 border-l-4 border-[#5B4DFF]">
                             <div class="flex items-center justify-between mb-2">
                                 <h4 class="font-bold text-[#2D3436]">${k.name}</h4>
                                 <span class="text-xs ${k.is_active ? 'bg-green-100 text-green-700' : 'bg-gray-100 text-gray-700'} px-2 py-1 rounded-full">
@@ -1956,7 +1956,7 @@ www.myoneart.com
         <div class="bg-white rounded-2xl p-6 max-w-md w-full max-h-[90vh] overflow-y-auto">
             <div class="flex items-center justify-between mb-4">
                 <h2 class="text-xl font-bold text-[#2D3436]">👤 Profil de l'utilisateur</h2>
-                <button onclick="closeProfileModal()" class="text-2xl text-[#2D3436] hover:text-[#FF4458] transition">
+                <button onclick="closeProfileModal()" class="text-2xl text-[#2D3436] hover:text-[#FF4081] transition">
                     ✕
                 </button>
             </div>

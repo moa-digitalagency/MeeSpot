@@ -13,7 +13,7 @@ www.myoneart.com
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
     <title>MatchSpot - Establishment Dashboard</title>
     <link rel="manifest" href="/manifest.json">
-    <meta name="theme-color" content="#FF4458">
+    <meta name="theme-color" content="#FF4081">
     <script src="/css/tailwind.js"></script>
     <link href="/css/fonts.css" rel="stylesheet">
     <script src="https://cdn.jsdelivr.net/npm/qrious@4.0.2/dist/qrious.min.js"></script>
@@ -22,7 +22,7 @@ www.myoneart.com
         h1, h2, h3, h4, h5, h6 { font-family: 'Poppins', sans-serif; }
         .bottom-nav { position: fixed; bottom: 0; left: 0; right: 0; max-width: 768px; margin: 0 auto; background: white; box-shadow: 0 -2px 10px rgba(0,0,0,0.1); z-index: 50; }
         .nav-item { transition: all 0.2s; }
-        .nav-item.active { color: #FF4458; }
+        .nav-item.active { color: #FF4081; }
         .nav-item svg { width: 24px; height: 24px; }
     </style>
 </head>
@@ -35,17 +35,17 @@ www.myoneart.com
             <form onsubmit="createEstablishment(event)">
                 <div class="mb-4">
                     <label class="block text-[#2D3436] mb-2 text-sm font-semibold">Nom du lieu</label>
-                    <input type="text" id="estName" required class="w-full px-4 py-3 border border-gray-300 rounded-xl focus:outline-none focus:border-[#FF4458]">
+                    <input type="text" id="estName" required class="w-full px-4 py-3 border border-gray-300 rounded-xl focus:outline-none focus:border-[#FF4081]">
                 </div>
                 <div class="mb-4">
                     <label class="block text-[#2D3436] mb-2 text-sm font-semibold">Description</label>
-                    <textarea id="estDescription" rows="3" class="w-full px-4 py-3 border border-gray-300 rounded-xl focus:outline-none focus:border-[#FF4458]"></textarea>
+                    <textarea id="estDescription" rows="3" class="w-full px-4 py-3 border border-gray-300 rounded-xl focus:outline-none focus:border-[#FF4081]"></textarea>
                 </div>
                 <div class="mb-6">
                     <label class="block text-[#2D3436] mb-2 text-sm font-semibold">Adresse</label>
-                    <input type="text" id="estAddress" required class="w-full px-4 py-3 border border-gray-300 rounded-xl focus:outline-none focus:border-[#FF4458]">
+                    <input type="text" id="estAddress" required class="w-full px-4 py-3 border border-gray-300 rounded-xl focus:outline-none focus:border-[#FF4081]">
                 </div>
-                <button type="submit" class="w-full py-3 bg-[#FF4458] text-white rounded-full hover:bg-[#e03d4c] transition font-semibold">
+                <button type="submit" class="w-full py-3 bg-[#FF4081] text-white rounded-full hover:bg-[#e0377a] transition font-semibold">
                     Créer l'établissement
                 </button>
             </form>
@@ -61,7 +61,7 @@ www.myoneart.com
 
             <div class="px-4 mb-4">
                 <div class="flex space-x-2 overflow-x-auto pb-2">
-                    <button onclick="filterRooms('all')" id="filter-all" class="px-4 py-2 rounded-full bg-[#FF4458] text-white font-semibold text-sm whitespace-nowrap">
+                    <button onclick="filterRooms('all')" id="filter-all" class="px-4 py-2 rounded-full bg-[#FF4081] text-white font-semibold text-sm whitespace-nowrap">
                         Tous
                     </button>
                     <button onclick="filterRooms('active')" id="filter-active" class="px-4 py-2 rounded-full bg-gray-200 text-[#2D3436] font-semibold text-sm whitespace-nowrap">
@@ -90,11 +90,11 @@ www.myoneart.com
             </div>
 
             <div class="px-4 space-y-3 mb-6">
-                <div class="bg-gradient-to-br from-[#FF4458] to-[#e03d4c] rounded-2xl p-5 text-white">
+                <div class="bg-gradient-to-br from-[#FF4081] to-[#e0377a] rounded-2xl p-5 text-white">
                     <div class="text-sm opacity-90 mb-1">Rooms totales</div>
                     <div id="analytics-total" class="text-3xl font-bold">0</div>
                 </div>
-                <div class="bg-gradient-to-br from-[#6C5CE7] to-[#5a4dd9] rounded-2xl p-5 text-white">
+                <div class="bg-gradient-to-br from-[#5B4DFF] to-[#5a4dd9] rounded-2xl p-5 text-white">
                     <div class="text-sm opacity-90 mb-1">Rooms actives</div>
                     <div id="analytics-active" class="text-3xl font-bold">0</div>
                 </div>
@@ -114,7 +114,7 @@ www.myoneart.com
                     <div class="space-y-2 text-sm">
                         <div class="flex justify-between">
                             <span class="text-[#2D3436] opacity-75">Plan</span>
-                            <span id="analytics-plan" class="font-semibold text-[#FF4458] capitalize">-</span>
+                            <span id="analytics-plan" class="font-semibold text-[#FF4081] capitalize">-</span>
                         </div>
                         <div class="flex justify-between">
                             <span class="text-[#2D3436] opacity-75">Coût mensuel</span>
@@ -143,7 +143,7 @@ www.myoneart.com
                         </div>
                         <div>
                             <div class="text-sm text-[#2D3436] opacity-75 mb-1">Plan</div>
-                            <div id="profile-plan" class="font-bold text-[#FF4458] capitalize">-</div>
+                            <div id="profile-plan" class="font-bold text-[#FF4081] capitalize">-</div>
                         </div>
                     </div>
                 </div>
@@ -166,12 +166,12 @@ www.myoneart.com
                         </div>
                         <div>
                             <div class="text-sm text-[#2D3436] opacity-75 mb-1">Limite quotidienne</div>
-                            <div id="profile-limit" class="font-bold text-[#6C5CE7]">-</div>
+                            <div id="profile-limit" class="font-bold text-[#5B4DFF]">-</div>
                         </div>
                     </div>
                 </div>
 
-                <button onclick="showChangePlanModal()" class="w-full py-3 bg-[#6C5CE7] text-white rounded-full hover:bg-[#5b4ed6] transition font-semibold">
+                <button onclick="showChangePlanModal()" class="w-full py-3 bg-[#5B4DFF] text-white rounded-full hover:bg-[#5b4ed6] transition font-semibold">
                     💎 Changer de forfait
                 </button>
 
@@ -213,13 +213,13 @@ www.myoneart.com
             </div>
             
             <div class="space-y-4">
-                <div class="bg-gradient-to-br from-[#FF4458] to-[#e03d4c] rounded-2xl p-6 text-white text-center">
+                <div class="bg-gradient-to-br from-[#FF4081] to-[#e0377a] rounded-2xl p-6 text-white text-center">
                     <div class="text-sm opacity-90 mb-2">Code d'accès</div>
                     <div id="detailsAccessCode" class="text-4xl font-bold font-mono tracking-widest mb-4">--------</div>
                     <div class="bg-white p-4 rounded-xl flex justify-center items-center" id="qrCodeContainer">
                         <canvas id="qrCode"></canvas>
                     </div>
-                    <button onclick="downloadQRCode()" class="mt-4 px-6 py-3 bg-white text-[#FF4458] rounded-full font-semibold hover:bg-opacity-90 flex items-center justify-center mx-auto">
+                    <button onclick="downloadQRCode()" class="mt-4 px-6 py-3 bg-white text-[#FF4081] rounded-full font-semibold hover:bg-opacity-90 flex items-center justify-center mx-auto">
                         <svg class="w-5 h-5 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 16v1a3 3 0 003 3h10a3 3 0 003-3v-1m-4-4l-4 4m0 0l-4-4m4 4V4"/>
                         </svg>
@@ -231,7 +231,7 @@ www.myoneart.com
                 <div class="bg-white rounded-2xl border-2 border-gray-200 p-4">
                     <div class="flex items-center justify-between mb-2">
                         <h4 id="detailsRoomName" class="font-bold text-[#2D3436] text-lg">-</h4>
-                        <button onclick="editRoomName()" class="text-[#FF4458] text-sm font-semibold hover:underline">Modifier</button>
+                        <button onclick="editRoomName()" class="text-[#FF4081] text-sm font-semibold hover:underline">Modifier</button>
                     </div>
                     <p id="detailsRoomDescription" class="text-sm text-[#2D3436] opacity-75 mb-3">-</p>
                     
@@ -267,19 +267,19 @@ www.myoneart.com
             <form onsubmit="createRoom(event)">
                 <div class="mb-3">
                     <label class="block text-[#2D3436] mb-2 text-sm font-semibold">Nom de la room</label>
-                    <input type="text" id="roomName" required class="w-full px-4 py-3 border border-gray-300 rounded-xl focus:outline-none focus:border-[#FF4458]">
+                    <input type="text" id="roomName" required class="w-full px-4 py-3 border border-gray-300 rounded-xl focus:outline-none focus:border-[#FF4081]">
                 </div>
                 <div class="mb-3">
                     <label class="block text-[#2D3436] mb-2 text-sm font-semibold">Description</label>
-                    <textarea id="roomDescription" rows="2" class="w-full px-4 py-3 border border-gray-300 rounded-xl focus:outline-none focus:border-[#FF4458]"></textarea>
+                    <textarea id="roomDescription" rows="2" class="w-full px-4 py-3 border border-gray-300 rounded-xl focus:outline-none focus:border-[#FF4081]"></textarea>
                 </div>
                 <div class="mb-3">
                     <label class="block text-[#2D3436] mb-2 text-sm font-semibold">Message de bienvenue</label>
-                    <textarea id="roomWelcome" rows="2" class="w-full px-4 py-3 border border-gray-300 rounded-xl focus:outline-none focus:border-[#FF4458]"></textarea>
+                    <textarea id="roomWelcome" rows="2" class="w-full px-4 py-3 border border-gray-300 rounded-xl focus:outline-none focus:border-[#FF4081]"></textarea>
                 </div>
                 <div class="mb-3">
                     <label class="block text-[#2D3436] mb-2 text-sm font-semibold">Capacité max</label>
-                    <input type="number" id="roomCapacity" min="2" class="w-full px-4 py-3 border border-gray-300 rounded-xl focus:outline-none focus:border-[#FF4458]">
+                    <input type="number" id="roomCapacity" min="2" class="w-full px-4 py-3 border border-gray-300 rounded-xl focus:outline-none focus:border-[#FF4081]">
                 </div>
                 
                 <div class="mb-3">
@@ -290,7 +290,7 @@ www.myoneart.com
                 <div class="grid grid-cols-2 gap-3 mb-3">
                     <div>
                         <label class="block text-[#2D3436] mb-2 text-sm font-semibold">Genre</label>
-                        <select id="roomGender" class="w-full px-4 py-3 border border-gray-300 rounded-xl focus:outline-none focus:border-[#FF4458]">
+                        <select id="roomGender" class="w-full px-4 py-3 border border-gray-300 rounded-xl focus:outline-none focus:border-[#FF4081]">
                             <option value="">Tous</option>
                             <option value="male">Homme</option>
                             <option value="female">Femme</option>
@@ -299,7 +299,7 @@ www.myoneart.com
                     </div>
                     <div>
                         <label class="block text-[#2D3436] mb-2 text-sm font-semibold">Orientation</label>
-                        <select id="roomOrientation" class="w-full px-4 py-3 border border-gray-300 rounded-xl focus:outline-none focus:border-[#FF4458]">
+                        <select id="roomOrientation" class="w-full px-4 py-3 border border-gray-300 rounded-xl focus:outline-none focus:border-[#FF4081]">
                             <option value="">Toutes</option>
                             <option value="heterosexual">Hétérosexuel(le)</option>
                             <option value="homosexual">Homosexuel(le)</option>
@@ -313,28 +313,28 @@ www.myoneart.com
                 <div class="grid grid-cols-2 gap-3 mb-3">
                     <div>
                         <label class="block text-[#2D3436] mb-2 text-sm font-semibold">Âge min</label>
-                        <input type="number" id="roomAgeMin" min="18" placeholder="18+" class="w-full px-4 py-3 border border-gray-300 rounded-xl focus:outline-none focus:border-[#FF4458]">
+                        <input type="number" id="roomAgeMin" min="18" placeholder="18+" class="w-full px-4 py-3 border border-gray-300 rounded-xl focus:outline-none focus:border-[#FF4081]">
                     </div>
                     <div>
                         <label class="block text-[#2D3436] mb-2 text-sm font-semibold">Âge max</label>
-                        <input type="number" id="roomAgeMax" max="120" placeholder="Pas de limite" class="w-full px-4 py-3 border border-gray-300 rounded-xl focus:outline-none focus:border-[#FF4458]">
+                        <input type="number" id="roomAgeMax" max="120" placeholder="Pas de limite" class="w-full px-4 py-3 border border-gray-300 rounded-xl focus:outline-none focus:border-[#FF4081]">
                     </div>
                 </div>
                 <div class="mb-3">
                     <label class="block text-[#2D3436] mb-2 text-sm font-semibold">Type de rencontre</label>
-                    <select id="roomMeetingType" class="w-full px-4 py-3 border border-gray-300 rounded-xl focus:outline-none focus:border-[#FF4458]">
+                    <select id="roomMeetingType" class="w-full px-4 py-3 border border-gray-300 rounded-xl focus:outline-none focus:border-[#FF4081]">
                         <option value="">Tous</option>
                     </select>
                 </div>
                 <div class="mb-3">
                     <label class="block text-[#2D3436] mb-2 text-sm font-semibold">Religion</label>
-                    <select id="roomReligion" class="w-full px-4 py-3 border border-gray-300 rounded-xl focus:outline-none focus:border-[#FF4458]">
+                    <select id="roomReligion" class="w-full px-4 py-3 border border-gray-300 rounded-xl focus:outline-none focus:border-[#FF4081]">
                         <option value="">Toutes</option>
                     </select>
                 </div>
                 <div class="mb-4">
                     <label class="block text-[#2D3436] mb-2 text-sm font-semibold">LGBT+ Friendly</label>
-                    <select id="roomLGBTQ" class="w-full px-4 py-3 border border-gray-300 rounded-xl focus:outline-none focus:border-[#FF4458]">
+                    <select id="roomLGBTQ" class="w-full px-4 py-3 border border-gray-300 rounded-xl focus:outline-none focus:border-[#FF4081]">
                         <option value="">Pas de préférence</option>
                         <option value="yes">Oui</option>
                         <option value="no">Non</option>
@@ -543,7 +543,7 @@ www.myoneart.com
                             <span>👥 ${room.member_count}${room.max_capacity ? '/' + room.max_capacity : ''}</span>
                             <span>📅 ${new Date(room.created_at).toLocaleDateString()}</span>
                         </div>
-                        <span class="text-xs font-mono bg-[#FF4458] text-white px-2 py-1 rounded">🔑 ${room.access_code}</span>
+                        <span class="text-xs font-mono bg-[#FF4081] text-white px-2 py-1 rounded">🔑 ${room.access_code}</span>
                     </div>
                 </div>
             `).join('');
@@ -563,11 +563,11 @@ www.myoneart.com
             currentFilter = status;
             
             document.querySelectorAll('[id^="filter-"]').forEach(el => {
-                el.classList.remove('bg-[#FF4458]', 'text-white');
+                el.classList.remove('bg-[#FF4081]', 'text-white');
                 el.classList.add('bg-gray-200', 'text-[#2D3436]');
             });
             document.getElementById(`filter-${status}`).classList.remove('bg-gray-200', 'text-[#2D3436]');
-            document.getElementById(`filter-${status}`).classList.add('bg-[#FF4458]', 'text-white');
+            document.getElementById(`filter-${status}`).classList.add('bg-[#FF4081]', 'text-white');
             
             loadRooms();
         }
@@ -618,12 +618,12 @@ www.myoneart.com
                             <div class="space-y-3">
                                 <div class="flex items-center justify-between py-2 px-3 bg-[#F5F5F5] rounded-lg">
                                     <span class="font-semibold text-[#2D3436]">👥 Total</span>
-                                    <span class="text-xl font-bold text-[#FF4458]">${room.members.length}</span>
+                                    <span class="text-xl font-bold text-[#FF4081]">${room.members.length}</span>
                                 </div>
                                 ${Object.entries(genderCounts).map(([gender, count]) => `
                                     <div class="flex items-center justify-between py-2 px-3 border-b">
                                         <span class="text-[#2D3436]">${gender === 'male' ? '👨 Hommes' : gender === 'female' ? '👩 Femmes' : '🧑 Autres'}</span>
-                                        <span class="font-bold text-[#6C5CE7]">${count}</span>
+                                        <span class="font-bold text-[#5B4DFF]">${count}</span>
                                     </div>
                                 `).join('')}
                                 <p class="text-xs text-[#2D3436] opacity-50 mt-2 italic">🔒 Les noms des participants sont privés pour protéger leur confidentialité</p>
@@ -671,7 +671,7 @@ www.myoneart.com
             ctx.drawImage(canvas, qrX, 400, 800, 800);
             
             ctx.font = 'bold 128px monospace';
-            ctx.fillStyle = '#FF4458';
+            ctx.fillStyle = '#FF4081';
             ctx.fillText(accessCode, 800, 1400);
             
             ctx.strokeStyle = '#CCCCCC';
@@ -687,7 +687,7 @@ www.myoneart.com
             ctx.fillText('pour rejoindre cette room', 800, 1680);
             
             ctx.font = 'bold 64px Inter, sans-serif';
-            ctx.fillStyle = '#FF4458';
+            ctx.fillStyle = '#FF4081';
             ctx.fillText('www.thematchspot.com', 800, 1820);
             
             tempCanvas.toBlob((blob) => {
@@ -847,7 +847,7 @@ www.myoneart.com
             }
             
             container.innerHTML = availablePlans.map(plan => `
-                <div class="bg-gradient-to-br from-[#6C5CE7] to-[#A29BFE] rounded-2xl p-4 text-white ${currentPlan === plan.name ? 'ring-4 ring-[#00B894]' : ''}">
+                <div class="bg-gradient-to-br from-[#5B4DFF] to-[#A29BFE] rounded-2xl p-4 text-white ${currentPlan === plan.name ? 'ring-4 ring-[#00B894]' : ''}">
                     <div class="flex justify-between items-start mb-2">
                         <div class="flex-1">
                             <h4 class="text-lg font-bold">${plan.name}</h4>
@@ -863,7 +863,7 @@ www.myoneart.com
                     </div>
                     ${currentPlan === plan.name 
                         ? '<div class="bg-white/20 rounded-full py-2 px-4 text-center text-sm font-semibold">✓ Forfait actuel</div>'
-                        : `<button onclick="requestPlanChange('${plan.name}')" class="w-full bg-white text-[#6C5CE7] rounded-full py-2 px-4 text-sm font-semibold hover:bg-opacity-90 transition">Demander ce forfait</button>`
+                        : `<button onclick="requestPlanChange('${plan.name}')" class="w-full bg-white text-[#5B4DFF] rounded-full py-2 px-4 text-sm font-semibold hover:bg-opacity-90 transition">Demander ce forfait</button>`
                     }
                 </div>
             `).join('');

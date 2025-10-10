@@ -14,17 +14,18 @@ www.myoneart.com
     <title>MatchSpot - Plateforme de Rencontres Moderne</title>
     <meta name="description" content="Rejoignez des rooms de rencontre réels dans vos lieux préférés">
     <link rel="manifest" href="/manifest.json">
-    <meta name="theme-color" content="#FF4458">
+    <meta name="theme-color" content="#FF4081">
     <meta name="apple-mobile-web-app-capable" content="yes">
     <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
     <meta name="apple-mobile-web-app-title" content="MatchSpot">
     <link rel="apple-touch-icon" href="/images/icon-192.png">
+    <link rel="icon" type="image/png" href="/images/favicon.png">
     <script src="/css/tailwind.js"></script>
     <link href="/css/fonts.css" rel="stylesheet">
     <style>
         body { font-family: 'Inter', sans-serif; max-width: 768px; margin: 0 auto; }
         h1, h2, h3, h4, h5, h6 { font-family: 'Poppins', sans-serif; }
-        .gradient-bg { background: linear-gradient(135deg, #FF4458 0%, #6C5CE7 100%); }
+        .gradient-bg { background: linear-gradient(135deg, #FF4081 0%, #5B4DFF 50%, #00D4FF 100%); }
         .card-hover { transition: all 0.3s ease; }
         .card-hover:active { transform: scale(0.98); }
     </style>
@@ -33,11 +34,14 @@ www.myoneart.com
     <nav class="bg-white shadow-lg">
         <div class="px-4 py-3">
             <div class="flex justify-between items-center">
-                <h1 class="text-xl font-bold text-[#FF4458]">MatchSpot</h1>
+                <div class="flex items-center gap-2">
+                    <img src="/images/logo.png" alt="MatchSpot" class="h-8">
+                    <h1 class="text-xl font-bold text-[#FF4081]">MatchSpot</h1>
+                </div>
                 <div class="flex items-center space-x-3">
-                    <button onclick="showLogin()" class="px-3 py-2 text-sm text-[#2D3436] hover:text-[#FF4458] transition">Connexion</button>
+                    <button onclick="showLogin()" class="px-3 py-2 text-sm text-[#2D3436] hover:text-[#FF4081] transition">Connexion</button>
                     <div class="relative" id="signupDropdown">
-                        <button onclick="toggleSignupMenu()" class="px-4 py-2 text-sm bg-[#FF4458] text-white rounded-full hover:bg-[#e03d4c] transition flex items-center gap-2">
+                        <button onclick="toggleSignupMenu()" class="px-4 py-2 text-sm bg-gradient-to-r from-[#FF4081] to-[#5B4DFF] text-white rounded-full hover:opacity-90 transition flex items-center gap-2">
                             Inscription
                             <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                                 <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"/>
@@ -62,7 +66,7 @@ www.myoneart.com
     <!-- Hero Slider with Background Images -->
     <section class="relative overflow-hidden" style="height: 500px;">
         <!-- Gradient Background -->
-        <div class="absolute inset-0 bg-gradient-to-r from-[#FF4458] to-[#6C5CE7]"></div>
+        <div class="absolute inset-0 bg-gradient-to-br from-[#FF4081] via-[#5B4DFF] to-[#00D4FF]"></div>
         
         <!-- Slider Background Images (low opacity) -->
         <div id="heroSlider" class="absolute inset-0">
@@ -90,7 +94,7 @@ www.myoneart.com
                 <div class="text-6xl mb-4">💝✨</div>
                 <h2 class="text-4xl font-bold mb-4">Rencontrez de Vraies Personnes dans de Vrais Lieux</h2>
                 <p class="text-lg mb-6 opacity-90 max-w-2xl">Rejoignez des rooms de rencontre sélectionnés dans vos lieux préférés. Fini le swipe infini, place aux connexions authentiques.</p>
-                <button onclick="showUserSignup()" class="px-8 py-3 bg-white text-[#FF4458] rounded-full text-lg font-semibold hover:bg-gray-100 transition shadow-lg">🚀 Commencer</button>
+                <button onclick="showUserSignup()" class="px-8 py-3 bg-white text-[#FF4081] rounded-full text-lg font-semibold hover:bg-gray-100 transition shadow-lg">🚀 Commencer</button>
             </div>
         </div>
         
@@ -112,12 +116,12 @@ www.myoneart.com
                 <h4 class="text-xl font-semibold mb-2 text-[#2D3436]">Trouvez Votre Ambiance</h4>
                 <p class="text-[#2D3436]">Parcourez des rooms sélectionnés dans des lieux locaux correspondant à vos intérêts</p>
             </div>
-            <div class="text-center p-6 card-hover bg-[#A29BFE] rounded-2xl shadow-md">
+            <div class="text-center p-6 card-hover bg-gradient-to-r from-[#5B4DFF] to-[#00D4FF] rounded-2xl shadow-md">
                 <div class="text-5xl mb-3">🎪</div>
                 <h4 class="text-xl font-semibold mb-2 text-white">Rejoignez la Room</h4>
                 <p class="text-white">Réservez votre place dans des rooms exclusifs avec des membres vérifiés</p>
             </div>
-            <div class="text-center p-6 card-hover bg-[#00B894] rounded-2xl shadow-md">
+            <div class="text-center p-6 card-hover bg-gradient-to-r from-[#00E5A0] to-[#00D4FF] rounded-2xl shadow-md">
                 <div class="text-5xl mb-3">💝</div>
                 <h4 class="text-xl font-semibold mb-2 text-white">Rencontrez en Personne</h4>
                 <p class="text-white">Connectez-vous face à face dans un environnement sûr et amusant</p>
@@ -134,7 +138,7 @@ www.myoneart.com
                     <h4 class="text-2xl font-bold text-[#2D3436]">🆓 Gratuit</h4>
                     <span class="text-xs bg-gray-200 text-[#2D3436] px-3 py-1 rounded-full font-semibold">BASIQUE</span>
                 </div>
-                <p class="text-3xl font-bold text-[#FF4458] mb-4">$0<span class="text-base text-gray-500">/mois</span></p>
+                <p class="text-3xl font-bold text-[#FF4081] mb-4">$0<span class="text-base text-gray-500">/mois</span></p>
                 <ul class="space-y-2 mb-6 text-[#2D3436]">
                     <li>✅ Parcourir les rooms</li>
                     <li>✅ Rejoindre les rooms publiques</li>
@@ -142,24 +146,24 @@ www.myoneart.com
                 </ul>
                 <button onclick="showUserSignup()" class="w-full py-3 bg-gray-200 text-[#2D3436] rounded-full hover:bg-gray-300 transition font-semibold">Commencer</button>
             </div>
-            <div class="bg-white rounded-2xl p-6 card-hover border-4 border-[#FF4458] shadow-xl relative overflow-hidden">
-                <div class="text-xs bg-[#FF4458] text-white px-3 py-1 rounded-full inline-block mb-2 font-bold">⭐ POPULAIRE</div>
+            <div class="bg-white rounded-2xl p-6 card-hover border-4 border-[#FF4081] shadow-xl relative overflow-hidden">
+                <div class="text-xs bg-[#FF4081] text-white px-3 py-1 rounded-full inline-block mb-2 font-bold">⭐ POPULAIRE</div>
                 <div class="flex items-center justify-between mb-2">
                     <h4 class="text-2xl font-bold text-[#2D3436]">💫 Premium</h4>
                 </div>
-                <p class="text-3xl font-bold text-[#FF4458] mb-4">$19<span class="text-base text-gray-500">/mois</span></p>
+                <p class="text-3xl font-bold text-[#FF4081] mb-4">$19<span class="text-base text-gray-500">/mois</span></p>
                 <ul class="space-y-2 mb-6 text-[#2D3436]">
                     <li>✅ Toutes les fonctionnalités gratuites</li>
                     <li>🔥 Accès prioritaire aux rooms</li>
                     <li>🎭 Mode identité alternative</li>
                     <li>📅 Conversations de 7 jours</li>
                 </ul>
-                <button onclick="showUserSignup()" class="w-full py-3 bg-[#FF4458] text-white rounded-full hover:bg-[#e03d4c] transition font-semibold shadow-lg">Démarrer Premium 🚀</button>
+                <button onclick="showUserSignup()" class="w-full py-3 bg-[#FF4081] text-white rounded-full hover:bg-[#e0377a] transition font-semibold shadow-lg">Démarrer Premium 🚀</button>
             </div>
-            <div class="bg-gradient-to-br from-[#6C5CE7] to-[#5f51d4] rounded-2xl p-6 card-hover shadow-xl text-white">
+            <div class="bg-gradient-to-br from-[#5B4DFF] to-[#4a3de0] rounded-2xl p-6 card-hover shadow-xl text-white">
                 <div class="flex items-center justify-between mb-2">
                     <h4 class="text-2xl font-bold">👑 Platinum</h4>
-                    <span class="text-xs bg-white text-[#6C5CE7] px-3 py-1 rounded-full font-bold">VIP</span>
+                    <span class="text-xs bg-white text-[#5B4DFF] px-3 py-1 rounded-full font-bold">VIP</span>
                 </div>
                 <p class="text-3xl font-bold mb-4">$39<span class="text-base opacity-90">/mois</span></p>
                 <ul class="space-y-2 mb-6">
@@ -169,7 +173,7 @@ www.myoneart.com
                     <li>📆 Conversations de 30 jours</li>
                     <li>⚡ Boost de profil</li>
                 </ul>
-                <button onclick="showUserSignup()" class="w-full py-3 bg-white text-[#6C5CE7] rounded-full hover:bg-gray-100 transition font-bold shadow-lg">Passer à Platinum ✨</button>
+                <button onclick="showUserSignup()" class="w-full py-3 bg-white text-[#5B4DFF] rounded-full hover:bg-gray-100 transition font-bold shadow-lg">Passer à Platinum ✨</button>
             </div>
         </div>
     </section>
@@ -213,17 +217,17 @@ www.myoneart.com
                 <form onsubmit="login(event)">
                     <div class="mb-4">
                         <label class="block text-[#2D3436] mb-2 text-sm font-semibold">Email</label>
-                        <input type="email" id="loginEmail" required class="w-full px-4 py-3 border border-gray-300 rounded-xl focus:outline-none focus:border-[#FF4458]">
+                        <input type="email" id="loginEmail" required class="w-full px-4 py-3 border border-gray-300 rounded-xl focus:outline-none focus:border-[#FF4081]">
                     </div>
                     <div class="mb-6">
                         <label class="block text-[#2D3436] mb-2 text-sm font-semibold">Mot de passe</label>
-                        <input type="password" id="loginPassword" required class="w-full px-4 py-3 border border-gray-300 rounded-xl focus:outline-none focus:border-[#FF4458]">
+                        <input type="password" id="loginPassword" required class="w-full px-4 py-3 border border-gray-300 rounded-xl focus:outline-none focus:border-[#FF4081]">
                     </div>
-                    <button type="submit" class="w-full py-3 bg-[#FF4458] text-white rounded-full hover:bg-[#e03d4c] transition font-semibold">Connexion</button>
+                    <button type="submit" class="w-full py-3 bg-[#FF4081] text-white rounded-full hover:bg-[#e0377a] transition font-semibold">Connexion</button>
                 </form>
                 <p class="mt-4 text-center text-sm text-[#2D3436]">
                     Vous n'avez pas de compte ? 
-                    <button onclick="showRegister()" class="text-[#FF4458] font-semibold">S'inscrire</button>
+                    <button onclick="showRegister()" class="text-[#FF4081] font-semibold">S'inscrire</button>
                 </p>
             </div>
             
@@ -231,24 +235,24 @@ www.myoneart.com
                 <form onsubmit="register(event)">
                     <div class="mb-3">
                         <label class="block text-[#2D3436] mb-2 text-sm font-semibold">👤 Nom Complet</label>
-                        <input type="text" id="registerName" required class="w-full px-4 py-3 border border-gray-300 rounded-xl focus:outline-none focus:border-[#FF4458]">
+                        <input type="text" id="registerName" required class="w-full px-4 py-3 border border-gray-300 rounded-xl focus:outline-none focus:border-[#FF4081]">
                     </div>
                     <div class="mb-3">
                         <label class="block text-[#2D3436] mb-2 text-sm font-semibold">📧 Email</label>
-                        <input type="email" id="registerEmail" required class="w-full px-4 py-3 border border-gray-300 rounded-xl focus:outline-none focus:border-[#FF4458]">
+                        <input type="email" id="registerEmail" required class="w-full px-4 py-3 border border-gray-300 rounded-xl focus:outline-none focus:border-[#FF4081]">
                     </div>
                     <div class="mb-3">
                         <label class="block text-[#2D3436] mb-2 text-sm font-semibold">🔒 Mot de passe</label>
-                        <input type="password" id="registerPassword" required minlength="6" class="w-full px-4 py-3 border border-gray-300 rounded-xl focus:outline-none focus:border-[#FF4458]">
+                        <input type="password" id="registerPassword" required minlength="6" class="w-full px-4 py-3 border border-gray-300 rounded-xl focus:outline-none focus:border-[#FF4081]">
                     </div>
                     <div class="grid grid-cols-2 gap-3 mb-3">
                         <div>
                             <label class="block text-[#2D3436] mb-2 text-sm font-semibold">🎂 Date de naissance</label>
-                            <input type="date" id="registerBirthdate" required max="2007-01-01" class="w-full px-4 py-3 border border-gray-300 rounded-xl focus:outline-none focus:border-[#FF4458]">
+                            <input type="date" id="registerBirthdate" required max="2007-01-01" class="w-full px-4 py-3 border border-gray-300 rounded-xl focus:outline-none focus:border-[#FF4081]">
                         </div>
                         <div>
                             <label class="block text-[#2D3436] mb-2 text-sm font-semibold">⚧️ Genre</label>
-                            <select id="registerGender" required class="w-full px-4 py-3 border border-gray-300 rounded-xl focus:outline-none focus:border-[#FF4458]">
+                            <select id="registerGender" required class="w-full px-4 py-3 border border-gray-300 rounded-xl focus:outline-none focus:border-[#FF4081]">
                                 <option value="">Sélectionner</option>
                                 <option value="male">👨 Homme</option>
                                 <option value="female">👩 Femme</option>
@@ -259,7 +263,7 @@ www.myoneart.com
                     </div>
                     <div class="mb-3">
                         <label class="block text-[#2D3436] mb-2 text-sm font-semibold">💕 Orientation</label>
-                        <select id="registerOrientation" required class="w-full px-4 py-3 border border-gray-300 rounded-xl focus:outline-none focus:border-[#FF4458]">
+                        <select id="registerOrientation" required class="w-full px-4 py-3 border border-gray-300 rounded-xl focus:outline-none focus:border-[#FF4081]">
                             <option value="">Sélectionner</option>
                             <option value="heterosexual">💑 Hétérosexuel(le)</option>
                             <option value="gay">🏳️‍🌈 Gay</option>
@@ -271,7 +275,7 @@ www.myoneart.com
                     </div>
                     <div class="mb-3">
                         <label class="block text-[#2D3436] mb-2 text-sm font-semibold">🙏 Religion</label>
-                        <select id="registerReligion" class="w-full px-4 py-3 border border-gray-300 rounded-xl focus:outline-none focus:border-[#FF4458]">
+                        <select id="registerReligion" class="w-full px-4 py-3 border border-gray-300 rounded-xl focus:outline-none focus:border-[#FF4081]">
                             <option value="">Préférence non spécifiée</option>
                             <option value="christianity">✝️ Christianisme</option>
                             <option value="islam">☪️ Islam</option>
@@ -286,7 +290,7 @@ www.myoneart.com
                     </div>
                     <div class="mb-3">
                         <label class="block text-[#2D3436] mb-2 text-sm font-semibold">🏳️‍🌈 LGBT+ Friendly</label>
-                        <select id="registerLGBTQFriendly" class="w-full px-4 py-3 border border-gray-300 rounded-xl focus:outline-none focus:border-[#FF4458]">
+                        <select id="registerLGBTQFriendly" class="w-full px-4 py-3 border border-gray-300 rounded-xl focus:outline-none focus:border-[#FF4081]">
                             <option value="">Préférence non spécifiée</option>
                             <option value="true">✅ Oui, absolument!</option>
                             <option value="false">❌ Non</option>
@@ -297,27 +301,27 @@ www.myoneart.com
                             <label class="block text-[#2D3436] mb-2 text-sm font-semibold">💕 Que recherchez-vous ? (Sélectionnez tout ce qui s'applique)</label>
                             <div id="meetingTypesContainer" class="space-y-2 max-h-40 overflow-y-auto bg-gray-50 p-3 rounded-xl">
                                 <label class="flex items-center">
-                                    <input type="checkbox" name="meeting_type" value="soulmate" class="mr-2 w-4 h-4 text-[#FF4458] rounded">
+                                    <input type="checkbox" name="meeting_type" value="soulmate" class="mr-2 w-4 h-4 text-[#FF4081] rounded">
                                     <span class="text-sm">💑 Trouver l'âme sœur</span>
                                 </label>
                                 <label class="flex items-center">
-                                    <input type="checkbox" name="meeting_type" value="friends" class="mr-2 w-4 h-4 text-[#FF4458] rounded">
+                                    <input type="checkbox" name="meeting_type" value="friends" class="mr-2 w-4 h-4 text-[#FF4081] rounded">
                                     <span class="text-sm">👥 Se faire des amis</span>
                                 </label>
                                 <label class="flex items-center">
-                                    <input type="checkbox" name="meeting_type" value="drink" class="mr-2 w-4 h-4 text-[#FF4458] rounded">
+                                    <input type="checkbox" name="meeting_type" value="drink" class="mr-2 w-4 h-4 text-[#FF4081] rounded">
                                     <span class="text-sm">🍹 Prendre un verre</span>
                                 </label>
                                 <label class="flex items-center">
-                                    <input type="checkbox" name="meeting_type" value="travel" class="mr-2 w-4 h-4 text-[#FF4458] rounded">
+                                    <input type="checkbox" name="meeting_type" value="travel" class="mr-2 w-4 h-4 text-[#FF4081] rounded">
                                     <span class="text-sm">✈️ Pote de voyage</span>
                                 </label>
                                 <label class="flex items-center">
-                                    <input type="checkbox" name="meeting_type" value="networking" class="mr-2 w-4 h-4 text-[#FF4458] rounded">
+                                    <input type="checkbox" name="meeting_type" value="networking" class="mr-2 w-4 h-4 text-[#FF4081] rounded">
                                     <span class="text-sm">💼 Réseautage</span>
                                 </label>
                                 <label class="flex items-center">
-                                    <input type="checkbox" name="meeting_type" value="dating" class="mr-2 w-4 h-4 text-[#FF4458] rounded">
+                                    <input type="checkbox" name="meeting_type" value="dating" class="mr-2 w-4 h-4 text-[#FF4081] rounded">
                                     <span class="text-sm">💝 Rendez-vous décontracté</span>
                                 </label>
                             </div>
@@ -327,63 +331,63 @@ www.myoneart.com
                             <div id="interestsContainer" class="space-y-2 max-h-48 overflow-y-auto bg-gray-50 p-3 rounded-xl">
                                 <div class="grid grid-cols-2 gap-2">
                                     <label class="flex items-center">
-                                        <input type="checkbox" name="interest" value="music" class="mr-2 w-4 h-4 text-[#FF4458] rounded">
+                                        <input type="checkbox" name="interest" value="music" class="mr-2 w-4 h-4 text-[#FF4081] rounded">
                                         <span class="text-sm">🎵 Musique</span>
                                     </label>
                                     <label class="flex items-center">
-                                        <input type="checkbox" name="interest" value="travel" class="mr-2 w-4 h-4 text-[#FF4458] rounded">
+                                        <input type="checkbox" name="interest" value="travel" class="mr-2 w-4 h-4 text-[#FF4081] rounded">
                                         <span class="text-sm">✈️ Voyages</span>
                                     </label>
                                     <label class="flex items-center">
-                                        <input type="checkbox" name="interest" value="sports" class="mr-2 w-4 h-4 text-[#FF4458] rounded">
+                                        <input type="checkbox" name="interest" value="sports" class="mr-2 w-4 h-4 text-[#FF4081] rounded">
                                         <span class="text-sm">⚽ Sport</span>
                                     </label>
                                     <label class="flex items-center">
-                                        <input type="checkbox" name="interest" value="food" class="mr-2 w-4 h-4 text-[#FF4458] rounded">
+                                        <input type="checkbox" name="interest" value="food" class="mr-2 w-4 h-4 text-[#FF4081] rounded">
                                         <span class="text-sm">🍽️ Gastronomie</span>
                                     </label>
                                     <label class="flex items-center">
-                                        <input type="checkbox" name="interest" value="art" class="mr-2 w-4 h-4 text-[#FF4458] rounded">
+                                        <input type="checkbox" name="interest" value="art" class="mr-2 w-4 h-4 text-[#FF4081] rounded">
                                         <span class="text-sm">🎨 Art</span>
                                     </label>
                                     <label class="flex items-center">
-                                        <input type="checkbox" name="interest" value="cinema" class="mr-2 w-4 h-4 text-[#FF4458] rounded">
+                                        <input type="checkbox" name="interest" value="cinema" class="mr-2 w-4 h-4 text-[#FF4081] rounded">
                                         <span class="text-sm">🎬 Cinéma</span>
                                     </label>
                                     <label class="flex items-center">
-                                        <input type="checkbox" name="interest" value="reading" class="mr-2 w-4 h-4 text-[#FF4458] rounded">
+                                        <input type="checkbox" name="interest" value="reading" class="mr-2 w-4 h-4 text-[#FF4081] rounded">
                                         <span class="text-sm">📚 Lecture</span>
                                     </label>
                                     <label class="flex items-center">
-                                        <input type="checkbox" name="interest" value="tech" class="mr-2 w-4 h-4 text-[#FF4458] rounded">
+                                        <input type="checkbox" name="interest" value="tech" class="mr-2 w-4 h-4 text-[#FF4081] rounded">
                                         <span class="text-sm">💻 Tech</span>
                                     </label>
                                     <label class="flex items-center">
-                                        <input type="checkbox" name="interest" value="gaming" class="mr-2 w-4 h-4 text-[#FF4458] rounded">
+                                        <input type="checkbox" name="interest" value="gaming" class="mr-2 w-4 h-4 text-[#FF4081] rounded">
                                         <span class="text-sm">🎮 Gaming</span>
                                     </label>
                                     <label class="flex items-center">
-                                        <input type="checkbox" name="interest" value="fashion" class="mr-2 w-4 h-4 text-[#FF4458] rounded">
+                                        <input type="checkbox" name="interest" value="fashion" class="mr-2 w-4 h-4 text-[#FF4081] rounded">
                                         <span class="text-sm">👗 Mode</span>
                                     </label>
                                     <label class="flex items-center">
-                                        <input type="checkbox" name="interest" value="photography" class="mr-2 w-4 h-4 text-[#FF4458] rounded">
+                                        <input type="checkbox" name="interest" value="photography" class="mr-2 w-4 h-4 text-[#FF4081] rounded">
                                         <span class="text-sm">📸 Photo</span>
                                     </label>
                                     <label class="flex items-center">
-                                        <input type="checkbox" name="interest" value="fitness" class="mr-2 w-4 h-4 text-[#FF4458] rounded">
+                                        <input type="checkbox" name="interest" value="fitness" class="mr-2 w-4 h-4 text-[#FF4081] rounded">
                                         <span class="text-sm">💪 Fitness</span>
                                     </label>
                                     <label class="flex items-center">
-                                        <input type="checkbox" name="interest" value="cooking" class="mr-2 w-4 h-4 text-[#FF4458] rounded">
+                                        <input type="checkbox" name="interest" value="cooking" class="mr-2 w-4 h-4 text-[#FF4081] rounded">
                                         <span class="text-sm">🍳 Cuisine</span>
                                     </label>
                                     <label class="flex items-center">
-                                        <input type="checkbox" name="interest" value="nature" class="mr-2 w-4 h-4 text-[#FF4458] rounded">
+                                        <input type="checkbox" name="interest" value="nature" class="mr-2 w-4 h-4 text-[#FF4081] rounded">
                                         <span class="text-sm">🌿 Nature</span>
                                     </label>
                                     <label class="flex items-center">
-                                        <input type="checkbox" name="interest" value="dancing" class="mr-2 w-4 h-4 text-[#FF4458] rounded">
+                                        <input type="checkbox" name="interest" value="dancing" class="mr-2 w-4 h-4 text-[#FF4081] rounded">
                                         <span class="text-sm">💃 Danse</span>
                                     </label>
                                 </div>
@@ -392,16 +396,16 @@ www.myoneart.com
                     </div>
                     <div class="mb-3">
                         <label class="block text-[#2D3436] mb-2 text-sm font-semibold">Rôle</label>
-                        <select id="registerRole" required class="w-full px-4 py-3 border border-gray-300 rounded-xl focus:outline-none focus:border-[#FF4458]" onchange="toggleUserFields()">
+                        <select id="registerRole" required class="w-full px-4 py-3 border border-gray-300 rounded-xl focus:outline-none focus:border-[#FF4081]" onchange="toggleUserFields()">
                             <option value="user">Utilisateur</option>
                             <option value="establishment">Établissement</option>
                         </select>
                     </div>
-                    <button type="submit" class="w-full py-3 bg-[#FF4458] text-white rounded-full hover:bg-[#e03d4c] transition font-semibold">Créer un compte</button>
+                    <button type="submit" class="w-full py-3 bg-[#FF4081] text-white rounded-full hover:bg-[#e0377a] transition font-semibold">Créer un compte</button>
                 </form>
                 <p class="mt-4 text-center text-sm text-[#2D3436]">
                     Vous avez déjà un compte ? 
-                    <button onclick="showLogin()" class="text-[#FF4458] font-semibold">Connexion</button>
+                    <button onclick="showLogin()" class="text-[#FF4081] font-semibold">Connexion</button>
                 </p>
             </div>
         </div>
@@ -421,7 +425,7 @@ www.myoneart.com
                     <span class="text-sm text-gray-500" id="stepDescription">Basic Info</span>
                 </div>
                 <div class="h-2 bg-gray-200 rounded-full">
-                    <div id="progressBar" class="h-2 bg-gradient-to-r from-[#FF4458] to-[#6C5CE7] rounded-full transition-all duration-300" style="width: 25%"></div>
+                    <div id="progressBar" class="h-2 bg-gradient-to-r from-[#FF4081] to-[#5B4DFF] rounded-full transition-all duration-300" style="width: 25%"></div>
                 </div>
             </div>
 
@@ -432,28 +436,28 @@ www.myoneart.com
             <div id="signupStep1" class="signup-step">
                 <div class="mb-4">
                     <label class="block text-[#2D3436] mb-2 text-sm font-semibold">👤 Full Name</label>
-                    <input type="text" id="userSignupName" required class="w-full px-4 py-3 border border-gray-300 rounded-xl focus:outline-none focus:border-[#FF4458]">
+                    <input type="text" id="userSignupName" required class="w-full px-4 py-3 border border-gray-300 rounded-xl focus:outline-none focus:border-[#FF4081]">
                 </div>
                 <div class="mb-4">
                     <label class="block text-[#2D3436] mb-2 text-sm font-semibold">📧 Email</label>
-                    <input type="email" id="userSignupEmail" required class="w-full px-4 py-3 border border-gray-300 rounded-xl focus:outline-none focus:border-[#FF4458]">
+                    <input type="email" id="userSignupEmail" required class="w-full px-4 py-3 border border-gray-300 rounded-xl focus:outline-none focus:border-[#FF4081]">
                 </div>
                 <div class="mb-4">
                     <label class="block text-[#2D3436] mb-2 text-sm font-semibold">🔒 Mot de passe</label>
-                    <input type="password" id="userSignupPassword" required minlength="6" class="w-full px-4 py-3 border border-gray-300 rounded-xl focus:outline-none focus:border-[#FF4458]">
+                    <input type="password" id="userSignupPassword" required minlength="6" class="w-full px-4 py-3 border border-gray-300 rounded-xl focus:outline-none focus:border-[#FF4081]">
                 </div>
                 <div class="mb-4">
                     <label class="block text-[#2D3436] mb-2 text-sm font-semibold">🎂 Date de naissance</label>
-                    <input type="date" id="userSignupBirthdate" required max="2007-01-01" class="w-full px-4 py-3 border border-gray-300 rounded-xl focus:outline-none focus:border-[#FF4458]">
+                    <input type="date" id="userSignupBirthdate" required max="2007-01-01" class="w-full px-4 py-3 border border-gray-300 rounded-xl focus:outline-none focus:border-[#FF4081]">
                 </div>
-                <button onclick="goToSignupStep(2)" class="w-full py-3 bg-[#FF4458] text-white rounded-full hover:bg-[#e03d4c] transition font-semibold">Suivant →</button>
+                <button onclick="goToSignupStep(2)" class="w-full py-3 bg-[#FF4081] text-white rounded-full hover:bg-[#e0377a] transition font-semibold">Suivant →</button>
             </div>
 
             <!-- Step 2: Profile Details -->
             <div id="signupStep2" class="signup-step hidden">
                 <div class="mb-4">
                     <label class="block text-[#2D3436] mb-2 text-sm font-semibold">⚧️ Genre</label>
-                    <select id="userSignupGender" required class="w-full px-4 py-3 border border-gray-300 rounded-xl focus:outline-none focus:border-[#FF4458]">
+                    <select id="userSignupGender" required class="w-full px-4 py-3 border border-gray-300 rounded-xl focus:outline-none focus:border-[#FF4081]">
                         <option value="">Sélectionner...</option>
                         <option value="male">Homme</option>
                         <option value="female">Femme</option>
@@ -463,7 +467,7 @@ www.myoneart.com
                 </div>
                 <div class="mb-4">
                     <label class="block text-[#2D3436] mb-2 text-sm font-semibold">🌈 Orientation sexuelle</label>
-                    <select id="userSignupOrientation" required class="w-full px-4 py-3 border border-gray-300 rounded-xl focus:outline-none focus:border-[#FF4458]">
+                    <select id="userSignupOrientation" required class="w-full px-4 py-3 border border-gray-300 rounded-xl focus:outline-none focus:border-[#FF4081]">
                         <option value="">Sélectionner...</option>
                         <option value="heterosexual">Hétérosexuel</option>
                         <option value="homosexual">Homosexuel</option>
@@ -474,7 +478,7 @@ www.myoneart.com
                 </div>
                 <div class="mb-4">
                     <label class="block text-[#2D3436] mb-2 text-sm font-semibold">💕 Que recherchez-vous ?</label>
-                    <select id="userSignupMeetingType" required class="w-full px-4 py-3 border border-gray-300 rounded-xl focus:outline-none focus:border-[#FF4458]">
+                    <select id="userSignupMeetingType" required class="w-full px-4 py-3 border border-gray-300 rounded-xl focus:outline-none focus:border-[#FF4081]">
                         <option value="">Sélectionner...</option>
                         <option value="friendship">Amitié</option>
                         <option value="casual">Rencontre décontractée</option>
@@ -484,7 +488,7 @@ www.myoneart.com
                 </div>
                 <div class="mb-4">
                     <label class="block text-[#2D3436] mb-2 text-sm font-semibold">🙏 Religion</label>
-                    <select id="userSignupReligion" required class="w-full px-4 py-3 border border-gray-300 rounded-xl focus:outline-none focus:border-[#FF4458]">
+                    <select id="userSignupReligion" required class="w-full px-4 py-3 border border-gray-300 rounded-xl focus:outline-none focus:border-[#FF4081]">
                         <option value="">Sélectionner...</option>
                         <option value="christianity">Christianisme</option>
                         <option value="islam">Islam</option>
@@ -499,7 +503,7 @@ www.myoneart.com
                 </div>
                 <div class="mb-4">
                     <label class="block text-[#2D3436] mb-2 text-sm font-semibold">🏳️‍🌈 LGBT+ Friendly</label>
-                    <select id="userSignupLGBTQ" required class="w-full px-4 py-3 border border-gray-300 rounded-xl focus:outline-none focus:border-[#FF4458]">
+                    <select id="userSignupLGBTQ" required class="w-full px-4 py-3 border border-gray-300 rounded-xl focus:outline-none focus:border-[#FF4081]">
                         <option value="">Sélectionner...</option>
                         <option value="yes">Yes</option>
                         <option value="no">No</option>
@@ -510,80 +514,80 @@ www.myoneart.com
                     <label class="block text-[#2D3436] mb-2 text-sm font-semibold">🎯 Interests (select at least one)</label>
                     <div class="max-h-40 overflow-y-auto border border-gray-300 rounded-xl p-3 space-y-2">
                         <label class="flex items-center">
-                            <input type="checkbox" name="userSignupInterest" value="music" class="mr-2 w-4 h-4 text-[#FF4458] rounded">
+                            <input type="checkbox" name="userSignupInterest" value="music" class="mr-2 w-4 h-4 text-[#FF4081] rounded">
                             <span class="text-sm">🎵 Music</span>
                         </label>
                         <label class="flex items-center">
-                            <input type="checkbox" name="userSignupInterest" value="travel" class="mr-2 w-4 h-4 text-[#FF4458] rounded">
+                            <input type="checkbox" name="userSignupInterest" value="travel" class="mr-2 w-4 h-4 text-[#FF4081] rounded">
                             <span class="text-sm">✈️ Travel</span>
                         </label>
                         <label class="flex items-center">
-                            <input type="checkbox" name="userSignupInterest" value="sports" class="mr-2 w-4 h-4 text-[#FF4458] rounded">
+                            <input type="checkbox" name="userSignupInterest" value="sports" class="mr-2 w-4 h-4 text-[#FF4081] rounded">
                             <span class="text-sm">⚽ Sports</span>
                         </label>
                         <label class="flex items-center">
-                            <input type="checkbox" name="userSignupInterest" value="food" class="mr-2 w-4 h-4 text-[#FF4458] rounded">
+                            <input type="checkbox" name="userSignupInterest" value="food" class="mr-2 w-4 h-4 text-[#FF4081] rounded">
                             <span class="text-sm">🍽️ Food</span>
                         </label>
                         <label class="flex items-center">
-                            <input type="checkbox" name="userSignupInterest" value="art" class="mr-2 w-4 h-4 text-[#FF4458] rounded">
+                            <input type="checkbox" name="userSignupInterest" value="art" class="mr-2 w-4 h-4 text-[#FF4081] rounded">
                             <span class="text-sm">🎨 Art</span>
                         </label>
                         <label class="flex items-center">
-                            <input type="checkbox" name="userSignupInterest" value="cinema" class="mr-2 w-4 h-4 text-[#FF4458] rounded">
+                            <input type="checkbox" name="userSignupInterest" value="cinema" class="mr-2 w-4 h-4 text-[#FF4081] rounded">
                             <span class="text-sm">🎬 Cinema</span>
                         </label>
                         <label class="flex items-center">
-                            <input type="checkbox" name="userSignupInterest" value="reading" class="mr-2 w-4 h-4 text-[#FF4458] rounded">
+                            <input type="checkbox" name="userSignupInterest" value="reading" class="mr-2 w-4 h-4 text-[#FF4081] rounded">
                             <span class="text-sm">📚 Reading</span>
                         </label>
                         <label class="flex items-center">
-                            <input type="checkbox" name="userSignupInterest" value="tech" class="mr-2 w-4 h-4 text-[#FF4458] rounded">
+                            <input type="checkbox" name="userSignupInterest" value="tech" class="mr-2 w-4 h-4 text-[#FF4081] rounded">
                             <span class="text-sm">💻 Tech</span>
                         </label>
                         <label class="flex items-center">
-                            <input type="checkbox" name="userSignupInterest" value="gaming" class="mr-2 w-4 h-4 text-[#FF4458] rounded">
+                            <input type="checkbox" name="userSignupInterest" value="gaming" class="mr-2 w-4 h-4 text-[#FF4081] rounded">
                             <span class="text-sm">🎮 Gaming</span>
                         </label>
                         <label class="flex items-center">
-                            <input type="checkbox" name="userSignupInterest" value="fashion" class="mr-2 w-4 h-4 text-[#FF4458] rounded">
+                            <input type="checkbox" name="userSignupInterest" value="fashion" class="mr-2 w-4 h-4 text-[#FF4081] rounded">
                             <span class="text-sm">👗 Fashion</span>
                         </label>
                         <label class="flex items-center">
-                            <input type="checkbox" name="userSignupInterest" value="photography" class="mr-2 w-4 h-4 text-[#FF4458] rounded">
+                            <input type="checkbox" name="userSignupInterest" value="photography" class="mr-2 w-4 h-4 text-[#FF4081] rounded">
                             <span class="text-sm">📸 Photography</span>
                         </label>
                         <label class="flex items-center">
-                            <input type="checkbox" name="userSignupInterest" value="fitness" class="mr-2 w-4 h-4 text-[#FF4458] rounded">
+                            <input type="checkbox" name="userSignupInterest" value="fitness" class="mr-2 w-4 h-4 text-[#FF4081] rounded">
                             <span class="text-sm">💪 Fitness</span>
                         </label>
                     </div>
                 </div>
                 <div class="mb-4">
                     <label class="block text-[#2D3436] mb-2 text-sm font-semibold">📝 Bio (requis)</label>
-                    <textarea id="userSignupBio" rows="3" maxlength="500" required class="w-full px-4 py-3 border border-gray-300 rounded-xl focus:outline-none focus:border-[#FF4458]" placeholder="Parlez-nous de vous..."></textarea>
+                    <textarea id="userSignupBio" rows="3" maxlength="500" required class="w-full px-4 py-3 border border-gray-300 rounded-xl focus:outline-none focus:border-[#FF4081]" placeholder="Parlez-nous de vous..."></textarea>
                 </div>
                 <div class="flex gap-2">
                     <button onclick="goToSignupStep(1)" class="flex-1 py-3 bg-gray-200 text-[#2D3436] rounded-full hover:bg-gray-300 transition font-semibold">← Retour</button>
-                    <button onclick="goToSignupStep(3)" class="flex-1 py-3 bg-[#FF4458] text-white rounded-full hover:bg-[#e03d4c] transition font-semibold">Suivant →</button>
+                    <button onclick="goToSignupStep(3)" class="flex-1 py-3 bg-[#FF4081] text-white rounded-full hover:bg-[#e0377a] transition font-semibold">Suivant →</button>
                 </div>
             </div>
 
             <!-- Step 3: Profile Photo -->
             <div id="signupStep3" class="signup-step hidden">
                 <div class="text-center mb-6">
-                    <div class="w-32 h-32 mx-auto rounded-full bg-gradient-to-br from-[#FF4458] to-[#6C5CE7] flex items-center justify-center text-white text-4xl mb-4" id="profilePhotoPreview">
+                    <div class="w-32 h-32 mx-auto rounded-full bg-gradient-to-br from-[#FF4081] to-[#5B4DFF] flex items-center justify-center text-white text-4xl mb-4" id="profilePhotoPreview">
                         📷
                     </div>
                     <input type="file" id="userSignupPhoto" accept="image/*" class="hidden" onchange="previewProfilePhoto(event)">
-                    <button onclick="document.getElementById('userSignupPhoto').click()" class="px-6 py-2 bg-[#6C5CE7] text-white rounded-full hover:bg-[#5f52d6] transition font-semibold">
+                    <button onclick="document.getElementById('userSignupPhoto').click()" class="px-6 py-2 bg-[#5B4DFF] text-white rounded-full hover:bg-[#5f52d6] transition font-semibold">
                         Télécharger une photo de profil
                     </button>
                     <p class="text-sm text-gray-500 mt-2">Requis pour de meilleurs matchs</p>
                 </div>
                 <div class="flex gap-2">
                     <button onclick="goToSignupStep(2)" class="flex-1 py-3 bg-gray-200 text-[#2D3436] rounded-full hover:bg-gray-300 transition font-semibold">← Retour</button>
-                    <button onclick="goToSignupStep(4)" id="nextToGallery" class="flex-1 py-3 bg-[#FF4458] text-white rounded-full hover:bg-[#e03d4c] transition font-semibold" disabled>Suivant →</button>
+                    <button onclick="goToSignupStep(4)" id="nextToGallery" class="flex-1 py-3 bg-[#FF4081] text-white rounded-full hover:bg-[#e0377a] transition font-semibold" disabled>Suivant →</button>
                 </div>
             </div>
 
@@ -595,20 +599,20 @@ www.myoneart.com
                         <!-- Gallery preview will be added here -->
                     </div>
                     <input type="file" id="userSignupGallery" accept="image/*" multiple class="hidden" onchange="previewGalleryPhotos(event)">
-                    <button onclick="document.getElementById('userSignupGallery').click()" class="w-full py-3 border-2 border-dashed border-[#FF4458] text-[#FF4458] rounded-xl hover:bg-[#FF4458] hover:text-white transition font-semibold">
+                    <button onclick="document.getElementById('userSignupGallery').click()" class="w-full py-3 border-2 border-dashed border-[#FF4081] text-[#FF4081] rounded-xl hover:bg-[#FF4081] hover:text-white transition font-semibold">
                         + Ajouter des photos (Max 6)
                     </button>
                     <p class="text-sm text-gray-500 mt-2 text-center">Ajoutez plus de photos pour vous démarquer!</p>
                 </div>
                 <div class="flex gap-2">
                     <button onclick="goToSignupStep(3)" class="flex-1 py-3 bg-gray-200 text-[#2D3436] rounded-full hover:bg-gray-300 transition font-semibold">← Retour</button>
-                    <button onclick="completeUserSignup()" class="flex-1 py-3 bg-gradient-to-r from-[#FF4458] to-[#6C5CE7] text-white rounded-full hover:shadow-xl transition font-semibold">Créer un compte ✨</button>
+                    <button onclick="completeUserSignup()" class="flex-1 py-3 bg-gradient-to-r from-[#FF4081] to-[#5B4DFF] text-white rounded-full hover:shadow-xl transition font-semibold">Créer un compte ✨</button>
                 </div>
             </div>
 
             <p class="mt-4 text-center text-sm text-[#2D3436]">
                 Vous avez déjà un compte ? 
-                <button onclick="closeUserSignupModal(); showLogin()" class="text-[#FF4458] font-semibold">Connexion</button>
+                <button onclick="closeUserSignupModal(); showLogin()" class="text-[#FF4081] font-semibold">Connexion</button>
             </p>
         </div>
     </div>
@@ -622,29 +626,29 @@ www.myoneart.com
             <form onsubmit="registerEstablishment(event)">
                 <div class="mb-4">
                     <label class="block text-[#2D3436] mb-2 text-sm font-semibold">👤 Contact Name</label>
-                    <input type="text" id="estSignupContactName" required class="w-full px-4 py-3 border border-gray-300 rounded-xl focus:outline-none focus:border-[#FF4458]">
+                    <input type="text" id="estSignupContactName" required class="w-full px-4 py-3 border border-gray-300 rounded-xl focus:outline-none focus:border-[#FF4081]">
                 </div>
                 <div class="mb-4">
                     <label class="block text-[#2D3436] mb-2 text-sm font-semibold">📧 Email</label>
-                    <input type="email" id="estSignupEmail" required class="w-full px-4 py-3 border border-gray-300 rounded-xl focus:outline-none focus:border-[#FF4458]">
+                    <input type="email" id="estSignupEmail" required class="w-full px-4 py-3 border border-gray-300 rounded-xl focus:outline-none focus:border-[#FF4081]">
                 </div>
                 <div class="mb-4">
                     <label class="block text-[#2D3436] mb-2 text-sm font-semibold">🔒 Mot de passe</label>
-                    <input type="password" id="estSignupPassword" required minlength="6" class="w-full px-4 py-3 border border-gray-300 rounded-xl focus:outline-none focus:border-[#FF4458]">
+                    <input type="password" id="estSignupPassword" required minlength="6" class="w-full px-4 py-3 border border-gray-300 rounded-xl focus:outline-none focus:border-[#FF4081]">
                 </div>
                 <div class="mb-4">
                     <label class="block text-[#2D3436] mb-2 text-sm font-semibold">🏪 Nom de l'établissement</label>
-                    <input type="text" id="estSignupName" required class="w-full px-4 py-3 border border-gray-300 rounded-xl focus:outline-none focus:border-[#FF4458]">
+                    <input type="text" id="estSignupName" required class="w-full px-4 py-3 border border-gray-300 rounded-xl focus:outline-none focus:border-[#FF4081]">
                 </div>
                 <div class="mb-4">
                     <label class="block text-[#2D3436] mb-2 text-sm font-semibold">📍 Adresse (optionnel)</label>
-                    <input type="text" id="estSignupAddress" class="w-full px-4 py-3 border border-gray-300 rounded-xl focus:outline-none focus:border-[#FF4458]">
+                    <input type="text" id="estSignupAddress" class="w-full px-4 py-3 border border-gray-300 rounded-xl focus:outline-none focus:border-[#FF4081]">
                 </div>
-                <button type="submit" class="w-full py-3 bg-[#FF4458] text-white rounded-full hover:bg-[#e03d4c] transition font-semibold">Créer un compte Établissement</button>
+                <button type="submit" class="w-full py-3 bg-[#FF4081] text-white rounded-full hover:bg-[#e0377a] transition font-semibold">Créer un compte Établissement</button>
             </form>
             <p class="mt-4 text-center text-sm text-[#2D3436]">
                 Vous avez déjà un compte ? 
-                <button onclick="closeEstablishmentSignupModal(); showLogin()" class="text-[#FF4458] font-semibold">Connexion</button>
+                <button onclick="closeEstablishmentSignupModal(); showLogin()" class="text-[#FF4081] font-semibold">Connexion</button>
             </p>
         </div>
     </div>
@@ -1186,7 +1190,7 @@ www.myoneart.com
     <!-- Copyright Footer -->
     <footer class="bg-white py-6 px-4 border-t border-gray-200">
         <div class="text-center text-sm text-[#2D3436] opacity-75">
-            <p>© <span id="currentYear"></span> MatchSpot - Fait avec ❤️ et ☕ par <a href="https://myoneart.com" target="_blank" class="text-[#FF4458] hover:underline font-semibold">MOA Digital Agency LLC</a></p>
+            <p>© <span id="currentYear"></span> MatchSpot - Fait avec ❤️ et ☕ par <a href="https://myoneart.com" target="_blank" class="text-[#FF4081] hover:underline font-semibold">MOA Digital Agency LLC</a></p>
         </div>
     </footer>
     <script>

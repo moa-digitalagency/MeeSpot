@@ -7,6 +7,30 @@ Ce fichier documente toutes les modifications, corrections et améliorations app
 
 ---
 
+## [10 Octobre 2025 - 18:00 UTC] - Nouveau design avec logo multicolore
+
+### 🎨 Design et Identité visuelle
+- **Nouveau logo et favicon multicolore**
+  - Logo avec dégradé vibrant : rose, violet, bleu cyan, vert turquoise
+  - Favicon mis à jour sur toutes les pages
+  - Fichiers ajoutés: `static/images/logo.png`, `static/images/favicon.png`
+
+- **Nouvelle palette de couleurs**
+  - Rose principal: #FF4081 (remplace #FF4458)
+  - Violet: #5B4DFF (remplace #6C5CE7)
+  - Bleu cyan: #00D4FF (remplace #A29BFE)
+  - Vert turquoise: #00E5A0
+  - Dégradés enrichis avec 3+ couleurs pour plus de profondeur
+
+- **Mise à jour de toutes les pages**
+  - index.html: Hero avec dégradé from-[#FF4081] via-[#5B4DFF] to-[#00D4FF]
+  - app.html: Logo dans l'invite d'installation PWA
+  - establishment.html: Couleurs adaptées
+  - admin.html: Couleurs adaptées
+  - manifest.json: theme_color mis à jour
+
+---
+
 ## [10 Octobre 2025 - 17:30 UTC] - Améliorations UI et QR Code
 
 ### 🎨 Améliorations UI
