@@ -7,6 +7,25 @@ Ce fichier documente toutes les modifications, corrections et améliorations app
 
 ---
 
+## [10 Octobre 2025] - Système de notifications et paramètres de messages
+
+### 🎯 Fonctionnalités ajoutées
+- **Système de notifications pour messages non lus**
+  - Badge rouge avec compteur sur chaque conversation contenant des messages non lus
+  - Badge de notification sur l'onglet Messages dans le menu de navigation
+  - Le compteur disparaît automatiquement quand les messages sont lus
+  - Fichiers modifiés: 
+    - `backend/models/private_conversation.py` (ajout de `unread_count`)
+    - `static/pages/app.html` (affichage des badges et notifications)
+
+### 🔧 Améliorations
+- **Paramètre "Recevoir des photos" désactivé par défaut**
+  - Pour plus de confidentialité, le toggle est maintenant OFF par défaut pour les nouveaux utilisateurs
+  - Les utilisateurs doivent explicitement l'activer pour recevoir des photos
+  - Fichier modifié: `backend/models/user.py` (ligne 45: `default=False`)
+
+---
+
 ## [10 Octobre 2025] - Corrections critiques
 
 ### 🐛 Corrections de bugs
