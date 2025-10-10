@@ -1,7 +1,7 @@
-# MeetSpot - PWA Dating Platform
+# MatchSpot - PWA Dating Platform
 
 ## Overview
-MeetSpot is a Progressive Web Application (PWA) dating platform designed to facilitate real-life meetings at physical venues. Inspired by clean interfaces, its core purpose is to connect users for events rather than endless swiping. The platform supports multiple user roles: Admin for platform management, Establishment for venue owners to create events, and Users for members to join rooms and connect. It aims to offer a modern, mobile-first experience with a focus on privacy, security, and user-friendly interaction, ultimately fostering real-life connections.
+MatchSpot is a Progressive Web Application (PWA) dating platform designed to facilitate real-life meetings at physical venues. Inspired by clean interfaces, its core purpose is to connect users for events rather than endless swiping. The platform supports multiple user roles: Admin for platform management, Establishment for venue owners to create events, and Users for members to join rooms and connect. It aims to offer a modern, mobile-first experience with a focus on privacy, security, and user-friendly interaction, ultimately fostering real-life connections.
 
 ## User Preferences
 - Focus on real-life meetings over endless swiping
@@ -18,7 +18,7 @@ MeetSpot is a Progressive Web Application (PWA) dating platform designed to faci
 The platform features a mobile-first responsive design, limited to a maximum viewport width of 768px. It uses a distinct color palette: Primary #FF4458 (vibrant coral), Secondary #6C5CE7 (soft purple), Accent #A29BFE (lavender), Background #F5F5F5 (light grey), and Text #2D3436 (charcoal). Typography is set with Poppins for headings and Inter for body text. Navigation is managed through fixed bottom navigation bars with SVG icons and bottom sheet modals for mobile-optimized interactions across all dashboards (User, Establishment, Admin).
 
 ### Technical Implementations
-MeetSpot is built as a PWA with a Python Flask backend and a Tailwind CSS frontend. It utilizes a modular backend structure with PostgreSQL via SQLAlchemy ORM. Authentication is handled with JWT (stored in localStorage) and bcrypt for password hashing. All sensitive data, including personal information and private messages, is encrypted at rest using AES-256 (Fernet) with SQLAlchemy TypeDecorators. The frontend uses Vanilla JavaScript for interactivity, supporting full PWA features like service workers for offline support, app manifests for installability, and push notification readiness. An auto-refresh system provides real-time data synchronization for conversations, requests, and room activities, intelligently pausing when the app loses focus. CORS is configured with `supports_credentials=False` and wildcard origins. All API endpoints validate request data.
+MatchSpot is built as a PWA with a Python Flask backend and a Tailwind CSS frontend. It utilizes a modular backend structure with PostgreSQL via SQLAlchemy ORM. Authentication is handled with JWT (stored in localStorage) and bcrypt for password hashing. All sensitive data, including personal information and private messages, is encrypted at rest using AES-256 (Fernet) with SQLAlchemy TypeDecorators. The frontend uses Vanilla JavaScript for interactivity, supporting full PWA features like service workers for offline support, app manifests for installability, and push notification readiness. An auto-refresh system provides real-time data synchronization for conversations, requests, and room activities, intelligently pausing when the app loses focus. CORS is configured with `supports_credentials=False` and wildcard origins. All API endpoints validate request data.
 
 ### Feature Specifications
 - **User Roles & Access Control**: Admin, Establishment, and User roles with role-based access control, including gender, orientation, and age filtering for room access.
@@ -53,7 +53,7 @@ The backend organizes routes by resource (auth, rooms, establishments, admin, pr
   - Verified all sensitive data encryption: email, name, bio, photo_url encrypted with AES-256 (Fernet)
   - Created comprehensive seed system with 43 pre-loaded profile options (persistent across restarts)
   - Profile options include: Genders (4), Sexual Orientations (6), Religions (10), Meeting Types (5), Interests (15), LGBTQ Friendly (3)
-  - Implemented automated seed for default data: 1 admin (admin@meetspot.com), 1 establishment (cafe@test.com), 2 test users (sophie@test.com, julien@test.com)
+  - Implemented automated seed for default data: 1 admin (admin@matchspot.com), 1 establishment (cafe@test.com), 2 test users (sophie@test.com, julien@test.com)
   - All seed data persists after server restarts - stored in PostgreSQL database
   - CRUD admin panel fully functional with real-time activation/deactivation toggle for profile options
   - Options instantly synchronized between admin panel and signup forms
@@ -112,7 +112,7 @@ The backend organizes routes by resource (auth, rooms, establishments, admin, pr
   - Updated admin user detection to use username instead of encrypted email for reliability
 - **Landing Page UX Improvements** (October 9):
   - All CTA buttons (Commencer, Premium, Platinum) now trigger step-by-step user registration directly
-  - Added copyright footer: "© 2025 MeetSpot - Fait avec ❤️ et ☕ par MOA Digital Agency LLC"
+  - Added copyright footer: "© 2025 MatchSpot - Fait avec ❤️ et ☕ par MOA Digital Agency LLC"
   - Footer includes clickable link to myoneart.com
   - Dynamic year display in copyright automatically updates
 - **Subscription Plans Fix** (October 9):

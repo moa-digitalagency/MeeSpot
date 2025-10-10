@@ -1,6 +1,6 @@
 #!/usr/bin/env python3
 #
-# MeetSpot - Script de migration automatique de base de données
+# MatchSpot - Script de migration automatique de base de données
 # MOA Digital Agency LLC
 # Par : Aisance KALONJI
 # Mail : moa@myoneart.com

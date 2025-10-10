@@ -1,5 +1,5 @@
 #
-# MeetSpot - Authentification par clé API
+# MatchSpot - Authentification par clé API
 # MOA Digital Agency LLC
 # Par : Aisance KALONJI
 # Mail : moa@myoneart.com

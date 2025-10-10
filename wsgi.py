@@ -1,6 +1,6 @@
 #!/usr/bin/env python3
 #
-# MeetSpot - WSGI Configuration File
+# MatchSpot - WSGI Configuration File
 # MOA Digital Agency LLC
 # Par : Aisance KALONJI
 # Mail : moa@myoneart.com

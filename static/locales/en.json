@@ -1,5 +1,5 @@
 {
-  "app_name": "MeetSpot",
+  "app_name": "MatchSpot",
   "tagline": "Meet Real People at Real Places",
   "subtitle": "Join curated dating events at your favorite venues. No endless swiping, just authentic connections.",
   "get_started": "Get Started",
@@ -45,7 +45,7 @@
   
   "auth": {
     "welcome_back": "Welcome Back",
-    "join_meetspot": "Join MeetSpot",
+    "join_matchspot": "Join MatchSpot",
     "email": "Email",
     "password": "Password",
     "full_name": "Full Name",
@@ -105,7 +105,7 @@
     "sent": "Sent",
     "new_version_available": "New version available!",
     "update_now": "Update now",
-    "install_meetspot": "Install MeetSpot",
+    "install_matchspot": "Install MatchSpot",
     "quick_access": "Quick access from your home screen",
     "later": "Later",
     "install": "Install"

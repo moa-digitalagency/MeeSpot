@@ -1,4 +1,4 @@
-# MeetSpot - Documentation API Complète
+# MatchSpot - Documentation API Complète
 
 ## 📋 Table des Matières
 - [Informations Générales](#informations-générales)
@@ -30,7 +30,7 @@ Authorization: Bearer <token_jwt>
 ```
 
 ### Compte Admin par Défaut
-- **Email**: `admin@meetspot.com`
+- **Email**: `admin@matchspot.com`
 - **Mot de passe**: `m33t5p0t`
 - **Rôle**: `admin`
 
@@ -581,7 +581,7 @@ Tiers: `free` | `premium` | `platinum`
 **Body:**
 ```json
 {
-  "backup_file": "meetspot_backup_20231015.tar.gz"
+  "backup_file": "matchspot_backup_20231015.tar.gz"
 }
 ```
 

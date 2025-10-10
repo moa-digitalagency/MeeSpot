@@ -1,14 +1,14 @@
-# MeetSpot - PWA Dating Platform
+# MatchSpot - PWA Dating Platform
 
 🇬🇧 English Version | [🇫🇷 Version Française](./README.md)
 
 ## 📱 Overview
 
-MeetSpot is a progressive web application (PWA) dating platform focused on real-life meetings at physical venues. Inspired by Bumble and Hinge's clean interfaces, built with Python Flask backend and HTML/Tailwind CSS/JavaScript frontend.
+MatchSpot is a progressive web application (PWA) dating platform focused on real-life meetings at physical venues. Inspired by Bumble and Hinge's clean interfaces, built with Python Flask backend and HTML/Tailwind CSS/JavaScript frontend.
 
 ### 🎯 Unique Concept
 
-Unlike traditional dating apps based on endless swiping, MeetSpot focuses on authentic connections at curated events in local establishments.
+Unlike traditional dating apps based on endless swiping, MatchSpot focuses on authentic connections at curated events in local establishments.
 
 ## ✨ Key Features
 
@@ -67,7 +67,7 @@ Unlike traditional dating apps based on endless swiping, MeetSpot focuses on aut
 1. **Clone the repository**
 ```bash
 git clone <repo-url>
-cd meetspot
+cd matchspot
 ```
 
 2. **Install Python dependencies**
@@ -79,7 +79,7 @@ pip install flask flask-cors flask-sqlalchemy psycopg2-binary bcrypt cryptograph
 ```bash
 # PostgreSQL database is automatically configured on Replit
 # For local environment, configure DATABASE_URL
-export DATABASE_URL="postgresql://user:password@localhost/meetspot"
+export DATABASE_URL="postgresql://user:password@localhost/matchspot"
 ```
 
 4. **Encryption key configuration**

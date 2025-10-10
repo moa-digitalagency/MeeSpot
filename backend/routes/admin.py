@@ -1,5 +1,5 @@
 #
-# MeetSpot
+# MatchSpot
 # MOA Digital Agency LLC
 # Par : Aisance KALONJI
 # Mail : moa@myoneart.com
@@ -120,7 +120,7 @@ def download_backup(current_user, filename):
     """Télécharge un backup"""
     try:
         # Validation stricte du nom de fichier
-        if not filename.startswith('meetspot_backup_'):
+        if not filename.startswith('matchspot_backup_'):
             return jsonify({
                 'success': False,
                 'message': 'Nom de fichier invalide'
@@ -228,7 +228,7 @@ def delete_backup(current_user, filename):
     """Supprime un backup"""
     try:
         # Validation stricte du nom de fichier
-        if not filename.startswith('meetspot_backup_'):
+        if not filename.startswith('matchspot_backup_'):
             return jsonify({
                 'success': False,
                 'message': 'Nom de fichier invalide'

@@ -1,6 +1,6 @@
 {
-  "name": "MeetSpot - Rencontres Authentiques",
-  "short_name": "MeetSpot",
+  "name": "MatchSpot - Rencontres Authentiques",
+  "short_name": "MatchSpot",
   "description": "Rejoignez des événements de rencontres dans des lieux réels. Pas de swipe infini, juste des connexions authentiques.",
   "start_url": "/",
   "scope": "/",

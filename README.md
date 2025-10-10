@@ -1,14 +1,14 @@
-# MeetSpot - Plateforme de Rencontres PWA
+# MatchSpot - Plateforme de Rencontres PWA
 
 [🇬🇧 English Version](./README_EN.md) | 🇫🇷 Version Française
 
 ## 📱 Présentation
 
-MeetSpot est une application web progressive (PWA) de rencontres qui met l'accent sur les rencontres réelles dans des lieux physiques. Inspirée des interfaces épurées de Bumble et Hinge, elle est construite avec un backend Python Flask et un frontend HTML/Tailwind CSS/JavaScript.
+MatchSpot est une application web progressive (PWA) de rencontres qui met l'accent sur les rencontres réelles dans des lieux physiques. Inspirée des interfaces épurées de Bumble et Hinge, elle est construite avec un backend Python Flask et un frontend HTML/Tailwind CSS/JavaScript.
 
 ### 🎯 Concept Unique
 
-Contrairement aux applications de rencontres traditionnelles basées sur le swipe infini, MeetSpot se concentre sur les connexions authentiques lors d'événements organisés dans des établissements locaux.
+Contrairement aux applications de rencontres traditionnelles basées sur le swipe infini, MatchSpot se concentre sur les connexions authentiques lors d'événements organisés dans des établissements locaux.
 
 ## ✨ Fonctionnalités Principales
 
@@ -67,7 +67,7 @@ Contrairement aux applications de rencontres traditionnelles basées sur le swip
 1. **Cloner le dépôt**
 ```bash
 git clone <repo-url>
-cd meetspot
+cd matchspot
 ```
 
 2. **Installer les dépendances Python**
@@ -79,7 +79,7 @@ pip install flask flask-cors flask-sqlalchemy psycopg2-binary bcrypt cryptograph
 ```bash
 # La base de données PostgreSQL est automatiquement configurée sur Replit
 # Pour un environnement local, configurez DATABASE_URL
-export DATABASE_URL="postgresql://user:password@localhost/meetspot"
+export DATABASE_URL="postgresql://user:password@localhost/matchspot"
 ```
 
 4. **Configuration de la clé de chiffrement**

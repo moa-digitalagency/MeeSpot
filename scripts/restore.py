@@ -1,6 +1,6 @@
 #!/usr/bin/env python3
 #
-# MeetSpot - Script de restauration
+# MatchSpot - Script de restauration
 # MOA Digital Agency LLC
 # Par : Aisance KALONJI
 # Mail : moa@myoneart.com

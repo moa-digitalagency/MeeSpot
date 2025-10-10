@@ -1,22 +1,22 @@
 #!/usr/bin/env python3
 #
-# MeetSpot - PythonAnywhere WSGI Configuration
+# MatchSpot - PythonAnywhere WSGI Configuration
 # MOA Digital Agency LLC
 # Par : Aisance KALONJI
 # Mail : moa@myoneart.com
 # www.myoneart.com
 #
 # Instructions de déploiement sur PythonAnywhere:
-# 1. Uploadez tous les fichiers du projet dans /home/VOTRE_USERNAME/meetspot/
-# 2. Créez un environnement virtuel: mkvirtualenv --python=/usr/bin/python3.11 meetspot-env
+# 1. Uploadez tous les fichiers du projet dans /home/VOTRE_USERNAME/matchspot/
+# 2. Créez un environnement virtuel: mkvirtualenv --python=/usr/bin/python3.11 matchspot-env
 # 3. Installez les dépendances: pip install -r requirements.txt
 # 4. Configurez les variables d'environnement dans le fichier .env
 # 5. Créez la clé de chiffrement: python -c "from cryptography.fernet import Fernet; print(Fernet.generate_key().decode())" > .encryption_key
 # 6. Dans l'onglet Web de PythonAnywhere, configurez:
-#    - Source code: /home/VOTRE_USERNAME/meetspot
-#    - Working directory: /home/VOTRE_USERNAME/meetspot
+#    - Source code: /home/VOTRE_USERNAME/matchspot
+#    - Working directory: /home/VOTRE_USERNAME/matchspot
 #    - WSGI configuration file: pointez vers ce fichier
-#    - Virtualenv: /home/VOTRE_USERNAME/.virtualenvs/meetspot-env
+#    - Virtualenv: /home/VOTRE_USERNAME/.virtualenvs/matchspot-env
 # 7. Rechargez votre application web
 
 import sys
@@ -25,7 +25,7 @@ from pathlib import Path
 
 # ===== CONFIGURATION DU CHEMIN =====
 # Remplacez 'VOTRE_USERNAME' par votre nom d'utilisateur PythonAnywhere
-project_home = '/home/VOTRE_USERNAME/meetspot'
+project_home = '/home/VOTRE_USERNAME/matchspot'
 
 # Alternative: détection automatique du chemin (recommandé)
 # project_home = str(Path(__file__).parent.absolute())
@@ -76,7 +76,7 @@ logging.basicConfig(
     ]
 )
 
-application.logger.info("✅ MeetSpot WSGI application initialisée avec succès")
+application.logger.info("✅ MatchSpot WSGI application initialisée avec succès")
 
 # Note: Ne PAS inclure app.run() ici - cela causerait une erreur sur PythonAnywhere
 # Le serveur WSGI de PythonAnywhere gère l'exécution de l'application

@@ -1,4 +1,4 @@
-# MeetSpot - VPS Deployment Guide (Hostinger/Ubuntu)
+# MatchSpot - VPS Deployment Guide (Hostinger/Ubuntu)
 
 ## Prerequisites
 - Ubuntu/Debian VPS server
@@ -28,9 +28,9 @@ sudo -u postgres psql
 ```
 
 ```sql
-CREATE DATABASE meetspot;
-CREATE USER meetspot_user WITH PASSWORD 'your_secure_password';
-GRANT ALL PRIVILEGES ON DATABASE meetspot TO meetspot_user;
+CREATE DATABASE matchspot;
+CREATE USER matchspot_user WITH PASSWORD 'your_secure_password';
+GRANT ALL PRIVILEGES ON DATABASE matchspot TO matchspot_user;
 \q
 ```
 
@@ -40,12 +40,12 @@ Create a `.env` file in your project root:
 
 ```bash
 # Database Configuration
-DATABASE_URL=postgresql://meetspot_user:your_secure_password@localhost:5432/meetspot
+DATABASE_URL=postgresql://matchspot_user:your_secure_password@localhost:5432/matchspot
 PGHOST=localhost
 PGPORT=5432
-PGUSER=meetspot_user
+PGUSER=matchspot_user
 PGPASSWORD=your_secure_password
-PGDATABASE=meetspot
+PGDATABASE=matchspot
 
 # Security Keys (IMPORTANT: Generate your own!)
 SECRET_KEY=your-secret-key-here-change-me-in-production
@@ -72,8 +72,8 @@ python3 -c "import secrets; print(secrets.token_hex(32))"
 
 ```bash
 # Clone your repository
-git clone https://github.com/moa-digitalagency/MeeSpot.git meetspot
-cd meetspot
+git clone https://github.com/moa-digitalagency/MeeSpot.git matchspot
+cd matchspot
 
 # Create virtual environment
 python3 -m venv venv
@@ -102,7 +102,7 @@ module.exports = {
     name: 'meespot',
     script: 'venv/bin/gunicorn',
     args: '--bind 0.0.0.0:5000 --workers 4 main:app',
-    cwd: '/path/to/meetspot',
+    cwd: '/path/to/matchspot',
     env: {
       FLASK_ENV: 'production'
     },
@@ -123,7 +123,7 @@ pm2 startup
 
 ## Step 7: Nginx Configuration
 
-Create `/etc/nginx/sites-available/meetspot`:
+Create `/etc/nginx/sites-available/matchspot`:
 
 ```nginx
 server {
@@ -139,7 +139,7 @@ server {
     }
 
     location /static {
-        alias /path/to/meetspot/static;
+        alias /path/to/matchspot/static;
         expires 30d;
     }
 
@@ -150,7 +150,7 @@ server {
 Enable the site:
 
 ```bash
-sudo ln -s /etc/nginx/sites-available/meetspot /etc/nginx/sites-enabled/
+sudo ln -s /etc/nginx/sites-available/matchspot /etc/nginx/sites-enabled/
 sudo nginx -t
 sudo systemctl restart nginx
 ```
@@ -185,8 +185,8 @@ export ENCRYPTION_KEY="your-fernet-key-here"
 ### 3. Permission Issues
 ```bash
 # Fix file permissions
-sudo chown -R $USER:$USER /path/to/meetspot
-chmod 755 /path/to/meetspot
+sudo chown -R $USER:$USER /path/to/matchspot
+chmod 755 /path/to/matchspot
 ```
 
 ## Monitoring

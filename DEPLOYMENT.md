@@ -1,14 +1,14 @@
-# Guide de Déploiement MeetSpot
+# Guide de Déploiement MatchSpot
 **MOA Digital Agency LLC**
 
-Ce guide vous accompagne pour déployer MeetSpot sur PythonAnywhere et Railway.
+Ce guide vous accompagne pour déployer MatchSpot sur PythonAnywhere et Railway.
 
 ---
 
 ## 📋 Prérequis
 
 Avant de déployer, assurez-vous d'avoir :
-- Un compte GitHub avec le repository MeetSpot
+- Un compte GitHub avec le repository MatchSpot
 - Les clés de chiffrement générées
 - Une base de données PostgreSQL (fournie par PythonAnywhere ou Railway)
 
@@ -41,15 +41,15 @@ python -c "from cryptography.fernet import Fernet; print(Fernet.generate_key().d
 
 ```bash
 cd ~
-git clone https://github.com/moa-digitalagency/MeeSpot.git meetspot
-cd meetspot
+git clone https://github.com/moa-digitalagency/MeeSpot.git matchspot
+cd matchspot
 ```
 
 ### Étape 3 : Créer l'environnement virtuel
 
 ```bash
-mkvirtualenv --python=/usr/bin/python3.11 meetspot-env
-workon meetspot-env
+mkvirtualenv --python=/usr/bin/python3.11 matchspot-env
+workon matchspot-env
 pip install -r requirements.txt
 ```
 
@@ -67,7 +67,7 @@ pip install -r requirements.txt
 ### Étape 5 : Créer le fichier .env
 
 ```bash
-cd ~/meetspot
+cd ~/matchspot
 nano .env
 ```
 
@@ -101,7 +101,7 @@ import os
 from pathlib import Path
 
 # IMPORTANT: Remplacez 'VOTRE_USERNAME' par votre nom d'utilisateur PythonAnywhere
-project_home = '/home/VOTRE_USERNAME/meetspot'
+project_home = '/home/VOTRE_USERNAME/matchspot'
 
 if project_home not in sys.path:
     sys.path.insert(0, project_home)
@@ -119,7 +119,7 @@ application.config['DEBUG'] = False
 ### Étape 8 : Configurer le Virtual Environment
 
 Dans l'onglet **"Web"**, section **"Virtualenv"** :
-- Entrez : `/home/VOTRE_USERNAME/.virtualenvs/meetspot-env`
+- Entrez : `/home/VOTRE_USERNAME/.virtualenvs/matchspot-env`
 
 ### Étape 9 : Configurer les dossiers statiques
 
@@ -127,13 +127,13 @@ Dans la section **"Static files"** :
 
 | URL | Directory |
 |-----|-----------|
-| `/static/` | `/home/VOTRE_USERNAME/meetspot/static/` |
-| `/uploads/` | `/home/VOTRE_USERNAME/meetspot/uploads/` |
+| `/static/` | `/home/VOTRE_USERNAME/matchspot/static/` |
+| `/uploads/` | `/home/VOTRE_USERNAME/matchspot/uploads/` |
 
 ### Étape 10 : Créer le dossier uploads
 
 ```bash
-cd ~/meetspot
+cd ~/matchspot
 mkdir -p uploads logs
 chmod 755 uploads logs
 ```
@@ -141,8 +141,8 @@ chmod 755 uploads logs
 ### Étape 11 : Initialiser la base de données
 
 ```bash
-workon meetspot-env
-cd ~/meetspot
+workon matchspot-env
+cd ~/matchspot
 python -c "from backend import create_app, db; app = create_app(); app.app_context().push(); db.create_all(); print('✅ Base de données initialisée')"
 ```
 
@@ -318,8 +318,8 @@ Visitez : `https://votre-domaine.com/api/health` (si vous avez ajouté ce endpoi
 
 ```bash
 # PythonAnywhere
-workon meetspot-env
-cd ~/meetspot
+workon matchspot-env
+cd ~/matchspot
 python -c "from backend import create_app, db; from backend.models.user import User; app = create_app(); app.app_context().push(); print(f'Nombre d\'utilisateurs: {User.query.count()}')"
 
 # Railway (via CLI)
@@ -333,9 +333,9 @@ railway run python -c "from backend import create_app, db; from backend.models.u
 ### PythonAnywhere
 
 ```bash
-cd ~/meetspot
+cd ~/matchspot
 git pull origin main
-workon meetspot-env
+workon matchspot-env
 pip install -r requirements.txt --upgrade
 
 # Redémarrer l'app depuis l'onglet Web (bouton Reload)
@@ -358,4 +358,4 @@ Pour toute question :
 
 ---
 
-**MOA Digital Agency LLC** - MeetSpot Platform
+**MOA Digital Agency LLC** - MatchSpot Platform

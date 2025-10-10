@@ -1,6 +1,6 @@
 <!DOCTYPE html>
 <!--
-MeetSpot
+MatchSpot
 MOA Digital Agency LLC
 Par : Aisance KALONJI
 Mail : moa@myoneart.com
@@ -11,12 +11,12 @@ www.myoneart.com
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-    <title>MeetSpot - Discover Events</title>
+    <title>MatchSpot - Discover Events</title>
     <link rel="manifest" href="/manifest.json">
     <meta name="theme-color" content="#FF4458">
     <meta name="apple-mobile-web-app-capable" content="yes">
     <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
-    <meta name="apple-mobile-web-app-title" content="MeetSpot">
+    <meta name="apple-mobile-web-app-title" content="MatchSpot">
     <link rel="apple-touch-icon" href="/images/icon-192.png">
     <script src="/css/tailwind.js"></script>
     <link href="/css/fonts.css" rel="stylesheet">
@@ -63,7 +63,7 @@ www.myoneart.com
                 ❤️
             </div>
             <div class="flex-1">
-                <h3 class="font-bold text-[#2D3436]">Installer MeetSpot</h3>
+                <h3 class="font-bold text-[#2D3436]">Installer MatchSpot</h3>
                 <p class="text-sm text-[#2D3436] opacity-75">Accès rapide depuis votre écran d'accueil</p>
             </div>
         </div>
@@ -370,7 +370,7 @@ www.myoneart.com
                 <button onclick="closeVerificationModal()" class="text-[#2D3436] text-2xl">&times;</button>
             </div>
             
-            <p class="text-sm text-[#2D3436] opacity-75 mb-4">Upload or capture a photo of yourself holding your ID or a piece of paper with "MeetSpot" written on it. This helps us verify your identity.</p>
+            <p class="text-sm text-[#2D3436] opacity-75 mb-4">Upload or capture a photo of yourself holding your ID or a piece of paper with "MatchSpot" written on it. This helps us verify your identity.</p>
             
             <div class="grid grid-cols-2 gap-2 mb-4">
                 <input type="file" id="verificationPhoto" accept="image/*" class="hidden" onchange="previewVerificationPhoto(event)">
@@ -640,8 +640,18 @@ www.myoneart.com
                 return;
             }
             user = JSON.parse(userData);
-            document.getElementById('userAvatar').textContent = user.name.charAt(0).toUpperCase();
-            document.getElementById('profileAvatarLarge').textContent = user.name.charAt(0).toUpperCase();
+            const userAvatarEl = document.getElementById('userAvatar');
+            const profileAvatarLargeEl = document.getElementById('profileAvatarLarge');
+            
+            if (user.photo_url) {
+                userAvatarEl.innerHTML = `<img src="${user.photo_url}" class="w-full h-full object-cover rounded-full cursor-pointer" onclick="switchPage('profile')">`;
+                profileAvatarLargeEl.innerHTML = `<img src="${user.photo_url}" class="w-full h-full object-cover rounded-full">`;
+            } else {
+                userAvatarEl.textContent = user.name.charAt(0).toUpperCase();
+                userAvatarEl.classList.add('cursor-pointer');
+                userAvatarEl.onclick = () => switchPage('profile');
+                profileAvatarLargeEl.textContent = user.name.charAt(0).toUpperCase();
+            }
         }
 
         function switchPage(page) {
@@ -1035,14 +1045,14 @@ www.myoneart.com
                 return `
                     <div class="bg-gray-50 rounded-xl p-4">
                         <div class="flex items-center gap-3 mb-2">
-                            <div class="relative">
-                                <div class="w-12 h-12 rounded-full bg-gradient-to-br from-[#FF4458] to-[#6C5CE7] flex items-center justify-center text-white font-bold">
-                                    ${p.name.charAt(0).toUpperCase()}
+                            <div class="relative ${!isMe ? 'cursor-pointer' : ''}" ${!isMe ? `onclick="viewUserProfile(${p.id})"` : ''}>
+                                <div class="w-12 h-12 rounded-full bg-gradient-to-br from-[#FF4458] to-[#6C5CE7] flex items-center justify-center text-white font-bold overflow-hidden">
+                                    ${p.photo_url ? `<img src="${p.photo_url}" class="w-full h-full object-cover">` : p.name.charAt(0).toUpperCase()}
                                 </div>
                                 <div class="absolute -bottom-1 -right-1 w-5 h-5 ${p.is_verified ? 'bg-blue-500' : 'bg-gray-400'} text-white rounded-full flex items-center justify-center text-xs ${p.is_verified ? '' : 'opacity-60'}">✓</div>
                             </div>
                             <div class="flex-1">
-                                <h4 class="font-bold text-[#2D3436]">${p.name} ${verifiedBadge} ${emojis} ${isMe ? '(Vous)' : ''}</h4>
+                                <h4 class="font-bold text-[#2D3436] ${!isMe ? 'cursor-pointer' : ''}" ${!isMe ? `onclick="viewUserProfile(${p.id})"` : ''}>${p.name} ${verifiedBadge} ${emojis} ${isMe ? '(Vous)' : ''}</h4>
                                 <p class="text-xs text-[#2D3436] opacity-75">${p.age || '?'} ans • ${p.gender || '?'}</p>
                             </div>
                         </div>

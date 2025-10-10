@@ -1,5 +1,5 @@
 #
-# MeetSpot - Modèle APIKey
+# MatchSpot - Modèle APIKey
 # MOA Digital Agency LLC
 # Par : Aisance KALONJI
 # Mail : moa@myoneart.com

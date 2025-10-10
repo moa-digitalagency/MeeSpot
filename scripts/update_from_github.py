@@ -1,6 +1,6 @@
 #!/usr/bin/env python3
 #
-# MeetSpot - Script de mise à jour depuis GitHub
+# MatchSpot - Script de mise à jour depuis GitHub
 # MOA Digital Agency LLC
 # Par : Aisance KALONJI
 # Mail : moa@myoneart.com

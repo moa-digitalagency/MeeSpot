@@ -1,5 +1,5 @@
 #
-# MeetSpot
+# MatchSpot
 # MOA Digital Agency LLC
 # Par : Aisance KALONJI
 # Mail : moa@myoneart.com
@@ -113,8 +113,8 @@ def create_app():
         from backend.models.user import User
         import bcrypt
         
-        admin_email = 'admin@meetspot.com'
-        admin_username = 'admin_meetspot'
+        admin_email = 'admin@matchspot.com'
+        admin_username = 'admin_matchspot'
         
         admin_exists = User.query.filter_by(username=admin_username).first() is not None
         
@@ -125,7 +125,7 @@ def create_app():
             admin_user = User(
                 email=admin_email,
                 password_hash=password_hash,
-                name='Admin MeetSpot',
+                name='Admin MatchSpot',
                 username=admin_username,
                 role='admin'
             )

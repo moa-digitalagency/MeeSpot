@@ -1,6 +1,6 @@
 #!/usr/bin/env python3
 #
-# MeetSpot - Script de backup complet
+# MatchSpot - Script de backup complet
 # MOA Digital Agency LLC
 # Par : Aisance KALONJI
 # Mail : moa@myoneart.com
@@ -18,7 +18,7 @@ class BackupManager:
     def __init__(self):
         self.backup_dir = 'backups'
         self.timestamp = datetime.now().strftime('%Y%m%d_%H%M%S')
-        self.backup_name = f'meetspot_backup_{self.timestamp}'
+        self.backup_name = f'matchspot_backup_{self.timestamp}'
         self.backup_path = os.path.join(self.backup_dir, self.backup_name)
         
     def create_backup(self):
@@ -160,7 +160,7 @@ class BackupManager:
         """Garde seulement les N derniers backups"""
         backups = []
         for file in os.listdir(self.backup_dir):
-            if file.startswith('meetspot_backup_') and file.endswith('.tar.gz'):
+            if file.startswith('matchspot_backup_') and file.endswith('.tar.gz'):
                 file_path = os.path.join(self.backup_dir, file)
                 backups.append((file_path, os.path.getmtime(file_path)))
         
@@ -180,7 +180,7 @@ class BackupManager:
         
         if os.path.exists(backup_dir):
             for file in os.listdir(backup_dir):
-                if file.startswith('meetspot_backup_') and file.endswith('.tar.gz'):
+                if file.startswith('matchspot_backup_') and file.endswith('.tar.gz'):
                     file_path = os.path.join(backup_dir, file)
                     size = os.path.getsize(file_path)
                     mtime = os.path.getmtime(file_path)
