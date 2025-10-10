@@ -1,0 +1,78 @@
+# Changelog - MatchSpot
+
+Ce fichier documente toutes les modifications, corrections et améliorations apportées au projet MatchSpot.
+
+## Instructions
+**Important**: Ce fichier doit être mis à jour à chaque modification importante du code, correction de bug, ou ajout de fonctionnalité.
+
+---
+
+## [10 Octobre 2025] - Corrections critiques
+
+### 🐛 Corrections de bugs
+- **Fix du chargement infini des participants dans les rooms**
+  - Problème: L'auto-refresh vérifiait le mauvais élément DOM (`participantsList` au lieu de `participantsModal`)
+  - Solution: Correction de la vérification pour utiliser `participantsModal` dans `startAutoRefresh()`
+  - Fichier: `static/pages/app.html` ligne 2449
+
+- **Fix de la gestion d'erreur pour les plans d'abonnement**
+  - Problème: Pas de vérification du statut de la réponse HTTP lors du chargement des plans
+  - Solution: Ajout de vérification `if (!plansRes.ok || !requestsRes.ok)` avant le traitement des données
+  - Fichier: `static/pages/app.html` ligne 1941-1943
+
+### 🔐 Sécurité
+- **Ajout des clés secrètes manquantes**
+  - Ajout de `SECRET_KEY` dans les secrets Replit pour la sécurité des sessions Flask
+  - Ajout de `ENCRYPTION_KEY` dans les secrets Replit pour le chiffrement des données sensibles
+  - Ces clés sont maintenant disponibles comme variables d'environnement
+
+### 📦 Déploiement
+- **Configuration du déploiement Replit**
+  - Type: Autoscale (pour sites web stateless)
+  - Commande: `gunicorn --bind 0.0.0.0:5000 main:app`
+  - Les secrets sont synchronisés entre l'environnement de développement et le déploiement
+
+### 📝 Documentation
+- **Création du fichier CHANGELOG.md**
+  - Documentation de toutes les modifications et corrections
+  - Instructions pour maintenir ce fichier à jour
+  
+- **Mise à jour de replit.md**
+  - Ajout de l'instruction de toujours mettre à jour CHANGELOG.md
+  - Documentation des secrets requis
+
+---
+
+## Template pour futures modifications
+
+```markdown
+## [DATE] - Titre de la modification
+
+### 🎯 Fonctionnalités ajoutées
+- Description de la nouvelle fonctionnalité
+- Fichiers modifiés: `chemin/vers/fichier.py`
+
+### 🐛 Corrections de bugs
+- Description du bug corrigé
+- Fichiers modifiés: `chemin/vers/fichier.py`
+
+### 🔧 Améliorations
+- Description de l'amélioration
+- Fichiers modifiés: `chemin/vers/fichier.py`
+
+### 🔐 Sécurité
+- Description de la modification de sécurité
+- Fichiers modifiés: `chemin/vers/fichier.py`
+```
+
+---
+
+## Légende des emojis
+- 🎯 Nouvelle fonctionnalité
+- 🐛 Correction de bug
+- 🔧 Amélioration/Optimisation
+- 🔐 Sécurité
+- 📦 Déploiement
+- 📝 Documentation
+- ⚠️ Avertissement/Dépréciation
+- 🗑️ Suppression

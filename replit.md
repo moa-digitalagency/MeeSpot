@@ -12,6 +12,20 @@ MatchSpot is a Progressive Web Application (PWA) dating platform designed to fac
 - Bottom navigation bars for all dashboards
 - Bottom sheet modals for mobile interactions
 
+## Development Guidelines
+**IMPORTANT**: Toujours mettre à jour le fichier `CHANGELOG.md` après chaque modification importante :
+- Corrections de bugs
+- Ajout de nouvelles fonctionnalités
+- Modifications de sécurité
+- Changements de configuration
+- Améliorations du code
+
+Le CHANGELOG doit documenter :
+- La date de la modification
+- Une description claire du changement
+- Les fichiers modifiés
+- La raison du changement si applicable
+
 ## System Architecture
 
 ### UI/UX Decisions
@@ -48,7 +62,23 @@ The backend organizes routes by resource (auth, rooms, establishments, admin, pr
 - **Flask-CORS**: Cross-Origin Resource Sharing.
 - **Gunicorn**: Production WSGI server.
 
+## Environment Variables & Secrets
+Les secrets suivants doivent être configurés dans Replit Secrets :
+- `SECRET_KEY`: Clé secrète Flask pour signer les sessions et cookies (32+ caractères aléatoires)
+- `ENCRYPTION_KEY`: Clé pour chiffrer les données sensibles en base de données (32+ caractères aléatoires)
+- `SESSION_SECRET`: Clé pour les sessions Flask (auto-générée par Replit)
+- `DATABASE_URL`: URL PostgreSQL (auto-configurée par Replit Database)
+
+**Note**: Les clés SECRET_KEY et ENCRYPTION_KEY sont obligatoires pour le déploiement et doivent être identiques entre développement et production.
+
 ## Recent Changes (October 2025)
+- **Critical Bug Fixes & Security Updates** (October 10):
+  - **Fixed infinite loading bug for room participants**: Corrected auto-refresh logic that was checking wrong DOM element (`participantsList` instead of `participantsModal`)
+  - **Fixed subscription plans loading errors**: Added proper HTTP response status checking before processing data
+  - **Added missing environment secrets**: Configured SECRET_KEY and ENCRYPTION_KEY in Replit Secrets for proper Flask security and data encryption
+  - **Created CHANGELOG.md**: Comprehensive changelog file to track all project modifications, with instructions to keep it updated
+  - **Updated documentation**: Added development guidelines in replit.md requiring CHANGELOG updates for all significant changes
+  - Files modified: `static/pages/app.html` (lines 1941-1943, 2449), `CHANGELOG.md` (new), `replit.md` (updated)
 - **Data Security & Seed System Overhaul** (October 9):
   - Verified all sensitive data encryption: email, name, bio, photo_url encrypted with AES-256 (Fernet)
   - Created comprehensive seed system with 43 pre-loaded profile options (persistent across restarts)
