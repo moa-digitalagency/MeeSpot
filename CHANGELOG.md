@@ -7,14 +7,15 @@ Ce fichier documente toutes les modifications, corrections et améliorations app
 
 ---
 
-## [10 Octobre 2025 - 22:20 UTC] - Mise à Jour Favicon et Logo + Documentation
+## [10 Octobre 2025 - 22:20 UTC] - Mise à Jour Favicon + Documentation
 
-### 🎨 Nouveau Favicon et Logo
-- **Nouveau favicon multicolore**
+### 🎨 Nouveau Favicon (uniquement)
+- **Nouveau favicon multicolore pour l'icône du navigateur**
   - Favicon avec dégradé moderne : bleu, violet, rose, vert
   - Design cœur central blanc avec bords colorés
-  - Fichiers mis à jour : `static/images/favicon.png`, `static/images/logo.png`
+  - Fichier mis à jour : `static/images/favicon.png`
   - Toutes les tailles d'icônes PWA mises à jour (72, 96, 128, 144, 152, 192, 384, 512px)
+  - **Le logo principal (landing page + dashboard) reste inchangé** : logo original MatchSpot
 
 ### 📚 Consolidation Documentation
 - **Simplification des guides de déploiement**
