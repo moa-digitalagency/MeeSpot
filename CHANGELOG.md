@@ -9,6 +9,12 @@ Ce fichier documente toutes les modifications, corrections et améliorations app
 
 ## [10 Octobre 2025 - 18:00 UTC] - Nouveau design avec logo multicolore
 
+### ✍️ Contenu et Messages
+- **Refonte du message principal du hero**
+  - Nouveau titre: "Vos lieux. Vos matchs. Pas du swipe"
+  - Nouveau sous-titre: "Chaque lieu devient une opportunité de rencontre authentique."
+  - Message plus percutant et concis qui différencie clairement la plateforme
+
 ### 🎨 Design et Identité visuelle
 - **Nouveau logo et favicon multicolore**
   - Logo avec dégradé vibrant : rose, violet, bleu cyan, vert turquoise
