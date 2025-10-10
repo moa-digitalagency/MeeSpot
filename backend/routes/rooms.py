@@ -156,75 +156,104 @@ def leave_room(current_user, room_id):
 @bp.route('/<int:room_id>/participants', methods=['GET'])
 @token_required
 def get_participants(current_user, room_id):
+    import traceback
     from backend.models.profile_option import ProfileOption
     from backend.models.connection_request import ConnectionRequest
     from backend.models.private_conversation import PrivateConversation
     from backend.models.user_block import UserBlock
     
-    room = Room.query.get_or_404(room_id)
+    try:
+        room = Room.query.get_or_404(room_id)
+        
+        membership = RoomMember.query.filter_by(room_id=room_id, user_id=current_user.id, active=True).first()
+        if not membership:
+            return jsonify({'message': 'You must be a member to view participants'}), 403
+        
+        room.check_and_expire()
+        db.session.commit()
+        
+        active_members = RoomMember.query.filter_by(room_id=room_id, active=True).all()
+        
+        blocked_ids = [block.blocked_id for block in UserBlock.query.filter_by(blocker_id=current_user.id).all()]
+        blocker_ids = [block.blocker_id for block in UserBlock.query.filter_by(blocked_id=current_user.id).all()]
+        
+        meeting_type_options = {opt.value: opt.emoji for opt in ProfileOption.query.filter_by(category='meeting_type', is_active=True).all()}
+        
+        participants = []
+        for member in active_members:
+            try:
+                user = member.user
+                
+                if not user:
+                    continue
+                
+                if user.id == current_user.id:
+                    participant_data = {
+                        'id': user.id,
+                        'name': user.name or 'Utilisateur',
+                        'age': user.calculate_age() if user.birthdate else (user.age or 0),
+                        'gender': user.gender or '',
+                        'bio': user.bio or '',
+                        'photo_url': user.photo_url or '',
+                        'meeting_type_emojis': [],
+                        'joined_at': member.joined_at.isoformat() if member.joined_at else '',
+                        'request_status': None,
+                        'is_verified': user.is_verified or False,
+                        'is_me': True
+                    }
+                    participants.insert(0, participant_data)
+                    continue
+                
+                if user.id in blocked_ids or user.id in blocker_ids:
+                    continue
+                
+                meeting_type_emojis = []
+                if user.meeting_type:
+                    emoji = meeting_type_options.get(user.meeting_type, '')
+                    if emoji:
+                        meeting_type_emojis.append(emoji)
+                
+                connection_request = ConnectionRequest.query.filter_by(
+                    room_id=room_id,
+                    requester_id=current_user.id,
+                    target_id=user.id
+                ).order_by(ConnectionRequest.created_at.desc()).first()
+                
+                conversation = PrivateConversation.query.filter(
+                    or_(
+                        and_(PrivateConversation.user1_id == current_user.id, PrivateConversation.user2_id == user.id),
+                        and_(PrivateConversation.user1_id == user.id, PrivateConversation.user2_id == current_user.id)
+                    ),
+                    PrivateConversation.is_active == True
+                ).first()
+                
+                request_status = None
+                if connection_request:
+                    request_status = connection_request.status
+                
+                participant_data = {
+                    'id': user.id,
+                    'name': user.name or 'Utilisateur',
+                    'age': user.calculate_age() if user.birthdate else (user.age or 0),
+                    'gender': user.gender or '',
+                    'bio': user.bio or '',
+                    'photo_url': user.photo_url or '',
+                    'meeting_type_emojis': meeting_type_emojis,
+                    'joined_at': member.joined_at.isoformat() if member.joined_at else '',
+                    'request_status': request_status,
+                    'is_verified': user.is_verified or False,
+                    'has_conversation': conversation is not None
+                }
+                participants.append(participant_data)
+                
+            except Exception as user_error:
+                print(f"Error processing participant {member.id}: {str(user_error)}")
+                traceback.print_exc()
+                continue
+        
+        return jsonify(participants)
     
-    membership = RoomMember.query.filter_by(room_id=room_id, user_id=current_user.id, active=True).first()
-    if not membership:
-        return jsonify({'message': 'You must be a member to view participants'}), 403
-    
-    room.check_and_expire()
-    db.session.commit()
-    
-    active_members = RoomMember.query.filter_by(room_id=room_id, active=True).all()
-    
-    blocked_ids = [block.blocked_id for block in UserBlock.query.filter_by(blocker_id=current_user.id).all()]
-    blocker_ids = [block.blocker_id for block in UserBlock.query.filter_by(blocked_id=current_user.id).all()]
-    
-    meeting_type_options = {opt.value: opt.emoji for opt in ProfileOption.query.filter_by(category='meeting_type', is_active=True).all()}
-    
-    participants = []
-    for member in active_members:
-        user = member.user
-        
-        if user.id == current_user.id:
-            continue
-        
-        if user.id in blocked_ids or user.id in blocker_ids:
-            continue
-        
-        meeting_type_emojis = []
-        if user.meeting_type:
-            emoji = meeting_type_options.get(user.meeting_type, '')
-            if emoji:
-                meeting_type_emojis.append(emoji)
-        
-        connection_request = ConnectionRequest.query.filter_by(
-            room_id=room_id,
-            requester_id=current_user.id,
-            target_id=user.id
-        ).order_by(ConnectionRequest.created_at.desc()).first()
-        
-        conversation = PrivateConversation.query.filter(
-            or_(
-                and_(PrivateConversation.user1_id == current_user.id, PrivateConversation.user2_id == user.id),
-                and_(PrivateConversation.user1_id == user.id, PrivateConversation.user2_id == current_user.id)
-            ),
-            PrivateConversation.is_active == True
-        ).first()
-        
-        if conversation:
-            continue
-        
-        request_status = None
-        if connection_request:
-            request_status = connection_request.status
-        
-        participants.append({
-            'id': user.id,
-            'name': user.name,
-            'age': user.calculate_age() if user.birthdate else user.age,
-            'gender': user.gender,
-            'bio': user.bio,
-            'photo_url': user.photo_url,
-            'meeting_type_emojis': meeting_type_emojis,
-            'joined_at': member.joined_at.isoformat(),
-            'request_status': request_status,
-            'is_verified': user.is_verified or False
-        })
-    
-    return jsonify(participants)
+    except Exception as e:
+        print(f"Fatal error in get_participants: {str(e)}")
+        traceback.print_exc()
+        return jsonify({'message': 'Error loading participants', 'error': str(e)}), 500

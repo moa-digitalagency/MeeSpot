@@ -1024,7 +1024,11 @@ www.myoneart.com
                 const emojis = p.meeting_type_emojis && p.meeting_type_emojis.length > 0 ? p.meeting_type_emojis.join(' ') : '';
                 
                 let requestButton = '';
-                if (p.request_status === 'pending') {
+                if (p.has_conversation) {
+                    requestButton = `<button onclick="openChatFromParticipants(${p.id})" class="flex-1 py-2 bg-green-500 text-white rounded-full text-sm font-semibold hover:bg-green-600 transition-colors">
+                        💬 Converser
+                    </button>`;
+                } else if (p.request_status === 'pending') {
                     requestButton = `<button class="flex-1 py-2 bg-[#A29BFE] text-white rounded-full text-sm font-semibold cursor-default">
                         ⏳ Envoyé
                     </button>`;
@@ -1073,6 +1077,35 @@ www.myoneart.com
         function closeParticipantsModal() {
             document.getElementById('participantsModal').classList.add('hidden');
             currentRoomId = null;
+        }
+
+        async function openChatFromParticipants(otherUserId) {
+            const token = localStorage.getItem('token');
+            
+            try {
+                const response = await fetch(`/api/conversations?filter=all`, {
+                    headers: { 'Authorization': `Bearer ${token}` }
+                });
+                
+                if (response.ok) {
+                    const conversations = await response.json();
+                    const conversation = conversations.find(c => 
+                        c.user1_id === otherUserId || c.user2_id === otherUserId
+                    );
+                    
+                    if (conversation) {
+                        const otherUser = conversation.user1_id === user.id ? conversation.user2_name : conversation.user1_name;
+                        const isVerified = conversation.user1_id === user.id ? conversation.user2_is_verified : conversation.user1_is_verified;
+                        
+                        closeParticipantsModal();
+                        switchPage('conversations');
+                        openChat(conversation.id, otherUser, otherUserId, isVerified, conversation.expires_at);
+                    }
+                }
+            } catch (error) {
+                console.error('Error opening chat:', error);
+                alert('Erreur lors de l\'ouverture de la conversation');
+            }
         }
 
         async function leaveRoom() {
