@@ -8,34 +8,34 @@ MatchSpot is a progressive web application (PWA) dating platform focused on real
 
 ### 🎯 Unique Concept
 
-Unlike traditional dating apps based on endless swiping, MatchSpot focuses on authentic connections at curated events in local establishments.
+Unlike traditional dating apps based on endless swiping, MatchSpot focuses on authentic connections in virtual rooms organized at local establishments.
 
 ## ✨ Key Features
 
-### 🏠 Event System
-- **24-hour automatic expiration** : All events expire 24 hours after creation
-- **Unique access codes** : 8-character codes for easy event joining
-- **QR Scanner** : Join events by scanning QR codes with camera
+### 🏠 Room System
+- **24-hour automatic expiration** : All rooms expire 24 hours after creation
+- **Unique access codes** : 8-character codes for easy room joining
+- **QR Scanner** : Join rooms by scanning QR codes with camera
 - **Access filters** : Control based on gender, orientation, and age
 
 ### 💬 Connection System
 - **No group chat** : Focus on individual connections
 - **Connection requests** : Send requests to participants you're interested in
 - **1-to-1 private conversations** : Encrypted messages after connection acceptance
-- **Persistent conversations** : Conversations remain active after events expire
+- **Persistent conversations** : Conversations remain active after rooms expire
 
 ### 👤 User Roles
 
 #### User
-- Join events with access codes or QR
-- View event participants
+- Join rooms with access codes or QR
+- View room participants
 - Send/accept connection requests
 - Encrypted private conversations
 
 #### Establishment
-- Create events (limited by subscription)
+- Create rooms (limited by subscription)
 - Manage participants
-- Generate QR codes for events
+- Generate QR codes for rooms
 - Access to analytics
 
 #### Administrator
@@ -46,14 +46,14 @@ Unlike traditional dating apps based on endless swiping, MatchSpot focuses on au
 ### 💎 Subscriptions
 
 **For Users:**
-- **Free** : Browse and join public events
+- **Free** : Browse and join public rooms
 - **Premium** ($19/mo) : Priority access, alternative identity mode
 - **Platinum** ($39/mo) : VIP access, unlimited messaging
 
 **For Establishments:**
-- **One-Shot** ($9) : 1 event per day
-- **Silver** ($49/mo) : 1 event/day + advanced analytics
-- **Gold** ($99/mo) : 3 events/day + premium features
+- **One-Shot** ($9) : 1 room per day
+- **Silver** ($49/mo) : 1 room/day + advanced analytics
+- **Gold** ($99/mo) : 3 rooms/day + premium features
 
 ## 🚀 Quick Start
 
@@ -107,13 +107,13 @@ UPDATE users SET role = 'admin' WHERE email = 'your@email.com';
 ## 📱 User Interface
 
 ### Navigation (4 tabs)
-1. **Home** : Access code, QR scanner, my events
+1. **Home** : Access code, QR scanner, my rooms
 2. **Chat** : Private conversations list
 3. **Requests** : Received/sent requests
 4. **Profile** : Profile management and logout
 
 ### User Flow
-1. Join an event (code or QR)
+1. Join a room (code or QR)
 2. View participants
 3. Send connection requests
 4. Accept/Reject requests
@@ -158,8 +158,8 @@ static/
 **Main Tables:**
 - `users` : Users with demographics and subscriptions
 - `establishments` : Establishments with subscription plans
-- `rooms` : Events with 24h expiration
-- `room_members` : Active event members
+- `rooms` : Virtual rooms with 24h expiration
+- `room_members` : Active room members
 - `connection_request` : Requests (pending/accepted/rejected)
 - `private_conversation` : 1-to-1 conversations
 - `private_message` : Encrypted messages
@@ -191,7 +191,7 @@ See the [complete API documentation](./API_DOCS_EN.md) for all endpoints.
 **Main Endpoints:**
 - `POST /api/auth/register` - Registration
 - `POST /api/auth/login` - Login
-- `GET /api/rooms` - List events
+- `GET /api/rooms` - List rooms
 - `POST /api/rooms/join-by-code` - Join by code
 - `GET /api/rooms/<id>/participants` - View participants
 - `POST /api/requests` - Send a request
@@ -231,6 +231,16 @@ gunicorn --bind 0.0.0.0:5000 --reuse-port main:app
 
 3. **HTTPS configuration**
 Always use HTTPS in production to protect JWT tokens and data.
+
+### 🔄 GitHub Auto-Update (VPS Only)
+
+**One-click GitHub update** : The automatic update feature (`/api/admin/update`) is available on your **deployed VPS server** and works perfectly for updating the application from GitHub with:
+- Automatic backup before update
+- Database migration after update
+- Dependency installation
+- Data persistence throughout the process
+
+This feature is designed for production VPS environments (see [DEPLOYMENT_VPS.md](./DEPLOYMENT_VPS.md) for details).
 
 ## 🤝 Contributing
 

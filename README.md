@@ -232,11 +232,15 @@ gunicorn --bind 0.0.0.0:5000 --reuse-port main:app
 3. **Configuration HTTPS**
 Toujours utiliser HTTPS en production pour protéger les tokens JWT et données.
 
-### ⚠️ Limitation sur Replit
+### 🔄 Mise à Jour GitHub (VPS Uniquement)
 
-**Mise à jour automatique GitHub** : La fonctionnalité de mise à jour en un clic depuis GitHub (`/api/admin/update`) ne fonctionne **pas sur Replit** car les opérations git sont bloquées pour des raisons de sécurité. Cette fonctionnalité est uniquement disponible sur VPS/serveur dédié (voir [DEPLOYMENT_VPS.md](./DEPLOYMENT_VPS.md)).
+**Mise à jour automatique GitHub** : La fonctionnalité de mise à jour en un clic depuis GitHub (`/api/admin/update`) est disponible sur votre **serveur VPS déployé** et fonctionne parfaitement pour mettre à jour l'application depuis GitHub avec :
+- Backup automatique avant mise à jour
+- Migration de base de données après mise à jour
+- Installation des dépendances
+- Persistance des données tout au long du processus
 
-Sur Replit, les mises à jour doivent être faites manuellement via l'interface Replit ou en redéployant l'application.
+Cette fonctionnalité est conçue pour les environnements VPS en production (voir [DEPLOYMENT_VPS.md](./DEPLOYMENT_VPS.md) pour plus de détails).
 
 ## 🤝 Contribution
 
