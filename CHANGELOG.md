@@ -7,6 +7,56 @@ Ce fichier documente toutes les modifications, corrections et améliorations app
 
 ---
 
+## [10 Octobre 2025 - 22:52 UTC] - Améliorations UX et Corrections
+
+### 🔧 Correction Toggle Consentement Photos
+- **Ajout de la route manquante `/api/profile/photo-consent`**
+  - Endpoint POST pour activer/désactiver le consentement photos
+  - Toggle fonctionnel qui inverse l'état actuel (`photo_consent_enabled`)
+  - Par défaut: OFF (déjà configuré dans le modèle User)
+  - Fichier modifié: `backend/routes/profile.py` (lignes 138-147)
+
+### 🎨 Logo Mode Sombre
+- **Ajout du logo spécifique pour le mode dark**
+  - Nouveau logo avec texte blanc pour meilleure visibilité en mode sombre
+  - Fichier ajouté: `static/images/logo-dark.png`
+  - CSS pour affichage/masquage automatique selon le thème actif
+  - Fichiers modifiés: `static/pages/app.html` (lignes 56-58, 88-89)
+
+### ⏳ Icône Vérification En Attente
+- **Remplacement de l'icône orange par un sablier**
+  - Les utilisateurs avec vérification "pending" affichent maintenant ⏳ au lieu d'un badge orange
+  - Badge gris avec emoji sablier pour meilleure compréhension visuelle
+  - Fichier modifié: `static/pages/app.html` (lignes 722-727)
+
+### 📱 Correction Popup PWA Install
+- **Réapparition du popup après 7 jours**
+  - Ancien système: popup ne s'affichait plus jamais après dismiss
+  - Nouveau système: utilise `pwa_install_dismissed_date` avec vérification de 7 jours
+  - Le popup réapparaît si dernier dismiss > 7 jours ou jamais dismissed
+  - Fichiers modifiés: `static/pages/app.html` (lignes 2456-2468, 2482-2484)
+
+### 👥 Carrousel Profils Dashboard
+- **Ajout d'un carrousel infini de profils aléatoires**
+  - Section "✨ Profils déjà inscrits" dans le dashboard
+  - 10 profils avec noms diversifiés (Sophie, Malik, Emma, Yuki, Carlos, Amara, Liam, Priya, Ahmed, Zoe)
+  - Animation scroll infini avec boucle continue (30s)
+  - Avatars colorés avec dégradés variés représentant différentes ethnicités
+  - Fichiers modifiés: 
+    - `static/pages/app.html` (lignes 60-64 pour CSS, 120-126 pour HTML, 2603-2631 pour JS)
+
+### 📋 Fichiers Modifiés
+- `backend/routes/profile.py` - Ajout route photo-consent
+- `static/pages/app.html` - Logo dark, icône sablier, popup PWA, carrousel
+- `static/images/logo-dark.png` - Nouveau logo mode sombre
+
+### ✅ Tests
+- ✅ Application redémarrée avec succès
+- ✅ Toutes les modifications chargées sans erreur
+- ✅ Workflow "Start application" en cours d'exécution
+
+---
+
 ## [10 Octobre 2025 - 22:20 UTC] - Mise à Jour Favicon + Documentation
 
 ### 🎨 Nouveau Favicon (uniquement)
