@@ -39,7 +39,7 @@ class User(db.Model):
     subscription_tier = db.Column(db.String(20), default='free')
     alternative_mode = db.Column(db.Boolean, default=False)
     alternative_name = db.Column(EncryptedString(500))
-    photo_consent_enabled = db.Column(db.Boolean, default=True)
+    photo_consent_enabled = db.Column(db.Boolean, default=False)
     is_verified = db.Column(db.Boolean, default=False)
     
     language = db.Column(db.String(5), default='fr')
