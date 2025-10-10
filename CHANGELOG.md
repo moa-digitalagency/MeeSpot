@@ -7,6 +7,39 @@ Ce fichier documente toutes les modifications, corrections et améliorations app
 
 ---
 
+## [10 Octobre 2025 - 23:00 UTC] - Déplacement Carrousel Profils vers Landing Page
+
+### 👥 Section Profils Inscrits - Landing Page
+- **Déplacement du carrousel du dashboard vers la landing page**
+  - Section ajoutée après "Comment ça marche" et avant "Plans d'adhésion"
+  - Titre: "👥 Ils sont déjà inscrits"
+  - Description: "Rejoignez une communauté diverse et authentique"
+  - 6 profils avec photos réelles diversifiées (Sophie, Malik, Emma, Yuki, Carlos, Amara)
+  - Photos générées et stockées dans `static/images/profiles/`
+  - Animation scroll infini (40s) avec duplication des profils
+  - Design: cartes 140px avec photos 128x128px arrondies, overlay gradient pour noms/âges
+  - Call-to-action: "Rejoignez-nous maintenant 🚀"
+
+### 🗑️ Nettoyage Dashboard Utilisateur
+- **Retrait du carrousel du dashboard app**
+  - Carrousel retiré de `static/pages/app.html` 
+  - Fonction JavaScript `initProfileCarousel()` supprimée
+  - Focus du dashboard sur les fonctionnalités utilisateur (rooms, messages)
+
+### 📋 Fichiers Modifiés
+- `static/pages/index.html` - Ajout section profils avec carrousel + JS
+- `static/pages/app.html` - Retrait carrousel et code JS associé
+- `static/images/profiles/` - 6 nouvelles photos de profils diversifiés
+- `CHANGELOG.md` - Documentation
+
+### ✅ Tests
+- ✅ Application redémarrée avec succès
+- ✅ Landing page affiche le carrousel correctement
+- ✅ Animation infinie fonctionne
+- ✅ Dashboard utilisateur nettoyé
+
+---
+
 ## [10 Octobre 2025 - 22:52 UTC] - Améliorations UX et Corrections
 
 ### 🔧 Correction Toggle Consentement Photos

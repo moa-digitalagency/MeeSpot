@@ -114,14 +114,6 @@ www.myoneart.com
                 </button>
             </div>
 
-            <div class="mb-6">
-                <h3 class="font-bold text-[#2D3436] mb-3">✨ Profils déjà inscrits</h3>
-                <div class="profile-carousel">
-                    <div class="profile-track" id="profileCarousel">
-                    </div>
-                </div>
-            </div>
-
             <div class="mb-4">
                 <div class="flex justify-between items-center mb-3">
                     <h3 class="font-bold text-[#2D3436]">Mes rooms</h3>
@@ -2597,35 +2589,6 @@ www.myoneart.com
             console.log('You are offline');
         });
 
-        function initProfileCarousel() {
-            const profiles = [
-                { name: 'Sophie', age: 24, gradient: 'from-pink-500 to-purple-500' },
-                { name: 'Malik', age: 28, gradient: 'from-blue-500 to-cyan-500' },
-                { name: 'Emma', age: 26, gradient: 'from-green-500 to-teal-500' },
-                { name: 'Yuki', age: 23, gradient: 'from-yellow-500 to-orange-500' },
-                { name: 'Carlos', age: 30, gradient: 'from-red-500 to-pink-500' },
-                { name: 'Amara', age: 25, gradient: 'from-purple-500 to-indigo-500' },
-                { name: 'Liam', age: 27, gradient: 'from-cyan-500 to-blue-500' },
-                { name: 'Priya', age: 29, gradient: 'from-orange-500 to-red-500' },
-                { name: 'Ahmed', age: 31, gradient: 'from-teal-500 to-green-500' },
-                { name: 'Zoe', age: 22, gradient: 'from-indigo-500 to-purple-500' }
-            ];
-            
-            const duplicatedProfiles = [...profiles, ...profiles];
-            
-            const carouselHtml = duplicatedProfiles.map(profile => `
-                <div class="profile-card">
-                    <div class="w-20 h-20 rounded-full bg-gradient-to-br ${profile.gradient} flex items-center justify-center text-white text-2xl font-bold">
-                        ${profile.name.charAt(0)}
-                    </div>
-                    <p class="text-xs text-center text-[#2D3436] mt-1 font-semibold">${profile.name}, ${profile.age}</p>
-                </div>
-            `).join('');
-            
-            document.getElementById('profileCarousel').innerHTML = carouselHtml;
-        }
-
-        initProfileCarousel();
         startAutoRefresh();
     </script>
 </body>

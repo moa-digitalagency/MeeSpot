@@ -28,6 +28,12 @@ www.myoneart.com
         .gradient-bg { background: linear-gradient(135deg, #FF4081 0%, #5B4DFF 50%, #00D4FF 100%); }
         .card-hover { transition: all 0.3s ease; }
         .card-hover:active { transform: scale(0.98); }
+        
+        /* Profile Carousel */
+        .profile-carousel { overflow: hidden; position: relative; }
+        .profile-track { display: flex; animation: scroll-profiles 40s linear infinite; }
+        @keyframes scroll-profiles { 0% { transform: translateX(0); } 100% { transform: translateX(-50%); } }
+        .profile-card-landing { min-width: 140px; margin: 0 12px; }
     </style>
 </head>
 <body class="bg-[#F5F5F5]">
@@ -123,6 +129,23 @@ www.myoneart.com
                 <h4 class="text-xl font-semibold mb-2 text-white">Rencontrez en Personne</h4>
                 <p class="text-white">Connectez-vous face à face dans un environnement sûr et amusant</p>
             </div>
+        </div>
+    </section>
+
+    <section class="py-12 bg-gradient-to-br from-[#F5F5F5] to-white px-4">
+        <h3 class="text-2xl font-bold text-center text-[#2D3436] mb-2">👥 Ils sont déjà inscrits</h3>
+        <p class="text-center text-[#2D3436] opacity-75 mb-8">Rejoignez une communauté diverse et authentique</p>
+        
+        <div class="profile-carousel mb-4">
+            <div class="profile-track" id="landingProfileCarousel">
+            </div>
+        </div>
+        
+        <div class="text-center mt-8">
+            <p class="text-[#2D3436] opacity-75 mb-4">Des milliers de profils vérifiés vous attendent</p>
+            <button onclick="showUserSignup()" class="px-8 py-3 bg-gradient-to-r from-[#FF4081] to-[#5B4DFF] text-white rounded-full font-semibold hover:opacity-90 transition shadow-lg">
+                Rejoignez-nous maintenant 🚀
+            </button>
         </div>
     </section>
 
@@ -1176,6 +1199,38 @@ www.myoneart.com
         }
 
         loadTranslations(currentLang);
+        
+        // Initialize Landing Profile Carousel
+        function initLandingProfileCarousel() {
+            const profiles = [
+                { name: 'Sophie', age: 24, photo: '/images/profiles/diverse_young_profes_574f6945.jpg' },
+                { name: 'Malik', age: 28, photo: '/images/profiles/diverse_young_profes_1bdd226f.jpg' },
+                { name: 'Emma', age: 26, photo: '/images/profiles/diverse_young_profes_73f05f00.jpg' },
+                { name: 'Yuki', age: 23, photo: '/images/profiles/diverse_young_profes_2d7c62d5.jpg' },
+                { name: 'Carlos', age: 30, photo: '/images/profiles/diverse_young_profes_1f85fc22.jpg' },
+                { name: 'Amara', age: 25, photo: '/images/profiles/diverse_young_profes_04694515.jpg' }
+            ];
+            
+            const duplicatedProfiles = [...profiles, ...profiles];
+            
+            const carouselHtml = duplicatedProfiles.map(profile => `
+                <div class="profile-card-landing">
+                    <div class="relative">
+                        <img src="${profile.photo}" alt="${profile.name}" class="w-32 h-32 rounded-2xl object-cover shadow-lg">
+                        <div class="absolute bottom-2 left-2 right-2 bg-gradient-to-r from-[#FF4081] to-[#5B4DFF] text-white px-2 py-1 rounded-lg text-xs font-semibold text-center">
+                            ${profile.name}, ${profile.age}
+                        </div>
+                    </div>
+                </div>
+            `).join('');
+            
+            const carousel = document.getElementById('landingProfileCarousel');
+            if (carousel) {
+                carousel.innerHTML = carouselHtml;
+            }
+        }
+        
+        initLandingProfileCarousel();
         
         if ('serviceWorker' in navigator) {
             navigator.serviceWorker.register('/sw.js')
