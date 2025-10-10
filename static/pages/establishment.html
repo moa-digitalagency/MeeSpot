@@ -674,14 +674,21 @@ www.myoneart.com
             ctx.fillStyle = '#FF4458';
             ctx.fillText(accessCode, 200, 350);
             
+            ctx.strokeStyle = '#CCCCCC';
+            ctx.lineWidth = 1;
+            ctx.beginPath();
+            ctx.moveTo(50, 375);
+            ctx.lineTo(350, 375);
+            ctx.stroke();
+            
             ctx.font = '14px Inter, sans-serif';
             ctx.fillStyle = '#666';
-            ctx.fillText('Scannez le QR code ou utilisez le code ci-dessus', 200, 390);
-            ctx.fillText('pour rejoindre cette room', 200, 410);
+            ctx.fillText('Scannez le QR code ou utilisez le code ci-dessus', 200, 400);
+            ctx.fillText('pour rejoindre cette room', 200, 420);
             
             ctx.font = 'bold 16px Inter, sans-serif';
             ctx.fillStyle = '#FF4458';
-            ctx.fillText('www.thematchspot.com', 200, 460);
+            ctx.fillText('www.thematchspot.com', 200, 455);
             
             tempCanvas.toBlob((blob) => {
                 const url = URL.createObjectURL(blob);

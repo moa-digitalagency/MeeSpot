@@ -34,7 +34,3 @@ run = ["gunicorn", "--bind", "0.0.0.0:5000", "main:app"]
 [[ports]]
 localPort = 5000
 externalPort = 80
-
-[[ports]]
-localPort = 38517
-externalPort = 3001

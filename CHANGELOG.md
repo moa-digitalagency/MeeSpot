@@ -16,10 +16,11 @@ Ce fichier documente toutes les modifications, corrections et améliorations app
   - Fichier modifié: `static/pages/app.html` (lignes 1368-1390)
 
 ### 📱 QR Code Établissements
-- **Ajout du site web sur le QR code téléchargeable**
-  - Le site web www.thematchspot.com est maintenant affiché au bas du QR code
-  - Facilite l'identification de la plateforme pour les nouveaux utilisateurs
-  - Fichier modifié: `static/pages/establishment.html` (lignes 677-682)
+- **Amélioration de la mise en page du QR code téléchargeable**
+  - Ajout d'une ligne horizontale séparatrice au-dessus du texte d'instructions
+  - Le site web www.thematchspot.com est maintenant affiché en dessous du texte "pour rejoindre cette room"
+  - Design plus structuré et professionnel
+  - Fichier modifié: `static/pages/establishment.html` (lignes 680-694)
 
 ---
 
