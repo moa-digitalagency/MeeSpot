@@ -20,7 +20,8 @@ Ce fichier documente toutes les modifications, corrections et améliorations app
   - Ajout d'une ligne horizontale séparatrice au-dessus du texte d'instructions
   - Le site web www.thematchspot.com est maintenant affiché en dessous du texte "pour rejoindre cette room"
   - Design plus structuré et professionnel
-  - Fichier modifié: `static/pages/establishment.html` (lignes 680-694)
+  - **Résolution augmentée x4** (1600x2000 pixels) pour une qualité d'impression professionnelle
+  - Fichier modifié: `static/pages/establishment.html` (lignes 658-705)
 
 ---
 
