@@ -141,7 +141,7 @@ class DatabaseMigrator:
     
     def add_column(self, table_name, column):
         """Ajoute une colonne à une table"""
-        from sqlalchemy import VARCHAR, INTEGER, BOOLEAN, TIMESTAMP, TEXT
+        from sqlalchemy import VARCHAR, INTEGER, BOOLEAN, TIMESTAMP, TEXT, text
         from sqlalchemy.dialects.postgresql import UUID
         
         # Déterminer le type SQL
@@ -170,10 +170,10 @@ class DatabaseMigrator:
                 else:
                     default = f"DEFAULT {column.default.arg}"
         
-        sql = f"ALTER TABLE {table_name} ADD COLUMN IF NOT EXISTS {column.name} {sql_type} {nullable} {default}"
+        sql_query = f"ALTER TABLE {table_name} ADD COLUMN IF NOT EXISTS {column.name} {sql_type} {nullable} {default}"
         
         with self.engine.connect() as conn:
-            conn.execute(sql)
+            conn.execute(text(sql_query))
             conn.commit()
     
     def migrate(self):

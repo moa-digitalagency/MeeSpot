@@ -8,34 +8,34 @@ MatchSpot est une application web progressive (PWA) de rencontres qui met l'acce
 
 ### 🎯 Concept Unique
 
-Contrairement aux applications de rencontres traditionnelles basées sur le swipe infini, MatchSpot se concentre sur les connexions authentiques lors d'événements organisés dans des établissements locaux.
+Contrairement aux applications de rencontres traditionnelles basées sur le swipe infini, MatchSpot se concentre sur les connexions authentiques dans des rooms virtuelles organisées dans des établissements locaux.
 
 ## ✨ Fonctionnalités Principales
 
-### 🏠 Système d'Événements
-- **Expiration automatique 24h** : Tous les événements expirent 24 heures après leur création
-- **Codes d'accès uniques** : Codes à 8 caractères pour rejoindre facilement les événements
-- **Scanner QR** : Rejoindre des événements en scannant des codes QR avec la caméra
+### 🏠 Système de Rooms
+- **Expiration automatique 24h** : Toutes les rooms expirent 24 heures après leur création
+- **Codes d'accès uniques** : Codes à 8 caractères pour rejoindre facilement les rooms
+- **Scanner QR** : Rejoindre des rooms en scannant des codes QR avec la caméra
 - **Filtres d'accès** : Contrôle basé sur le genre, l'orientation et l'âge
 
 ### 💬 Système de Connexions
 - **Pas de chat de groupe** : Focus sur les connexions individuelles
 - **Demandes de connexion** : Envoyez des demandes aux participants qui vous intéressent
 - **Conversations privées 1-to-1** : Messages chiffrés après acceptation de connexion
-- **Conversations persistantes** : Les conversations restent actives après l'expiration des événements
+- **Conversations persistantes** : Les conversations restent actives après l'expiration des rooms
 
 ### 👤 Rôles Utilisateurs
 
 #### Utilisateur
-- Rejoindre des événements avec codes d'accès ou QR
-- Voir les participants des événements
+- Rejoindre des rooms avec codes d'accès ou QR
+- Voir les participants des rooms
 - Envoyer/accepter des demandes de connexion
 - Conversations privées chiffrées
 
 #### Établissement
-- Créer des événements (limités par abonnement)
+- Créer des rooms (limités par abonnement)
 - Gérer les participants
-- Générer des codes QR pour les événements
+- Générer des codes QR pour les rooms
 - Accès aux analytics
 
 #### Administrateur
@@ -46,14 +46,14 @@ Contrairement aux applications de rencontres traditionnelles basées sur le swip
 ### 💎 Abonnements
 
 **Pour les Utilisateurs :**
-- **Gratuit** : Parcourir et rejoindre des événements publics
+- **Gratuit** : Parcourir et rejoindre des rooms publiques
 - **Premium** (19$/mois) : Accès prioritaire, mode identité alternative
 - **Platinum** (39$/mois) : Accès VIP, messagerie illimitée
 
 **Pour les Établissements :**
-- **One-Shot** (9$) : 1 événement par jour
-- **Silver** (49$/mois) : 1 événement/jour + analytics avancés
-- **Gold** (99$/mois) : 3 événements/jour + fonctionnalités premium
+- **One-Shot** (9$) : 1 room par jour
+- **Silver** (49$/mois) : 1 room/jour + analytics avancés
+- **Gold** (99$/mois) : 3 rooms/jour + fonctionnalités premium
 
 ## 🚀 Démarrage Rapide
 
@@ -107,13 +107,13 @@ UPDATE users SET role = 'admin' WHERE email = 'votre@email.com';
 ## 📱 Interface Utilisateur
 
 ### Navigation (4 onglets)
-1. **Accueil** : Code d'accès, scanner QR, mes événements
+1. **Accueil** : Code d'accès, scanner QR, mes rooms
 2. **Chat** : Liste des conversations privées
 3. **Demandes** : Demandes reçues/envoyées
 4. **Profil** : Gestion du profil et déconnexion
 
 ### Flux Utilisateur
-1. Rejoindre un événement (code ou QR)
+1. Rejoindre une room (code ou QR)
 2. Voir les participants
 3. Envoyer des demandes de connexion
 4. Accepter/Refuser les demandes
@@ -158,8 +158,8 @@ static/
 **Tables Principales :**
 - `users` : Utilisateurs avec démographie et abonnements
 - `establishments` : Établissements avec plans d'abonnement
-- `rooms` : Événements avec expiration 24h
-- `room_members` : Membres actifs des événements
+- `rooms` : Rooms virtuelles avec expiration 24h
+- `room_members` : Membres actifs des rooms
 - `connection_request` : Demandes (pending/accepted/rejected)
 - `private_conversation` : Conversations 1-to-1
 - `private_message` : Messages chiffrés
@@ -191,7 +191,7 @@ Consultez la [documentation complète de l'API](./API_DOCS_FR.md) pour tous les 
 **Endpoints Principaux :**
 - `POST /api/auth/register` - Inscription
 - `POST /api/auth/login` - Connexion
-- `GET /api/rooms` - Liste des événements
+- `GET /api/rooms` - Liste des rooms
 - `POST /api/rooms/join-by-code` - Rejoindre par code
 - `GET /api/rooms/<id>/participants` - Voir les participants
 - `POST /api/requests` - Envoyer une demande
@@ -231,6 +231,12 @@ gunicorn --bind 0.0.0.0:5000 --reuse-port main:app
 
 3. **Configuration HTTPS**
 Toujours utiliser HTTPS en production pour protéger les tokens JWT et données.
+
+### ⚠️ Limitation sur Replit
+
+**Mise à jour automatique GitHub** : La fonctionnalité de mise à jour en un clic depuis GitHub (`/api/admin/update`) ne fonctionne **pas sur Replit** car les opérations git sont bloquées pour des raisons de sécurité. Cette fonctionnalité est uniquement disponible sur VPS/serveur dédié (voir [DEPLOYMENT_VPS.md](./DEPLOYMENT_VPS.md)).
+
+Sur Replit, les mises à jour doivent être faites manuellement via l'interface Replit ou en redéployant l'application.
 
 ## 🤝 Contribution
 

@@ -282,7 +282,11 @@ def delete_backup(current_user, filename):
 @token_required
 @admin_required
 def update_from_github(current_user):
-    """Mise à jour automatique depuis GitHub en un seul clic"""
+    """Mise à jour automatique depuis GitHub en un seul clic
+    
+    Note: Cette fonctionnalité ne fonctionne que sur VPS/serveur dédié.
+    Elle est désactivée sur Replit car les opérations git sont bloquées pour des raisons de sécurité.
+    """
     try:
         result = subprocess.run(
             [sys.executable, 'scripts/update_from_github.py'],
