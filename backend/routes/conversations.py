@@ -7,6 +7,7 @@
 #
 
 from flask import Blueprint, request, jsonify
+from sqlalchemy import or_
 from backend import db
 from backend.models.private_conversation import PrivateConversation
 from backend.models.private_message import PrivateMessage
@@ -22,7 +23,7 @@ def get_conversations(current_user):
     filter_status = request.args.get('filter', 'active')
     
     conversations = PrivateConversation.query.filter(
-        db.or_(
+        or_(
             PrivateConversation.user1_id == current_user.id,
             PrivateConversation.user2_id == current_user.id
         )
