@@ -90,9 +90,9 @@ class User(db.Model):
         
         return {
             'id': self.id,
-            'name': self.name,
+            'name': str(self.name) if self.name else None,
             'username': self.username,
-            'email': self.email,
+            'email': str(self.email) if self.email else None,
             'role': self.role,
             'subscription_tier': self.subscription_tier,
             'gender': self.gender,
@@ -101,7 +101,7 @@ class User(db.Model):
             'age': self.calculate_age() if self.birthdate else self.age,
             'religion': self.religion,
             'lgbtq_friendly': self.lgbtq_friendly,
-            'bio': self.bio,
+            'bio': str(self.bio) if self.bio else None,
             'photo_url': self.photo_url,
             'gallery_photos': self.gallery_photos or [],
             'meeting_type': self.meeting_type,
