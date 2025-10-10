@@ -1366,7 +1366,7 @@ www.myoneart.com
                 const badgeHtml = `<span class="w-4 h-4 ${badgeColor} rounded-full flex items-center justify-center text-white text-xs">✓</span>`;
                 
                 const unreadBadge = unreadCount > 0 
-                    ? `<span class="absolute -top-1 -right-1 w-6 h-6 bg-red-500 rounded-full flex items-center justify-center text-white text-xs font-bold">${unreadCount}</span>`
+                    ? `<div class="w-3 h-3 bg-red-500 rounded-full"></div>`
                     : '';
                 
                 return `
@@ -1375,7 +1375,6 @@ www.myoneart.com
                             <div class="relative w-12 h-12 rounded-full bg-gradient-to-br from-[#FF4458] to-[#6C5CE7] flex items-center justify-center text-white font-bold">
                                 ${otherUser.charAt(0).toUpperCase()}
                                 <span class="absolute -bottom-1 -right-1 w-4 h-4 ${badgeColor} rounded-full flex items-center justify-center text-white text-xs">✓</span>
-                                ${unreadBadge}
                             </div>
                             <div class="flex-1">
                                 <h4 class="font-bold text-[#2D3436] flex items-center gap-1">
@@ -1385,6 +1384,7 @@ www.myoneart.com
                                 <p class="text-xs text-[#2D3436] opacity-75">${conv.room_name || 'Conversation'}</p>
                                 ${timeInfo ? `<p class="text-xs ${conv.is_active ? 'text-[#FF4458]' : 'text-gray-500'} font-semibold mt-1">${timeInfo}</p>` : ''}
                             </div>
+                            ${unreadBadge}
                         </div>
                     </div>
                 `;

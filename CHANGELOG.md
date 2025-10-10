@@ -7,6 +7,22 @@ Ce fichier documente toutes les modifications, corrections et améliorations app
 
 ---
 
+## [10 Octobre 2025 - 17:30 UTC] - Améliorations UI et QR Code
+
+### 🎨 Améliorations UI
+- **Repositionnement de l'indicateur de notification**
+  - L'indicateur de messages non lus (point rouge) a été déplacé du coin de la photo de profil vers le côté droit de la ligne de message
+  - Design plus épuré et professionnel
+  - Fichier modifié: `static/pages/app.html` (lignes 1368-1390)
+
+### 📱 QR Code Établissements
+- **Ajout du site web sur le QR code téléchargeable**
+  - Le site web www.thematchspot.com est maintenant affiché au bas du QR code
+  - Facilite l'identification de la plateforme pour les nouveaux utilisateurs
+  - Fichier modifié: `static/pages/establishment.html` (lignes 677-682)
+
+---
+
 ## [10 Octobre 2025 - 17:03 UTC] - Mise à jour complète des tarifs d'abonnement
 
 ### 💰 Changements tarifaires

@@ -679,6 +679,10 @@ www.myoneart.com
             ctx.fillText('Scannez le QR code ou utilisez le code ci-dessus', 200, 390);
             ctx.fillText('pour rejoindre cette room', 200, 410);
             
+            ctx.font = 'bold 16px Inter, sans-serif';
+            ctx.fillStyle = '#FF4458';
+            ctx.fillText('www.thematchspot.com', 200, 460);
+            
             tempCanvas.toBlob((blob) => {
                 const url = URL.createObjectURL(blob);
                 const a = document.createElement('a');
