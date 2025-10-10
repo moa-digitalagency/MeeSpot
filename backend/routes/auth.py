@@ -206,34 +206,47 @@ def register():
 
 @bp.route('/auth/login', methods=['POST'])
 def login():
-    data = request.json
-    if not data:
-        return jsonify({'message': 'No data provided'}), 400
-    
-    if 'email' not in data or 'password' not in data:
-        return jsonify({'message': 'Missing email or password'}), 400
-    
-    email_to_find = data['email'].lower().strip()
-    
-    users = User.query.all()
-    user = None
-    for u in users:
-        if u.email and u.email.lower() == email_to_find:
-            user = u
-            break
-    
-    if not user or not bcrypt.checkpw(data['password'].encode('utf-8'), user.password_hash.encode('utf-8')):
-        return jsonify({'message': 'Invalid credentials'}), 401
-    
-    token = jwt.encode({
-        'user_id': user.id,
-        'exp': datetime.utcnow() + timedelta(days=30)
-    }, current_app.config['SECRET_KEY'], algorithm='HS256')
-    
-    return jsonify({
-        'token': token,
-        'user': user.to_dict()
-    })
+    try:
+        data = request.json
+        if not data:
+            return jsonify({'message': 'No data provided'}), 400
+        
+        if 'email' not in data or 'password' not in data:
+            return jsonify({'message': 'Missing email or password'}), 400
+        
+        email_to_find = data['email'].lower().strip()
+        
+        users = User.query.all()
+        user = None
+        for u in users:
+            try:
+                if u.email and u.email.lower() == email_to_find:
+                    user = u
+                    break
+            except Exception as e:
+                print(f"Error accessing email for user {u.id}: {str(e)}")
+                continue
+        
+        if not user:
+            return jsonify({'message': 'Invalid credentials'}), 401
+        
+        if not bcrypt.checkpw(data['password'].encode('utf-8'), user.password_hash.encode('utf-8')):
+            return jsonify({'message': 'Invalid credentials'}), 401
+        
+        token = jwt.encode({
+            'user_id': user.id,
+            'exp': datetime.utcnow() + timedelta(days=30)
+        }, current_app.config['SECRET_KEY'], algorithm='HS256')
+        
+        return jsonify({
+            'token': token,
+            'user': user.to_dict()
+        })
+    except Exception as e:
+        print(f"Login error: {str(e)}")
+        import traceback
+        traceback.print_exc()
+        return jsonify({'message': f'Login error: {str(e)}'}), 500
 
 @bp.route("/users/<int:user_id>/profile", methods=["GET"])
 @token_required
