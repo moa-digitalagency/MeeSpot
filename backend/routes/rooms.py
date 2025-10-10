@@ -7,6 +7,7 @@
 #
 
 from flask import Blueprint, request, jsonify
+from sqlalchemy import or_, and_
 from backend import db
 from backend.models.room import Room
 from backend.models.room_member import RoomMember
@@ -199,9 +200,9 @@ def get_participants(current_user, room_id):
         ).order_by(ConnectionRequest.created_at.desc()).first()
         
         conversation = PrivateConversation.query.filter(
-            db.or_(
-                db.and_(PrivateConversation.user1_id == current_user.id, PrivateConversation.user2_id == user.id),
-                db.and_(PrivateConversation.user1_id == user.id, PrivateConversation.user2_id == current_user.id)
+            or_(
+                and_(PrivateConversation.user1_id == current_user.id, PrivateConversation.user2_id == user.id),
+                and_(PrivateConversation.user1_id == user.id, PrivateConversation.user2_id == current_user.id)
             ),
             PrivateConversation.is_active == True
         ).first()
