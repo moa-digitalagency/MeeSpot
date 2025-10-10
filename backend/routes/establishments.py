@@ -52,11 +52,12 @@ def create_room(current_user, est_id):
         establishment.rooms_created_today = 0
         establishment.last_room_reset = today
     
-    max_rooms = {
-        'one-shot': 1,
-        'silver': 1,
-        'gold': 3
-    }.get(establishment.subscription_plan, 1)
+    from backend.models.subscription_plan import SubscriptionPlan
+    plan = SubscriptionPlan.query.filter_by(
+        name=establishment.subscription_plan,
+        role='establishment'
+    ).first()
+    max_rooms = plan.rooms_per_day if plan else 1
     
     if establishment.rooms_created_today >= max_rooms:
         return jsonify({'message': f'Daily room limit reached ({max_rooms} rooms)'}), 400
@@ -136,11 +137,13 @@ def get_analytics(current_user):
     ).scalar() or 0
     
     today = datetime.utcnow().date()
-    max_rooms = {
-        'one-shot': 1,
-        'silver': 1,
-        'gold': 3
-    }.get(establishment.subscription_plan, 1)
+    
+    from backend.models.subscription_plan import SubscriptionPlan
+    plan = SubscriptionPlan.query.filter_by(
+        name=establishment.subscription_plan,
+        role='establishment'
+    ).first()
+    max_rooms = plan.rooms_per_day if plan else 1
     
     rooms_today = establishment.rooms_created_today if establishment.last_room_reset == today else 0
     
