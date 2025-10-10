@@ -56,6 +56,7 @@ class PrivateConversation(db.Model):
     
     def to_dict(self, current_user_id):
         other_user = self.user2 if self.user1_id == current_user_id else self.user1
+        unread_count = sum(1 for msg in self.messages if msg.sender_id != current_user_id and not msg.is_read)
         return {
             'id': self.id,
             'room_id': self.room_id,
@@ -67,5 +68,6 @@ class PrivateConversation(db.Model):
             'expires_at': self.expires_at.isoformat() if self.expires_at else None,
             'closed_at': self.closed_at.isoformat() if self.closed_at else None,
             'is_active': self.is_active,
-            'message_count': len(self.messages)
+            'message_count': len(self.messages),
+            'unread_count': unread_count
         }
