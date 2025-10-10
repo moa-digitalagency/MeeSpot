@@ -7,6 +7,37 @@ Ce fichier documente toutes les modifications, corrections et améliorations app
 
 ---
 
+## [10 Octobre 2025 - 17:03 UTC] - Mise à jour complète des tarifs d'abonnement
+
+### 💰 Changements tarifaires
+- **Plans Utilisateurs**
+  - Free: $0/mois - Conservation conversations 24h (inchangé)
+  - Premium: $19 → $4.99/mois - Conservation 7 jours + filtres + identité alternative
+  - Platinum: $39 → $9.99/mois - Conservation 30 jours + filtres + visibilité prioritaire + identité alternative
+
+- **Plans Établissements**
+  - Single Shot: $9 → $19 CAD - 1 code (24h)
+  - Silver: $49 CAD - 3 codes/semaine (limite quotidienne: 1/jour)
+  - Gold: $99 CAD - 7 codes/semaine (1 code/jour)
+
+### 🔧 Améliorations techniques
+- **Suppression des valeurs hardcodées**
+  - Les limites de création de rooms proviennent maintenant de la base de données (SubscriptionPlan.rooms_per_day)
+  - Fichier modifié: `backend/routes/establishments.py` (lignes 58-63, 144-149)
+  - Les valeurs ne sont plus en dur dans le code, facilitant les changements futurs
+
+- **Mise à jour de l'initialisation**
+  - Fichier modifié: `backend/__init__.py` (lignes 96-98, 107-109)
+  - Les nouveaux environnements utilisent automatiquement les tarifs corrects
+  - Base de données existantes mises à jour via SQL
+
+### 📝 Notes techniques
+- Le système actuel suit les limites quotidiennes pour les établissements
+- Plans hebdomadaires (Silver: 3/semaine, Gold: 7/semaine) limités à 1/jour actuellement
+- Une future amélioration pourrait implémenter un vrai suivi hebdomadaire
+
+---
+
 ## [10 Octobre 2025 - 16:54 UTC] - Fix endpoint établissements
 
 ### 🐛 Corrections de bugs
