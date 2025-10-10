@@ -1391,6 +1391,16 @@ www.myoneart.com
             }).join('');
         }
 
+        function updateMessagesTabNotification(count) {
+            const badge = document.getElementById('chat-badge');
+            if (count > 0) {
+                badge.textContent = count;
+                badge.style.display = 'block';
+            } else {
+                badge.style.display = 'none';
+            }
+        }
+
         async function openChat(conversationId, otherUserName, otherUserId, isVerified = false, expiresAt = null) {
             currentConversationId = conversationId;
             // Clean up expiresAt - convert string 'null' or 'undefined' to actual null
