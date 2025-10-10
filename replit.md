@@ -83,8 +83,9 @@ Pour déployer en dehors de Replit tout en gardant les mêmes données :
    - Utilisez `python verify_config.py` pour vérifier votre configuration
 
 3. **Guide Complet**
-   - Voir `DEPLOIEMENT_EXTERNE.md` pour un guide détaillé pas-à-pas
-   - Includes migration de données, tests, et déploiement sur différentes plateformes
+   - Voir `DEPLOYMENT_VPS.md` pour un guide détaillé de déploiement externe
+   - Includes migration de données, tests, et configuration VPS/Cloud
+   - Voir `DEPLOYMENT.md` pour PythonAnywhere et Railway spécifiquement
 
 **⚠️ IMPORTANT**: 
 - L'`ENCRYPTION_KEY` doit être **IDENTIQUE** entre Replit et production

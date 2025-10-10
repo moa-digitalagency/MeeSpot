@@ -7,6 +7,25 @@ Ce fichier documente toutes les modifications, corrections et améliorations app
 
 ---
 
+## [10 Octobre 2025 - 22:20 UTC] - Mise à Jour Favicon et Logo + Documentation
+
+### 🎨 Nouveau Favicon et Logo
+- **Nouveau favicon multicolore**
+  - Favicon avec dégradé moderne : bleu, violet, rose, vert
+  - Design cœur central blanc avec bords colorés
+  - Fichiers mis à jour : `static/images/favicon.png`, `static/images/logo.png`
+  - Toutes les tailles d'icônes PWA mises à jour (72, 96, 128, 144, 152, 192, 384, 512px)
+
+### 📚 Consolidation Documentation
+- **Simplification des guides de déploiement**
+  - Suppression du fichier redondant `DEPLOIEMENT_EXTERNE.md`
+  - Enrichissement de `DEPLOYMENT_VPS.md` comme guide unique de déploiement externe
+  - Titre mis à jour : "Déploiement Externe (VPS, Cloud, Serveur Dédié)"
+  - Ajout de la section "Portabilité des Secrets" avec avertissements critiques
+  - Documentation mise à jour dans `replit.md` pour pointer vers les bons fichiers
+
+---
+
 ## [10 Octobre 2025 - 22:00 UTC] - Portabilité et Déploiement Externe
 
 ### 🔧 Configuration Améliorée
@@ -17,11 +36,11 @@ Ce fichier documente toutes les modifications, corrections et améliorations app
   - Fichier modifié: `backend/__init__.py` (ligne 55)
 
 ### 📚 Documentation de Déploiement
-- **Guide complet de déploiement externe créé**
-  - Nouveau fichier: `DEPLOIEMENT_EXTERNE.md` avec instructions détaillées
+- **Guide de déploiement externe amélioré**
+  - Fichier `DEPLOYMENT_VPS.md` enrichi avec instructions de portabilité
   - Explique comment récupérer et utiliser les mêmes secrets depuis Replit
   - Guide de migration de base de données avec pg_dump/restore
-  - Instructions pour PythonAnywhere, Railway, Render, Heroku, VPS
+  - Instructions pour VPS, Cloud, et Serveur Dédié
   - ⚠️ Avertissements critiques sur l'importance d'ENCRYPTION_KEY identique
 
 - **Script de vérification de configuration**

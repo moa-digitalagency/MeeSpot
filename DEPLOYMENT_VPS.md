@@ -1,11 +1,22 @@
-# MatchSpot - VPS Deployment Guide (Hostinger/Ubuntu)
+# MatchSpot - Déploiement Externe (VPS, Cloud, Serveur Dédié)
 
-## Prerequisites
-- Ubuntu/Debian VPS server
-- Python 3.11 or higher
-- PostgreSQL 12 or higher
-- Nginx (for reverse proxy)
-- PM2 (for process management)
+Ce guide couvre le déploiement de MatchSpot en dehors de Replit, sur n'importe quel serveur (VPS, Cloud, Serveur Dédié).
+
+## 📋 Prérequis
+- Serveur Ubuntu/Debian (ou tout autre serveur Linux)
+- Python 3.11 ou supérieur
+- PostgreSQL 12 ou supérieur
+- Nginx (pour reverse proxy)
+- PM2 (pour gestion des processus)
+
+## ⚠️ IMPORTANT : Portabilité des Secrets
+
+Si vous migrez depuis Replit, vous DEVEZ utiliser les MÊMES secrets :
+- **ENCRYPTION_KEY** : ⚠️ CRITIQUE - Doit être identique pour accéder aux données chiffrées
+- **SECRET_KEY** : Utilisez cette variable (au lieu de SESSION_SECRET sur Replit)
+- **DATABASE_URL** : Format PostgreSQL standard
+
+**Note** : Si ENCRYPTION_KEY est différente, toutes les données chiffrées (emails, noms) deviennent irrécupérables !
 
 ## Step 1: Server Setup
 
