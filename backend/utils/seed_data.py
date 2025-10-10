@@ -10,8 +10,12 @@ from backend import db
 from backend.models.profile_option import ProfileOption
 from backend.models.user import User
 from backend.models.establishment import Establishment
+from backend.models.room import Room
+from backend.models.room_member import RoomMember
 import bcrypt
-from datetime import datetime, date
+from datetime import datetime, date, timedelta
+import random
+import string
 
 def seed_profile_options():
     """Seed profile options - persistantes au redémarrage"""
@@ -187,10 +191,81 @@ def seed_default_establishment():
     print(f"✓ Établissement de test créé: {establishment.name} (cafe@test.com, mot de passe: test123)")
 
 
+def seed_default_rooms():
+    """Seed default test rooms - persistants au redémarrage"""
+    
+    # Vérifier si des rooms de test existent déjà
+    test_room = Room.query.filter_by(name="It's Friday... Leets go").first()
+    if test_room:
+        print("✓ Rooms de test déjà présentes dans la base de données")
+        return
+    
+    # Récupérer l'établissement de test
+    establishment = Establishment.query.filter_by(name='Le Café Central').first()
+    if not establishment:
+        print("⚠️ Établissement de test non trouvé, impossible de créer des rooms")
+        return
+    
+    # Récupérer les utilisateurs de test
+    sophie = User.query.filter_by(username='sophie_test').first()
+    julien = User.query.filter_by(username='julien_test').first()
+    
+    # Générer un code d'accès unique
+    def generate_access_code():
+        return ''.join(random.choices(string.ascii_uppercase + string.digits, k=8))
+    
+    # Créer une room de test active
+    room = Room(
+        establishment_id=establishment.id,
+        name="It's Friday... Leets go",
+        description="Ici c'est vendredi - Tout est permis",
+        welcome_message="Bienvenue dans notre soirée du vendredi ! Profitez de l'ambiance et faites de belles rencontres.",
+        access_code=generate_access_code(),
+        max_capacity=50,
+        is_active=True,
+        expires_at=datetime.utcnow() + timedelta(hours=3),
+        access_gender=None,
+        access_orientation=None,
+        access_age_min=18,
+        access_age_max=None,
+        access_meeting_type=None,
+        access_religion=None,
+        access_lgbtq_friendly=None
+    )
+    
+    db.session.add(room)
+    db.session.commit()
+    
+    # Ajouter les utilisateurs de test comme membres
+    if sophie:
+        member_sophie = RoomMember(
+            room_id=room.id,
+            user_id=sophie.id,
+            joined_at=datetime.utcnow(),
+            active=True
+        )
+        db.session.add(member_sophie)
+    
+    if julien:
+        member_julien = RoomMember(
+            room_id=room.id,
+            user_id=julien.id,
+            joined_at=datetime.utcnow(),
+            active=True
+        )
+        db.session.add(member_julien)
+    
+    db.session.commit()
+    
+    member_count = 2 if sophie and julien else (1 if sophie or julien else 0)
+    print(f"✓ Room de test créée: {room.name} avec {member_count} membres (Code: {room.access_code})")
+
+
 def initialize_seed_data():
     """Initialize all seed data - appelé au démarrage de l'app"""
     print("\n=== Initialisation des données de base ===")
     seed_profile_options()
     seed_default_users()
     seed_default_establishment()
+    seed_default_rooms()
     print("=== Initialisation terminée ===\n")
