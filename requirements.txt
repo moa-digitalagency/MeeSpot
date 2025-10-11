@@ -126,3 +126,8 @@ psycopg2-binary
 pyjwt
 python-dotenv
 sqlalchemy
+email_validator
+flask
+flask-sqlalchemy
+gunicorn
+psycopg2-binary
