@@ -1883,6 +1883,8 @@ www.myoneart.com
                 // Set photo
                 if (currentProfileData.photo_url) {
                     document.getElementById('currentProfilePhoto').innerHTML = `<img src="${currentProfileData.photo_url}" class="w-full h-full object-cover">`;
+                } else {
+                    document.getElementById('currentProfilePhoto').textContent = currentProfileData.name.charAt(0).toUpperCase();
                 }
                 
                 // Set gallery
