@@ -19,6 +19,7 @@ class SubscriptionPlan(db.Model):
     description = db.Column(db.Text)
     role = db.Column(db.String(20), nullable=False, default='establishment')
     is_active = db.Column(db.Boolean, default=True, nullable=False)
+    billing_period = db.Column(db.String(20), default='mois', nullable=False)
     created_at = db.Column(db.DateTime, default=datetime.utcnow)
     
     def to_dict(self):
@@ -29,5 +30,6 @@ class SubscriptionPlan(db.Model):
             'rooms_per_day': self.rooms_per_day,
             'description': self.description,
             'role': self.role,
-            'is_active': self.is_active
+            'is_active': self.is_active,
+            'billing_period': self.billing_period
         }

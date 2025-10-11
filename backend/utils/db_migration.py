@@ -27,6 +27,7 @@ def run_migrations():
     try:
         check_and_add_column('subscription_plans', 'role', "VARCHAR(20) NOT NULL DEFAULT 'establishment'")
         check_and_add_column('subscription_plans', 'is_active', 'BOOLEAN NOT NULL DEFAULT TRUE')
+        check_and_add_column('subscription_plans', 'billing_period', "VARCHAR(20) NOT NULL DEFAULT 'mois'")
         check_and_add_column('establishments', 'contact_phone', 'VARCHAR(20)')
     except Exception as e:
         print(f"Migration error (table may not exist yet): {e}")

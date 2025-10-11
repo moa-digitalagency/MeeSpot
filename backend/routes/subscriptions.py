@@ -61,6 +61,7 @@ def get_my_requests(current_user):
     return jsonify([r.to_dict() for r in requests])
 
 @bp.route('/pending', methods=['GET'])
+@token_required
 @admin_required
 def get_pending_requests(current_user):
     """Admin: Get all pending subscription requests"""
@@ -68,6 +69,7 @@ def get_pending_requests(current_user):
     return jsonify([r.to_dict() for r in requests])
 
 @bp.route('/<int:request_id>/approve', methods=['POST'])
+@token_required
 @admin_required
 def approve_request(current_user, request_id):
     """Admin: Approve a subscription request"""
@@ -113,6 +115,7 @@ def approve_request(current_user, request_id):
     })
 
 @bp.route('/<int:request_id>/reject', methods=['POST'])
+@token_required
 @admin_required
 def reject_request(current_user, request_id):
     """Admin: Reject a subscription request"""
@@ -143,6 +146,7 @@ def get_plans(current_user):
     return jsonify([p.to_dict() for p in plans])
 
 @bp.route('/suspend/<int:user_id>', methods=['POST'])
+@token_required
 @admin_required
 def suspend_subscription(current_user, user_id):
     """Admin: Suspend a user's or establishment's subscription"""
@@ -168,6 +172,7 @@ def suspend_subscription(current_user, user_id):
     })
 
 @bp.route('/reactivate/<int:user_id>', methods=['POST'])
+@token_required
 @admin_required
 def reactivate_subscription(current_user, user_id):
     """Admin: Reactivate a user's or establishment's subscription"""

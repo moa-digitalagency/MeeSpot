@@ -90,9 +90,9 @@ def create_app():
         
         if not user_plans_exist:
             user_plans = [
-                SubscriptionPlan(name='free', price=0, rooms_per_day=0, description='Gratuit - Conservation conversations 24h', role='user'),
-                SubscriptionPlan(name='premium', price=4.99, rooms_per_day=0, description='Premium - $4.99/mois - Conservation 7 jours + filtres + identité alternative', role='user'),
-                SubscriptionPlan(name='platinum', price=9.99, rooms_per_day=0, description='Platinum - $9.99/mois - Conservation 30 jours + filtres + visibilité prioritaire + identité alternative', role='user')
+                SubscriptionPlan(name='free', price=0, rooms_per_day=0, description='Gratuit - Conservation conversations 24h', role='user', billing_period='mois'),
+                SubscriptionPlan(name='premium', price=4.99, rooms_per_day=0, description='Premium - $4.99/mois - Conservation 7 jours + filtres + identité alternative', role='user', billing_period='mois'),
+                SubscriptionPlan(name='platinum', price=9.99, rooms_per_day=0, description='Platinum - $9.99/mois - Conservation 30 jours + filtres + visibilité prioritaire + identité alternative', role='user', billing_period='mois')
             ]
             for plan in user_plans:
                 db.session.add(plan)
@@ -101,9 +101,9 @@ def create_app():
         
         if not establishment_plans_exist:
             establishment_plans = [
-                SubscriptionPlan(name='one-shot', price=19.0, rooms_per_day=1, description='One-Shot - 1 room unique (24h, pas de cycle)', role='establishment'),
-                SubscriptionPlan(name='silver', price=49.0, rooms_per_day=1, description='Silver - 3 rooms/semaine (cycle hebdomadaire)', role='establishment'),
-                SubscriptionPlan(name='gold', price=99.0, rooms_per_day=1, description='Gold - 7 rooms/semaine (cycle hebdomadaire)', role='establishment')
+                SubscriptionPlan(name='one-shot', price=19.0, rooms_per_day=1, description='One-Shot - 1 room unique (24h, pas de cycle)', role='establishment', billing_period='mois'),
+                SubscriptionPlan(name='silver', price=49.0, rooms_per_day=1, description='Silver - 3 rooms/semaine (cycle hebdomadaire)', role='establishment', billing_period='semaine'),
+                SubscriptionPlan(name='gold', price=99.0, rooms_per_day=1, description='Gold - 7 rooms/semaine (cycle hebdomadaire)', role='establishment', billing_period='semaine')
             ]
             for plan in establishment_plans:
                 db.session.add(plan)
