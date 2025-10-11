@@ -30,11 +30,12 @@ www.myoneart.com
         .card-hover:active { transform: scale(0.98); }
         
         /* Profile Carousel */
-        .profile-carousel { overflow: hidden; position: relative; touch-action: pan-y; }
-        .profile-track { display: flex; animation: scroll-profiles 40s linear infinite; transition: transform 0.3s ease-out; }
-        .profile-track.dragging { animation-play-state: paused; transition: none; }
+        .profile-carousel { overflow: hidden; position: relative; touch-action: pan-y; cursor: grab; }
+        .profile-carousel:active { cursor: grabbing; }
+        .profile-track { display: flex; animation: scroll-profiles 25s linear infinite; }
+        .profile-track.paused { animation-play-state: paused; }
         @keyframes scroll-profiles { 0% { transform: translateX(0); } 100% { transform: translateX(-50%); } }
-        .profile-card-landing { min-width: 140px; margin: 0 12px; }
+        .profile-card-landing { min-width: 140px; margin: 0 12px; user-select: none; }
     </style>
 </head>
 <body class="bg-[#F5F5F5]">
@@ -1243,56 +1244,66 @@ www.myoneart.com
             if (carousel) {
                 carousel.innerHTML = carouselHtml;
                 
-                // Add touch/swipe functionality
+                // Add touch/swipe functionality for mobile
+                const carouselContainer = carousel.parentElement;
+                let startX = 0;
+                let scrollSpeed = 0;
+                
+                carouselContainer.addEventListener('touchstart', (e) => {
+                    startX = e.touches[0].pageX;
+                    carousel.classList.add('paused');
+                }, { passive: true });
+                
+                carouselContainer.addEventListener('touchmove', (e) => {
+                    if (!startX) return;
+                    const currentX = e.touches[0].pageX;
+                    const diff = startX - currentX;
+                    scrollSpeed = diff;
+                }, { passive: true });
+                
+                carouselContainer.addEventListener('touchend', () => {
+                    startX = 0;
+                    setTimeout(() => {
+                        carousel.classList.remove('paused');
+                    }, 300);
+                }, { passive: true });
+                
+                // Mouse drag support for desktop
                 let isDragging = false;
-                let startPos = 0;
-                let currentTranslate = 0;
-                let prevTranslate = 0;
-                let animationID = 0;
-                
-                carousel.addEventListener('touchstart', touchStart);
-                carousel.addEventListener('touchend', touchEnd);
-                carousel.addEventListener('touchmove', touchMove);
-                carousel.addEventListener('mousedown', touchStart);
-                carousel.addEventListener('mouseup', touchEnd);
-                carousel.addEventListener('mouseleave', touchEnd);
-                carousel.addEventListener('mousemove', touchMove);
-                
-                function touchStart(e) {
+                carouselContainer.addEventListener('mousedown', (e) => {
                     isDragging = true;
-                    startPos = getPositionX(e);
-                    carousel.classList.add('dragging');
-                    const transform = window.getComputedStyle(carousel).transform;
-                    if (transform !== 'none') {
-                        const matrix = new DOMMatrix(transform);
-                        prevTranslate = matrix.m41;
-                    }
-                }
+                    startX = e.pageX;
+                    carousel.classList.add('paused');
+                    carouselContainer.style.cursor = 'grabbing';
+                });
                 
-                function touchEnd() {
+                carouselContainer.addEventListener('mousemove', (e) => {
+                    if (!isDragging) return;
+                    e.preventDefault();
+                    const currentX = e.pageX;
+                    const diff = startX - currentX;
+                    scrollSpeed = diff;
+                });
+                
+                carouselContainer.addEventListener('mouseup', () => {
                     isDragging = false;
-                    carousel.classList.remove('dragging');
-                    
-                    const movedBy = currentTranslate - prevTranslate;
-                    if (movedBy < -50) {
-                        // Swiped left - let animation continue
-                    } else if (movedBy > 50) {
-                        // Swiped right - let animation continue  
-                    }
-                    
-                    prevTranslate = currentTranslate;
-                }
+                    startX = 0;
+                    carouselContainer.style.cursor = 'grab';
+                    setTimeout(() => {
+                        carousel.classList.remove('paused');
+                    }, 300);
+                });
                 
-                function touchMove(e) {
+                carouselContainer.addEventListener('mouseleave', () => {
                     if (isDragging) {
-                        const currentPosition = getPositionX(e);
-                        currentTranslate = prevTranslate + currentPosition - startPos;
+                        isDragging = false;
+                        startX = 0;
+                        carouselContainer.style.cursor = 'grab';
+                        setTimeout(() => {
+                            carousel.classList.remove('paused');
+                        }, 300);
                     }
-                }
-                
-                function getPositionX(e) {
-                    return e.type.includes('mouse') ? e.pageX : e.touches[0].clientX;
-                }
+                });
             }
         }
         
