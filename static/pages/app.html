@@ -828,17 +828,11 @@ www.myoneart.com
                     }
                     document.getElementById('profileInterestsSection').style.display = 'block';
                     
-                    // Display gallery photos
-                    if (profile.gallery_photos && profile.gallery_photos.length > 0) {
-                        const galleryHtml = profile.gallery_photos.map(photo => `
-                            <div class="aspect-square rounded-xl overflow-hidden bg-gray-100">
-                                <img src="${photo}" class="w-full h-full object-cover">
-                            </div>
-                        `).join('');
-                        document.getElementById('profileGallery').innerHTML = galleryHtml;
-                    } else {
-                        document.getElementById('profileGallery').innerHTML = '<p class="col-span-3 text-[#2D3436] opacity-50 text-center py-4">Aucune photo</p>';
-                    }
+                    // Display gallery photos using GalleryRenderer
+                    GalleryRenderer.render('profileGallery', profile.gallery_photos || [], {
+                        emptyMessage: 'Aucune photo',
+                        gridCols: 'grid-cols-3'
+                    });
                 }
             } catch (error) {
                 console.error('Error loading profile:', error);
@@ -1691,19 +1685,6 @@ www.myoneart.com
                 </div>
             ` : '';
             
-            const galleryHtml = profile.gallery_photos && profile.gallery_photos.length > 0 ? `
-                <div class="mb-4">
-                    <p class="text-xs text-[#2D3436] opacity-60 mb-2">📸 Galerie</p>
-                    <div class="grid grid-cols-3 gap-2">
-                        ${profile.gallery_photos.map(photo => `
-                            <div class="aspect-square rounded-xl overflow-hidden bg-gray-100">
-                                <img src="${photo}" class="w-full h-full object-cover">
-                            </div>
-                        `).join('')}
-                    </div>
-                </div>
-            ` : '';
-            
             const verifiedBadge = profile.is_verified 
                 ? '<span class="inline-flex items-center justify-center w-6 h-6 bg-blue-500 text-white rounded-full text-sm ml-2">✓</span>' 
                 : '<span class="inline-flex items-center justify-center w-6 h-6 bg-gray-400 text-white rounded-full text-sm ml-2 opacity-60">✓</span>';
@@ -1736,10 +1717,20 @@ www.myoneart.com
                 </div>
                 
                 ${interestsHtml}
-                ${galleryHtml}
+                
+                <div class="mb-4">
+                    <p class="text-xs text-[#2D3436] opacity-60 mb-2">📸 Galerie</p>
+                    <div id="userProfileGallery"></div>
+                </div>
             `;
             
             document.getElementById('userProfileContent').innerHTML = html;
+            
+            // Render gallery using GalleryRenderer
+            GalleryRenderer.render('userProfileGallery', profile.gallery_photos || [], {
+                emptyMessage: 'Aucune photo',
+                gridCols: 'grid-cols-3'
+            });
         }
 
         function closeUserProfileModal() {
@@ -1966,15 +1957,11 @@ www.myoneart.com
 
         function renderEditGallery() {
             const gallery = currentProfileData.gallery_photos || [];
-            const html = gallery.map((photo, index) => `
-                <div class="relative aspect-square rounded-xl overflow-hidden">
-                    <img src="${photo}" class="w-full h-full object-cover">
-                    <button type="button" onclick="deleteGalleryPhoto(${index})" class="absolute top-1 right-1 bg-red-500 text-white rounded-full w-6 h-6 flex items-center justify-center hover:bg-red-600">
-                        ×
-                    </button>
-                </div>
-            `).join('');
-            document.getElementById('editGalleryPhotos').innerHTML = html;
+            GalleryRenderer.renderEditable('editGalleryPhotos', gallery, {
+                onDelete: deleteGalleryPhoto,
+                onAdd: () => document.getElementById('galleryPhotoFile').click(),
+                maxPhotos: 6
+            });
         }
 
         // Profile photo upload
