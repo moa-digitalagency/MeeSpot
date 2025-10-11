@@ -3,6 +3,15 @@
 ## Overview
 MatchSpot is a Progressive Web Application (PWA) dating platform designed to facilitate real-life meetings at physical venues. Its core purpose is to connect users for events rather than endless swiping, offering a modern, mobile-first experience with a focus on privacy, security, and user-friendly interaction. The platform supports Admin for management, Establishment for venue owners, and Users for members to join rooms and connect, aiming to foster real-life connections.
 
+## Recent Changes
+
+### Consolidation du Système de Galerie Photo (11 Octobre 2025)
+- ✅ **Composant réutilisable** : Créé `GalleryRenderer` avec 3 modes d'affichage (standard, éditable, compact)
+- ✅ **Upload unifié** : Inscription et modification utilisent le même système via `UnifiedUploadHelper.uploadMultiple()`
+- ✅ **Affichage systématique** : Galerie visible dans profil, modales, et cards de participants (max 3 photos avec +N)
+- ✅ **Backend** : Ajout de `gallery_photos` aux données des participants dans les rooms
+- 📄 Voir `CHANGELOG_GALLERY_CONSOLIDATION.md` pour les détails complets
+
 ## User Preferences
 - Focus on real-life meetings over endless swiping
 - Clean, modern UI inspired by Bumble/Hinge
