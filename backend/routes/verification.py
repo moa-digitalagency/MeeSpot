@@ -12,20 +12,16 @@ from backend.models.verification_request import VerificationRequest
 from backend.models.user import User
 from backend.utils.auth import token_required
 from datetime import datetime
-import os
-import base64
-import uuid
 
 bp = Blueprint('verification', __name__, url_prefix='/api/verification')
 
 @bp.route('/request', methods=['POST'])
 @token_required
 def request_verification(current_user):
-    """User submits a verification request with photo"""
+    """User submits a verification request with photo URL (photo must be uploaded first via /api/upload/image)"""
     if current_user.role != 'user':
         return jsonify({'message': 'Only users can request verification'}), 403
     
-    # Check if already has pending request
     existing = VerificationRequest.query.filter_by(
         user_id=current_user.id,
         status='pending'
@@ -35,34 +31,12 @@ def request_verification(current_user):
         return jsonify({'message': 'You already have a pending verification request'}), 400
     
     data = request.json
-    if not data or 'photo' not in data:
-        return jsonify({'message': 'Photo is required'}), 400
+    if not data or 'photo_url' not in data:
+        return jsonify({'message': 'Photo URL is required. Please upload the photo first using /api/upload/image with type=verification'}), 400
     
-    # Save photo (base64 to file)
-    try:
-        photo_data = data['photo'].split(',')[1] if ',' in data['photo'] else data['photo']
-        photo_bytes = base64.b64decode(photo_data)
-        
-        # Create uploads directory if it doesn't exist
-        upload_dir = 'static/uploads/verifications'
-        os.makedirs(upload_dir, exist_ok=True)
-        
-        # Generate unique filename
-        filename = f"{current_user.id}_{uuid.uuid4().hex}.jpg"
-        filepath = os.path.join(upload_dir, filename)
-        
-        with open(filepath, 'wb') as f:
-            f.write(photo_bytes)
-        
-        photo_url = f'/uploads/verifications/{filename}'
-        
-    except Exception as e:
-        return jsonify({'message': f'Error saving photo: {str(e)}'}), 500
-    
-    # Create verification request
     verification = VerificationRequest(
         user_id=current_user.id,
-        photo_url=photo_url
+        photo_url=data['photo_url']
     )
     
     db.session.add(verification)
@@ -125,7 +99,6 @@ def approve_verification(current_user, verification_id):
     verification.reviewed_by = current_user.id
     verification.admin_notes = data.get('notes', '')
     
-    # Update user's verified status
     user = User.query.get(verification.user_id)
     if user:
         user.is_verified = True
