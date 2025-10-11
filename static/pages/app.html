@@ -1997,16 +1997,31 @@ www.myoneart.com
             }
         });
 
-        // Gallery photo upload - support multiple files
+        // Gallery photo upload - support multiple files with preview
         document.getElementById('galleryPhotoFile').addEventListener('change', async function(e) {
             const files = e.target.files;
             if (!files || files.length === 0) return;
             
+            const currentGalleryLength = (currentProfileData.gallery_photos || []).length;
+            const remainingSlots = 6 - currentGalleryLength;
+            
+            if (remainingSlots <= 0) {
+                alert('Vous avez déjà 6 photos dans votre galerie. Supprimez-en pour en ajouter de nouvelles.');
+                e.target.value = '';
+                return;
+            }
+            
+            const filesToUpload = Array.from(files).slice(0, remainingSlots);
+            
+            if (filesToUpload.length < files.length) {
+                alert(`Seulement ${filesToUpload.length} photo(s) seront ajoutées car votre galerie est presque pleine (max 6 photos).`);
+            }
+            
             const formData = new FormData();
             
-            // Add all files with the same key 'photo'
-            for (let i = 0; i < files.length; i++) {
-                formData.append('photo', files[i]);
+            // Add all selected files with the same key 'photo'
+            for (let i = 0; i < filesToUpload.length; i++) {
+                formData.append('photo', filesToUpload[i]);
             }
             
             try {
@@ -2020,13 +2035,14 @@ www.myoneart.com
                     const data = await response.json();
                     currentProfileData.gallery_photos = data.gallery;
                     renderEditGallery();
-                    alert(data.message || 'Photos ajoutées à la galerie !');
+                    alert(data.message || `${filesToUpload.length} photo(s) ajoutée(s) à la galerie !`);
                 } else {
                     const error = await response.json();
                     alert(error.error || 'Erreur lors de l\'upload');
                 }
             } catch (error) {
-                alert('Erreur de connexion');
+                console.error('Upload error:', error);
+                alert('Erreur de connexion lors de l\'upload');
             }
             
             e.target.value = '';

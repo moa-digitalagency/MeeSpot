@@ -123,9 +123,9 @@ class GalleryRenderer {
         // Stocker les photos dans le scope global pour éviter l'injection XSS
         window[`galleryRenderer_photos_${containerId}`] = displayPhotos;
 
-        // Créer le conteneur de la grille
+        // Créer le conteneur de la grille avec plus d'espace
         const grid = document.createElement('div');
-        grid.className = `grid ${gridCols} gap-2`;
+        grid.className = `grid ${gridCols} gap-3`;
 
         // Créer chaque photo avec createElement pour éviter XSS
         displayPhotos.forEach((photo, index) => {
@@ -204,9 +204,9 @@ class GalleryRenderer {
         // Stocker les photos dans le scope global pour éviter l'injection XSS
         window[`galleryRenderer_photos_${containerId}`] = displayPhotos;
 
-        // Créer le conteneur de la grille
+        // Créer le conteneur de la grille avec plus d'espace
         const grid = document.createElement('div');
-        grid.className = `grid ${gridCols} gap-2`;
+        grid.className = `grid ${gridCols} gap-3`;
 
         // Créer chaque photo avec createElement pour éviter XSS
         displayPhotos.forEach((photo, index) => {
