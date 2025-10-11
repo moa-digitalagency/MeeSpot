@@ -6,7 +6,7 @@
  * www.myoneart.com
  */
 
-const CACHE_NAME = 'matchspot-v2.0';
+const CACHE_NAME = 'matchspot-v2.1';
 const RUNTIME_CACHE = 'matchspot-runtime';
 
 const STATIC_ASSETS = [
@@ -14,9 +14,9 @@ const STATIC_ASSETS = [
   '/index.html',
   '/app',
   '/manifest.json',
-  'https://cdn.tailwindcss.com',
-  'https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=Poppins:wght@600;700&display=swap',
-  'https://unpkg.com/html5-qrcode@2.3.8/html5-qrcode.min.js'
+  '/css/tailwind.js',
+  '/css/fonts.css',
+  '/js/libs/html5-qrcode.min.js'
 ];
 
 self.addEventListener('install', (event) => {
