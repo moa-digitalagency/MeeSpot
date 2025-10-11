@@ -50,8 +50,8 @@ def register_user():
     
     photo_url = data.get('photo_url')
     
-    # Gallery URLs are now passed directly (already uploaded)
-    gallery_urls = data.get('gallery_urls', [])
+    # Gallery photos are now passed directly (already uploaded)
+    gallery_photos = data.get('gallery_photos', [])
     
     # Validate age minimum 18 years
     if data.get('birthdate'):
@@ -76,7 +76,7 @@ def register_user():
         lgbtq_friendly=data.get('lgbtq_friendly'),
         bio=data.get('bio'),
         photo_url=photo_url,
-        gallery_photos=gallery_urls,
+        gallery_photos=gallery_photos,
         meeting_type=data.get('meeting_type'),
         interests=data.get('interests', [])
     )
