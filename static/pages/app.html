@@ -249,8 +249,8 @@ www.myoneart.com
 
             <div class="bg-white rounded-3xl p-6 mb-4 shadow-lg">
                 <h3 class="font-bold text-[#2D3436] mb-4">📸 Mes photos</h3>
-                <div id="profileGallery" class="grid grid-cols-3 gap-2">
-                    <p class="col-span-3 text-[#2D3436] opacity-50 text-center py-4">Aucune photo</p>
+                <div id="profileGallery" class="grid grid-cols-2 gap-3">
+                    <p class="col-span-2 text-[#2D3436] opacity-50 text-center py-4">Aucune photo</p>
                 </div>
             </div>
 
@@ -481,7 +481,7 @@ www.myoneart.com
                 <div class="mb-6">
                     <label class="block text-[#2D3436] mb-2 text-sm font-semibold">🖼️ Galerie de photos</label>
                     <input type="file" id="galleryPhotoFile" accept="image/*" multiple class="hidden">
-                    <div id="editGalleryPhotos" class="grid grid-cols-3 gap-2">
+                    <div id="editGalleryPhotos" class="grid grid-cols-2 gap-3">
                     </div>
                 </div>
 
@@ -828,7 +828,7 @@ www.myoneart.com
                     // Display gallery photos using GalleryRenderer
                     GalleryRenderer.render('profileGallery', profile.gallery_photos || [], {
                         emptyMessage: 'Aucune photo',
-                        gridCols: 'grid-cols-3'
+                        gridCols: 'grid-cols-2'
                     });
                 }
             } catch (error) {
@@ -1734,7 +1734,7 @@ www.myoneart.com
             // Render gallery using GalleryRenderer
             GalleryRenderer.render('userProfileGallery', profile.gallery_photos || [], {
                 emptyMessage: 'Aucune photo',
-                gridCols: 'grid-cols-3'
+                gridCols: 'grid-cols-2'
             });
         }
 
@@ -1965,7 +1965,8 @@ www.myoneart.com
             GalleryRenderer.renderEditable('editGalleryPhotos', gallery, {
                 onDelete: deleteGalleryPhoto,
                 onAdd: () => document.getElementById('galleryPhotoFile').click(),
-                maxPhotos: 6
+                maxPhotos: 6,
+                gridCols: 'grid-cols-2'
             });
         }
 

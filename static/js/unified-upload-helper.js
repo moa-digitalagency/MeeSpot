@@ -5,6 +5,11 @@ class UnifiedUploadHelper {
 
     createModal() {
         if (document.getElementById('unifiedUploadModal')) return;
+        
+        if (!document.body) {
+            console.warn('Cannot create modal: document.body is not available yet');
+            return;
+        }
 
         const modalHTML = `
             <div id="unifiedUploadModal" class="hidden fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50" style="padding: 20px;">
@@ -184,4 +189,12 @@ class UnifiedUploadHelper {
     }
 }
 
-const unifiedUploadHelper = new UnifiedUploadHelper();
+let unifiedUploadHelper;
+
+if (document.readyState === 'loading') {
+    document.addEventListener('DOMContentLoaded', () => {
+        unifiedUploadHelper = new UnifiedUploadHelper();
+    });
+} else {
+    unifiedUploadHelper = new UnifiedUploadHelper();
+}
