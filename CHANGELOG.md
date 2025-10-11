@@ -7,6 +7,89 @@ Ce fichier documente toutes les modifications, corrections et améliorations app
 
 ---
 
+## [11 Octobre 2025 - 20:00 UTC] - Améliorations Profil Établissement et Gestion Compte
+
+### ✨ Nouvelles Fonctionnalités
+
+- **Affichage du nom du contact dans le profil établissement**
+  - Le nom de la personne de contact (contact_name) est maintenant affiché dans le profil
+  - Ajout d'une section dédiée "👤 Nom du contact" dans la carte de profil
+  - Fichier modifié: `static/pages/establishment.html` (lignes 141-156)
+
+- **Paramètres de profil complets pour établissements**
+  - **Informations de l'établissement**:
+    - Nom de l'établissement (modifiable)
+    - Description (modifiable)
+    - Adresse (modifiable)
+    - Téléphone de contact (modifiable)
+    - Photo par défaut (modifiable)
+  - **Informations du compte**:
+    - Nom du contact (modifiable)
+    - Nom d'utilisateur (modifiable, vérification d'unicité)
+    - Email (affichage seul, non modifiable)
+  - Note: Le changement de mot de passe nécessite une route dédiée sécurisée (/api/profile/password)
+  - Fichiers modifiés: 
+    - `static/pages/establishment.html` (lignes 406-461)
+    - `backend/routes/profile.py` (route `/api/profile/update-account`, lignes 149-169)
+
+- **Route de mise à jour du compte utilisateur**
+  - Nouvelle route PUT `/api/profile/update-account` pour mettre à jour nom et username
+  - Validation de l'unicité du username avant modification
+  - Sécurité: Le mot de passe ne peut PAS être modifié via cette route (utiliser /api/profile/password)
+  - Fichier ajouté: `backend/routes/profile.py` (lignes 149-169)
+
+### 🐛 Corrections de bugs
+
+- **Fix de la route de demande de subscription**
+  - Problème: Le frontend envoyait les demandes à `/api/subscriptions` mais la route était `/api/subscriptions/request`
+  - Solution: Ajout de la route `/api/subscriptions` (POST) en plus de `/api/subscriptions/request`
+  - Les deux endpoints fonctionnent maintenant de manière identique
+  - Fichiers modifiés: `backend/routes/subscriptions.py` (lignes 21-22)
+
+- **Fix du champ payment_type manquant dans les demandes de subscription**
+  - Problème: Le champ `payment_type` n'était pas défini lors de la création d'une demande
+  - Solution: Détermination automatique du type de paiement basé sur le tier de subscription
+    - 'one-shot' → payment_type: 'one_shot'
+    - Autres plans → payment_type: 'recurring'
+  - Impact: L'approbation des demandes fonctionne maintenant correctement
+  - Fichier modifié: `backend/routes/subscriptions.py` (lignes 40-48)
+
+### 🔧 Améliorations
+
+- **Gestion améliorée des données utilisateur**
+  - Stockage de userData dans une variable globale JavaScript pour accès facile
+  - Affichage cohérent des informations du contact partout dans l'interface
+  - Fichier modifié: `static/pages/establishment.html` (lignes 471-490)
+
+- **Mise à jour en parallèle des données**
+  - Les paramètres d'établissement et de compte utilisateur sont mis à jour simultanément
+  - Utilisation de Promise.all pour optimiser les requêtes HTTP
+  - Synchronisation du localStorage après mise à jour réussie
+  - Fichier modifié: `static/pages/establishment.html` (lignes 1120-1160)
+
+### 📋 Fichiers Modifiés
+
+- `static/pages/establishment.html` - Ajout nom du contact, paramètres complets, gestion userData
+- `backend/routes/profile.py` - Route update-account pour mise à jour nom/username/password
+- `backend/routes/subscriptions.py` - Fix routes et ajout payment_type automatique
+
+### ✅ Tests Recommandés
+
+Une fois l'ENCRYPTION_KEY configurée dans les secrets:
+- [ ] Vérifier l'affichage du nom du contact dans le profil établissement
+- [ ] Tester la modification de toutes les informations dans les paramètres
+- [ ] Vérifier le changement de username (avec vérification d'unicité)
+- [ ] Tester le changement de mot de passe
+- [ ] Créer une demande de forfait et vérifier qu'elle apparaît côté admin
+- [ ] Approuver une demande et vérifier la mise à jour du plan
+
+### ⚠️ Note Importante
+
+L'application nécessite la clé `ENCRYPTION_KEY` dans les secrets Replit pour démarrer.
+Cette clé est utilisée pour chiffrer les données sensibles (emails, noms, etc.) dans la base de données.
+
+---
+
 ## [11 Octobre 2025 - 15:00 UTC] - Améliorations Inscription Établissement et Achat Plans
 
 ### ✨ Nouvelles Fonctionnalités

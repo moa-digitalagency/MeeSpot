@@ -136,7 +136,7 @@ www.myoneart.com
 
             <div class="px-4 space-y-4">
                 <div class="bg-white rounded-2xl p-5">
-                    <div class="grid grid-cols-2 gap-4">
+                    <div class="grid grid-cols-2 gap-4 mb-3">
                         <div>
                             <div class="text-sm text-[#2D3436] opacity-75 mb-1">Nom du lieu</div>
                             <div id="profile-name" class="font-bold text-[#2D3436]">-</div>
@@ -145,6 +145,10 @@ www.myoneart.com
                             <div class="text-sm text-[#2D3436] opacity-75 mb-1">Plan</div>
                             <div id="profile-plan" class="font-bold text-[#FF4081] capitalize">-</div>
                         </div>
+                    </div>
+                    <div class="border-t pt-3">
+                        <div class="text-sm text-[#2D3436] opacity-75 mb-1">👤 Nom du contact</div>
+                        <div id="profile-contact-name" class="font-bold text-[#2D3436]">-</div>
                     </div>
                 </div>
 
@@ -404,6 +408,9 @@ www.myoneart.com
             </div>
             
             <form onsubmit="saveProfileSettings(event)">
+                <div class="mb-3">
+                    <h4 class="font-semibold text-[#2D3436] mb-2">Informations de l'établissement</h4>
+                </div>
                 <div class="mb-4">
                     <label class="block text-[#2D3436] mb-2 text-sm font-semibold">Nom de l'établissement</label>
                     <input type="text" id="settingsName" required class="w-full px-4 py-3 border border-gray-300 rounded-xl focus:outline-none focus:border-[#FF4081]">
@@ -413,6 +420,14 @@ www.myoneart.com
                     <textarea id="settingsDescription" rows="3" class="w-full px-4 py-3 border border-gray-300 rounded-xl focus:outline-none focus:border-[#FF4081]"></textarea>
                 </div>
                 <div class="mb-4">
+                    <label class="block text-[#2D3436] mb-2 text-sm font-semibold">Adresse</label>
+                    <input type="text" id="settingsAddress" class="w-full px-4 py-3 border border-gray-300 rounded-xl focus:outline-none focus:border-[#FF4081]">
+                </div>
+                <div class="mb-4">
+                    <label class="block text-[#2D3436] mb-2 text-sm font-semibold">Téléphone de contact</label>
+                    <input type="tel" id="settingsPhone" class="w-full px-4 py-3 border border-gray-300 rounded-xl focus:outline-none focus:border-[#FF4081]">
+                </div>
+                <div class="mb-4">
                     <label class="block text-[#2D3436] mb-2 text-sm font-semibold">Photo par défaut (pour les rooms)</label>
                     <input type="file" id="settingsPhoto" accept="image/*" class="w-full px-4 py-3 border border-gray-300 rounded-xl focus:outline-none focus:border-[#FF4081]">
                     <p class="text-xs text-[#2D3436] opacity-75 mt-1">Cette photo sera utilisée par défaut pour toutes vos rooms</p>
@@ -420,6 +435,24 @@ www.myoneart.com
                 <div id="currentPhoto" class="mb-4 hidden">
                     <img id="currentPhotoPreview" src="" alt="Photo actuelle" class="w-32 h-32 object-cover rounded-xl">
                 </div>
+                
+                <div class="border-t pt-4 mb-3">
+                    <h4 class="font-semibold text-[#2D3436] mb-2">Informations du compte</h4>
+                </div>
+                <div class="mb-4">
+                    <label class="block text-[#2D3436] mb-2 text-sm font-semibold">Nom du contact</label>
+                    <input type="text" id="settingsContactName" required class="w-full px-4 py-3 border border-gray-300 rounded-xl focus:outline-none focus:border-[#FF4081]">
+                </div>
+                <div class="mb-4">
+                    <label class="block text-[#2D3436] mb-2 text-sm font-semibold">Nom d'utilisateur</label>
+                    <input type="text" id="settingsUsername" required class="w-full px-4 py-3 border border-gray-300 rounded-xl focus:outline-none focus:border-[#FF4081]">
+                </div>
+                <div class="mb-4">
+                    <label class="block text-[#2D3436] mb-2 text-sm font-semibold">Email</label>
+                    <input type="email" id="settingsEmail" disabled class="w-full px-4 py-3 border border-gray-300 rounded-xl bg-gray-100 opacity-75">
+                    <p class="text-xs text-[#2D3436] opacity-75 mt-1">L'email ne peut pas être modifié</p>
+                </div>
+                
                 <button type="submit" class="w-full py-3 bg-[#FF4081] text-white rounded-full hover:bg-[#e0377a] transition font-semibold">
                     Enregistrer les modifications
                 </button>
@@ -430,19 +463,20 @@ www.myoneart.com
     <script>
         let establishmentId = null;
         let establishmentData = null;
+        let userData = null;
         let currentPage = 'dashboard';
         let currentFilter = 'all';
         let availablePlans = [];
 
         function checkAuth() {
             const token = localStorage.getItem('token');
-            const userData = localStorage.getItem('user');
-            if (!token || !userData) {
+            const userDataString = localStorage.getItem('user');
+            if (!token || !userDataString) {
                 window.location.href = '/';
                 return;
             }
-            const user = JSON.parse(userData);
-            if (user.role !== 'establishment' && user.role !== 'admin') {
+            userData = JSON.parse(userDataString);
+            if (userData.role !== 'establishment' && userData.role !== 'admin') {
                 window.location.href = '/app.html';
             }
         }
@@ -532,6 +566,7 @@ www.myoneart.com
             if (!establishmentData) return;
             
             document.getElementById('profile-name').textContent = establishmentData.name;
+            document.getElementById('profile-contact-name').textContent = userData ? userData.name : '-';
             document.getElementById('profile-description').textContent = establishmentData.description || 'Aucune description';
             document.getElementById('profile-phone').textContent = establishmentData.contact_phone || 'Aucun numéro';
             document.getElementById('profile-address').textContent = establishmentData.address || 'Aucune adresse';
@@ -998,9 +1033,15 @@ www.myoneart.com
         }
 
         function showProfileSettings() {
-            if (!establishmentData) return;
+            if (!establishmentData || !userData) return;
+            
             document.getElementById('settingsName').value = establishmentData.name;
             document.getElementById('settingsDescription').value = establishmentData.description || '';
+            document.getElementById('settingsAddress').value = establishmentData.address || '';
+            document.getElementById('settingsPhone').value = establishmentData.contact_phone || '';
+            document.getElementById('settingsContactName').value = userData.name || '';
+            document.getElementById('settingsUsername').value = userData.username || '';
+            document.getElementById('settingsEmail').value = userData.email || '';
             
             if (establishmentData.photo_url) {
                 document.getElementById('currentPhoto').classList.remove('hidden');
@@ -1017,9 +1058,17 @@ www.myoneart.com
         async function saveProfileSettings(e) {
             e.preventDefault();
             const token = localStorage.getItem('token');
-            const data = {
+            
+            const establishmentData = {
                 name: document.getElementById('settingsName').value,
-                description: document.getElementById('settingsDescription').value
+                description: document.getElementById('settingsDescription').value,
+                address: document.getElementById('settingsAddress').value,
+                contact_phone: document.getElementById('settingsPhone').value
+            };
+            
+            const userUpdateData = {
+                name: document.getElementById('settingsContactName').value,
+                username: document.getElementById('settingsUsername').value
             };
             
             const photoInput = document.getElementById('settingsPhoto');
@@ -1040,10 +1089,10 @@ www.myoneart.com
                         
                         if (uploadResponse.ok) {
                             const uploadData = await uploadResponse.json();
-                            data.photo_url = uploadData.url;
+                            establishmentData.photo_url = uploadData.url;
                         }
                         
-                        await updateProfile(data, token);
+                        await updateProfileData(establishmentData, userUpdateData, token);
                     } catch (error) {
                         alert('Erreur lors du téléchargement de la photo');
                     }
@@ -1051,32 +1100,48 @@ www.myoneart.com
                 
                 reader.readAsDataURL(file);
             } else {
-                await updateProfile(data, token);
+                await updateProfileData(establishmentData, userUpdateData, token);
             }
         }
 
-        async function updateProfile(data, token) {
+        async function updateProfileData(establishmentData, userUpdateData, token) {
             try {
-                const response = await fetch('/api/establishments/me/profile', {
-                    method: 'PUT',
-                    headers: {
-                        'Authorization': `Bearer ${token}`,
-                        'Content-Type': 'application/json'
-                    },
-                    body: JSON.stringify(data)
-                });
+                const [estResponse, userResponse] = await Promise.all([
+                    fetch('/api/establishments/me/profile', {
+                        method: 'PUT',
+                        headers: {
+                            'Authorization': `Bearer ${token}`,
+                            'Content-Type': 'application/json'
+                        },
+                        body: JSON.stringify(establishmentData)
+                    }),
+                    fetch('/api/profile/update-account', {
+                        method: 'PUT',
+                        headers: {
+                            'Authorization': `Bearer ${token}`,
+                            'Content-Type': 'application/json'
+                        },
+                        body: JSON.stringify(userUpdateData)
+                    })
+                ]);
                 
-                if (response.ok) {
-                    const result = await response.json();
-                    establishmentData = result.establishment;
+                if (estResponse.ok && userResponse.ok) {
+                    const estResult = await estResponse.json();
+                    const userResult = await userResponse.json();
+                    
+                    establishmentData = estResult.establishment;
+                    userData = userResult.user;
+                    localStorage.setItem('user', JSON.stringify(userData));
+                    
                     updateProfileDisplay();
                     closeProfileSettings();
                     alert('✓ Profil mis à jour avec succès!');
                 } else {
-                    const error = await response.json();
+                    const error = estResponse.ok ? await userResponse.json() : await estResponse.json();
                     alert(error.message || 'Erreur lors de la mise à jour');
                 }
             } catch (error) {
+                console.error('Update error:', error);
                 alert('Erreur de connexion');
             }
         }

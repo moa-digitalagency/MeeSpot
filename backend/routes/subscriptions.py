@@ -15,6 +15,7 @@ from datetime import datetime
 
 bp = Blueprint('subscriptions', __name__, url_prefix='/api/subscriptions')
 
+@bp.route('', methods=['POST'])
 @bp.route('/request', methods=['POST'])
 @token_required
 def request_subscription(current_user):
@@ -33,10 +34,14 @@ def request_subscription(current_user):
     if existing:
         return jsonify({'error': 'You already have a pending subscription request'}), 400
     
+    # Determine payment type based on subscription tier
+    payment_type = 'one_shot' if data['subscription_tier'] == 'one-shot' else 'recurring'
+    
     # Create new request
     sub_request = SubscriptionRequest(
         user_id=current_user.id,
         subscription_tier=data['subscription_tier'],
+        payment_type=payment_type,
         status='pending'
     )
     

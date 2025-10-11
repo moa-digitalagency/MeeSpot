@@ -143,6 +143,28 @@ def toggle_photo_consent(current_user):
         'photo_consent_enabled': current_user.photo_consent_enabled
     })
 
+@bp.route('/update-account', methods=['PUT'])
+@token_required
+def update_account(current_user):
+    """Update user account information (name, username) - NOT password"""
+    data = request.json
+    
+    if 'name' in data and data['name']:
+        current_user.name = data['name']
+    
+    if 'username' in data and data['username']:
+        from backend.models.user import User
+        existing_user = User.query.filter_by(username=data['username']).first()
+        if existing_user and existing_user.id != current_user.id:
+            return jsonify({'error': 'Username already taken'}), 400
+        current_user.username = data['username']
+    
+    db.session.commit()
+    return jsonify({
+        'message': 'Account updated successfully',
+        'user': current_user.to_dict()
+    })
+
 @bp.route('/password', methods=['PUT'])
 @token_required
 def change_password(current_user):
