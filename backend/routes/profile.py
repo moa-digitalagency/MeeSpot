@@ -83,25 +83,35 @@ def upload_profile_photo(current_user):
 @bp.route('/gallery', methods=['POST'])
 @token_required
 def upload_gallery_photo(current_user):
-    """Upload gallery photo"""
+    """Upload one or multiple gallery photos"""
     if 'photo' not in request.files:
         return jsonify({'error': 'No photo file provided'}), 400
     
-    file = request.files['photo']
+    # Get all files with the key 'photo'
+    files = request.files.getlist('photo')
+    
+    if not files:
+        return jsonify({'error': 'No photo file provided'}), 400
     
     try:
-        # Save new photo
-        photo_path = save_upload_file(file, 'photos/gallery')
-        
-        # Add to gallery
+        # Get current gallery
         gallery = current_user.gallery_photos or []
-        gallery.append(photo_path)
+        uploaded_photos = []
+        
+        # Upload each photo
+        for file in files:
+            if file and file.filename:
+                photo_path = save_upload_file(file, 'photos/gallery')
+                gallery.append(photo_path)
+                uploaded_photos.append(photo_path)
+        
+        # Update user's gallery
         current_user.gallery_photos = gallery
         
         db.session.commit()
         return jsonify({
-            'message': 'Gallery photo uploaded successfully',
-            'photo_url': photo_path,
+            'message': f'{len(uploaded_photos)} photo(s) uploaded successfully',
+            'photo_urls': uploaded_photos,
             'gallery': gallery
         })
     except ValueError as e:
