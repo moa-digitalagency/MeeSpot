@@ -480,7 +480,7 @@ www.myoneart.com
                     <label class="block text-[#2D3436] mb-2 text-sm font-semibold">🖼️ Galerie de photos</label>
                     <div id="editGalleryPhotos" class="grid grid-cols-3 gap-2 mb-2">
                     </div>
-                    <input type="file" id="galleryPhotoFile" accept="image/*" class="hidden">
+                    <input type="file" id="galleryPhotoFile" accept="image/*" multiple class="hidden">
                     <button type="button" onclick="document.getElementById('galleryPhotoFile').click()" class="w-full py-2 bg-[#00D4FF] text-white rounded-xl hover:bg-[#9088ee] transition text-sm">
                         ➕ Ajouter une photo
                     </button>
@@ -1979,30 +1979,42 @@ www.myoneart.com
 
         // Gallery photo upload
         document.getElementById('galleryPhotoFile').addEventListener('change', async function(e) {
-            const file = e.target.files[0];
-            if (!file) return;
+            const files = Array.from(e.target.files);
+            if (files.length === 0) return;
             
-            const formData = new FormData();
-            formData.append('photo', file);
+            let successCount = 0;
+            let errorCount = 0;
             
-            try {
-                const response = await fetch('/api/profile/gallery', {
-                    method: 'POST',
-                    headers: { 'Authorization': `Bearer ${localStorage.getItem('token')}` },
-                    body: formData
-                });
+            for (const file of files) {
+                const formData = new FormData();
+                formData.append('photo', file);
                 
-                if (response.ok) {
-                    const data = await response.json();
-                    currentProfileData.gallery_photos = data.gallery;
-                    renderEditGallery();
-                    alert('Photo ajoutée à la galerie !');
-                } else {
-                    const error = await response.json();
-                    alert(error.error || 'Erreur lors de l\'upload');
+                try {
+                    const response = await fetch('/api/profile/gallery', {
+                        method: 'POST',
+                        headers: { 'Authorization': `Bearer ${localStorage.getItem('token')}` },
+                        body: formData
+                    });
+                    
+                    if (response.ok) {
+                        const data = await response.json();
+                        currentProfileData.gallery_photos = data.gallery;
+                        successCount++;
+                    } else {
+                        errorCount++;
+                    }
+                } catch (error) {
+                    errorCount++;
                 }
-            } catch (error) {
-                alert('Erreur de connexion');
+            }
+            
+            renderEditGallery();
+            
+            if (successCount > 0) {
+                alert(`${successCount} photo${successCount > 1 ? 's ajoutées' : ' ajoutée'} à la galerie !`);
+            }
+            if (errorCount > 0) {
+                alert(`${errorCount} photo${errorCount > 1 ? 's non téléchargées' : ' non téléchargée'} en raison d'erreurs.`);
             }
             
             e.target.value = '';
