@@ -257,9 +257,10 @@ www.myoneart.com
                 <p id="profileBioText" class="text-[#2D3436] opacity-75">Aucune bio</p>
             </div>
 
-            <div class="bg-white rounded-3xl p-6 mb-4 shadow-lg" id="profileGallerySection" style="display:none">
+            <div class="bg-white rounded-3xl p-6 mb-4 shadow-lg">
                 <h3 class="font-bold text-[#2D3436] mb-4">📸 Mes photos</h3>
                 <div id="profileGallery" class="grid grid-cols-3 gap-2">
+                    <p class="col-span-3 text-[#2D3436] opacity-50 text-center py-4">Aucune photo</p>
                 </div>
             </div>
 
@@ -808,9 +809,8 @@ www.myoneart.com
                             </div>
                         `).join('');
                         document.getElementById('profileGallery').innerHTML = galleryHtml;
-                        document.getElementById('profileGallerySection').style.display = 'block';
                     } else {
-                        document.getElementById('profileGallerySection').style.display = 'none';
+                        document.getElementById('profileGallery').innerHTML = '<p class="col-span-3 text-[#2D3436] opacity-50 text-center py-4">Aucune photo</p>';
                     }
                 }
             } catch (error) {
