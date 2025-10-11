@@ -663,6 +663,14 @@ www.myoneart.com
                     <input type="text" id="estSignupName" required class="w-full px-4 py-3 border border-gray-300 rounded-xl focus:outline-none focus:border-[#FF4081]">
                 </div>
                 <div class="mb-4">
+                    <label class="block text-[#2D3436] mb-2 text-sm font-semibold">📝 Description</label>
+                    <textarea id="estSignupDescription" rows="3" class="w-full px-4 py-3 border border-gray-300 rounded-xl focus:outline-none focus:border-[#FF4081]" placeholder="Décrivez votre établissement..."></textarea>
+                </div>
+                <div class="mb-4">
+                    <label class="block text-[#2D3436] mb-2 text-sm font-semibold">📞 Numéro de contact</label>
+                    <input type="tel" id="estSignupPhone" class="w-full px-4 py-3 border border-gray-300 rounded-xl focus:outline-none focus:border-[#FF4081]" placeholder="+33 6 12 34 56 78">
+                </div>
+                <div class="mb-4">
                     <label class="block text-[#2D3436] mb-2 text-sm font-semibold">📍 Adresse (optionnel)</label>
                     <input type="text" id="estSignupAddress" class="w-full px-4 py-3 border border-gray-300 rounded-xl focus:outline-none focus:border-[#FF4081]">
                 </div>
@@ -712,10 +720,8 @@ www.myoneart.com
         }
 
         function showRegister() {
-            document.getElementById('authModal').classList.remove('hidden');
-            document.getElementById('loginForm').classList.add('hidden');
-            document.getElementById('registerForm').classList.remove('hidden');
-            document.getElementById('modalTitle').textContent = 'Créer un compte';
+            document.getElementById('authModal').classList.add('hidden');
+            showUserSignup();
         }
 
         function closeModal() {
@@ -1013,6 +1019,8 @@ www.myoneart.com
                 email: document.getElementById('estSignupEmail').value,
                 password: document.getElementById('estSignupPassword').value,
                 establishment_name: document.getElementById('estSignupName').value,
+                description: document.getElementById('estSignupDescription').value || '',
+                contact_phone: document.getElementById('estSignupPhone').value || '',
                 address: document.getElementById('estSignupAddress').value || ''
             };
 

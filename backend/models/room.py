@@ -29,6 +29,7 @@ class Room(db.Model):
     
     max_capacity = db.Column(db.Integer)
     is_active = db.Column(db.Boolean, default=True)
+    is_temporarily_disabled = db.Column(db.Boolean, default=False)
     access_code = db.Column(db.String(8), unique=True)
     created_at = db.Column(db.DateTime, default=datetime.utcnow)
     expires_at = db.Column(db.DateTime)
@@ -63,6 +64,7 @@ class Room(db.Model):
             'max_capacity': self.max_capacity,
             'member_count': len(self.members),
             'is_active': self.is_active,
+            'is_temporarily_disabled': self.is_temporarily_disabled,
             'access_gender': self.access_gender,
             'access_orientation': self.access_orientation,
             'access_age_min': self.access_age_min,

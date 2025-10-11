@@ -15,6 +15,7 @@ class SubscriptionRequest(db.Model):
     id = db.Column(db.Integer, primary_key=True)
     user_id = db.Column(db.Integer, db.ForeignKey('users.id'), nullable=False)
     subscription_tier = db.Column(db.String(20), nullable=False)
+    payment_type = db.Column(db.String(20), nullable=False, default='recurring')
     status = db.Column(db.String(20), nullable=False, default='pending')
     requested_at = db.Column(db.DateTime, default=datetime.utcnow)
     reviewed_at = db.Column(db.DateTime)
@@ -29,6 +30,7 @@ class SubscriptionRequest(db.Model):
             'id': self.id,
             'user_id': self.user_id,
             'subscription_tier': self.subscription_tier,
+            'payment_type': self.payment_type,
             'status': self.status,
             'requested_at': self.requested_at.isoformat() if self.requested_at else None,
             'reviewed_at': self.reviewed_at.isoformat() if self.reviewed_at else None,

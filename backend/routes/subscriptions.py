@@ -71,11 +71,31 @@ def approve_request(current_user, request_id):
     if sub_request.status != 'pending':
         return jsonify({'error': 'Request already processed'}), 400
     
-    # Update user's subscription tier
     user = sub_request.user
-    user.subscription_tier = sub_request.subscription_tier
     
-    # Update request status
+    if user.role == 'establishment':
+        from backend.models.establishment import Establishment
+        establishment = Establishment.query.filter_by(user_id=user.id).first()
+        
+        if establishment:
+            establishment.subscription_plan = sub_request.subscription_tier
+            plan = SubscriptionPlan.query.filter_by(
+                name=sub_request.subscription_tier,
+                role='establishment'
+            ).first()
+            
+            if plan:
+                establishment.subscription_price = plan.price
+            
+            if sub_request.payment_type == 'one_shot':
+                establishment.rooms_created_today = 0
+                establishment.last_room_reset = datetime.utcnow().date()
+            elif sub_request.subscription_tier in ['silver', 'gold']:
+                establishment.week_start_date = datetime.utcnow().date()
+                establishment.rooms_created_this_week = 0
+    else:
+        user.subscription_tier = sub_request.subscription_tier
+    
     sub_request.status = 'approved'
     sub_request.reviewed_at = datetime.utcnow()
     sub_request.reviewed_by = current_user.id
@@ -116,3 +136,62 @@ def get_plans(current_user):
     """Get all subscription plans"""
     plans = SubscriptionPlan.query.all()
     return jsonify([p.to_dict() for p in plans])
+
+@bp.route('/suspend/<int:user_id>', methods=['POST'])
+@admin_required
+def suspend_subscription(current_user, user_id):
+    """Admin: Suspend a user's or establishment's subscription"""
+    from backend.models.user import User
+    from backend.models.establishment import Establishment
+    
+    user = User.query.get_or_404(user_id)
+    data = request.json
+    
+    if user.role == 'establishment':
+        establishment = Establishment.query.filter_by(user_id=user.id).first()
+        if establishment:
+            establishment.subscription_plan = None
+            establishment.subscription_price = 0.0
+    else:
+        user.subscription_tier = 'free'
+    
+    db.session.commit()
+    
+    return jsonify({
+        'message': f'Subscription suspended for user {user.name}',
+        'user_id': user_id
+    })
+
+@bp.route('/reactivate/<int:user_id>', methods=['POST'])
+@admin_required
+def reactivate_subscription(current_user, user_id):
+    """Admin: Reactivate a user's or establishment's subscription"""
+    from backend.models.user import User
+    from backend.models.establishment import Establishment
+    
+    user = User.query.get_or_404(user_id)
+    data = request.json
+    plan_name = data.get('plan_name')
+    
+    if not plan_name:
+        return jsonify({'error': 'plan_name is required'}), 400
+    
+    if user.role == 'establishment':
+        establishment = Establishment.query.filter_by(user_id=user.id).first()
+        if establishment:
+            plan = SubscriptionPlan.query.filter_by(name=plan_name, role='establishment').first()
+            if not plan:
+                return jsonify({'error': 'Plan not found'}), 404
+            
+            establishment.subscription_plan = plan.name
+            establishment.subscription_price = plan.price
+    else:
+        user.subscription_tier = plan_name
+    
+    db.session.commit()
+    
+    return jsonify({
+        'message': f'Subscription reactivated for user {user.name}',
+        'user_id': user_id,
+        'plan': plan_name
+    })

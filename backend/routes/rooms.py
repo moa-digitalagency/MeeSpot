@@ -20,7 +20,7 @@ bp = Blueprint('rooms', __name__, url_prefix='/api/rooms')
 @bp.route('', methods=['GET'])
 @token_required
 def get_rooms(current_user):
-    rooms = Room.query.filter_by(is_active=True).all()
+    rooms = Room.query.filter_by(is_active=True, is_temporarily_disabled=False).all()
     
     accessible_rooms = []
     for room in rooms:
@@ -36,6 +36,9 @@ def get_rooms(current_user):
 def get_room(current_user, room_id):
     room = Room.query.get_or_404(room_id)
     
+    if room.is_temporarily_disabled:
+        return jsonify({'message': 'Cette room est temporairement désactivée'}), 403
+    
     if not check_room_access(room, current_user):
         return jsonify({'message': 'Access denied to this room'}), 403
     
@@ -50,6 +53,9 @@ def get_room(current_user, room_id):
 @token_required
 def join_room(current_user, room_id):
     room = Room.query.get_or_404(room_id)
+    
+    if room.is_temporarily_disabled:
+        return jsonify({'message': 'Cette room est temporairement désactivée'}), 403
     
     if not check_room_access(room, current_user):
         return jsonify({'message': 'Access denied to this room'}), 403
@@ -69,6 +75,11 @@ def join_room(current_user, room_id):
 @bp.route('/<int:room_id>/messages', methods=['GET'])
 @token_required
 def get_messages(current_user, room_id):
+    room = Room.query.get_or_404(room_id)
+    
+    if room.is_temporarily_disabled:
+        return jsonify({'message': 'Cette room est temporairement désactivée'}), 403
+    
     if not RoomMember.query.filter_by(room_id=room_id, user_id=current_user.id).first():
         return jsonify({'message': 'Must join room first'}), 403
     
@@ -78,6 +89,11 @@ def get_messages(current_user, room_id):
 @bp.route('/<int:room_id>/messages', methods=['POST'])
 @token_required
 def send_message(current_user, room_id):
+    room = Room.query.get_or_404(room_id)
+    
+    if room.is_temporarily_disabled:
+        return jsonify({'message': 'Cette room est temporairement désactivée'}), 403
+    
     if not RoomMember.query.filter_by(room_id=room_id, user_id=current_user.id).first():
         return jsonify({'message': 'Must join room first'}), 403
     
@@ -106,6 +122,9 @@ def join_by_code(current_user):
     
     if not room:
         return jsonify({'message': 'Room not found with this code'}), 404
+    
+    if room.is_temporarily_disabled:
+        return jsonify({'message': 'Cette room est temporairement désactivée'}), 403
     
     if not check_room_access(room, current_user):
         return jsonify({'message': 'Access denied to this room'}), 403
@@ -164,6 +183,9 @@ def get_participants(current_user, room_id):
     
     try:
         room = Room.query.get_or_404(room_id)
+        
+        if room.is_temporarily_disabled:
+            return jsonify({'message': 'Cette room est temporairement désactivée'}), 403
         
         membership = RoomMember.query.filter_by(room_id=room_id, user_id=current_user.id, active=True).first()
         if not membership:
