@@ -22,6 +22,8 @@ www.myoneart.com
     <link rel="icon" type="image/png" href="/images/favicon.png">
     <script src="/css/tailwind.js"></script>
     <link href="/css/fonts.css" rel="stylesheet">
+    <script src="/js/unified-upload-helper.js"></script>
+    <script src="/js/gallery-renderer.js"></script>
     <style>
         body { font-family: 'Inter', sans-serif; max-width: 768px; margin: 0 auto; }
         h1, h2, h3, h4, h5, h6 { font-family: 'Poppins', sans-serif; }
@@ -898,47 +900,53 @@ www.myoneart.com
         }
 
         async function previewGalleryPhotos(event) {
-            const files = Array.from(event.target.files).slice(0, 6 - signupGalleryPhotos.length);
+            const files = Array.from(event.target.files).slice(0, 6 - signupGalleryPhotoUrls.length);
+            if (files.length === 0) return;
+            
             const preview = document.getElementById('galleryPreview');
             
-            for (const file of files) {
-                if (signupGalleryPhotos.length < 6) {
-                    const previewUrl = URL.createObjectURL(file);
-                    const img = document.createElement('div');
-                    img.className = 'aspect-square rounded-xl bg-gray-200 flex items-center justify-center text-2xl';
-                    img.style.backgroundImage = `url(${previewUrl})`;
-                    img.style.backgroundSize = 'cover';
-                    img.style.backgroundPosition = 'center';
-                    img.textContent = '⏳';
-                    preview.appendChild(img);
+            // Créer les aperçus visuels
+            files.forEach(file => {
+                const previewUrl = URL.createObjectURL(file);
+                const img = document.createElement('div');
+                img.className = 'aspect-square rounded-xl bg-gray-200 flex items-center justify-center text-2xl';
+                img.style.backgroundImage = `url(${previewUrl})`;
+                img.style.backgroundSize = 'cover';
+                img.style.backgroundPosition = 'center';
+                img.textContent = '⏳';
+                preview.appendChild(img);
+            });
+            
+            // Upload multiple via UnifiedUploadHelper
+            try {
+                updateSignupStatus(`Téléchargement de ${files.length} photo(s) de la galerie...`, false);
+                
+                const data = await unifiedUploadHelper.uploadMultiple(files, 'gallery');
+                
+                if (data.success && data.urls) {
+                    signupGalleryPhotoUrls.push(...data.urls);
                     
-                    // Upload automatically using FormData
-                    try {
-                        updateSignupStatus(`Téléchargement de la photo ${signupGalleryPhotoUrls.length + 1} de la galerie...`, false);
-                        
-                        const formData = new FormData();
-                        formData.append('photo', file);
-                        formData.append('type', 'gallery');
-                        
-                        const response = await fetch('/api/upload/image', {
-                            method: 'POST',
-                            body: formData
-                        });
-                        
-                        const data = await response.json();
-                        
-                        if (response.ok && data.success) {
-                            signupGalleryPhotoUrls.push(data.url);
-                            img.textContent = '✓';
-                            setTimeout(() => img.textContent = '', 500);
-                            updateSignupStatus(`Gallery photo ${signupGalleryPhotoUrls.length} uploaded!`, false);
-                        } else {
-                            updateSignupStatus(`Échec du téléchargement : ${data.message || 'Erreur inconnue'}`, true);
-                            img.textContent = '❌';
+                    // Mettre à jour les aperçus avec succès
+                    const imgDivs = preview.querySelectorAll('div');
+                    const startIndex = imgDivs.length - files.length;
+                    for (let i = 0; i < files.length && i < data.urls.length; i++) {
+                        if (imgDivs[startIndex + i]) {
+                            imgDivs[startIndex + i].textContent = '✓';
+                            setTimeout(() => imgDivs[startIndex + i].textContent = '', 500);
                         }
-                    } catch (error) {
-                        updateSignupStatus(`Erreur de téléchargement : ${error.message}`, true);
-                        img.textContent = '❌';
+                    }
+                    
+                    updateSignupStatus(`${data.urls.length} photo(s) de galerie téléchargée(s)!`, false);
+                }
+            } catch (error) {
+                updateSignupStatus(`Erreur de téléchargement : ${error.message}`, true);
+                
+                // Marquer les aperçus comme échoués
+                const imgDivs = preview.querySelectorAll('div');
+                const startIndex = imgDivs.length - files.length;
+                for (let i = 0; i < files.length; i++) {
+                    if (imgDivs[startIndex + i]) {
+                        imgDivs[startIndex + i].textContent = '❌';
                     }
                 }
             }
