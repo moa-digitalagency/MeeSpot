@@ -659,17 +659,42 @@ www.myoneart.com
                 return;
             }
             user = JSON.parse(userData);
+            updateUserPhoto(user.photo_url);
+        }
+
+        function updateUserPhoto(photoUrl) {
+            if (!user) return;
+            
+            user.photo_url = photoUrl;
+            localStorage.setItem('user', JSON.stringify(user));
+            
+            if (typeof currentProfileData !== 'undefined' && currentProfileData) {
+                currentProfileData.photo_url = photoUrl;
+            }
+            
             const userAvatarEl = document.getElementById('userAvatar');
             const profileAvatarLargeEl = document.getElementById('profileAvatarLarge');
+            const editProfilePhotoEl = document.getElementById('currentProfilePhoto');
             
-            if (user.photo_url) {
-                userAvatarEl.innerHTML = `<img src="${user.photo_url}" class="w-full h-full object-cover rounded-full cursor-pointer" onclick="switchPage('profile')">`;
-                profileAvatarLargeEl.innerHTML = `<img src="${user.photo_url}" class="w-full h-full object-cover rounded-full">`;
+            if (photoUrl) {
+                userAvatarEl.innerHTML = `<img src="${photoUrl}" class="w-full h-full object-cover rounded-full cursor-pointer" onclick="switchPage('profile')">`;
+                if (profileAvatarLargeEl) {
+                    profileAvatarLargeEl.innerHTML = `<img src="${photoUrl}" class="w-full h-full object-cover rounded-full">`;
+                }
+                if (editProfilePhotoEl) {
+                    editProfilePhotoEl.innerHTML = `<img src="${photoUrl}" class="w-full h-full object-cover">`;
+                }
             } else {
-                userAvatarEl.textContent = user.name.charAt(0).toUpperCase();
+                const initial = user.name.charAt(0).toUpperCase();
+                userAvatarEl.textContent = initial;
                 userAvatarEl.classList.add('cursor-pointer');
                 userAvatarEl.onclick = () => switchPage('profile');
-                profileAvatarLargeEl.textContent = user.name.charAt(0).toUpperCase();
+                if (profileAvatarLargeEl) {
+                    profileAvatarLargeEl.textContent = initial;
+                }
+                if (editProfilePhotoEl) {
+                    editProfilePhotoEl.textContent = initial;
+                }
             }
         }
 
@@ -1967,8 +1992,7 @@ www.myoneart.com
                 
                 if (response.ok) {
                     const data = await response.json();
-                    currentProfileData.photo_url = data.photo_url;
-                    document.getElementById('currentProfilePhoto').innerHTML = `<img src="${data.photo_url}" class="w-full h-full object-cover">`;
+                    updateUserPhoto(data.photo_url);
                     alert('Photo de profil mise à jour !');
                 } else {
                     const error = await response.json();
@@ -2559,6 +2583,26 @@ www.myoneart.com
 
         function startAutoRefresh() {
             stopAutoRefresh();
+
+            autoRefreshIntervals.profile = setInterval(async () => {
+                const token = localStorage.getItem('token');
+                if (!token) return;
+                
+                try {
+                    const response = await fetch('/api/profile', {
+                        headers: { 'Authorization': `Bearer ${token}` }
+                    });
+                    
+                    if (response.ok) {
+                        const profile = await response.json();
+                        if (user && profile.photo_url !== user.photo_url) {
+                            updateUserPhoto(profile.photo_url);
+                        }
+                    }
+                } catch (error) {
+                    console.error('Error refreshing profile:', error);
+                }
+            }, 10000);
 
             if (currentPage === 'chat') {
                 autoRefreshIntervals.conversations = setInterval(() => {

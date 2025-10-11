@@ -125,3 +125,27 @@ Les routes `/api/profile/photo` et `/api/profile/gallery` sont **conservées** c
 - Système 100% unifié et cohérent
 
 **Statut** : CONSOLIDATION TERMINÉE ✅
+
+---
+
+## ✅ SYNCHRONISATION PHOTO PROFIL AJOUTÉE (2025-10-11)
+
+### Problème résolu :
+Photo de profil utilisateur non synchronisée dans le dashboard (navbar, section profil, modal édition).
+
+### Solution :
+1. **Fonction centralisée** : `updateUserPhoto(photoUrl)` 
+   - Synchronise user, currentProfileData, localStorage
+   - Met à jour tous les DOM (navbar, profil, modal)
+   - Gère navigation navbar → profile
+   
+2. **Intégration upload** : Appel updateUserPhoto après succès upload
+
+3. **Auto-refresh ajouté** : Polling /api/profile toutes les 10s avec synchronisation si changement
+
+### Validation Architecte ✓
+- Pas de duplications
+- Code propre et maintenable
+- Cohérent avec consolidation existante
+
+**Détails** : Voir CHANGELOG_PHOTO_SYNC.md
