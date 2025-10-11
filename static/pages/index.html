@@ -30,8 +30,9 @@ www.myoneart.com
         .card-hover:active { transform: scale(0.98); }
         
         /* Profile Carousel */
-        .profile-carousel { overflow: hidden; position: relative; }
-        .profile-track { display: flex; animation: scroll-profiles 40s linear infinite; }
+        .profile-carousel { overflow: hidden; position: relative; touch-action: pan-y; }
+        .profile-track { display: flex; animation: scroll-profiles 60s linear infinite; transition: transform 0.3s ease-out; }
+        .profile-track.dragging { animation-play-state: paused; transition: none; }
         @keyframes scroll-profiles { 0% { transform: translateX(0); } 100% { transform: translateX(-50%); } }
         .profile-card-landing { min-width: 140px; margin: 0 12px; }
     </style>
@@ -1203,12 +1204,26 @@ www.myoneart.com
         // Initialize Landing Profile Carousel
         function initLandingProfileCarousel() {
             const profiles = [
-                { name: 'Sophie', age: 24, photo: '/images/profiles/diverse_young_profes_574f6945.jpg' },
-                { name: 'Malik', age: 28, photo: '/images/profiles/diverse_young_profes_1bdd226f.jpg' },
-                { name: 'Emma', age: 26, photo: '/images/profiles/diverse_young_profes_73f05f00.jpg' },
-                { name: 'Yuki', age: 23, photo: '/images/profiles/diverse_young_profes_2d7c62d5.jpg' },
-                { name: 'Carlos', age: 30, photo: '/images/profiles/diverse_young_profes_1f85fc22.jpg' },
-                { name: 'Amara', age: 25, photo: '/images/profiles/diverse_young_profes_04694515.jpg' }
+                { name: 'Sophie', age: 24, photo: '/images/profiles/profile_001.jpg' },
+                { name: 'Amara', age: 25, photo: '/images/profiles/profile_002.jpg' },
+                { name: 'Luna', age: 22, photo: '/images/profiles/profile_003.jpg' },
+                { name: 'Priya', age: 27, photo: '/images/profiles/profile_004.jpg' },
+                { name: 'Zara', age: 23, photo: '/images/profiles/profile_005.jpg' },
+                { name: 'Malik', age: 28, photo: '/images/profiles/profile_006.jpg' },
+                { name: 'Jordan', age: 26, photo: '/images/profiles/profile_007.jpg' },
+                { name: 'Jamal', age: 29, photo: '/images/profiles/profile_008.jpg' },
+                { name: 'Alex', age: 25, photo: '/images/profiles/profile_009.jpg' },
+                { name: 'Noah', age: 24, photo: '/images/profiles/profile_010.jpg' },
+                { name: 'Yuki', age: 23, photo: '/images/profiles/profile_011.jpg' },
+                { name: 'Wei', age: 26, photo: '/images/profiles/profile_012.jpg' },
+                { name: 'Hana', age: 22, photo: '/images/profiles/profile_013.jpg' },
+                { name: 'Aaliyah', age: 27, photo: '/images/profiles/profile_014.jpg' },
+                { name: 'Kofi', age: 25, photo: '/images/profiles/profile_015.jpg' },
+                { name: 'Nia', age: 24, photo: '/images/profiles/profile_016.jpg' },
+                { name: 'Carlos', age: 30, photo: '/images/profiles/profile_017.jpg' },
+                { name: 'Lucia', age: 28, photo: '/images/profiles/profile_018.jpg' },
+                { name: 'Aiyana', age: 26, photo: '/images/profiles/profile_019.jpg' },
+                { name: 'Takoda', age: 29, photo: '/images/profiles/profile_020.jpg' }
             ];
             
             const duplicatedProfiles = [...profiles, ...profiles];
@@ -1227,6 +1242,57 @@ www.myoneart.com
             const carousel = document.getElementById('landingProfileCarousel');
             if (carousel) {
                 carousel.innerHTML = carouselHtml;
+                
+                // Add touch/swipe functionality
+                let isDragging = false;
+                let startPos = 0;
+                let currentTranslate = 0;
+                let prevTranslate = 0;
+                let animationID = 0;
+                
+                carousel.addEventListener('touchstart', touchStart);
+                carousel.addEventListener('touchend', touchEnd);
+                carousel.addEventListener('touchmove', touchMove);
+                carousel.addEventListener('mousedown', touchStart);
+                carousel.addEventListener('mouseup', touchEnd);
+                carousel.addEventListener('mouseleave', touchEnd);
+                carousel.addEventListener('mousemove', touchMove);
+                
+                function touchStart(e) {
+                    isDragging = true;
+                    startPos = getPositionX(e);
+                    carousel.classList.add('dragging');
+                    const transform = window.getComputedStyle(carousel).transform;
+                    if (transform !== 'none') {
+                        const matrix = new DOMMatrix(transform);
+                        prevTranslate = matrix.m41;
+                    }
+                }
+                
+                function touchEnd() {
+                    isDragging = false;
+                    carousel.classList.remove('dragging');
+                    
+                    const movedBy = currentTranslate - prevTranslate;
+                    if (movedBy < -50) {
+                        // Swiped left - let animation continue
+                    } else if (movedBy > 50) {
+                        // Swiped right - let animation continue  
+                    }
+                    
+                    prevTranslate = currentTranslate;
+                }
+                
+                function touchMove(e) {
+                    if (isDragging) {
+                        const currentPosition = getPositionX(e);
+                        currentTranslate = prevTranslate + currentPosition - startPos;
+                    }
+                }
+                
+                function getPositionX(e) {
+                    return e.type.includes('mouse') ? e.pageX : e.touches[0].clientX;
+                }
             }
         }
         
