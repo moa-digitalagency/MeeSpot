@@ -357,63 +357,6 @@ def update_room_name(current_user, room_id):
     
     return jsonify({'message': 'Room name updated successfully', 'name': room.name})
 
-@bp.route('/rooms/<int:room_id>/toggle', methods=['POST'])
-@token_required
-def toggle_room(current_user, room_id):
-    """Toggle room temporarily disabled status (without affecting expiration timer)"""
-    if current_user.role not in ['establishment', 'admin']:
-        return jsonify({'message': 'Unauthorized'}), 403
-    
-    establishment = Establishment.query.filter_by(user_id=current_user.id).first()
-    if not establishment and current_user.role != 'admin':
-        return jsonify({'message': 'Establishment not found'}), 404
-    
-    room = Room.query.get_or_404(room_id)
-    
-    if establishment and room.establishment_id != establishment.id:
-        return jsonify({'message': 'Unauthorized'}), 403
-    
-    room.is_temporarily_disabled = not room.is_temporarily_disabled
-    db.session.commit()
-    
-    status = 'désactivée' if room.is_temporarily_disabled else 'réactivée'
-    
-    return jsonify({
-        'message': f'Room {status} avec succès',
-        'is_temporarily_disabled': room.is_temporarily_disabled
-    })
-
-@bp.route('/rooms/<int:room_id>/reactivate', methods=['POST'])
-@token_required
-def reactivate_expired_room(current_user, room_id):
-    """Reactivate an expired room with a new 24h period"""
-    if current_user.role not in ['establishment', 'admin']:
-        return jsonify({'message': 'Unauthorized'}), 403
-    
-    establishment = Establishment.query.filter_by(user_id=current_user.id).first()
-    if not establishment and current_user.role != 'admin':
-        return jsonify({'message': 'Establishment not found'}), 404
-    
-    room = Room.query.get_or_404(room_id)
-    
-    if establishment and room.establishment_id != establishment.id:
-        return jsonify({'message': 'Unauthorized'}), 403
-    
-    from datetime import timedelta
-    new_expires_at = datetime.utcnow() + timedelta(hours=24)
-    
-    room.is_active = True
-    room.is_temporarily_disabled = False
-    room.expires_at = new_expires_at
-    
-    db.session.commit()
-    
-    return jsonify({
-        'message': 'Room réactivée avec succès pour 24h supplémentaires',
-        'expires_at': room.expires_at.isoformat(),
-        'is_active': room.is_active
-    })
-
 @bp.route('/me/buy-plan', methods=['POST'])
 @token_required
 def buy_plan(current_user):

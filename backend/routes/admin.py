@@ -113,61 +113,6 @@ def list_backups(current_user):
             'message': str(e)
         }), 500
 
-@bp.route('/backup/download/<filename>', methods=['GET'])
-@token_required
-@admin_required
-def download_backup(current_user, filename):
-    """Télécharge un backup"""
-    try:
-        # Validation stricte du nom de fichier
-        if not filename.startswith('matchspot_backup_'):
-            return jsonify({
-                'success': False,
-                'message': 'Nom de fichier invalide'
-            }), 400
-        
-        if not filename.endswith('.tar.gz'):
-            return jsonify({
-                'success': False,
-                'message': 'Extension de fichier invalide'
-            }), 400
-        
-        # Bloquer les caractères dangereux
-        if '..' in filename or '/' in filename or '\\' in filename:
-            return jsonify({
-                'success': False,
-                'message': 'Caractères non autorisés dans le nom de fichier'
-            }), 400
-        
-        backup_path = os.path.join('backups', filename)
-        
-        # Vérifier que le chemin réel est bien dans le dossier backups
-        real_backup_path = os.path.realpath(backup_path)
-        real_backups_dir = os.path.realpath('backups')
-        
-        if not real_backup_path.startswith(real_backups_dir):
-            return jsonify({
-                'success': False,
-                'message': 'Accès refusé'
-            }), 403
-        
-        if not os.path.exists(backup_path):
-            return jsonify({
-                'success': False,
-                'message': 'Backup introuvable'
-            }), 404
-        
-        return send_file(
-            backup_path,
-            as_attachment=True,
-            download_name=filename
-        )
-    except Exception as e:
-        return jsonify({
-            'success': False,
-            'message': str(e)
-        }), 500
-
 @bp.route('/backup/restore', methods=['POST'])
 @token_required
 @admin_required
@@ -490,34 +435,6 @@ def revoke_api_key(current_user, key_id):
         return jsonify({
             'success': True,
             'message': 'Clé API révoquée avec succès'
-        })
-    except Exception as e:
-        db.session.rollback()
-        return jsonify({
-            'success': False,
-            'message': str(e)
-        }), 500
-
-@bp.route('/apikeys/<int:key_id>/activate', methods=['POST'])
-@token_required
-@admin_required
-def activate_api_key(current_user, key_id):
-    """Réactive une clé API"""
-    try:
-        api_key = APIKey.query.get(key_id)
-        
-        if not api_key:
-            return jsonify({
-                'success': False,
-                'message': 'Clé API introuvable'
-            }), 404
-        
-        api_key.is_active = True
-        db.session.commit()
-        
-        return jsonify({
-            'success': True,
-            'message': 'Clé API réactivée avec succès'
         })
     except Exception as e:
         db.session.rollback()

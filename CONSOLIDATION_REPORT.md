@@ -59,16 +59,16 @@ Les routes `/api/profile/photo` et `/api/profile/gallery` sont **conservées** c
 **Routes à vérifier** (1) :
 - ❓ `/api/establishments` (POST) - Créer établissement (vérifier flux d'inscription)
 
-## 📋 ACTIONS RECOMMANDÉES
+## 📋 ACTIONS RÉALISÉES
 
-### Étape 1 : Supprimer les routes non utilisées
+### ✅ Étape 1 : Routes non utilisées supprimées
 1. Dans `backend/routes/admin.py` :
-   - Supprimer `/backup/download/{filename}` (lignes 116-170)
-   - Supprimer `/apikeys/{id}/activate` (lignes 501-528)
+   - ✅ Supprimé `/backup/download/{filename}`
+   - ✅ Supprimé `/apikeys/{id}/activate`
 
 2. Dans `backend/routes/establishments.py` :
-   - Supprimer `/rooms/{id}/toggle` (lignes 360-384)
-   - Supprimer `/rooms/{id}/reactivate` (lignes 386-415)
+   - ✅ Supprimé `/rooms/{id}/toggle`
+   - ✅ Supprimé `/rooms/{id}/reactivate`
 
 ### Étape 2 : Vérifier la route création établissement
 - Chercher où `/api/establishments` (POST) est appelée
