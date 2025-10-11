@@ -526,8 +526,8 @@ www.myoneart.com
             document.getElementById('profile-name').textContent = establishmentData.name;
             document.getElementById('profile-description').textContent = establishmentData.description || 'Aucune description';
             document.getElementById('profile-address').textContent = establishmentData.address || 'Aucune adresse';
-            document.getElementById('profile-plan').textContent = establishmentData.subscription_plan;
-            document.getElementById('profile-price').textContent = `$${establishmentData.subscription_price}/mois`;
+            document.getElementById('profile-plan').textContent = establishmentData.subscription_plan || 'Pas de forfait actif';
+            document.getElementById('profile-price').textContent = establishmentData.subscription_plan ? `$${establishmentData.subscription_price}/mois` : '-';
             
             if (establishmentData.subscription_plan === 'silver') {
                 document.getElementById('profile-limit-label').textContent = 'Limite hebdomadaire';
@@ -569,8 +569,8 @@ www.myoneart.com
                         document.getElementById('analytics-limit').textContent = `${data.max_rooms_today} rooms/jour`;
                     }
                     
-                    document.getElementById('analytics-plan').textContent = establishmentData.subscription_plan;
-                    document.getElementById('analytics-price').textContent = `$${establishmentData.subscription_price}/mois`;
+                    document.getElementById('analytics-plan').textContent = establishmentData.subscription_plan || 'Pas de forfait actif';
+                    document.getElementById('analytics-price').textContent = establishmentData.subscription_plan ? `$${establishmentData.subscription_price}/mois` : '-';
                 }
             } catch (error) {
                 console.error('Error loading analytics:', error);
@@ -1078,13 +1078,13 @@ www.myoneart.com
             const token = localStorage.getItem('token');
             
             try {
-                const response = await fetch('/api/subscriptions', {
+                const response = await fetch('/api/establishments/me/buy-plan', {
                     method: 'POST',
                     headers: {
                         'Authorization': `Bearer ${token}`,
                         'Content-Type': 'application/json'
                     },
-                    body: JSON.stringify({ subscription_tier: 'one-shot' })
+                    body: JSON.stringify({ plan_name: 'one-shot' })
                 });
                 
                 if (response.ok) {

@@ -7,6 +7,101 @@ Ce fichier documente toutes les modifications, corrections et améliorations app
 
 ---
 
+## [11 Octobre 2025 - 15:00 UTC] - Améliorations Inscription Établissement et Achat Plans
+
+### ✨ Nouvelles Fonctionnalités
+- **Ajout du champ téléphone du contact pour les établissements**
+  - Nouveau champ `contact_phone` dans le modèle `Establishment`
+  - Champ ajouté au formulaire d'inscription et aux paramètres du profil
+  - Fichiers modifiés: `backend/models/establishment.py`, `backend/routes/auth.py`, `backend/routes/establishments.py`
+
+- **Route d'achat direct de plans pour établissements**
+  - Nouvelle route POST `/api/establishments/me/buy-plan` pour acheter un plan directement
+  - Support pour l'achat de plans one-shot, silver et gold
+  - Réinitialisation automatique des compteurs selon le type de plan
+  - Fichier modifié: `backend/routes/establishments.py` (lignes 362-399)
+
+### 🐛 Corrections de bugs
+- **Fix erreur "Erreur de connexion" lors de l'achat de plan one-shot**
+  - Problème: La fonction `buyOneShot()` appelait `/api/subscriptions` (route de demande admin) au lieu d'une route d'achat direct
+  - Solution: Redirection vers `/api/establishments/me/buy-plan` avec `plan_name: 'one-shot'`
+  - Fichier modifié: `static/pages/establishment.html` (lignes 1084-1090)
+
+- **Fix affichage vide du plan après inscription**
+  - Problème: Le champ `subscription_plan` vide s'affichait comme vide dans l'interface
+  - Solution: Affichage de "Pas de forfait actif" si le plan est null ou vide
+  - Fichiers modifiés: `backend/models/establishment.py` (ligne 45), `backend/routes/establishments.py` (ligne 157)
+
+### 🗄️ Migration de Base de Données
+- **Ajout de la colonne contact_phone**
+  - Migration automatique ajoutée dans `backend/utils/db_migration.py`
+  - Colonne: `contact_phone VARCHAR(20)` (nullable)
+  - Exécution automatique au démarrage de l'application
+  - Fichier modifié: `backend/utils/db_migration.py` (ligne 33)
+
+### 📋 Fichiers Modifiés
+- `backend/models/establishment.py` - Ajout champ contact_phone et affichage "Pas de forfait actif"
+- `backend/routes/auth.py` - Support contact_phone dans l'inscription
+- `backend/routes/establishments.py` - Route d'achat de plan + support contact_phone
+- `backend/utils/db_migration.py` - Migration contact_phone
+- `static/pages/establishment.html` - Correction fonction buyOneShot()
+
+### 📦 Commandes de Déploiement VPS
+
+#### Mise à jour du code depuis GitHub
+```bash
+# Se connecter au VPS via SSH
+ssh user@votre-serveur.com
+
+# Aller dans le répertoire du projet
+cd /chemin/vers/matchspot
+
+# Sauvegarder la configuration actuelle
+cp .env .env.backup
+
+# Récupérer les dernières modifications
+git pull origin main
+
+# Installer/mettre à jour les dépendances si nécessaire
+pip install -r requirements.txt
+```
+
+#### Migration de la Base de Données
+```bash
+# La migration s'exécute automatiquement au démarrage de l'application
+# Aucune commande SQL manuelle requise
+
+# Redémarrer l'application pour appliquer les changements
+sudo systemctl restart matchspot
+# OU si vous utilisez gunicorn directement
+pkill -HUP gunicorn
+```
+
+#### Vérification après déploiement
+```bash
+# Vérifier les logs pour confirmer la migration
+tail -f /var/log/matchspot/error.log
+# Vous devriez voir: "✓ Column contact_phone added to establishments"
+
+# Vérifier que l'application répond
+curl http://localhost:5000/
+
+# Vérifier le statut du service
+sudo systemctl status matchspot
+
+# Tester l'achat de plan one-shot via l'interface établissement
+# Vérifier qu'il n'y a plus d'erreur "Erreur de connexion"
+```
+
+### ✅ Tests Effectués
+- ✅ Migration de la colonne contact_phone exécutée avec succès
+- ✅ Inscription d'établissement avec contact_phone fonctionne
+- ✅ Achat de plan one-shot fonctionne sans erreur
+- ✅ Affichage "Pas de forfait actif" au lieu de vide
+- ✅ Application redémarrée sans erreur
+
+---
+
 ## [11 Octobre 2025 - 09:00 UTC] - Corrections Profil Établissement et Limites Forfaits
 
 ### 🐛 Corrections de bugs

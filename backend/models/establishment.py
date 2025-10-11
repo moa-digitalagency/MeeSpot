@@ -17,6 +17,7 @@ class Establishment(db.Model):
     name = db.Column(db.String(200), nullable=False)
     description = db.Column(db.Text)
     address = db.Column(db.String(300))
+    contact_phone = db.Column(db.String(20))
     photo_url = db.Column(db.String(500))
     
     subscription_plan = db.Column(db.String(20))
@@ -36,6 +37,7 @@ class Establishment(db.Model):
             'name': self.name,
             'description': self.description,
             'address': self.address,
+            'contact_phone': self.contact_phone,
             'photo_url': self.photo_url,
             'subscription_plan': self.subscription_plan,
             'subscription_price': self.subscription_price,

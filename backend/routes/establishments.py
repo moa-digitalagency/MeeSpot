@@ -149,6 +149,7 @@ def get_my_establishment(current_user):
         'name': establishment.name,
         'description': establishment.description,
         'address': establishment.address,
+        'contact_phone': establishment.contact_phone,
         'photo_url': establishment.photo_url,
         'subscription_plan': establishment.subscription_plan,
         'subscription_price': establishment.subscription_price,
@@ -176,6 +177,8 @@ def update_my_profile(current_user):
         establishment.photo_url = data['photo_url']
     if 'address' in data:
         establishment.address = data['address']
+    if 'contact_phone' in data:
+        establishment.contact_phone = data['contact_phone']
     
     db.session.commit()
     
@@ -353,3 +356,42 @@ def update_room_name(current_user, room_id):
     db.session.commit()
     
     return jsonify({'message': 'Room name updated successfully', 'name': room.name})
+
+@bp.route('/me/buy-plan', methods=['POST'])
+@token_required
+def buy_plan(current_user):
+    if current_user.role not in ['establishment', 'admin']:
+        return jsonify({'message': 'Unauthorized'}), 403
+    
+    establishment = Establishment.query.filter_by(user_id=current_user.id).first()
+    if not establishment:
+        return jsonify({'message': 'Establishment not found'}), 404
+    
+    data = request.json
+    plan_name = data.get('plan_name')
+    
+    if not plan_name:
+        return jsonify({'message': 'Plan name is required'}), 400
+    
+    from backend.models.subscription_plan import SubscriptionPlan
+    plan = SubscriptionPlan.query.filter_by(name=plan_name, role='establishment').first()
+    
+    if not plan:
+        return jsonify({'message': 'Plan not found'}), 404
+    
+    establishment.subscription_plan = plan.name
+    establishment.subscription_price = plan.price
+    
+    if plan.name == 'one-shot':
+        establishment.rooms_created_today = 0
+        establishment.last_room_reset = datetime.utcnow().date()
+    elif plan.name in ['silver', 'gold']:
+        establishment.week_start_date = datetime.utcnow().date()
+        establishment.rooms_created_this_week = 0
+    
+    db.session.commit()
+    
+    return jsonify({
+        'message': f'Plan {plan.name} acheté avec succès',
+        'establishment': establishment.to_dict()
+    })

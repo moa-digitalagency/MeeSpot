@@ -132,7 +132,8 @@ def register_establishment():
         user_id=user.id,
         name=data['establishment_name'],
         description=data.get('description', ''),
-        address=data.get('address', '')
+        address=data.get('address', ''),
+        contact_phone=data.get('contact_phone', '')
     )
     
     db.session.add(establishment)
