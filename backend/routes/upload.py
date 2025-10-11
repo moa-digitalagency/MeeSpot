@@ -9,13 +9,40 @@
 from flask import Blueprint, request, jsonify
 from backend.utils.file_upload import save_upload_file, delete_upload_file
 from backend.utils.auth import token_required
+from functools import wraps
+import jwt
+import os
 
 bp = Blueprint('upload', __name__, url_prefix='/api/upload')
 
+def optional_auth(f):
+    """Decorator that validates token if present, but doesn't require it"""
+    @wraps(f)
+    def decorated(*args, **kwargs):
+        token = request.headers.get('Authorization')
+        current_user = None
+        
+        if token and token.startswith('Bearer '):
+            try:
+                token = token.split(' ')[1]
+                data = jwt.decode(token, os.environ.get('SECRET_KEY') or os.environ.get('SESSION_SECRET'), algorithms=['HS256'])
+                from backend.models.user import User
+                current_user = User.query.get(data['user_id'])
+            except:
+                pass
+        
+        return f(current_user, *args, **kwargs)
+    return decorated
+
 @bp.route('/image', methods=['POST'])
-@token_required
+@optional_auth
 def upload_image(current_user):
-    """Unified image upload endpoint for all types (profile, gallery, verification, chat, establishment)"""
+    """Unified image upload endpoint for all types (profile, gallery, verification, chat, establishment)
+    
+    Authentication: Optional - works both authenticated and unauthenticated
+    - Authenticated: For logged-in users (verification, profile updates, etc.)
+    - Unauthenticated: For registration and establishment onboarding
+    """
     
     if 'photo' not in request.files:
         return jsonify({'success': False, 'message': 'No photo file provided'}), 400
@@ -44,7 +71,7 @@ def upload_image(current_user):
 @bp.route('/image', methods=['DELETE'])
 @token_required
 def delete_image(current_user):
-    """Delete an uploaded image"""
+    """Delete an uploaded image (requires authentication)"""
     data = request.json
     
     if not data or 'url' not in data:
@@ -60,9 +87,12 @@ def delete_image(current_user):
         return jsonify({'success': False, 'message': 'Failed to delete image'}), 500
 
 @bp.route('/images/multiple', methods=['POST'])
-@token_required
+@optional_auth
 def upload_multiple_images(current_user):
-    """Upload multiple images at once (for gallery)"""
+    """Upload multiple images at once (for gallery)
+    
+    Authentication: Optional - works both authenticated and unauthenticated
+    """
     
     if 'photos' not in request.files:
         return jsonify({'success': False, 'message': 'No photo files provided'}), 400

@@ -92,11 +92,15 @@ class UnifiedUploadHelper {
             formData.append('type', this.uploadType);
 
             const token = localStorage.getItem('token');
+            const headers = {};
+            
+            if (token) {
+                headers['Authorization'] = `Bearer ${token}`;
+            }
+            
             const response = await fetch('/api/upload/image', {
                 method: 'POST',
-                headers: {
-                    'Authorization': `Bearer ${token}`
-                },
+                headers: headers,
                 body: formData
             });
 
@@ -132,11 +136,15 @@ class UnifiedUploadHelper {
             formData.append('type', uploadType);
 
             const token = localStorage.getItem('token');
+            const headers = {};
+            
+            if (token) {
+                headers['Authorization'] = `Bearer ${token}`;
+            }
+            
             const response = await fetch('/api/upload/images/multiple', {
                 method: 'POST',
-                headers: {
-                    'Authorization': `Bearer ${token}`
-                },
+                headers: headers,
                 body: formData
             });
 
