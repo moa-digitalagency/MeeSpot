@@ -105,3 +105,23 @@ Les routes `/api/profile/photo` et `/api/profile/gallery` sont **conservées** c
 - Sécurité améliorée (FormData > base64) ✅
 - Moins de duplications ✅
 - API plus cohérente ✅
+
+---
+
+## ✅ CONSOLIDATION FINALE COMPLÉTÉE (2025-10-11)
+
+### Actions réalisées :
+1. **Backend** : Corrigé erreur LSP dans upload.py (type hint JWT)
+2. **Frontend** : Migration complète vers FormData
+   - ✅ index.html : upload profil + galerie (base64 → FormData)
+   - ✅ establishment.html : upload photo établissement (base64 → FormData)
+3. **Nettoyage** : Supprimé `static/js/image-upload-helper.js` (ancien système base64)
+4. **Validation** : Routes non utilisées confirmées supprimées (backup/download, apikeys/activate, rooms/toggle, rooms/reactivate)
+
+### Validation Architecte ✓
+- Backend `/api/upload/image` utilise multipart uploads via `request.files['photo']`
+- Frontend envoie FormData (`photo` + `type`)
+- Plus aucune référence base64 dans le code
+- Système 100% unifié et cohérent
+
+**Statut** : CONSOLIDATION TERMINÉE ✅
