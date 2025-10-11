@@ -149,6 +149,7 @@ def get_my_establishment(current_user):
         'name': establishment.name,
         'description': establishment.description,
         'address': establishment.address,
+        'photo_url': establishment.photo_url,
         'subscription_plan': establishment.subscription_plan,
         'subscription_price': establishment.subscription_price,
         'rooms_created_today': establishment.rooms_created_today,
@@ -301,6 +302,14 @@ def get_room_details(current_user, room_id):
     members = RoomMember.query.filter_by(room_id=room.id).all()
     member_count = len(members)
     
+    members_data = []
+    for member in members:
+        if member.user:
+            members_data.append({
+                'gender': member.user.gender,
+                'joined_at': member.joined_at.isoformat()
+            })
+    
     return jsonify({
         'id': room.id,
         'name': room.name,
@@ -316,10 +325,7 @@ def get_room_details(current_user, room_id):
         'access_orientation': room.access_orientation,
         'access_age_min': room.access_age_min,
         'access_age_max': room.access_age_max,
-        'members': [{
-            'name': member.user.name,
-            'joined_at': member.joined_at.isoformat()
-        } for member in members]
+        'members': members_data
     })
 
 @bp.route('/rooms/<int:room_id>/update-name', methods=['PUT'])
