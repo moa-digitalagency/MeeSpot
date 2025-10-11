@@ -101,9 +101,9 @@ def create_app():
         
         if not establishment_plans_exist:
             establishment_plans = [
-                SubscriptionPlan(name='one-shot', price=19.0, rooms_per_day=1, description='Single Shot - 1 code (24h)', role='establishment'),
-                SubscriptionPlan(name='silver', price=49.0, rooms_per_day=1, description='Silver - 3 codes/semaine (limite quotidienne: 1/jour)', role='establishment'),
-                SubscriptionPlan(name='gold', price=99.0, rooms_per_day=1, description='Gold - 7 codes/semaine (1 code/jour)', role='establishment')
+                SubscriptionPlan(name='one-shot', price=19.0, rooms_per_day=1, description='One-Shot - 1 room unique (24h, pas de cycle)', role='establishment'),
+                SubscriptionPlan(name='silver', price=49.0, rooms_per_day=1, description='Silver - 3 rooms/semaine (cycle hebdomadaire)', role='establishment'),
+                SubscriptionPlan(name='gold', price=99.0, rooms_per_day=1, description='Gold - 7 rooms/semaine (cycle hebdomadaire)', role='establishment')
             ]
             for plan in establishment_plans:
                 db.session.add(plan)

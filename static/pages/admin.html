@@ -703,7 +703,19 @@ www.myoneart.com
                 return;
             }
             
-            list.innerHTML = filtered.map(plan => `
+            list.innerHTML = filtered.map(plan => {
+                let roomsDisplay = '';
+                if (plan.name === 'silver') {
+                    roomsDisplay = '📍 3 rooms par semaine';
+                } else if (plan.name === 'gold') {
+                    roomsDisplay = '📍 7 rooms par semaine';
+                } else if (plan.name === 'one-shot') {
+                    roomsDisplay = '📍 1 room unique (24h)';
+                } else {
+                    roomsDisplay = `📍 ${plan.rooms_per_day} ${plan.rooms_per_day > 1 ? 'rooms' : 'room'} par jour`;
+                }
+                
+                return `
                 <div class="bg-gradient-to-br from-[#5B4DFF] to-[#A29BFE] rounded-2xl p-4 text-white">
                     <div class="flex justify-between items-start mb-3">
                         <div class="flex-1">
@@ -716,7 +728,7 @@ www.myoneart.com
                         </div>
                     </div>
                     <div class="text-sm opacity-90 mb-3">
-                        📍 ${plan.rooms_per_day} ${plan.rooms_per_day > 1 ? 'rooms' : 'room'} par jour
+                        ${roomsDisplay}
                     </div>
                     <div class="flex gap-2">
                         <button onclick="showEditPlanModal(${plan.id})" class="flex-1 py-2 bg-white/20 text-white rounded-full text-sm font-semibold hover:bg-white/30 transition">
@@ -727,7 +739,8 @@ www.myoneart.com
                         </button>
                     </div>
                 </div>
-            `).join('');
+            `;
+            }).join('');
         }
 
         function showAddPlanModal() {

@@ -7,6 +7,67 @@ Ce fichier documente toutes les modifications, corrections et améliorations app
 
 ---
 
+## [11 Octobre 2025 - 21:15 UTC] - Corrections Forfaits et Messages de Confirmation
+
+### 🐛 Corrections de bugs
+
+- **Correction des descriptions de forfaits hebdomadaires**
+  - Problème: Les forfaits Silver et Gold affichaient "par jour" alors qu'ils sont hebdomadaires
+  - Solution: 
+    - Mise à jour des descriptions en base de données: "Silver - 3 rooms/semaine (cycle hebdomadaire)" et "Gold - 7 rooms/semaine (cycle hebdomadaire)"
+    - Ajout de logique JavaScript pour afficher "par semaine" pour les forfaits Silver et Gold au lieu de "par jour"
+  - Fichiers modifiés: 
+    - `backend/__init__.py` (lignes 107-109) - Descriptions initiales corrigées
+    - `static/pages/establishment.html` (lignes 984-1008) - Logique d'affichage "par semaine"
+    - `static/pages/admin.html` (lignes 709-737) - Logique d'affichage "par semaine"
+  - Base de données mise à jour via SQL
+
+- **Clarification du forfait One-Shot**
+  - Problème: La description ne mentionnait pas clairement qu'il s'agit d'une room unique sans cycle
+  - Solution: Description mise à jour en "One-Shot - 1 room unique (24h, pas de cycle)"
+  - Fichier modifié: `backend/__init__.py` (ligne 107)
+
+- **Correction du message de confirmation d'achat One-Shot**
+  - Problème: Le message "One-Shot acheté avec succès! Vous pouvez maintenant créer votre room" ne mentionnait pas que c'est une demande nécessitant validation admin
+  - Solution: Message changé en "Demande de One-Shot envoyée! L'administrateur examinera votre demande bientôt."
+  - Fichier modifié: `static/pages/establishment.html` (ligne 1172)
+
+### 📋 Fichiers Modifiés
+
+- `backend/__init__.py` - Corrections des descriptions des forfaits établissements
+- `static/pages/establishment.html` - Affichage "par semaine" + message de confirmation corrigé
+- `static/pages/admin.html` - Affichage "par semaine" pour les forfaits hebdomadaires
+- Base de données - Mise à jour des descriptions via SQL
+
+### ✅ Tests Effectués
+
+- ✅ Les forfaits Silver et Gold affichent maintenant "par semaine" correctement
+- ✅ Le forfait One-Shot affiche "par jour" (1 room unique)
+- ✅ Le message de confirmation One-Shot mentionne la validation admin
+- ✅ L'API de chargement des forfaits fonctionne correctement
+- ✅ Application redémarrée sans erreur
+
+### 🔧 Correction post-révision architecte
+
+- **Fix affichage incorrect des quotas hebdomadaires**
+  - Problème identifié: La logique affichait "1 room par semaine" au lieu de "3 rooms par semaine" (Silver) et "7 rooms par semaine" (Gold)
+  - Solution: Implémentation d'une logique d'affichage basée sur le nom du plan avec les valeurs correctes hardcodées
+    - Silver: "3 rooms par semaine"
+    - Gold: "7 rooms par semaine"
+    - One-Shot: "1 room unique (24h)"
+  - Fichiers modifiés: 
+    - `static/pages/establishment.html` (lignes 984-1017)
+    - `static/pages/admin.html` (lignes 709-746)
+
+### 📝 Notes techniques
+
+- Les forfaits hebdomadaires (Silver, Gold) utilisent toujours `rooms_per_day=1` en base de données mais sont présentés comme hebdomadaires
+- La logique d'affichage détermine le texte à afficher basé sur le nom du plan (hardcodé pour clarté)
+- À long terme, considérer l'ajout d'un champ `rooms_per_week` en backend pour éviter le hardcoding
+- Le système de validation par admin fonctionne pour tous les types d'achat de forfaits
+
+---
+
 ## [11 Octobre 2025 - 20:00 UTC] - Améliorations Profil Établissement et Gestion Compte
 
 ### ✨ Nouvelles Fonctionnalités
