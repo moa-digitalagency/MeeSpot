@@ -7,6 +7,90 @@ Ce fichier documente toutes les modifications, corrections et améliorations app
 
 ---
 
+## [11 Octobre 2025 - 09:00 UTC] - Corrections Profil Établissement et Limites Forfaits
+
+### 🐛 Corrections de bugs
+- **Fix erreur de récupération des membres de room**
+  - Problème: Tentative d'accès à `member.user.name` causait des erreurs potentielles
+  - Solution: Ajout de vérification `if member.user` et retour du genre au lieu du nom pour les statistiques
+  - Fichier modifié: `backend/routes/establishments.py` (lignes 304-331)
+
+- **Fix champ photo_url manquant dans l'API**
+  - Problème: La réponse de `/api/establishments/me` ne retournait pas le `photo_url`
+  - Solution: Ajout du champ `photo_url` dans la réponse JSON
+  - Fichier modifié: `backend/routes/establishments.py` (ligne 155)
+
+- **Fix conflit de noms de fonction JavaScript**
+  - Problème: Deux fonctions nommées `updateProfile()` causaient des conflits
+  - Solution: Renommage de la fonction d'affichage en `updateProfileDisplay()`
+  - Fichier modifié: `static/pages/establishment.html` (lignes 511, 445, 1048)
+
+### ✅ Vérifications
+- **Système de paramètres du profil établissement**
+  - ✅ Modal fonctionnel permettant de modifier nom, description et photo
+  - ✅ Photo téléchargée devient la photo par défaut pour toutes les rooms créées
+  - ✅ Bouton "⚙️ Paramètres du profil" accessible dans l'onglet Profil
+
+- **Limites de forfaits établissements**
+  - ✅ **One-Shot**: 1 room/jour avec message si limite atteinte + option d'achat
+  - ✅ **Silver**: 3 rooms/semaine (cycle de 7 jours) avec compteur et jours restants
+  - ✅ **Gold**: 7 rooms/semaine (cycle de 7 jours) avec compteur et jours restants
+  - ✅ **Aucun forfait**: Message invitant à acheter un forfait
+  - ✅ **Limite atteinte**: Option d'acheter un One-Shot accessible directement dans le profil
+
+### 📋 Fichiers Modifiés
+- `backend/routes/establishments.py` - Corrections API membres et photo_url
+- `static/pages/establishment.html` - Correction conflit fonction JavaScript
+
+### 📦 Commandes de Déploiement VPS
+
+#### Mise à jour du code depuis GitHub
+```bash
+# Se connecter au VPS via SSH
+ssh user@votre-serveur.com
+
+# Aller dans le répertoire du projet
+cd /chemin/vers/matchspot
+
+# Sauvegarder la configuration actuelle
+cp .env .env.backup
+
+# Récupérer les dernières modifications
+git pull origin main
+
+# Installer/mettre à jour les dépendances si nécessaire
+pip install -r requirements.txt
+```
+
+#### Migration de la base de données
+```bash
+# Si vous utilisez Flask-Migrate (recommandé)
+flask db upgrade
+
+# OU si migration manuelle nécessaire
+# Connectez-vous à PostgreSQL et exécutez les requêtes SQL nécessaires
+psql $DATABASE_URL
+
+# Redémarrer l'application
+sudo systemctl restart matchspot
+# OU si vous utilisez gunicorn directement
+pkill -HUP gunicorn
+```
+
+#### Vérification après déploiement
+```bash
+# Vérifier les logs
+tail -f /var/log/matchspot/error.log
+
+# Vérifier que l'application répond
+curl http://localhost:5000/
+
+# Vérifier le statut du service
+sudo systemctl status matchspot
+```
+
+---
+
 ## [10 Octobre 2025 - 23:00 UTC] - Déplacement Carrousel Profils vers Landing Page
 
 ### 👥 Section Profils Inscrits - Landing Page
