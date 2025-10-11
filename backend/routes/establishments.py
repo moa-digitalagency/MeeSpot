@@ -47,20 +47,59 @@ def create_room(current_user, est_id):
     if establishment.user_id != current_user.id and current_user.role != 'admin':
         return jsonify({'message': 'Unauthorized'}), 403
     
-    today = datetime.utcnow().date()
-    if establishment.last_room_reset != today:
-        establishment.rooms_created_today = 0
-        establishment.last_room_reset = today
+    if not establishment.subscription_plan:
+        return jsonify({
+            'message': 'Aucun forfait actif. Veuillez acheter un forfait pour créer des rooms.',
+            'no_plan': True
+        }), 400
     
     from backend.models.subscription_plan import SubscriptionPlan
+    from datetime import timedelta
+    
     plan = SubscriptionPlan.query.filter_by(
         name=establishment.subscription_plan,
         role='establishment'
     ).first()
-    max_rooms = plan.rooms_per_day if plan else 1
     
-    if establishment.rooms_created_today >= max_rooms:
-        return jsonify({'message': f'Daily room limit reached ({max_rooms} rooms)'}), 400
+    if not plan:
+        return jsonify({
+            'message': 'Forfait invalide. Veuillez contacter le support.',
+            'no_plan': True
+        }), 400
+    
+    today = datetime.utcnow().date()
+    
+    if plan.name == 'one-shot':
+        if establishment.last_room_reset != today:
+            establishment.rooms_created_today = 0
+            establishment.last_room_reset = today
+        
+        if establishment.rooms_created_today >= 1:
+            return jsonify({
+                'message': 'Limite one-shot atteinte (1 room/jour). Achetez un autre one-shot ou changez de forfait.',
+                'limit_reached': True,
+                'can_buy_oneshot': True
+            }), 400
+        
+        establishment.rooms_created_today += 1
+    
+    elif plan.name in ['silver', 'gold']:
+        max_rooms_per_week = 3 if plan.name == 'silver' else 7
+        
+        if not establishment.week_start_date or (today - establishment.week_start_date).days >= 7:
+            establishment.week_start_date = today
+            establishment.rooms_created_this_week = 0
+        
+        if establishment.rooms_created_this_week >= max_rooms_per_week:
+            days_left = 7 - (today - establishment.week_start_date).days
+            return jsonify({
+                'message': f'Limite hebdomadaire atteinte ({max_rooms_per_week} rooms/semaine). Réinitialisation dans {days_left} jour(s). Vous pouvez acheter un one-shot en attendant.',
+                'limit_reached': True,
+                'can_buy_oneshot': True,
+                'days_left': days_left
+            }), 400
+        
+        establishment.rooms_created_this_week += 1
     
     data = request.json
     
@@ -70,11 +109,13 @@ def create_room(current_user, est_id):
     created_time = datetime.utcnow()
     expires_time = created_time + timedelta(hours=24)
     
+    photo_url = data.get('photo_url') or establishment.photo_url
+    
     room = Room(
         establishment_id=est_id,
         name=data['name'],
         description=data.get('description'),
-        photo_url=data.get('photo_url'),
+        photo_url=photo_url,
         welcome_message=data.get('welcome_message'),
         access_gender=data.get('access_gender'),
         access_orientation=data.get('access_orientation'),
@@ -89,7 +130,6 @@ def create_room(current_user, est_id):
         expires_at=expires_time
     )
     db.session.add(room)
-    establishment.rooms_created_today += 1
     db.session.commit()
     
     return jsonify({'id': room.id, 'access_code': access_code, 'message': 'Room created successfully'})
@@ -113,6 +153,34 @@ def get_my_establishment(current_user):
         'subscription_price': establishment.subscription_price,
         'rooms_created_today': establishment.rooms_created_today,
         'last_room_reset': establishment.last_room_reset.isoformat() if establishment.last_room_reset else None
+    })
+
+@bp.route('/me/profile', methods=['PUT'])
+@token_required
+def update_my_profile(current_user):
+    if current_user.role not in ['establishment', 'admin']:
+        return jsonify({'message': 'Unauthorized'}), 403
+    
+    establishment = Establishment.query.filter_by(user_id=current_user.id).first()
+    if not establishment:
+        return jsonify({'message': 'Establishment not found'}), 404
+    
+    data = request.json
+    
+    if 'name' in data:
+        establishment.name = data['name']
+    if 'description' in data:
+        establishment.description = data['description']
+    if 'photo_url' in data:
+        establishment.photo_url = data['photo_url']
+    if 'address' in data:
+        establishment.address = data['address']
+    
+    db.session.commit()
+    
+    return jsonify({
+        'message': 'Profile updated successfully',
+        'establishment': establishment.to_dict()
     })
 
 @bp.route('/me/analytics', methods=['GET'])
@@ -143,17 +211,37 @@ def get_analytics(current_user):
         name=establishment.subscription_plan,
         role='establishment'
     ).first()
-    max_rooms = plan.rooms_per_day if plan else 1
     
-    rooms_today = establishment.rooms_created_today if establishment.last_room_reset == today else 0
-    
-    return jsonify({
-        'total_rooms': total_rooms,
-        'active_rooms': active_rooms,
-        'total_members': total_members,
-        'rooms_today': rooms_today,
-        'max_rooms_today': max_rooms
-    })
+    if plan and plan.name in ['silver', 'gold']:
+        max_rooms_per_week = 3 if plan.name == 'silver' else 7
+        if not establishment.week_start_date or (today - establishment.week_start_date).days >= 7:
+            rooms_this_week = 0
+            days_left = 7
+        else:
+            rooms_this_week = establishment.rooms_created_this_week or 0
+            days_left = 7 - (today - establishment.week_start_date).days
+        
+        return jsonify({
+            'total_rooms': total_rooms,
+            'active_rooms': active_rooms,
+            'total_members': total_members,
+            'rooms_this_week': rooms_this_week,
+            'max_rooms_per_week': max_rooms_per_week,
+            'days_until_reset': days_left,
+            'plan_type': 'weekly'
+        })
+    else:
+        max_rooms = plan.rooms_per_day if plan else 1
+        rooms_today = establishment.rooms_created_today if establishment.last_room_reset == today else 0
+        
+        return jsonify({
+            'total_rooms': total_rooms,
+            'active_rooms': active_rooms,
+            'total_members': total_members,
+            'rooms_today': rooms_today,
+            'max_rooms_today': max_rooms,
+            'plan_type': 'daily'
+        })
 
 @bp.route('/me/rooms', methods=['GET'])
 @token_required
