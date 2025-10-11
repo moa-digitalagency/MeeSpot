@@ -1,5 +1,106 @@
 # Changelog - Consolidation du Système de Galerie Photo
 
+## 🔒 SECURITY UPDATE - 11 Octobre 2025 (CRITIQUE)
+
+### 🎯 Objectif
+Éliminer toutes les vulnérabilités XSS (Cross-Site Scripting) dans le système de galerie photo et corriger les problèmes d'interface utilisateur.
+
+### ⚠️ Vulnérabilités Critiques Corrigées
+
+**AVANT** :
+- ❌ **XSS CRITIQUE** : Injection de code via URLs de photos malveillantes
+- ❌ Templates literals avec données utilisateur non échappées
+- ❌ Handlers d'événements inline (`onclick`, `onerror`) avec données utilisateur
+- ❌ Utilisation de `innerHTML` avec URLs contrôlées par l'utilisateur
+
+**Exemple de vulnérabilité** :
+```javascript
+// DANGEREUX - Permet l'injection de code
+const html = `<img src="${photo}" onerror="alert('XSS')">`;
+container.innerHTML = html;
+```
+
+### ✅ Corrections de Sécurité Appliquées
+
+#### 1. Refactoring Complet de `GalleryRenderer`
+**Fichier** : `static/js/gallery-renderer.js`
+
+Tous les modes de rendu ont été réécrits pour utiliser les APIs DOM sécurisées :
+
+**`showLightbox()` - SÉCURISÉ** (lignes 12-86)
+- ✅ Utilise `document.createElement()` pour tous les éléments
+- ✅ Aucun `innerHTML` avec données non fiables
+- ✅ Event listeners via `addEventListener()`
+
+**`render()` - SÉCURISÉ** (lignes 129-178)
+- ✅ Création d'images avec `createElement()`
+- ✅ Attribution de `src` via propriété, pas template literal
+- ✅ Gestionnaires d'erreur via `addEventListener('error')`
+
+**`renderEditable()` - SÉCURISÉ** (lignes 210-281)
+- ✅ Boutons de suppression créés avec DOM APIs
+- ✅ Bouton d'ajout créé dynamiquement
+- ✅ SVG statique uniquement (pas de données utilisateur)
+
+**`renderCompact()` - SÉCURISÉ** (lignes 290-342)
+- ✅ Mode compact refactorisé avec `createElement()`
+- ✅ Toutes les images créées en toute sécurité
+
+**Exemple de code sécurisé** :
+```javascript
+// SÉCURISÉ - Impossible d'injecter du code
+const img = document.createElement('img');
+img.src = photo; // Échappement automatique
+img.addEventListener('error', function() {
+    this.src = '/images/default-gallery.png';
+});
+```
+
+### ✅ Corrections d'Interface Utilisateur
+
+1. **Bouton "Ajouter" Dupliqué** - CORRIGÉ
+   - ❌ Avant : Bouton hardcodé dans `app.html` + bouton du renderer
+   - ✅ Après : Bouton créé uniquement par `GalleryRenderer.renderEditable()`
+
+2. **Lightbox pour Images Pleine Taille** - IMPLÉMENTÉ
+   - ✅ Clic sur une photo = vue pleine taille
+   - ✅ Navigation précédent/suivant
+   - ✅ Compteur d'images (ex: "2 / 6")
+   - ✅ Fermeture par clic sur overlay ou bouton
+
+3. **Boutons de Suppression Invisibles sur Tactile** - CORRIGÉ
+   - ❌ Avant : `opacity-0 hover:opacity-100` (ne fonctionne pas sur mobile)
+   - ✅ Après : Toujours visibles avec `shadow-lg` pour contraste
+
+### 📊 Impact
+
+**Sécurité** :
+- ✅ Toutes les vulnérabilités XSS éliminées
+- ✅ Validation architect confirmée : "Production-ready"
+- ✅ Aucun vecteur d'injection détecté
+
+**Expérience Utilisateur** :
+- ✅ Galerie entièrement fonctionnelle sur mobile et desktop
+- ✅ Suppression tactile intuitive
+- ✅ Visualisation pleine taille avec navigation
+
+### 🧪 Tests de Sécurité Recommandés
+
+1. **Test d'Injection XSS** :
+   ```javascript
+   // Tenter d'uploader une URL malveillante
+   const maliciousUrl = 'https://evil.com/img.jpg" onload="alert(1)';
+   // Vérifier qu'aucun script ne s'exécute
+   ```
+
+2. **Test de Régression** :
+   - Upload de plusieurs photos
+   - Suppression de photos
+   - Lightbox avec navigation
+   - Mode compact dans les cards
+
+---
+
 ## Date : 11 Octobre 2025
 
 ## 🎯 Objectif
