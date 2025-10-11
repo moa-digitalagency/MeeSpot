@@ -257,6 +257,12 @@ www.myoneart.com
                 <p id="profileBioText" class="text-[#2D3436] opacity-75">Aucune bio</p>
             </div>
 
+            <div class="bg-white rounded-3xl p-6 mb-4 shadow-lg" id="profileGallerySection" style="display:none">
+                <h3 class="font-bold text-[#2D3436] mb-4">📸 Mes photos</h3>
+                <div id="profileGallery" class="grid grid-cols-3 gap-2">
+                </div>
+            </div>
+
             <button onclick="showEditProfile()" class="w-full py-3 bg-[#FF4081] text-white rounded-full hover:bg-[#e0377a] transition font-semibold mb-2">
                 <span data-i18n="profile.edit">✏️ Modifier le profil</span>
             </button>
@@ -793,6 +799,19 @@ www.myoneart.com
                         document.getElementById('profileInterests').innerHTML = `<span class="text-[#2D3436] opacity-50">Aucun intérêt renseigné</span>`;
                     }
                     document.getElementById('profileInterestsSection').style.display = 'block';
+                    
+                    // Display gallery photos
+                    if (profile.gallery_photos && profile.gallery_photos.length > 0) {
+                        const galleryHtml = profile.gallery_photos.map(photo => `
+                            <div class="aspect-square rounded-xl overflow-hidden bg-gray-100">
+                                <img src="${photo}" class="w-full h-full object-cover">
+                            </div>
+                        `).join('');
+                        document.getElementById('profileGallery').innerHTML = galleryHtml;
+                        document.getElementById('profileGallerySection').style.display = 'block';
+                    } else {
+                        document.getElementById('profileGallerySection').style.display = 'none';
+                    }
                 }
             } catch (error) {
                 console.error('Error loading profile:', error);
@@ -2012,6 +2031,7 @@ www.myoneart.com
 
         function closeEditProfile() {
             document.getElementById('editProfileModal').classList.add('hidden');
+            loadProfile();
         }
 
         async function showSubscriptionPlans() {
