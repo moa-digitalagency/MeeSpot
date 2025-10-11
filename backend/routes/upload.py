@@ -25,7 +25,8 @@ def optional_auth(f):
         if token and token.startswith('Bearer '):
             try:
                 token = token.split(' ')[1]
-                data = jwt.decode(token, os.environ.get('SECRET_KEY') or os.environ.get('SESSION_SECRET'), algorithms=['HS256'])
+                secret_key = os.environ.get('SECRET_KEY') or os.environ.get('SESSION_SECRET') or ''
+                data = jwt.decode(token, secret_key, algorithms=['HS256'])
                 from backend.models.user import User
                 current_user = User.query.get(data['user_id'])
             except:

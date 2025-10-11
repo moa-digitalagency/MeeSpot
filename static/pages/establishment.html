@@ -1087,31 +1087,26 @@ www.myoneart.com
             const photoInput = document.getElementById('settingsPhoto');
             if (photoInput.files && photoInput.files[0]) {
                 const file = photoInput.files[0];
-                const reader = new FileReader();
                 
-                reader.onload = async function(e) {
-                    try {
-                        const uploadResponse = await fetch('/api/upload/image', {
-                            method: 'POST',
-                            headers: { 'Content-Type': 'application/json' },
-                            body: JSON.stringify({
-                                image: e.target.result,
-                                type: 'profile'
-                            })
-                        });
-                        
-                        if (uploadResponse.ok) {
-                            const uploadData = await uploadResponse.json();
-                            establishmentData.photo_url = uploadData.url;
-                        }
-                        
-                        await updateProfileData(establishmentData, userUpdateData, token);
-                    } catch (error) {
-                        alert('Erreur lors du téléchargement de la photo');
+                try {
+                    const formData = new FormData();
+                    formData.append('photo', file);
+                    formData.append('type', 'establishment');
+                    
+                    const uploadResponse = await fetch('/api/upload/image', {
+                        method: 'POST',
+                        body: formData
+                    });
+                    
+                    if (uploadResponse.ok) {
+                        const uploadData = await uploadResponse.json();
+                        establishmentData.photo_url = uploadData.url;
                     }
-                };
-                
-                reader.readAsDataURL(file);
+                    
+                    await updateProfileData(establishmentData, userUpdateData, token);
+                } catch (error) {
+                    alert('Erreur lors du téléchargement de la photo');
+                }
             } else {
                 await updateProfileData(establishmentData, userUpdateData, token);
             }

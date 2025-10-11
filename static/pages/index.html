@@ -859,45 +859,42 @@ www.myoneart.com
             const file = event.target.files[0];
             if (!file) return;
             
-            const reader = new FileReader();
-            reader.onload = async function(e) {
-                signupProfilePhoto = e.target.result;
-                const preview = document.getElementById('profilePhotoPreview');
-                preview.style.backgroundImage = `url(${e.target.result})`;
-                preview.style.backgroundSize = 'cover';
-                preview.style.backgroundPosition = 'center';
-                preview.textContent = '⏳';
+            const preview = document.getElementById('profilePhotoPreview');
+            const previewUrl = URL.createObjectURL(file);
+            preview.style.backgroundImage = `url(${previewUrl})`;
+            preview.style.backgroundSize = 'cover';
+            preview.style.backgroundPosition = 'center';
+            preview.textContent = '⏳';
+            
+            // Upload automatically using FormData
+            try {
+                updateSignupStatus('Téléchargement de la photo de profil...', false);
                 
-                // Upload automatically
-                try {
-                    updateSignupStatus('Téléchargement de la photo de profil...', false);
-                    const response = await fetch('/api/upload/image', {
-                        method: 'POST',
-                        headers: { 'Content-Type': 'application/json' },
-                        body: JSON.stringify({
-                            image: e.target.result,
-                            type: 'profile'
-                        })
-                    });
-                    
-                    const data = await response.json();
-                    
-                    if (response.ok && data.success) {
-                        signupProfilePhotoUrl = data.url;
-                        preview.textContent = '✓';
-                        setTimeout(() => preview.textContent = '', 500);
-                        updateSignupStatus('Photo de profil téléchargée!', false);
-                        document.getElementById('nextToGallery').disabled = false;
-                    } else {
-                        updateSignupStatus(`Échec du téléchargement : ${data.message || 'Erreur inconnue'}`, true);
-                        preview.textContent = '❌';
-                    }
-                } catch (error) {
-                    updateSignupStatus(`Erreur de téléchargement : ${error.message}`, true);
+                const formData = new FormData();
+                formData.append('photo', file);
+                formData.append('type', 'profile');
+                
+                const response = await fetch('/api/upload/image', {
+                    method: 'POST',
+                    body: formData
+                });
+                
+                const data = await response.json();
+                
+                if (response.ok && data.success) {
+                    signupProfilePhotoUrl = data.url;
+                    preview.textContent = '✓';
+                    setTimeout(() => preview.textContent = '', 500);
+                    updateSignupStatus('Photo de profil téléchargée!', false);
+                    document.getElementById('nextToGallery').disabled = false;
+                } else {
+                    updateSignupStatus(`Échec du téléchargement : ${data.message || 'Erreur inconnue'}`, true);
                     preview.textContent = '❌';
                 }
-            };
-            reader.readAsDataURL(file);
+            } catch (error) {
+                updateSignupStatus(`Erreur de téléchargement : ${error.message}`, true);
+                preview.textContent = '❌';
+            }
         }
 
         async function previewGalleryPhotos(event) {
@@ -906,46 +903,43 @@ www.myoneart.com
             
             for (const file of files) {
                 if (signupGalleryPhotos.length < 6) {
-                    const reader = new FileReader();
-                    reader.onload = async function(e) {
-                        signupGalleryPhotos.push(e.target.result);
-                        const img = document.createElement('div');
-                        img.className = 'aspect-square rounded-xl bg-gray-200 flex items-center justify-center text-2xl';
-                        img.style.backgroundImage = `url(${e.target.result})`;
-                        img.style.backgroundSize = 'cover';
-                        img.style.backgroundPosition = 'center';
-                        img.textContent = '⏳';
-                        preview.appendChild(img);
+                    const previewUrl = URL.createObjectURL(file);
+                    const img = document.createElement('div');
+                    img.className = 'aspect-square rounded-xl bg-gray-200 flex items-center justify-center text-2xl';
+                    img.style.backgroundImage = `url(${previewUrl})`;
+                    img.style.backgroundSize = 'cover';
+                    img.style.backgroundPosition = 'center';
+                    img.textContent = '⏳';
+                    preview.appendChild(img);
+                    
+                    // Upload automatically using FormData
+                    try {
+                        updateSignupStatus(`Téléchargement de la photo ${signupGalleryPhotoUrls.length + 1} de la galerie...`, false);
                         
-                        // Upload automatically
-                        try {
-                            updateSignupStatus(`Téléchargement de la photo ${signupGalleryPhotoUrls.length + 1} de la galerie...`, false);
-                            const response = await fetch('/api/upload/image', {
-                                method: 'POST',
-                                headers: { 'Content-Type': 'application/json' },
-                                body: JSON.stringify({
-                                    image: e.target.result,
-                                    type: 'gallery'
-                                })
-                            });
-                            
-                            const data = await response.json();
-                            
-                            if (response.ok && data.success) {
-                                signupGalleryPhotoUrls.push(data.url);
-                                img.textContent = '✓';
-                                setTimeout(() => img.textContent = '', 500);
-                                updateSignupStatus(`Gallery photo ${signupGalleryPhotoUrls.length} uploaded!`, false);
-                            } else {
-                                updateSignupStatus(`Échec du téléchargement : ${data.message || 'Erreur inconnue'}`, true);
-                                img.textContent = '❌';
-                            }
-                        } catch (error) {
-                            updateSignupStatus(`Erreur de téléchargement : ${error.message}`, true);
+                        const formData = new FormData();
+                        formData.append('photo', file);
+                        formData.append('type', 'gallery');
+                        
+                        const response = await fetch('/api/upload/image', {
+                            method: 'POST',
+                            body: formData
+                        });
+                        
+                        const data = await response.json();
+                        
+                        if (response.ok && data.success) {
+                            signupGalleryPhotoUrls.push(data.url);
+                            img.textContent = '✓';
+                            setTimeout(() => img.textContent = '', 500);
+                            updateSignupStatus(`Gallery photo ${signupGalleryPhotoUrls.length} uploaded!`, false);
+                        } else {
+                            updateSignupStatus(`Échec du téléchargement : ${data.message || 'Erreur inconnue'}`, true);
                             img.textContent = '❌';
                         }
-                    };
-                    reader.readAsDataURL(file);
+                    } catch (error) {
+                        updateSignupStatus(`Erreur de téléchargement : ${error.message}`, true);
+                        img.textContent = '❌';
+                    }
                 }
             }
         }
