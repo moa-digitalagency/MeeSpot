@@ -63,6 +63,7 @@ class PrivateConversation(db.Model):
             'room_name': self.room.name if self.room else None,
             'other_user_id': other_user.id,
             'other_user_name': other_user.name,
+            'other_user_photo_url': other_user.photo_url,
             'other_user_verified': other_user.is_verified,
             'started_at': self.started_at.isoformat(),
             'expires_at': self.expires_at.isoformat() if self.expires_at else None,
