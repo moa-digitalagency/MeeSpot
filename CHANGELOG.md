@@ -29,8 +29,9 @@ Ce fichier documente toutes les modifications, corrections et améliorations app
 
 - **Fix affichage vide du plan après inscription**
   - Problème: Le champ `subscription_plan` vide s'affichait comme vide dans l'interface
-  - Solution: Affichage de "Pas de forfait actif" si le plan est null ou vide
-  - Fichiers modifiés: `backend/models/establishment.py` (ligne 45), `backend/routes/establishments.py` (ligne 157)
+  - Solution: Logique de présentation déplacée côté frontend pour afficher "Pas de forfait actif" quand le plan est null/empty
+  - L'API retourne maintenant la valeur brute (null/empty) pour préserver la logique de détection côté client
+  - Fichiers modifiés: `static/pages/establishment.html` (lignes 532-533, 575-576)
 
 ### 🗄️ Migration de Base de Données
 - **Ajout de la colonne contact_phone**
