@@ -99,3 +99,8 @@ psycopg2-binary==2.9.9
 PyJWT==2.8.0
 python-dotenv==1.0.0
 SQLAlchemy==2.0.23
+email_validator
+flask
+flask-sqlalchemy
+gunicorn
+psycopg2-binary
