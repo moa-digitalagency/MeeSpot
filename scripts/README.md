@@ -1,113 +1,161 @@
-# Scripts de Déploiement MatchSpot
+# 🚀 Scripts de Déploiement MatchSpot
 
-## 📁 Scripts Disponibles
+## 📋 Scripts Disponibles
 
-### 1. `fix_database.py` - Correction de la base de données
-**Usage:** `python3 scripts/fix_database.py`
-
-Ce script corrige automatiquement les problèmes de base de données en :
-- Vérifiant la connexion à la base de données
-- Créant les tables manquantes
-- Appliquant les migrations nécessaires
-- Ajoutant les colonnes manquantes (rooms_created_this_week, week_start_date, etc.)
-
-**Quand l'utiliser:**
-- Après un git pull si vous avez des erreurs de colonnes manquantes
-- Quand l'application plante au démarrage avec des erreurs SQLAlchemy
-- Après avoir ajouté de nouveaux modèles ou colonnes
-
-### 2. `deploy.sh` - Script de déploiement complet
-**Usage:** `bash scripts/deploy.sh`
-
-Ce script automatise tout le processus de déploiement :
-1. ✅ Met à jour le code depuis GitHub (git pull)
-2. ✅ Installe les dépendances Python
-3. ✅ Vérifie les variables d'environnement (DATABASE_URL, ENCRYPTION_KEY)
-4. ✅ Applique les migrations de base de données
-5. ✅ Redémarre l'application
-
-**Quand l'utiliser:**
-- Après avoir poussé du nouveau code sur GitHub
-- Pour déployer une nouvelle version de l'application
-- Pour mettre à jour l'environnement de production
-
-## 🔧 Workflow de Déploiement Recommandé
-
-### Déploiement après Git Pull
-
+### ⚡ Script Rapide (Recommandé)
 ```bash
-# 1. Récupérer le nouveau code
-git pull origin main
-
-# 2. Exécuter le script de correction
-python3 scripts/fix_database.py
-
-# 3. Redémarrer l'application
-# Le workflow Replit redémarrera automatiquement
+bash scripts/quick_deploy.sh
 ```
+**Utilisation:** Après chaque `git pull` pour appliquer les migrations
 
-### Déploiement Complet Automatique
-
-```bash
-# Une seule commande pour tout faire
-bash scripts/deploy.sh
-```
-
-## ⚠️ Variables d'Environnement Requises
-
-Les scripts vérifient automatiquement ces variables :
-
-- `DATABASE_URL` - URL de connexion PostgreSQL
-- `ENCRYPTION_KEY` - Clé de chiffrement pour les données sensibles
-- `SESSION_SECRET` - Secret pour les sessions (optionnel)
-
-## 🐛 Résolution des Problèmes Courants
-
-### Erreur: "Column does not exist"
-**Solution:** Exécutez `python3 scripts/fix_database.py`
-
-### Erreur: "ENCRYPTION_KEY not set"
-**Solution:** Ajoutez ENCRYPTION_KEY dans les Secrets Replit avec la valeur générée
-
-### Erreur: "Database connection failed"
-**Solution:** Vérifiez que DATABASE_URL est défini dans les variables d'environnement
-
-## 📝 Notes Importantes
-
-- Les migrations sont appliquées automatiquement au démarrage de l'application
-- Les scripts sont idempotents (peuvent être exécutés plusieurs fois sans problème)
-- Toujours tester dans l'environnement de développement avant la production
-- Les scripts créent automatiquement les données de test si elles n'existent pas
-
-## 🚀 Exemple d'Utilisation
-
-```bash
-# Scénario: Vous avez récupéré du nouveau code avec des changements de schéma
-
-# Étape 1: Mettre à jour le code
-git pull origin main
-
-# Étape 2: Corriger la base de données
-python3 scripts/fix_database.py
-
-# Étape 3: Vérifier les logs
-# L'application redémarre automatiquement via le workflow Replit
-```
-
-## 📊 Colonnes Ajoutées par les Migrations
-
-### Table `establishments`
-- `contact_phone` (VARCHAR) - Téléphone de contact
-- `photo_url` (VARCHAR) - URL de la photo
-- `rooms_created_this_week` (INTEGER) - Compteur hebdomadaire de rooms
-- `week_start_date` (DATE) - Date de début de semaine
-
-### Table `subscription_plans`
-- `role` (VARCHAR) - Rôle (user/establishment)
-- `is_active` (BOOLEAN) - Statut actif/inactif
-- `billing_period` (VARCHAR) - Période de facturation
+**Ce qu'il fait:**
+- ✅ Applique les migrations de base de données
+- ✅ Ajoute les colonnes manquantes
+- ✅ L'application redémarre automatiquement
 
 ---
 
-**Développé par MOA Digital Agency LLC**
-**Contact:** moa@myoneart.com
+### 🔧 Script de Correction de Base de Données
+```bash
+python3 scripts/fix_database.py
+```
+
+**Quand l'utiliser:**
+- ❌ Erreur "column does not exist"
+- ❌ Problème de schéma de base de données
+- ❌ Après ajout de nouveaux modèles
+
+**Résultat:**
+```
+=== Correction de la base de données ===
+✓ Connexion à la base de données OK
+✓ Tables créées
+✓ Migrations appliquées
+✓ Toutes les colonnes requises sont présentes
+```
+
+---
+
+### 🌐 Script de Déploiement Complet
+```bash
+bash scripts/deploy.sh
+```
+
+**Ce qu'il fait:**
+1. Git pull depuis GitHub
+2. Vérifie les variables d'environnement
+3. Applique les migrations
+4. Redémarre l'application
+
+---
+
+## 🔄 Workflow Recommandé
+
+### Après avoir récupéré du nouveau code:
+
+```bash
+# Méthode 1: Une seule commande
+bash scripts/quick_deploy.sh
+
+# Méthode 2: Correction manuelle si nécessaire
+python3 scripts/fix_database.py
+```
+
+### En cas d'erreur de base de données:
+
+```bash
+python3 scripts/fix_database.py
+```
+
+---
+
+## ⚙️ Variables d'Environnement
+
+Les scripts vérifient automatiquement:
+
+| Variable | Requis | Description |
+|----------|--------|-------------|
+| `DATABASE_URL` | ✅ | URL PostgreSQL (auto-construit si absent) |
+| `ENCRYPTION_KEY` | ✅ | Clé de chiffrement (ajoutez dans Secrets) |
+| `PGUSER`, `PGHOST`, etc. | ✅ | Variables PostgreSQL (auto-fournies par Replit) |
+
+### Générer une clé de chiffrement:
+```bash
+python -c "from cryptography.fernet import Fernet; print(Fernet.generate_key().decode())"
+```
+
+---
+
+## 🐛 Résolution de Problèmes
+
+### ❌ "Column does not exist"
+```bash
+python3 scripts/fix_database.py
+```
+
+### ❌ "ENCRYPTION_KEY not set"
+1. Générez une clé (voir commande ci-dessus)
+2. Ajoutez-la dans **Replit Secrets** → `ENCRYPTION_KEY`
+
+### ❌ "externally-managed-environment"
+**Solution:** N'utilisez PAS `pip install` directement
+- Les dépendances sont gérées automatiquement par Replit
+- Le fichier `requirements.txt` est lu automatiquement
+
+### ❌ "DATABASE_URL not defined"
+- Vérifiez que la base de données PostgreSQL est créée dans Replit
+- Les variables `PGUSER`, `PGHOST`, etc. doivent exister
+
+---
+
+## 📊 Migrations Appliquées
+
+### Table `establishments`
+- ✅ `contact_phone` - Téléphone
+- ✅ `photo_url` - Photo URL
+- ✅ `rooms_created_this_week` - Compteur hebdomadaire
+- ✅ `week_start_date` - Date début semaine
+
+### Table `subscription_plans`
+- ✅ `role` - user/establishment
+- ✅ `is_active` - Statut actif
+- ✅ `billing_period` - Période facturation
+
+---
+
+## 💡 Conseils
+
+1. **Après git pull:** Toujours exécuter `bash scripts/quick_deploy.sh`
+2. **Nouveaux modèles:** Ajoutez les migrations dans `backend/utils/db_migration.py`
+3. **Tests locaux:** Utilisez `python3 scripts/fix_database.py` pour tester
+4. **En production:** Le workflow Replit redémarre automatiquement l'application
+
+---
+
+## 🎯 Exemples d'Utilisation
+
+### Scénario 1: Mise à jour normale
+```bash
+git pull origin main
+bash scripts/quick_deploy.sh
+# ✅ Terminé!
+```
+
+### Scénario 2: Erreur de colonne
+```bash
+# Erreur: column "rooms_created_this_week" does not exist
+python3 scripts/fix_database.py
+# ✅ Corrigé!
+```
+
+### Scénario 3: Déploiement complet
+```bash
+bash scripts/deploy.sh
+# Fait tout automatiquement
+```
+
+---
+
+**Développé par MOA Digital Agency LLC**  
+📧 Contact: moa@myoneart.com  
+🌐 www.myoneart.com
