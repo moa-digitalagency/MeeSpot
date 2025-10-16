@@ -32,5 +32,6 @@ def run_migrations():
         check_and_add_column('establishments', 'photo_url', 'VARCHAR(500)')
         check_and_add_column('establishments', 'rooms_created_this_week', 'INTEGER NOT NULL DEFAULT 0')
         check_and_add_column('establishments', 'week_start_date', 'DATE')
+        check_and_add_column('rooms', 'is_temporarily_disabled', 'BOOLEAN NOT NULL DEFAULT FALSE')
     except Exception as e:
         print(f"Migration error (table may not exist yet): {e}")

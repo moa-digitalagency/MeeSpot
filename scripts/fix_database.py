@@ -49,12 +49,22 @@ def fix_database():
         
         try:
             inspector = inspect(db.engine)
-            columns = [col['name'] for col in inspector.get_columns('establishments')]
-            required = ['rooms_created_this_week', 'week_start_date']
-            missing = [col for col in required if col not in columns]
             
-            if missing:
-                print(f"❌ Colonnes manquantes: {', '.join(missing)}")
+            # Vérifier establishments
+            est_columns = [col['name'] for col in inspector.get_columns('establishments')]
+            est_required = ['rooms_created_this_week', 'week_start_date']
+            est_missing = [col for col in est_required if col not in est_columns]
+            
+            # Vérifier rooms
+            room_columns = [col['name'] for col in inspector.get_columns('rooms')]
+            room_required = ['is_temporarily_disabled']
+            room_missing = [col for col in room_required if col not in room_columns]
+            
+            if est_missing or room_missing:
+                if est_missing:
+                    print(f"❌ Establishments - colonnes manquantes: {', '.join(est_missing)}")
+                if room_missing:
+                    print(f"❌ Rooms - colonnes manquantes: {', '.join(room_missing)}")
                 return False
             else:
                 print("✅ Toutes les colonnes présentes")
