@@ -10,3 +10,9 @@ python-dotenv==1.0.0
 gunicorn
 email-validator
 flask-login
+email_validator
+flask
+flask-sqlalchemy
+gunicorn
+psycopg2-binary
+gunicorn
