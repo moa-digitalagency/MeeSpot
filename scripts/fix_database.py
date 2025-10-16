@@ -3,6 +3,10 @@
 import sys
 import os
 
+# Charger les variables d'environnement depuis .env
+from dotenv import load_dotenv
+load_dotenv()
+
 sys.path.insert(0, os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
 
 from backend import db, create_app
@@ -10,6 +14,14 @@ from backend.utils.db_migration import run_migrations
 from sqlalchemy import text, inspect
 
 def fix_database():
+    # Vérifier DATABASE_URL
+    if not os.environ.get('DATABASE_URL'):
+        print("❌ ERREUR: DATABASE_URL n'est pas défini")
+        print("   Créez un fichier .env avec:")
+        print("   DATABASE_URL=postgresql://user:password@host:port/dbname")
+        print("   ENCRYPTION_KEY=votre_clé")
+        return False
+    
     app = create_app()
     
     with app.app_context():

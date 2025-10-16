@@ -1,47 +1,54 @@
 # 🚀 Déploiement VPS MeeSpot
 
-## Commande de déploiement
+## Configuration requise sur le VPS
 
-Sur votre VPS, après chaque mise à jour:
+### 1. Créer le fichier `.env` à la racine du projet
+
+```bash
+nano .env
+```
+
+Ajoutez:
+```
+DATABASE_URL=postgresql://user:password@host:port/dbname
+ENCRYPTION_KEY=votre_clé_de_chiffrement
+```
+
+**Pour générer ENCRYPTION_KEY:**
+```bash
+python3 -c "from cryptography.fernet import Fernet; print(Fernet.generate_key().decode())"
+```
+
+### 2. Commande de déploiement
 
 ```bash
 bash scripts/deploy.sh
 ```
 
-## Étapes automatiques du script
+## Étapes automatiques
 
-1. ✅ **Git pull** - Récupère le code depuis GitHub
-2. ✅ **Activation venv** - Active l'environnement virtuel Python
-3. ✅ **Installation requirements** - Installe toutes les dépendances
-4. ✅ **Migrations base de données** - Ajoute colonnes manquantes
-5. ✅ **Redémarrage application** - Redémarre gunicorn ou systemd
-
-## Variables d'environnement requises
-
-Sur votre VPS, assurez-vous d'avoir:
-
-- `DATABASE_URL` - URL PostgreSQL
-- `ENCRYPTION_KEY` - Clé de chiffrement
+1. ✅ **Git pull** - Récupère le code
+2. ✅ **Activation venv** - Active environnement virtuel
+3. ✅ **Installation requirements** - Installe dépendances
+4. ✅ **Vérification .env** - Vérifie la configuration
+5. ✅ **Migrations DB** - Corrige colonnes manquantes
+6. ✅ **Redémarrage app** - Redémarre gunicorn/systemd
 
 ## Service systemd (optionnel)
 
-Si vous utilisez systemd, le script détectera et utilisera automatiquement:
+Le script détecte automatiquement:
 - `/etc/systemd/system/meetspot.service`
 - `/etc/systemd/system/matchspot.service`
 
-Sinon, il démarre gunicorn manuellement.
+Sinon démarre gunicorn manuellement.
 
 ## Logs
-
-Les logs sont dans: `logs/gunicorn.log`
 
 ```bash
 tail -f logs/gunicorn.log
 ```
 
-## Correction manuelle base de données
-
-Si besoin de corriger uniquement la base de données:
+## Correction manuelle DB
 
 ```bash
 source venv/bin/activate

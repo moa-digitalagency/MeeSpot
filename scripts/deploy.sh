@@ -33,13 +33,30 @@ pip install -r requirements.txt --quiet
 echo "   ✅ Dépendances installées"
 echo ""
 
-# 4. Migrations base de données
-echo "🔧 4. Application des migrations..."
-python3 scripts/fix_database.py
+# 4. Vérification fichier .env
+echo "🔐 4. Vérification configuration..."
+if [ ! -f ".env" ]; then
+    echo "   ⚠️  ATTENTION: Fichier .env manquant!"
+    echo "   Créez un fichier .env avec:"
+    echo "   DATABASE_URL=postgresql://user:password@host:port/dbname"
+    echo "   ENCRYPTION_KEY=votre_clé"
+    exit 1
+fi
+echo "   ✅ Fichier .env présent"
 echo ""
 
-# 5. Redémarrage application
-echo "🔄 5. Redémarrage de l'application..."
+# 5. Migrations base de données
+echo "🔧 5. Application des migrations..."
+python3 scripts/fix_database.py
+if [ $? -ne 0 ]; then
+    echo ""
+    echo "❌ Erreur lors des migrations - arrêt du déploiement"
+    exit 1
+fi
+echo ""
+
+# 6. Redémarrage application
+echo "🔄 6. Redémarrage de l'application..."
 
 # Détection et arrêt du processus existant
 if pgrep -f "gunicorn.*main:app" > /dev/null; then
@@ -58,6 +75,7 @@ elif [ -f "/etc/systemd/system/matchspot.service" ]; then
 else
     # Démarrage manuel avec gunicorn
     echo "   🚀 Démarrage gunicorn..."
+    mkdir -p logs
     nohup gunicorn --bind 0.0.0.0:5000 --reuse-port --workers 4 main:app > logs/gunicorn.log 2>&1 &
     echo "   ✅ Gunicorn démarré (PID: $!)"
 fi
